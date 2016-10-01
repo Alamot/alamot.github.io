@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.17-DEV" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel='stylesheet' href="http://alamot.github.iocss/googlefonts.css">
+    <link rel="stylesheet" href="http://alamot.github.iocss/bootstrap.min.css">
+    <link rel="stylesheet" href="http://alamot.github.iocss/font-awesome.min.css">
+    <link rel="stylesheet" href="http://alamot.github.iocss/styles.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="http://alamot.github.ioindex.xml">
+
+    
+    <title>Creation of a transparent shutdown GUI using Gtk and Cairo in Python - The Portal of Knowledge</title>
+    <meta property='og:title' content="Creation of a transparent shutdown GUI using Gtk and Cairo in Python - The Portal of Knowledge">
+    <meta property="og:type" content="article">
+    
+
+    <meta property="og:url" content="http://alamot.github.io/shutdown_manager_transparent/">
+    
+    <meta property="og:image" content="http://alamot.github.ioimages/transparent_shutdown.jpg">
+
+    <script>
+    function email(starting,server,firstname,lastname,subject,body,closing) {
+      document.write(starting);
+      document.write(":" + lastname);
+      document.write("." + firstname);
+      document.write("@");
+      document.write(server + "?subject=" + subject + "&body=" + body + "' target='_blank'>");
+      document.write(closing); }
+    </script>
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id":"http:\/\/alamot.github.io"
+    },
+    "headline": "Creation of a transparent shutdown GUI using Gtk and Cairo in Python |  ",
+    "image": {
+      "@type": "ImageObject",
+      "url": "",
+      "height": 700,
+      "width": 700
+    },
+    "datePublished": "2016-09-19T00:00:00JST",
+    "dateModified": "2016-09-19T00:00:00JST",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "image": "http:\/\/alamot.github.ioimages/logo.png"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "http:\/\/alamot.github.ioimages/logo.png",
+        "height": 60,
+        "width": 60
+      }
+    },
+    "description": ""
+  }
+</script>
+</head>
+  <body id="mainbody" class="en">
+  <header class="l-header">
+    <div class="p-logo" >
+      <a lang="en" href="http://alamot.github.io">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        The Portal of Knowledge
+      </a>
+      <a lang="el" href="http://alamot.github.io">
+        <i class="fa fa-home" aria-hidden="true"></i>
+        Η Πύλη της Γνώσης
+      </a>
+    </div>
+  </header>
+
+
+
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-9">
+
+      <article class="single">
+        <div class="image" style="background-image: url(http://alamot.github.ioimages/transparent_shutdown.jpg);"></div>
+        <div class="body">
+          <div lang="en">
+            <h1 class="title">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h1>
+            <i class="fa fa-calendar"></i>  
+            <time lang="en">2016-09-19</time>
+            &middot; <i class="fa fa-file-text-o" aria-hidden="true"></i> 1642 words
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='http://alamot.github.io/categories/coding'>Coding</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='http://alamot.github.io/tags/linux'>linux</a>
+            
+              <a class="label label-primary" href='http://alamot.github.io/tags/cairo'>cairo</a>
+            
+              <a class="label label-primary" href='http://alamot.github.io/tags/gtk'>gtk</a>
+            
+              <a class="label label-primary" href='http://alamot.github.io/tags/python'>python</a>
+            
+          </div>
+          <div lang="el">
+            <h1 class="title">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h1>
+            <i class="fa fa-calendar"></i> 
+            <time lang="el">2016-09-19</time>
+            &middot; <i class="fa fa-file-text-o" aria-hidden="true"></i> 1642 λέξεις
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='http://alamot.github.io/%CE%BA%CE%B1%CF%84%CE%B7%CE%B3%CE%BF%CF%81%CE%B9%CE%B5%CF%82/%CF%80%CF%81%CE%BF%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CE%B1%CF%84%CE%B9%CF%83%CE%BC%CF%8C%CF%82'>Προγραμματισμός</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='http://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/linux'>linux</a>
+            
+              <a class="label label-primary" href='http://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/cairo'>cairo</a>
+            
+              <a class="label label-primary" href='http://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/gtk'>gtk</a>
+            
+              <a class="label label-primary" href='http://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/python'>python</a>
+            
+          </div>
+          <p lang="en">Many window managers in Linux are lacking a graphical "shutdown/logout" interface. Here, we show how we can implement one, quite easily, using gtk and python.</p>
+<p lang="el">Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.</p>
+
+<figure>
+<img class="floatcenter border" src="/images/shutdown_gui_3x3_transparent.jpg" alt="Transparent 3x3 square shutdown GUI">
+<figcaption lang="en">You can find free icons for every use on <a href="https://openclipart.org" target="_blank">openclipart.org</a></figcaption>
+<figcaption lang="el">Μπορείτε να βρείτε δωρεάν εικονίδια για κάθε χρήση στο <a href="https://openclipart.org" target="_blank">openclipart.org</a></figcaption>
+</figure>
+
+<p lang="en">First, let's add the necessary imports:</p>
+<p lang="el">Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic">#!/usr/bin/env python</span>
+<span style="color: #008800; font-style: italic"># -*- coding: utf-8 -*-</span>
+<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">os</span>
+<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">gtk</span>
+<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">cairo</span>
+<span style="color: #AA22FF; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">math</span> <span style="color: #AA22FF; font-weight: bold">import</span> pi
+<span style="color: #AA22FF; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">collections</span> <span style="color: #AA22FF; font-weight: bold">import</span> OrderedDict
+</pre></div>
+
+
+<p lang="en">We offer two different layouts, one fullscreen and one windowed. Change the following variable according to your preference:</p>
+<p lang="el">Προσφέρουμε δύο διαφορετικές διατάξεις, μια πλήρους οθόνης και μια παραθυριακή. Αλλάξτε την ακόλουθη μεταβλητή σύμφωνα με την προτίμησή σας:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>FULL_SCREEN <span style="color: #666666">=</span> <span style="color: #AA22FF">False</span>
+</pre></div>
+
+
+<p lang="en">We define a <em>get_resource_path</em> function to help us find the path of our icons in the system:</p>
+<p lang="el">Ορίζουμε μια συνάρτηση <em>get_resource_path</em> για να μας βοηθήσει να βρούμε την τοποθεσία των εικονιδίων μας στο σύστημα:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">get_resource_path</span>(rel_path):
+    dir_of_py_file <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>dirname(__file__)
+    rel_path_to_resource <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>join(dir_of_py_file, rel_path)
+    abs_path_to_resource <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>abspath(rel_path_to_resource)
+    <span style="color: #AA22FF; font-weight: bold">return</span> abs_path_to_resource
+</pre></div>
+
+
+<p lang="en">Next, we define our SystemDialog class (inherits from gtk.Window):</p>
+<p lang="el">Στη συνέχεια, ορίζουμε την κλάση SystemDialog (κληρονομεί από την gtk.Window):</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">class</span> <span style="color: #0000FF">SystemDialog</span> (gtk<span style="color: #666666">.</span>Window):
+    <span style="color: #666666">...</span>
+</pre></div>
+
+
+<p lang="en">Inside the class we define the __init__ (do <strong>not</strong> forget to call the super):</p>
+<p lang="el">Μέσα στην κλάση μας ορίζουμε την __init__ (<strong>μην</strong> ξεχάσετε να καλέσετε την super):</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">__init__</span>(<span style="color: #AA22FF">self</span>):
+    <span style="color: #AA22FF">super</span>(SystemDialog, <span style="color: #AA22FF">self</span>)<span style="color: #666666">.</span>__init__()
+    <span style="color: #666666">...</span>
+</pre></div>
+
+
+<p lang="en">Inside the __init__ we define a dictionary with label/command key-value pairs. The reason we use an <em>OrderedDict</em> is that the simple <em>dict</em> in python does not keep the order of the keys but we do not want our buttons to appear in arbitrary order. Keep in mind that you have to edit the button commands according to your system and your needs.</p>
+<p lang="el">Μέσα στην __init__ ορίζουμε ένα λεξικό με ζευγάρια από ετικέτες και εντολές. Ο λόγος που χρησιμοποιούμε ένα <em>OrderedDict</em> είναι επειδή το απλό <em>dict</em> στην Python δεν συγκρατεί τη σειρά των λημμάτων (=κλειδιών), αλλά εμείς δε θέλουμε τα κουμπιά μας να εμφανίζονται με αυθαίρετη σειρά. Σημειώστε ότι θα πρέπει να τροποποιήσετε τις εντολές που αντιστοιχούν στα κουμπιά ανάλογα με το σύστημα σάς και τις ανάγκες σάς.</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions <span style="color: #666666">=</span> OrderedDict([
+    (<span style="color: #BB4444">&quot;Cancel&quot;</span>, <span style="color: #AA22FF">None</span>),
+    (<span style="color: #BB4444">&quot;Lock&quot;</span>, <span style="color: #BB4444">&quot;slock &amp;&quot;</span>),
+    (<span style="color: #BB4444">&quot;Restart WM&quot;</span>, <span style="color: #BB4444">&quot;sudo killall dwm &amp;&quot;</span>),
+    (<span style="color: #BB4444">&quot;Sleep&quot;</span>, <span style="color: #BB4444">&quot;sudo pm-suspend &amp;&quot;</span>),
+    (<span style="color: #BB4444">&quot;Hibernate&quot;</span>, <span style="color: #BB4444">&quot;sudo pm-hibernate &amp;&quot;</span>),
+    (<span style="color: #BB4444">&quot;Sleep + Hibernate&quot;</span>, <span style="color: #BB4444">&quot;sudo pm-suspend-hybrid &amp;&quot;</span>),
+    (<span style="color: #BB4444">&quot;Logout&quot;</span>, <span style="color: #BB4444">&quot;sudo killall X &amp;&quot;</span>),
+    (<span style="color: #BB4444">&quot;Reboot&quot;</span>, <span style="color: #BB4444">&quot;sudo reboot &amp;&quot;</span>),
+    (<span style="color: #BB4444">&quot;Shutdown&quot;</span>, <span style="color: #BB4444">&quot;sudo poweroff &amp;&quot;</span>)])
+</pre></div>
+
+
+<p lang="en">We need some <span style="color:orange">small_vboxes</span> to align vertically each icon with its label. Οur clickable "buttons" will be the <span style="color:green">event_boxes</span>  which will contain the small_vboxes.</p>
+<p lang="el">Χρειαζόμαστε μερικά μικρά κουτιά (<span style="color:orange">small_vboxes</span> ) για να στοιχίσουμε κάθετα κάθε εικόνιδιο με την ετικέτα του. Τα κουμπιά μας που θα πατιούνται θα είναι τα <span style="color:green">event_boxes</span>  που θα εμπεριέχουν τα small_vboxes.</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>small_vboxes <span style="color: #666666">=</span> {}
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>event_boxes <span style="color: #666666">=</span> {}
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>labels <span style="color: #666666">=</span> {}
+</pre></div>
+
+<table class="floatright" style="border: 3px solid orange; outline:3px solid green; outline-offset: 5px; text-align:center;">
+<tr><td><i class="fa fa-picture-o lgfont"></i></td></tr><tr><td><i>Label</i></td></tr>
+</table>
+
+<p lang="en">If the system supports it, we will use an rgba colormap (i.e. one with an alpha channel). <strong>Note</strong>: You need a compositor manager, like compton or xcompmgr for example, in order for transperancy to work.</p>
+<p lang="el">Αν το σύστημα το υποστηρίζει, θα χρησιμοποιήσουμε ένα χάρτης χρώματος rgba, δηλαδή έναν που διαθέτει και κανάλι άλφα. <strong>Σημείωση</strong>: Χρειάζεστε έναν διαχειριστή σύνθεσης (compositor manager), όπως ο compton ή ο xcompmgr για παράδειγμα, για να δουλέψει η διαφάνεια.</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>screen <span style="color: #666666">=</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>get_screen()
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>rgba_colormap <span style="color: #666666">=</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>screen<span style="color: #666666">.</span>get_rgba_colormap()
+<span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>rgba_colormap <span style="color: #AA22FF; font-weight: bold">is</span> <span style="color: #AA22FF; font-weight: bold">not</span> <span style="color: #AA22FF">None</span> <span style="color: #AA22FF; font-weight: bold">and</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>screen<span style="color: #666666">.</span>is_composited()):
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_colormap(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>rgba_colormap)
+</pre></div>
+
+
+<p lang="en">We make our window undecorated, paintable and we keep it on top.</p>
+<p lang="el">Ρυθμίζουμε το παράθυρό μας να μην έχει διακοσμητικά στοιχεία, να μπορεί να ζωγραφιστεί και να παραμένει πάνω από τα άλλα παράθυρα.</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_decorated(<span style="color: #AA22FF">False</span>)
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_app_paintable(<span style="color: #AA22FF">True</span>)
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_keep_above(<span style="color: #AA22FF">True</span>)
+</pre></div>
+
+
+<p lang="en">Some more settings, mostly for the fullscreen case. The function set_border_width sets the size of the outer margin. Adjust it to your liking.</p>
+<p lang="el">Μερικές ακόμη ρυθμίσεις, κυρίως για την περίπτωση της πλήρους οθόνης. Η συνάρτηση set_border_width θέτει το μέγεθος του εξωτερικού περιθωρίου. Προσαρμόστε το κατά την αρεσκεία σας.</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">if</span> FULL_SCREEN:
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_border_width(<span style="color: #666666">150</span>)
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_size_request(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>screen<span style="color: #666666">.</span>get_width(),
+                          <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>screen<span style="color: #666666">.</span>get_height())
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_position(gtk<span style="color: #666666">.</span>WIN_POS_CENTER)
+<span style="color: #AA22FF; font-weight: bold">else</span>:
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_border_width(<span style="color: #666666">5</span>)
+</pre></div>
+
+
+<p lang="en">We define one <span style="color:blue">vertical box</span> and three <span style="color:red">horizontal boxes</span>. The vertical box will contain and align vertically the 3 horizontal boxes while each horizontal box while keep and align horizontally 3 of our "buttons (events_boxes). Therefore, in the end, we will have a nice 3x3 icon square, like this:</p>
+<p lang="el">Ορίζουμε ένα <span style="color:blue">κάθετο κουτί</span> και τρία <span style="color:red">οριζόντια κουτιά</span>. Το κάθετο κουτί θα εμπεριέχει και θα στοιχίζει κάθετα τα 3 οριζόντια κουτιά, ενώ κάθε οριζόντιο κουτί θα περιέχει και θα στοιχίζει οριζόντια 3 από τα "κουμπιά" μας (events_boxes). Οπότε, τελικά, θα έχουμε ένα ωραίο τετράγωνο 3x3 γεμάτο με εικόνιδια, όπως αυτό:</p>
+<table class="floatright" style="outline:5px solid blue; outline-offset: 3px;">
+<tr style="outline:2px solid red; outline-offset:-3px;"><td><i class="fa fa-picture-o lgfont"></i></td><td><i class="fa fa-picture-o lgfont"></i></td><td><i class="fa fa-picture-o lgfont"></i></td></tr>
+<tr style="outline:2px solid red; outline-offset:-3px;"><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td></tr>
+<tr style="outline:2px solid red; outline-offset:-3px;"><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td></tr>
+</table>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>vbox <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>VBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>)
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>hboxes <span style="color: #666666">=</span> [gtk<span style="color: #666666">.</span>HBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>),
+               gtk<span style="color: #666666">.</span>HBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>),
+               gtk<span style="color: #666666">.</span>HBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>)]
+</pre></div>
+
+<p lang="en">The <em>True</em> values is about the homogenous (i.e. the same) size of the children and <em>5</em> is the amount of space between them.</p>
+<p lang="el">Οι τιμές <em>True</em> έχουν να κάνουν με την ισόποση κατανομή του χώρου μεταξύ των περιεχομένων, ενώ το <em>5</em> είναι το κενό διάστημα ανάμεσά τους.</p>
+
+<p lang="en">Now, we are ready to create our "buttons". We load each icon and we pack/align it vertically with its label inside a <span style="color:orange">small_vbox</span>. We add each of the <span style="color:orange">small_vboxes</span> to an <span style="color:green">event_box</span>. We connect the click of <span style="color:green">event_box</span> with a callback event handler and we pack them inside the empty horizontal boxes (3 "buttons" in each <span style="color:red">horizontal box</span>). Finally, to make our "buttons" transparent, we have to connect their <em>expose-event</em> with our <em>self.expose</em> function and to set them as <em>paintable</em>.</p>
+<p lang="el">Τώρα, είμαστε έτοιμοι να δημιουργήσουμε τα "κουμπιά" μας. Φορτώνουμε κάθε εικονίδιο και το πακετάρουμε/στοιχίζουμε κάθετα με την ετίκετά του μέσα σε ένα <span style="color:orange">small_vbox</span>. Προσθέτουμε το καθένα από τα <span style="color:orange">small_vboxes</span> σε ένα διαφανές <span style="color:green">event_box</span>. Συνδέσουμε το πάτημά των <span style="color:green">event_boxes</span> με έναν επανακαλούμενο χειριστή συμβάντων και τα πακετάρουμε μέσα στα άδεια οριζόντια κουτιά (3 κουμπιά σε κάθε <span style="color:red">οριζόντιο κουτί</span>). Τέλος, για να καταστήσουμε τα "κουμπιά" μας διαφανή, θα πρεπει να συνδεσουμε το <em>expose-event</em> τους με την <em>self.expose</em> συνάρτηση μας και να τα θέσουμε ως επιδεκτικά βαψίματος <em>(paintable)</em>.</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>c <span style="color: #666666">=</span> <span style="color: #666666">0</span>
+boxIndex <span style="color: #666666">=</span> <span style="color: #666666">0</span>
+
+<span style="color: #AA22FF; font-weight: bold">for</span> key <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions<span style="color: #666666">.</span>keys():
+
+    <span style="color: #008800; font-style: italic"># Load image</span>
+    ico <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>Image()
+    ico<span style="color: #666666">.</span>set_from_file(get_resource_path(<span style="color: #BB4444">&quot;images/&quot;</span><span style="color: #666666">+</span>key<span style="color: #666666">+</span><span style="color: #BB4444">&quot;.png&quot;</span>))
+    
+    <span style="color: #008800; font-style: italic"># Load label</span>
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>labels[key] <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>Label(key)
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>labels[key]<span style="color: #666666">.</span>modify_fg(gtk<span style="color: #666666">.</span>STATE_NORMAL,
+                               gtk<span style="color: #666666">.</span>gdk<span style="color: #666666">.</span>color_parse(<span style="color: #BB4444">&#39;#FFFFFF&#39;</span>))
+                               
+    <span style="color: #008800; font-style: italic"># Pack/align image and label vertically</span>
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>small_vboxes[key] <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>VBox(<span style="color: #AA22FF">False</span>, <span style="color: #666666">3</span>)
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>small_vboxes[key]<span style="color: #666666">.</span>pack_start(ico)
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>small_vboxes[key]<span style="color: #666666">.</span>pack_start(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>labels[key])
+    
+    <span style="color: #008800; font-style: italic"># Create transparent &quot;buttons&quot; (event_boxes)</span>
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>event_boxes[key] <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>EventBox()
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>event_boxes[key]<span style="color: #666666">.</span>add(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>small_vboxes[key])
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>event_boxes[key]<span style="color: #666666">.</span>connect(<span style="color: #BB4444">&#39;button-release-event&#39;</span>,
+                                  <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>callback, key)
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>event_boxes[key]<span style="color: #666666">.</span>connect(<span style="color: #BB4444">&#39;expose-event&#39;</span>, <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>expose)
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>event_boxes[key]<span style="color: #666666">.</span>set_app_paintable(<span style="color: #AA22FF">True</span>)
+    
+    <span style="color: #008800; font-style: italic"># Pack/align up to 3 &quot;buttons&quot; (event_boxes) horizontally</span>
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>hboxes[boxIndex]<span style="color: #666666">.</span>pack_start((<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>event_boxes[key]))
+    c <span style="color: #666666">+=</span> <span style="color: #666666">1</span>
+    <span style="color: #AA22FF; font-weight: bold">if</span> <span style="color: #AA22FF; font-weight: bold">not</span> (c <span style="color: #666666">%</span> <span style="color: #666666">3</span>):
+        boxIndex <span style="color: #666666">+=</span> <span style="color: #666666">1</span>
+</pre></div>
+
+
+<p lang="en">And now, let's pack the horizontal boxes inside the vertical box and the vertical box inside our window. Do <strong>not</strong> forget to show all our widgets with self.show_all().</p>
+<p lang="el">Και τώρα, ας πακετάρουμε τα οριζόντια κουτιά μέσα στο κάθετο κουτί και το κάθετο κουτί μέσα στο παράθυρό μας. <strong>Μην</strong> ξεχάσετε να εμφανίσετε όλα τα γραφικά στοιχεία σας με την self.show_all().</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">for</span> hbox <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>hboxes:
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>vbox<span style="color: #666666">.</span>pack_start(hbox, <span style="color: #AA22FF">False</span>, <span style="color: #AA22FF">False</span>, <span style="color: #666666">0</span>)
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>add(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>vbox)
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>show_all()
+</pre></div>
+
+
+<p lang="en">Finally, we connect some events for our window with their callback handlers:</p> 
+<p lang="el">Τέλος, συνδέουμε μερικά συμβάντα για το παράθυρό μας με τους επανακαλούμενους χειριστές τους:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic"># For our window to be transparent</span>
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>connect(<span style="color: #BB4444">&#39;expose-event&#39;</span>, <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>expose)
+<span style="color: #008800; font-style: italic"># If our window is destroyed, call self.callback (to exit)</span>
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>connect(<span style="color: #BB4444">&quot;delete-event&quot;</span>, <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>callback)
+<span style="color: #008800; font-style: italic"># If a key is pressed, call self.key_press_event</span>
+<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>connect(<span style="color: #BB4444">&quot;key-press-event&quot;</span>, <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>key_press_event)
+</pre></div>
+
+
+<p lang="en">If our window is not fullscreen, we can move it where we want it. Let's put it on the bottom right corner of the screen.</p>
+<p lang="el">Αν το παράθυρο μας δεν είναι πλήρους οθόνης, μπορούμε να το μετακινήσουμε όπου θέλουμε. Ας το βάλουμε στην κάτω δεξιά γωνία της οθόνης.</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">if</span> <span style="color: #AA22FF; font-weight: bold">not</span> FULL_SCREEN:
+    w, h <span style="color: #666666">=</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>get_size()
+    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>move(gtk<span style="color: #666666">.</span>gdk<span style="color: #666666">.</span>screen_width() <span style="color: #666666">-</span> w,
+              gtk<span style="color: #666666">.</span>gdk<span style="color: #666666">.</span>screen_height() <span style="color: #666666">-</span> h <span style="color: #666666">-</span> <span style="color: #666666">22</span>)
+</pre></div>
+
+
+<p lang="en">The function expose is where the magic of transparency happens. Υou can set the color and the opacity (alpha channel) of our window via the <em>set_source_rgba(r, g, b, a)</em> .</p>
+<p lang="el">Η μαγεία της διαφάνειας συμβαίνει μέσα στην συνάρτηση expose. Μπορείτε να καθορίσετε την απόχρωση και την αδιαφάνεια (κανάλι άλφα) του παραθύρου μας μέσω της <em>set_source_rgba(r, g, b, a)</em>.</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">expose</span>(<span style="color: #AA22FF">self</span>, widget, event):
+    cr <span style="color: #666666">=</span> widget<span style="color: #666666">.</span>get_window()<span style="color: #666666">.</span>cairo_create()
+    cr<span style="color: #666666">.</span>set_source_rgba(<span style="color: #666666">0</span>, <span style="color: #666666">0</span>, <span style="color: #666666">0</span>, <span style="color: #666666">0.65</span>)
+    cr<span style="color: #666666">.</span>set_operator(cairo<span style="color: #666666">.</span>OPERATOR_SOURCE)
+    cr<span style="color: #666666">.</span>paint()
+    cr<span style="color: #666666">.</span>set_operator(cairo<span style="color: #666666">.</span>OPERATOR_OVER)
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #AA22FF">False</span>
+</pre></div>
+
+
+<p lang="en">This is the our keyboard callback/event handler function. If the user has pressed <strong>Escape</strong>, we quit:</p>
+<p lang="el">Αυτή είναι η επανακαλούμενη συνάρτησή μας για τον χειρισμό συμβάντων πληκτρολογίου. Αν ο χρήστης έχει πατήσει το <strong>Escape</strong>, βγαίνουμε από την εφαρμογή:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">key_press_event</span>(<span style="color: #AA22FF">self</span>, widget <span style="color: #666666">=</span> <span style="color: #AA22FF">None</span>, event <span style="color: #666666">=</span> <span style="color: #AA22FF">None</span>):
+    keyval <span style="color: #666666">=</span> event<span style="color: #666666">.</span>keyval
+    keyval_name <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>gdk<span style="color: #666666">.</span>keyval_name(keyval)
+    <span style="color: #AA22FF; font-weight: bold">if</span> keyval_name <span style="color: #666666">==</span> <span style="color: #BB4444">&quot;Escape&quot;</span>:
+        gtk<span style="color: #666666">.</span>main_quit()
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #AA22FF">False</span>
+</pre></div>
+
+
+<p lang="en">If you would like to check for some key modifier/combination you can -for example- get the ctrl key status like this:</p>
+<p lang="el">Αν τυχόν επιθυμείτε να ελέγξετε για κάποιο ειδικό πλήκτρο ή συνδυασμό μπορείτε -για παράδειγμα- να λάβετε την κατάσταση του πλήκτρου ctrl ως εξής:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>state <span style="color: #666666">=</span> event<span style="color: #666666">.</span>state
+ctrl <span style="color: #666666">=</span> (state <span style="color: #666666">&amp;</span> gtk<span style="color: #666666">.</span>gdk<span style="color: #666666">.</span>CONTROL_MASK)
+</pre></div>
+
+
+<p lang="en">This is the our generic callback function which executes the commands:</p>
+<p lang="el">Αυτή είναι η γενική μας επανακαλούμενη συνάρτηση που εκτελεί τις εντολές:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">callback</span>(<span style="color: #AA22FF">self</span>, widget<span style="color: #666666">=</span><span style="color: #AA22FF">None</span>, event<span style="color: #666666">=</span><span style="color: #AA22FF">None</span>, data<span style="color: #666666">=</span><span style="color: #AA22FF">None</span>):
+    <span style="color: #AA22FF; font-weight: bold">if</span> (data <span style="color: #AA22FF; font-weight: bold">is</span> <span style="color: #AA22FF; font-weight: bold">not</span> <span style="color: #AA22FF">None</span> <span style="color: #AA22FF; font-weight: bold">and</span>
+       data <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions <span style="color: #AA22FF; font-weight: bold">and</span>
+       <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions[data] <span style="color: #AA22FF; font-weight: bold">is</span> <span style="color: #AA22FF; font-weight: bold">not</span> <span style="color: #AA22FF">None</span> <span style="color: #AA22FF; font-weight: bold">and</span>
+       event<span style="color: #666666">.</span>button <span style="color: #666666">==</span> <span style="color: #666666">1</span>):  <span style="color: #008800; font-style: italic"># left click</span>
+            os<span style="color: #666666">.</span>system(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions[data])
+    gtk<span style="color: #666666">.</span>main_quit()
+</pre></div>
+
+
+<p lang="en">When our program executes, an <em>SystemDialog</em> object is created and gtk.main() is called:</p>
+<p lang="el">Όταν η εφαρμογή μας εκτελείται, δημιουργείται ένα αντικείμενο <em>SystemDialog</em> και καλείται η gtk.main():</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #BB4444">&quot;__main__&quot;</span>:
+    SystemDialog()
+    gtk<span style="color: #666666">.</span>main()
+</pre></div>
+
+
+<p lang="en"><strong>Last but not least</strong>: In order for our program to function without having to ask for a password, you need to add some lines in your <em>/etc/sudoers</em> file. This is a special system file and you have to run <em>visudo</em> with root privileges to edit it:</p>
+<p lang="el"><strong>Σημαντικό</strong>: Προκειμένου η εφαρμογή μας να λειτουργεί χωρίς να χρειάζεται να ζητάει κωδικό, θα πρέπει να προσθέσετε μερικές γραμμές στο αρχείο <em>/etc/sudoers</em>. Πρόκειται για ένα ειδικό αρχείο του συστήματος το οποίο, για να το διορθώσετε, θα πρέπει να τρέξετε την εντολή <em>visudo</em> έχοντας δικαιώματα διαχειριστή:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic"># visudo</span>
+username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /sbin/reboot
+username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /sbin/poweroff
+username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/bin/killall
+username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/sbin/pm-suspend
+username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/sbin/pm-suspend-hybrid
+username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/sbin/pm-hibernate
+</pre></div>
+
+
+<p lang="en">Here is the full code listing: <a href="https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent" target="_blank">shutdown-manager-transparent</a></p>
+<p lang="el">Μπορείτε να δείτε τον πλήρη κώδικα εδώ: <a href="https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent" target="_blank">shutdown-manager-transparent</a></p>
+
+        </div>
+
+        <aside>
+          <section>
+            <div>
+              <div class="p-share">
+                <a href="http://www.facebook.com/sharer.php?src=bm&u=http%3a%2f%2falamot.github.io%2fshutdown_manager_transparent%2f&t=Creation%20of%20a%20transparent%20shutdown%20GUI%20using%20Gtk%20and%20Cairo%20in%20Python" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+                <a href="https://plus.google.com/share?url=http%3a%2f%2falamot.github.io%2fshutdown_manager_transparent%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+                <a href="http://twitter.com/intent/tweet?url=http%3a%2f%2falamot.github.io%2fshutdown_manager_transparent%2f&text=Creation%20of%20a%20transparent%20shutdown%20GUI%20using%20Gtk%20and%20Cairo%20in%20Python&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+                <a href="http://pinterest.com/pin/create/link/?url==http%3a%2f%2falamot.github.io%2fshutdown_manager_transparent%2f&description=Creation%20of%20a%20transparent%20shutdown%20GUI%20using%20Gtk%20and%20Cairo%20in%20Python&media=http://alamot.github.ioimages/transparent_shutdown.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+                <a href="http://getpocket.com/edit?url=http%3a%2f%2falamot.github.io%2fshutdown_manager_transparent%2f&title=Creation%20of%20a%20transparent%20shutdown%20GUI%20using%20Gtk%20and%20Cairo%20in%20Python" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-get-pocket"></i></a>
+              </div>
+            </div>
+          </section>
+          
+          <section class="center">
+           <div lang="en">
+            <script>
+             email("<a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Comment 10b12f00fe2df34d317f84688ec7cee5", "Comment on «Creation of a transparent shutdown GUI using Gtk and Cairo in Python»%0D%0Aby __Anonymous__ (<--You can put a display name here, since your e-mail address will NOT appear on the site.)%0D%0A%0D%0A*** DO NOT DELETE THE ABOVE LINES. WRITE YOUR COMMENT BELOW ***.%0D%0A%0D%0A%0D%0A","<i class='fa fa-envelope' aria-hidden='true'></i> Comment via e-mail </a><div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Comments will be visible after approval. Your e-mail address will NOT appear on this site.</span></div>");
+            </script>
+           </div>
+           <div lang="el">
+            <script>
+             email("<a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Σχόλιο 10b12f00fe2df34d317f84688ec7cee5", "Σχόλιο στο «Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python»%0D%0Aαπό __Ανώνυμος__ (<--Μπορείτε να βάλετε ένα εμφανιζόμενο όνομα χρήστη εδώ, μιας και η διεύθυνση του η-ταχυδρομείου σας δε θα φαίνεται στον ιστότοπο.)%0D%0A%0D%0A*** ΜΗ ΔΙΑΓΡΑΨΕΤΕ ΤΙΣ ΠΑΡΑΠΑΝΩ ΓΡΑΜΜΕΣ. ΓΡΑΨΤΕ ΤΟ ΣΧΟΛΙΟ ΣΑΣ ΑΠΟ ΚΑΤΩ ***.%0D%0A%0D%0A%0D%0A", "<i class='fa fa-envelope' aria-hidden='true'></i> Σχολιάστε μέσω η-ταχυδρομείου</a><div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Τα σχόλια εμφανίζονται αφότου περάσουν από έγκριση. Η διεύθυνση του η-ταχυδρομείου σας δε θα εμφανιστεί σε αυτό τον ιστότοπο.</span></div>");
+            </script>
+           </div>
+          </section>
+
+        </aside>
+      </article>
+    </div>
+    <div class="col-md-3">
+      <aside class="site">
+  <section>
+    <header lang="en">LANGUAGE</header>
+    <header lang="el">ΓΛΩΣΣΑ</header>
+    <div id="langbuttons" class="btn-group btn-group-justified" data-toggle="buttons">
+    <label class="btn btn-default active"><input type="radio" name="options" id="en" autocomplete="off" checked>English</label>
+    <label class="btn btn-default"><input type="radio" name="options" id="el" autocomplete="off">Ελληνικά</label>
+    </div>
+  </section>
+
+  
+
+  <section id="search-section">
+    <header lang="en">Search posts</header>
+    <header lang="el">Αναζήτηση αναρτήσεων</header>
+    <input type="search" autofocus id="search-field"><i class="fa fa-search" aria-hidden="true"></i>
+  </section>
+
+  <section id="results-section">
+    <header lang="en">Search Results</header>
+    <header lang="el">Αποτελέσματα αναζήτησης</header>
+    <div></div>
+  </section>
+  
+  
+  <section id="posts-section">
+    <header lang="en">Related posts</header>
+    <header lang="el">Σχετικές αναρτήσεις</header>
+    <div>
+     
+     
+     
+      
+       
+       
+       
+      
+       
+       
+       
+        <article class="li">
+  <a href="http://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(http://alamot.github.ioimages/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h2>
+      <h2 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-09-16</time><time lang="el">2016-09-16</time>
+    </footer>
+  </a>
+</article>
+
+       
+      
+       
+       
+       
+      
+       
+       
+       
+        <article class="li">
+  <a href="http://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(http://alamot.github.ioimages/kiwi.svg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h2>
+      <h2 class="title" lang="el">Πώς να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2014-02-19</time><time lang="el">2014-02-19</time>
+    </footer>
+  </a>
+</article>
+
+       
+      
+       
+       
+       
+      
+       
+       
+       
+      
+       
+       
+       
+      
+       
+       
+       
+      
+       
+       
+       
+      
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+       
+       
+       
+       
+      
+    </div>
+  </section>
+  
+   
+  <section lang="en">
+    <header>Categories</header>
+    <ul>
+     
+      <li><a class="btn btn-success" href='http://alamot.github.iocategories/music'>Music <span class="badge">4</span></a></li>
+    
+      <li><a class="btn btn-success" href='http://alamot.github.iocategories/coding'>Coding <span class="badge">3</span></a></li>
+    
+      <li><a class="btn btn-success" href='http://alamot.github.iocategories/translation'>Translation <span class="badge">3</span></a></li>
+    
+      <li><a class="btn btn-success" href='http://alamot.github.iocategories/biology'>Biology <span class="badge">2</span></a></li>
+    
+    </ul>
+  </section>
+  <section lang="el">
+    <header>Κατηγορίες</header>
+    <ul>
+     
+      <li><a class="btn btn-success"  href='http://alamot.github.ioκατηγοριες/%CE%BC%CE%BF%CF%85%CF%83%CE%B9%CE%BA%CE%AE'>Μουσική <span class="badge">4</span></a></li>
+    
+      <li><a class="btn btn-success"  href='http://alamot.github.ioκατηγοριες/%CE%BC%CE%B5%CF%84%CE%AC%CF%86%CF%81%CE%B1%CF%83%CE%B7'>Μετάφραση <span class="badge">3</span></a></li>
+    
+      <li><a class="btn btn-success"  href='http://alamot.github.ioκατηγοριες/%CF%80%CF%81%CE%BF%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CE%B1%CF%84%CE%B9%CF%83%CE%BC%CF%8C%CF%82'>Προγραμματισμός <span class="badge">3</span></a></li>
+    
+      <li><a class="btn btn-success"  href='http://alamot.github.ioκατηγοριες/%CE%B2%CE%B9%CE%BF%CE%BB%CE%BF%CE%B3%CE%AF%CE%B1'>Βιολογία <span class="badge">2</span></a></li>
+    
+    </ul>
+  </section>
+  
+  <section lang="en">
+    <header>Tags</header>
+    
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/python'>python <span class="badge">3</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/subtitles'>subtitles <span class="badge">3</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/gtk'>gtk <span class="badge">2</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/linux'>linux <span class="badge">2</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/arabic'>arabic <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/cairo'>cairo <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/electric-current'>electric current <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/french'>french <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/human-body'>human body <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/intelligence'>intelligence <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/kivy'>kivy <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/poetry'>poetry <span class="badge">1</span></a>
+   
+    <a class="btn btn-primary btn-sm"  href='http://alamot.github.iotags/russian'>russian <span class="badge">1</span></a>
+   
+  </section>
+  <section lang="el">
+    <header>Ετικέτες</header>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/python'>python <span class="badge">3</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CF%85%CF%80%CF%8C%CF%84%CE%B9%CF%84%CE%BB%CE%BF%CE%B9'>υπότιτλοι <span class="badge">3</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/gtk'>gtk <span class="badge">2</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/linux'>linux <span class="badge">2</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/cairo'>cairo <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/kivy'>kivy <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CE%B1%CE%BD%CE%B8%CF%81%CF%8E%CF%80%CE%B9%CE%BD%CE%BF-%CF%83%CF%8E%CE%BC%CE%B1'>ανθρώπινο σώμα <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CE%B1%CF%81%CE%B1%CE%B2%CE%B9%CE%BA%CE%AC'>αραβικά <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CE%B3%CE%B1%CE%BB%CE%BB%CE%B9%CE%BA%CE%AC'>γαλλικά <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CE%B7%CE%BB%CE%B5%CE%BA%CF%84%CF%81%CE%B9%CE%BA%CF%8C-%CF%81%CE%B5%CF%8D%CE%BC%CE%B1'>ηλεκτρικό ρεύμα <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CE%BD%CE%BF%CE%B7%CE%BC%CE%BF%CF%83%CF%8D%CE%BD%CE%B7'>νοημοσύνη <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CF%80%CE%BF%CE%AF%CE%B7%CF%83%CE%B7'>ποίηση <span class="badge">1</span></a>
+    
+    <a class="btn btn-primary btn-sm" href='http://alamot.github.ioετικετες/%CF%81%CF%89%CF%83%CE%B9%CE%BA%CE%AC'>ρωσικά <span class="badge">1</span></a>
+    
+  </section>
+
+</aside>
+
+    </div>
+  </div>
+</div>
+
+<footer class="l-footer">
+  <span class="copyleft">&copy;</span>
+  <span lang="en">2016 Antonios Tsolis</span>
+  <span lang="el">2016 Αντώνιος Τσώλης</span>
+  <script>
+   email("<a href='mailto", "gmail.com", "antonios", "tsolis", "", "","<i class='fa fa-envelope-o' aria-hidden='true'></i></a>");
+  </script>
+</footer>
+
+<script src="http://alamot.github.iojs/jquery.min.js"></script>
+<script src="http://alamot.github.iojs/bootstrap.min.js"></script>
+<script src="http://alamot.github.iojs/moment.min.js"></script>
+<script src="http://alamot.github.iojs/el.min.js"></script>
+<script src="http://alamot.github.iojs/lunr.min.js"></script>
+<script src="http://alamot.github.iojs/custom.min.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<script>
+language = localStorage.getItem('language');
+$(document).ready(function(){
+  if (language) {
+    document.getElementById('mainbody').setAttribute('class', language);
+    $("#"+language).parent().button('toggle');
+  }
+  
+  $('time').each(function(){
+    d = $(this).text();
+    $(this).text(moment(d).locale(this.lang).format("ll")); 
+  });
+
+  $("#langbuttons :input").change(function() {
+    var lang = this.id;
+    if ((lang !== "en") && (lang !== "el")) { lang = "en"; }
+    document.body.className=lang;
+    localStorage.setItem('language', lang);
+  });
+
+  $("#TableOfContents a").on('click', function(e) {
+    console.log(this.hash)    
+    
+    e.preventDefault();
+
+    
+    var hash = this.hash;
+
+    
+    $('html, body').animate({scrollTop: $(hash).offset().top}, 1300, function(){
+      
+      
+      window.location.hash = hash;
+    });
+  });
+  
+  var lunrIndex, lunrStore;
+  $.getJSON('http:\/\/alamot.github.iojson/search.json', function (data) {
+    lunrStore = data.store;  
+    lunr.Pipeline.registerFunction(trimmer_all, 'trimmer_all')
+    lunr.Pipeline.registerFunction(stopwordfilter_el, 'stopwordfilter_el');
+    lunr.Pipeline.registerFunction(stemmer_el, 'stemmer_el');
+    lunrIndex = lunr.Index.load(data.index);
+    results_section = jQuery("#results-section");
+    results_div = jQuery("#results-section>div");
+    posts_section = jQuery("#posts-section");
+    $("#search-section").show();
+    $("#search-field").keyup(function() {
+      var query = $(this).val();
+      if (query.length < 3) { results_section.hide(); posts_section.show(); return; }
+      var results = lunrIndex.search(query);
+      results_div.empty(); posts_section.hide(); results_section.show();      
+      if (results.length == 0) {
+        results_div.append("<h3 lang='en'>Νο results found.</h3><h3 lang='el'>Δεν βρέθηκαν αποτελέσματα.</h3>");
+      } else {
+        results.slice(0, 10).forEach(function(result) {
+          results_div.append("<article class='li'><a href='http:\/\/alamot.github.io"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(http:\/\/alamot.github.ioimages/"+lunrStore[result.ref].image+");'></div></div><footer><h2 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h2><h2 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h2><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
+        });
+        $('#results-section time').each(function(){
+            d = $(this).text();
+            $(this).text(moment(d).locale(this.lang).format("ll")); 
+        });
+      } 
+    }); 
+  }, function() {  console.log("ERRR");});
+});
+</script>
+
+
+
+  </body>
+</html>
+

@@ -75,13 +75,12 @@
 <body id="mainbody" class="en">
 <nav class="navbar navbar-default navbar-fixed-top">
 <div class="container-fluid">
-  <ul class="nav nav-pills">
+  <ul class="nav nav-pills pull-left navbar-btn">
   
-    <li><a href="https://alamot.github.io/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
-    <li role="presentation" class="dropdown">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span><span class="caret"></span>
-    </a>
-     <ul class="dropdown-menu">
+    <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span><span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
        <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></li></a>
        
        
@@ -90,16 +89,21 @@
        
        
        <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></li></a>
-     </ul>
-    </li>
-  
-   <li>  
-    <div id="langbuttons" class="btn-group navbar-btn" data-toggle="buttons">
-     <label class="btn btn-default btn-xs active"><input type="radio" name="options" id="en" autocomplete="off" checked>English</label>
-     <label class="btn btn-default btn-xs"><input type="radio" name="options" id="el" autocomplete="off">Ελληνικά</label>
+    </ul>
     </div>
-   </li>
- </ul>
+  
+  </ul>
+  <ul class="nav nav-pills">
+     
+      <li><a class="p-logo" href="https://alamot.github.io/"><i class="fa fa-home" aria-hidden="true"></i> <span class="hidden768" lang="en">The Portal of Knowledge</span><span class="hidden768" lang="el">Η Πύλη της Γνώσης</span></a></li>
+    
+  </ul>    
+  <ul class="nav nav-pills pull-right navbar-btn"> 
+    <li>
+    <button lang="en" type="button" class="btn btn-danger" onclick="document.body.className='el'; localStorage.setItem('language', 'el');">English</button>
+    <button lang="el" type="button" class="btn btn-primary" onclick="document.body.className='en'; localStorage.setItem('language', 'en');">Ελληνικά</button>
+    </li>  
+  </ul>
 </div>
 </nav>
 
@@ -152,14 +156,6 @@
           </div>
 
          
-         <aside>
-          <section>
-            <header lang="en">Contents</header>
-            <header lang="el">Περιεχόμενα</header>
-            <div></div>
-          </section>
-         </aside>
-        
         
           <p lang="en">Many window managers in Linux are lacking a graphical "shutdown" interface. Here, we show how we can implement one, quite easily, using gtk and python.</p>
 <p lang="el">Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.</p>
@@ -607,13 +603,6 @@ $(document).ready(function(){
   $('time').each(function(){
     d = $(this).text();
     $(this).text(moment(d).locale(this.lang).format("ll")); 
-  });
-
-  $("#langbuttons :input").change(function() {
-    var lang = this.id;
-    if ((lang !== "en") && (lang !== "el")) { lang = "en"; }
-    document.body.className=lang;
-    localStorage.setItem('language', lang);
   });
 
   $("#TableOfContents a, .navbar .dropdown-menu a").on('click', function(e) {

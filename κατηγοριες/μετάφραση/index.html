@@ -39,17 +39,20 @@
 <body id="mainbody" class="en">
 <nav class="navbar navbar-default navbar-fixed-top">
 <div class="container-fluid">
+  <ul class="nav nav-pills pull-left navbar-btn">
+  
+    <li><a class="p-logo text-smaller" href="https://alamot.github.io/"><strong><span lang="en">The Portal of Knowledge</span><span lang="el">Η Πύλη της Γνώσης</span></strong></a></li>
+  
+  </ul>
   <ul class="nav nav-pills">
-  
-    <li><a href="https://alamot.github.io/"><strong><span lang="en">The Portal of Knowledge</span><span lang="el">Η Πύλη της Γνώσης</span></strong></a></li>   
-  
-   <li>  
-    <div id="langbuttons" class="btn-group navbar-btn" data-toggle="buttons">
-     <label class="btn btn-default btn-xs active"><input type="radio" name="options" id="en" autocomplete="off" checked>English</label>
-     <label class="btn btn-default btn-xs"><input type="radio" name="options" id="el" autocomplete="off">Ελληνικά</label>
-    </div>
-   </li>
- </ul>
+    
+  </ul>    
+  <ul class="nav nav-pills pull-right navbar-btn"> 
+    <li>
+    <button lang="en" type="button" class="btn btn-danger" onclick="document.body.className='el'; localStorage.setItem('language', 'el');">English</button>
+    <button lang="el" type="button" class="btn btn-primary" onclick="document.body.className='en'; localStorage.setItem('language', 'en');">Ελληνικά</button>
+    </li>  
+  </ul>
 </div>
 </nav>
 
@@ -174,13 +177,6 @@ $(document).ready(function(){
   $('time').each(function(){
     d = $(this).text();
     $(this).text(moment(d).locale(this.lang).format("ll")); 
-  });
-
-  $("#langbuttons :input").change(function() {
-    var lang = this.id;
-    if ((lang !== "en") && (lang !== "el")) { lang = "en"; }
-    document.body.className=lang;
-    localStorage.setItem('language', lang);
   });
 
   $("#TableOfContents a, .navbar .dropdown-menu a").on('click', function(e) {

@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.17-DEV" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel='stylesheet' href="https://alamot.github.io/css/googlefonts.css">
+    <link rel="stylesheet" href="https://alamot.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://alamot.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://alamot.github.io/css/styles.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://alamot.github.io/index.xml">
+    
+
+    
+    <title>How to get info for the wireless interface using nl80211 in C - The Portal of Knowledge</title>
+    <meta property='og:title' content="How to get info for the wireless interface using nl80211 in C - The Portal of Knowledge">
+    <meta property="og:type" content="article">
+    
+
+    <meta property="og:url" content="https://alamot.github.io/nl80211/">
+    
+    
+    <meta property="og:image" content="https://alamot.github.io/images/wifi-sign.jpg">
+    
+
+    <script>
+    function email(starting,server,firstname,lastname,subject,body,closing) {
+      document.write(starting);
+      document.write(":" + lastname);
+      document.write("." + firstname);
+      document.write("@");
+      document.write(server + "?subject=" + subject + "&body=" + body + "' target='_blank'>");
+      document.write(closing); }
+    </script>
+
+
+
+
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id":"https:\/\/alamot.github.io\/"
+    },
+    "headline": "How to get info for the wireless interface using nl80211 in C |  ",
+    "image": {
+      "@type": "ImageObject",
+      "url": "",
+      "height": 700,
+      "width": 700
+    },
+    "datePublished": "2016-09-19T00:00:00JST",
+    "dateModified": "2016-09-19T00:00:00JST",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
+        "height": 60,
+        "width": 60
+      }
+    },
+    "description": ""
+  }
+</script>
+</head>
+<body id="mainbody" class="en">
+<nav class="navbar navbar-default navbar-fixed-top">
+<div class="container-fluid">
+  <ul class="nav nav-pills pull-left navbar-btn">
+  
+  <li>
+    <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span><span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu scroll-menu">
+       <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></li></a>
+       
+       
+       
+       
+       
+        
+ 
+<li><a href="#nl80211">nl80211</a></li>
+<li><a href="#includes">Includes</a></li>
+<li><a href="#structs">Structs</a></li>
+<li><a href="#functions">Functions</a>
+ 
+<li><a href="#initnl80211">initNl80211()</a></li>
+<li><a href="#finish-handler">finish_handler()</a></li>
+<li><a href="#getwifiiface-callback">getWifiIface_callback()</a></li>
+<li><a href="#getwifiinfo-callback">getWifiInfo_callback()</a></li>
+<li><a href="#getwifistatus">getWifiStatus()</a></li>
+<li><a href="#main">main()</a></li>
+ </li>
+ 
+ 
+       <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></li></a>
+    </ul>
+    </div>
+  </li>
+  
+  </ul>
+  <ul class="nav nav-pills">
+     
+      <li><a class="p-logo" href="https://alamot.github.io/"><i class="fa fa-home" aria-hidden="true"></i> <span class="hidden768" lang="en">The Portal of Knowledge</span><span class="hidden768" lang="el">Η Πύλη της Γνώσης</span></a></li>
+    
+  </ul>    
+  <ul class="nav nav-pills pull-right navbar-btn"> 
+    <li>
+    <button lang="en" type="button" class="btn btn-danger" onclick="document.body.className='el'; localStorage.setItem('language', 'el');">English</button>
+    <button lang="el" type="button" class="btn btn-primary" onclick="document.body.className='en'; localStorage.setItem('language', 'en');">Ελληνικά</button>
+    </li>  
+  </ul>
+</div>
+</nav>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <article class="single">
+        <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+        <div class="body">
+          <div lang="en">
+            <h1 id="title" class="title">How to get info for the wireless interface using nl80211 in C</h1>
+            <i class="fa fa-calendar"></i>  
+            <time lang="en">2016-09-19</time>
+            &middot; <i class="fa fa-file-text-o" aria-hidden="true"></i> 1475 words
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='https://alamot.github.io/categories/coding'>Coding</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='https://alamot.github.io/tags/linux'>linux</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/tags/wifi'>wifi</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/tags/c'>c</a>
+            
+          </div>
+          <div lang="el">
+            <h1 class="title">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h1>
+            <i class="fa fa-calendar"></i> 
+            <time lang="el">2016-09-19</time>
+            &middot; <i class="fa fa-file-text-o" aria-hidden="true"></i> 1475 λέξεις
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='https://alamot.github.io/%CE%BA%CE%B1%CF%84%CE%B7%CE%B3%CE%BF%CF%81%CE%B9%CE%B5%CF%82/%CF%80%CF%81%CE%BF%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CE%B1%CF%84%CE%B9%CF%83%CE%BC%CF%8C%CF%82'>Προγραμματισμός</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/linux'>linux</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/%CE%B1%CF%83%CF%8D%CF%81%CE%BC%CE%B1%CF%84%CE%BF'>ασύρματο</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/c'>c</a>
+            
+          </div>
+
+         
+         <aside>
+          <section>
+            <header lang="en">Contents</header>
+            <header lang="el">Περιεχόμενα</header>
+            <div><nav id="TableOfContents">
+<ul>
+<li><a href="#nl80211">nl80211</a></li>
+<li><a href="#includes">Includes</a></li>
+<li><a href="#structs">Structs</a></li>
+<li><a href="#functions">Functions</a>
+<ul>
+<li><a href="#initnl80211">initNl80211()</a></li>
+<li><a href="#finish-handler">finish_handler()</a></li>
+<li><a href="#getwifiiface-callback">getWifiIface_callback()</a></li>
+<li><a href="#getwifiinfo-callback">getWifiInfo_callback()</a></li>
+<li><a href="#getwifistatus">getWifiStatus()</a></li>
+<li><a href="#main">main()</a></li>
+</ul></li>
+</ul>
+</nav></div>
+          </section>
+         </aside>
+        
+        
+          
+
+<h1 id="nl80211">nl80211</h1>
+
+<p lang="en">nl80211 is the 802.11 netlink-based userspace interface for the new cfg80211 configuration system for wireless hardware. Together they are intended to replace the old Wireless-Extensions. Current users of nl80211 include:</p>
+<p lang="el">H nl80211 είναι η διεπαφή χρήστη (βασισμένη στο netlink 802.11) για το νέο cfg80211 σύστημα διαρρύθμισης του ασύρματου υλικού. Μαζί προορίζονται να αντικαταστήσουν τα παλιά Wireless-Extensions. Το nl80211 χρησιμοποιείται μεταξύ αλλων από τα:</p>
+
+<ul>
+<li>iw</li>
+<li>crda</li>
+<li>hostapd</li>
+<li>wpa_supplicant (-Dnl80211)</li>
+</ul>
+
+<h1 id="includes">Includes</h1>
+
+<p lang="en">First of all, let's add the necessary includes:</p>
+<p lang="el">Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα includes:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800">#define _XOPEN_SOURCE 700</span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;signal.h&gt;</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;string.h&gt;</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;stdlib.h&gt;</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;unistd.h&gt;</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;errno.h&gt;              </span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/netlink.h&gt;    //lots of netlink functions</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/genl/genl.h&gt;  //genl_connect, genlmsg_put</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/genl/family.h&gt;</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/genl/ctrl.h&gt;  //genl_ctrl_resolve</span><span style="color: #008800"></span>
+<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;linux/nl80211.h&gt;      //NL80211 definitions</span><span style="color: #008800"></span>
+</pre></div>
+
+
+<h1 id="structs">Structs</h1>
+
+<p lang="en">Let's define some data structures we will need later on:</p>
+<p lang="el">Ας ορίσουμε μερικέςς δομές δεδομένων που θα χρειαστούμε στη συνέχεια:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">typedef</span> <span style="color: #AA22FF; font-weight: bold">struct</span> {
+  <span style="color: #00BB00; font-weight: bold">int</span> id;
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_sock<span style="color: #666666">*</span> socket;
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_cb<span style="color: #666666">*</span> cb1,<span style="color: #666666">*</span> cb2;
+  <span style="color: #00BB00; font-weight: bold">int</span> result1, result2;
+} Netlink; 
+
+<span style="color: #AA22FF; font-weight: bold">typedef</span> <span style="color: #AA22FF; font-weight: bold">struct</span> {
+  <span style="color: #00BB00; font-weight: bold">char</span> ifname[<span style="color: #666666">30</span>];
+  <span style="color: #00BB00; font-weight: bold">int</span> ifindex;
+  <span style="color: #00BB00; font-weight: bold">int</span> signal;
+  <span style="color: #00BB00; font-weight: bold">int</span> txrate;
+} Wifi;
+
+<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #AA22FF; font-weight: bold">struct</span> nla_policy stats_policy[NL80211_STA_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>] <span style="color: #666666">=</span> {
+  [NL80211_STA_INFO_INACTIVE_TIME] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
+  [NL80211_STA_INFO_RX_BYTES] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
+  [NL80211_STA_INFO_TX_BYTES] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
+  [NL80211_STA_INFO_RX_PACKETS] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
+  [NL80211_STA_INFO_TX_PACKETS] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
+  [NL80211_STA_INFO_SIGNAL] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U8 },
+  [NL80211_STA_INFO_TX_BITRATE] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_NESTED },
+  [NL80211_STA_INFO_LLID] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U16 },
+  [NL80211_STA_INFO_PLID] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U16 },
+  [NL80211_STA_INFO_PLINK_STATE] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U8 },
+};
+
+<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #AA22FF; font-weight: bold">struct</span> nla_policy rate_policy[NL80211_RATE_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>] <span style="color: #666666">=</span> {
+  [NL80211_RATE_INFO_BITRATE] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U16 },
+  [NL80211_RATE_INFO_MCS] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U8 },
+  [NL80211_RATE_INFO_40_MHZ_WIDTH] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_FLAG },
+  [NL80211_RATE_INFO_SHORT_GI] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_FLAG },
+};
+</pre></div>
+
+
+<h1 id="functions">Functions</h1>
+
+<p lang="en">We define our functions:</p>
+<p lang="el">Ορίζουμε τις συναρτήσεις μας:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">initNl80211</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w);
+<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">finish_handler</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg);
+<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiName_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg);
+<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiInfo_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg);
+<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiStatus</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w);
+</pre></div>
+
+
+<h2 id="initnl80211">initNl80211()</h2>
+
+<div lang="en">
+In our function initNl80211, we initialize our communication with the Κernel. We follow these steps:
+<ol>
+<li>We allocate a netlink socket (using nl_socket_alloc)</li>
+<li>Optionally, we can set the socket buffer size (using nl_socket_set_buffer_size)</li>
+<li>We connect to the generic netlink socket (using genl_connect)</li>
+<li>Ask Kernel to resolve family name "nl80211" to family id (using genl_ctrl_resolve)</li>
+<li>We allocate two new callback handles (using nl_cb_alloc)</li>
+<li>We set some callbacks (using nl_cb_set).</li>
+</ol>
+</div>
+
+<div lang="el">
+Στην συνάρτηση μας initNl80211, αρχικοποιούμε την επικοινωνία μας με τον Πυρήνα. Aκολουθούμε τα παρακάτω βήματα:
+<ol>
+<li>Δεσμεύουμε ένα netlink socket (χρησιμοποιώντας την nl_socket_alloc)</li>
+<li>Προαιρετικά, μπορούμε να ορίσουμε το μέγεθος του socket buffer (χρησιμοποιώντας την nl_socket_set_buffer_size)</li>
+<li>Συνδεόμαστε στο γενικό netlink socket (χρησιμοποιώντας την genl_connect)</li>
+<li>Ζητάμε από τον Πυρήνα να μετατρέψει το όνομα της οικογένειας (family name) σε αναγνωριστικό οικογένειας (family id) (χρησιμοποιώντας την genl_ctrl_resolve)</li>
+<li>Δεσμεύουμε δύο νέες λαβές επανακλησης (callback handles) (χρησιμοποιώντας την nl_cb_alloc)</li>
+<li>Ορίζουμε μερικές επανακλήσεις (χρησιμοποιώντας την nl_cb_set).</li>
+</ol>
+</div>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">initNl80211</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w) {
+  nl<span style="color: #666666">-&gt;</span>socket <span style="color: #666666">=</span> nl_socket_alloc();
+  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>nl<span style="color: #666666">-&gt;</span>socket) { 
+    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink socket.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-</span>ENOMEM;
+  }  
+
+  nl_socket_set_buffer_size(nl<span style="color: #666666">-&gt;</span>socket, <span style="color: #666666">8192</span>, <span style="color: #666666">8192</span>);
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (genl_connect(nl<span style="color: #666666">-&gt;</span>socket)) { 
+    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to connect to netlink socket.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); 
+    nl_close(nl<span style="color: #666666">-&gt;</span>socket);
+    nl_socket_free(nl<span style="color: #666666">-&gt;</span>socket);
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-</span>ENOLINK;
+  }
+   
+  nl<span style="color: #666666">-&gt;</span>id <span style="color: #666666">=</span> genl_ctrl_resolve(nl<span style="color: #666666">-&gt;</span>socket, <span style="color: #BB4444">&quot;nl80211&quot;</span>);
+  <span style="color: #AA22FF; font-weight: bold">if</span> (nl<span style="color: #666666">-&gt;</span>id<span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) {
+    fprintf(stderr, <span style="color: #BB4444">&quot;Nl80211 interface not found.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
+    nl_close(nl<span style="color: #666666">-&gt;</span>socket);
+    nl_socket_free(nl<span style="color: #666666">-&gt;</span>socket);
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-</span>ENOENT;
+  }
+
+  nl<span style="color: #666666">-&gt;</span>cb1 <span style="color: #666666">=</span> nl_cb_alloc(NL_CB_DEFAULT);
+  nl<span style="color: #666666">-&gt;</span>cb2 <span style="color: #666666">=</span> nl_cb_alloc(NL_CB_DEFAULT);
+  <span style="color: #AA22FF; font-weight: bold">if</span> ((<span style="color: #666666">!</span>nl<span style="color: #666666">-&gt;</span>cb1) <span style="color: #666666">||</span> (<span style="color: #666666">!</span>nl<span style="color: #666666">-&gt;</span>cb2)) { 
+     fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink callback.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); 
+     nl_close(nl<span style="color: #666666">-&gt;</span>socket);
+     nl_socket_free(nl<span style="color: #666666">-&gt;</span>socket);
+     <span style="color: #AA22FF; font-weight: bold">return</span> ENOMEM;
+  }
+
+  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb1, NL_CB_VALID , NL_CB_CUSTOM, getWifiName_callback, w);
+  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb1, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, <span style="color: #666666">&amp;</span>(nl<span style="color: #666666">-&gt;</span>result1));
+  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb2, NL_CB_VALID , NL_CB_CUSTOM, getWifiInfo_callback, w);
+  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb2, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, <span style="color: #666666">&amp;</span>(nl<span style="color: #666666">-&gt;</span>result2));
+  
+  <span style="color: #AA22FF; font-weight: bold">return</span> nl<span style="color: #666666">-&gt;</span>id;
+}
+</pre></div>
+
+
+<h2 id="finish-handler">finish_handler()</h2>
+
+<p lang="en">This is our finish_handler.<p> 
+<p lang="el">Αυτός είναι ο finish_handler μας.<p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">finish_handler</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg) {
+  <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #666666">*</span>ret <span style="color: #666666">=</span> arg;
+  <span style="color: #666666">*</span>ret <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
+  <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
+}
+</pre></div>
+
+
+<p lang="en">The finish_handler will allow us -later on- to receive our messages from Kernel like that:</p>
+<p lang="el">O finish_handler μας επιτρέπει -στη συνέχεια- να λαμβάνουμε τα μηνύματά μας από τον Πυρήνα κάπως έτσι:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result1 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nlsocket, nl<span style="color: #666666">-&gt;</span>cb1); }
+<span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result2 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nlsocket, nl<span style="color: #666666">-&gt;</span>cb2); }
+</pre></div>
+
+
+<h2 id="getwifiiface-callback">getWifiIface_callback()</h2>
+
+<p lang="en">This is our getWifiIface_callback. Here we parse the message from the Kernel and we get the interface name (wifi_iface) and its index (wifi_index). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.</p>
+<p lang="el">Αυτή είναι η getWifiIface_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το όνομα της ασύρματης διεπαφής (wifi_iface) και τον δείκτη της (wifi_index). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiName_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg) {
+ 
+  <span style="color: #AA22FF; font-weight: bold">struct</span> genlmsghdr <span style="color: #666666">*</span>gnlh <span style="color: #666666">=</span> nlmsg_data(nlmsg_hdr(msg));
+
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>tb_msg[NL80211_ATTR_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+
+  <span style="color: #008800; font-style: italic">//nl_msg_dump(msg, stdout);</span>
+
+  nla_parse(tb_msg,
+            NL80211_ATTR_MAX,
+            genlmsg_attrdata(gnlh, <span style="color: #666666">0</span>),
+            genlmsg_attrlen(gnlh, <span style="color: #666666">0</span>),
+            <span style="color: #AA22FF">NULL</span>);
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (tb_msg[NL80211_ATTR_IFNAME]) {
+    strcpy(((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>ifname, nla_get_string(tb_msg[NL80211_ATTR_IFNAME]));
+  }
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (tb_msg[NL80211_ATTR_IFINDEX]) {
+    ((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>ifindex <span style="color: #666666">=</span> nla_get_u32(tb_msg[NL80211_ATTR_IFINDEX]);
+  }
+
+  <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
+}
+</pre></div>
+
+
+<h2 id="getwifiinfo-callback">getWifiInfo_callback()</h2>
+
+<p lang="en">This is our getWifiInfo_callback. Here we parse the message from the Kernel and we get the wifi signal (wifi_signal) and txrate (wifi_bitrate). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.</p>
+<p lang="el">Αυτή είναι η getWifiInfo_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το σήμα της ασύρματης διεπαφής (wifi_signal) και τον ρυθμό μετάδοσης (wifi_bitrate). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiInfo_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg) {
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>tb[NL80211_ATTR_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+  <span style="color: #AA22FF; font-weight: bold">struct</span> genlmsghdr <span style="color: #666666">*</span>gnlh <span style="color: #666666">=</span> nlmsg_data(nlmsg_hdr(msg));
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>sinfo[NL80211_STA_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>rinfo[NL80211_RATE_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+  
+  <span style="color: #008800; font-style: italic">//nl_msg_dump(msg, stdout);</span>
+
+  nla_parse(tb,
+            NL80211_ATTR_MAX,
+            genlmsg_attrdata(gnlh, <span style="color: #666666">0</span>),
+            genlmsg_attrlen(gnlh, <span style="color: #666666">0</span>),
+            <span style="color: #AA22FF">NULL</span>);
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>tb[NL80211_ATTR_STA_INFO]) {
+    fprintf(stderr, <span style="color: #BB4444">&quot;sta stats missing!</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
+  }
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (nla_parse_nested(sinfo, NL80211_STA_INFO_MAX,
+                       tb[NL80211_ATTR_STA_INFO], stats_policy)) {
+    fprintf(stderr, <span style="color: #BB4444">&quot;failed to parse nested attributes!</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
+  }
+  
+  <span style="color: #AA22FF; font-weight: bold">if</span> (sinfo[NL80211_STA_INFO_SIGNAL]) {
+    ((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>signal <span style="color: #666666">=</span> <span style="color: #666666">100+</span>(<span style="color: #00BB00; font-weight: bold">int8_t</span>)nla_get_u8(sinfo[NL80211_STA_INFO_SIGNAL]);
+  }
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (sinfo[NL80211_STA_INFO_TX_BITRATE]) {  
+    <span style="color: #AA22FF; font-weight: bold">if</span> (nla_parse_nested(rinfo, NL80211_RATE_INFO_MAX,
+                         sinfo[NL80211_STA_INFO_TX_BITRATE], rate_policy)) {
+      fprintf(stderr, <span style="color: #BB4444">&quot;failed to parse nested rate attributes!</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); } 
+    <span style="color: #AA22FF; font-weight: bold">else</span> {
+      <span style="color: #AA22FF; font-weight: bold">if</span> (rinfo[NL80211_RATE_INFO_BITRATE]) {
+        ((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>txrate <span style="color: #666666">=</span> nla_get_u16(rinfo[NL80211_RATE_INFO_BITRATE]);
+      } 
+    }
+  }
+  <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
+}
+</pre></div>
+
+
+<h2 id="getwifistatus">getWifiStatus()</h2>
+
+<div lang="en">
+Let's see now what happens in our next function, getWifiStatus:
+<ol>
+<li>We allocate a netlink message structure (using nlmsg_alloc)</li>
+<li>We add generic netlink headers to the netlink message (using genlmsg_put)</li>
+<li>We finalize and transmit the netlink message (using nl_send_auto)</li>
+<li>We receive a set of messages from the netlink socket (using nl_recvmsgs)</li>
+<li>We release the netlink message reference (using nlmsg_free)</li>
+</ol>
+</div>
+
+<p lang="en">We execute those steps twice:</p>
+
+<p lang="en">a) The first time we use the NL80211_CMD_GET_INTERFACE command identifier to get the wireless interface name and index.</p>
+
+<p lang="en">b) The second time we use the NL80211_CMD_GET_STATION command identifier to get signal strength and transmit bitrate. The reason for it is that the signal and bitrate values have meaning only relative to a station. Note that we have to put in the message the interface index using the nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w->ifindex). 
+</p>
+
+<div lang="el">
+Ας δούμε τώρα τι συμβαίνει σητν επόμενη συνάρτησή μας, την getWifiStatus:
+<ol>
+<li>Δευσμεύουμε μια δομή μηνύματος netlink (χρησιμοποιώντας την nlmsg_alloc)</li>
+<li>Προσθέτουμε γενικές netlink επικεφαλίδες στο μήνυμα netlink (χρησιμοποιώντας την genlmsg_put)</li>
+<li>Ολοκληρώνουμε και μεταδίδουμε το μήνυμα netlink (χρησιμοποιώντας την nl_send_auto)</li>
+<li>Λαμβάνουμε ένα σύνολο μηνυμάτων από το netlink socket (χρησιμοποιώντας την nl_recvmsgs)</li>
+<li>Απελευθερώνουμε την αναφορά του μηνύματος netlink (χρησιμοποιώντας την nlmsg_free)</li>
+</ol>
+</div>
+
+<p lang="el">Εκτελούμε τα ανωτέρο βήματα δύο φορές:</p>
+<p lang="el"> α) Την πρώτη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_INTERFACE για να λάβουμε το όνομα και τον δείκτη της ασύρματης διεπαφής.</p>
+<p lang="el"> β) Τη δεύτερη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_STATION για να λάβουμε την ένταση του σήματος και τον ρυθμό μετάδοσης. Ο λόγος για αυτό είναι ότι οι τιμές της του σήματος και του ρυθμού μετάδοσης έχουν έννοια μόνο σε σχέση με κάποιον σταθμό. Σημειώστε ότι πρέπει να βάλουμε στο μήνυμα και τον δείκτη της διεπαφής που μας ενδιαφέρει χρησιμοποιώντας την nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w->ifindex).</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiStatus</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w) {
+  nl<span style="color: #666666">-&gt;</span>result1 <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+  nl<span style="color: #666666">-&gt;</span>result2 <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+    
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg<span style="color: #666666">*</span> msg1 <span style="color: #666666">=</span> nlmsg_alloc();
+  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>msg1) {
+    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink message.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-2</span>;
+  }
+  
+  genlmsg_put(msg1,
+              NL_AUTO_PORT,
+              NL_AUTO_SEQ,
+              nl<span style="color: #666666">-&gt;</span>id,
+              <span style="color: #666666">0</span>,
+              NLM_F_DUMP,
+              NL80211_CMD_GET_INTERFACE,
+              <span style="color: #666666">0</span>);
+
+  nl_send_auto(nl<span style="color: #666666">-&gt;</span>socket, msg1);
+  
+  <span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result1 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nl<span style="color: #666666">-&gt;</span>socket, nl<span style="color: #666666">-&gt;</span>cb1); }
+  nlmsg_free(msg1);
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (w<span style="color: #666666">-&gt;</span>ifindex <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) { <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-1</span>; }
+
+  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg<span style="color: #666666">*</span> msg2 <span style="color: #666666">=</span> nlmsg_alloc();
+
+  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>msg2) {
+    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink message.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-2</span>;
+  }
+  
+  genlmsg_put(msg2,
+              NL_AUTO_PORT,
+              NL_AUTO_SEQ,
+              nl<span style="color: #666666">-&gt;</span>id,
+              <span style="color: #666666">0</span>,
+              NLM_F_DUMP,
+              NL80211_CMD_GET_STATION,
+              <span style="color: #666666">0</span>);
+              
+  nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w<span style="color: #666666">-&gt;</span>ifindex); 
+  nl_send_auto(nl<span style="color: #666666">-&gt;</span>socket, msg2); 
+  <span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result2 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nl<span style="color: #666666">-&gt;</span>socket, nl<span style="color: #666666">-&gt;</span>cb2); }
+  nlmsg_free(msg2);
+  
+  <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre></div>
+
+
+<h2 id="main">main()</h2>
+
+<p lang="en">Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:</p>
+<p lang="el">Εδώ βλέπουμε τη main() συνάρτησή μας. Πρώτα, αρχικοποιούμε την επικοινωνία με την initNl80211 και κατόπιν τούτου, καλούμε συνεχώς μέσα σε έναν βρόχο την getWifiStatus(), ανά 1 δευτερόλεπτο, εώς ότου ο χρήστης πατήσει ctrl + c:</p>
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">main</span>(<span style="color: #00BB00; font-weight: bold">int</span> argc, <span style="color: #00BB00; font-weight: bold">char</span> <span style="color: #666666">**</span>argv) {
+  Netlink nl;
+  Wifi w;
+
+  signal(SIGINT, ctrl_c_handler);
+  
+  nl.id <span style="color: #666666">=</span> initNl80211(<span style="color: #666666">&amp;</span>nl, <span style="color: #666666">&amp;</span>w);
+  <span style="color: #AA22FF; font-weight: bold">if</span> (nl.id <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) {
+    fprintf(stderr, <span style="color: #BB4444">&quot;Error initializing netlink 802.11</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
+    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-1</span>;
+  }
+
+  <span style="color: #AA22FF; font-weight: bold">do</span> {
+    getWifiStatus(<span style="color: #666666">&amp;</span>nl, <span style="color: #666666">&amp;</span>w);  
+    printf(<span style="color: #BB4444">&quot;Interface: %s | signal: %d dB | txrate: %.1f MBit/s</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>,
+           w.ifname, w.signal, (<span style="color: #00BB00; font-weight: bold">float</span>)w.txrate<span style="color: #666666">/10</span>);
+    sleep(<span style="color: #666666">1</span>);
+  } <span style="color: #AA22FF; font-weight: bold">while</span>(keepRunning);
+
+  printf(<span style="color: #BB4444">&quot;</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">Exiting gracefully... &quot;</span>);
+  nl_cb_put(nl.cb1);
+  nl_cb_put(nl.cb2);
+  nl_close(nl.socket);
+  nl_socket_free(nl.socket);
+  printf(<span style="color: #BB4444">&quot;OK</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
+  <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">0</span>;
+}
+</pre></div>
+
+
+<p>
+<span lang="en">Here is the full code listing:</span>
+<span lang="el">Μπορείτε να δείτε τον πλήρη κώδικα εδώ:</span>
+<a href="https://github.com/Alamot/code-snippets/blob/master/nl80211_info/nl80211_info.c
+" target="_blank">nl80211_info.c</a>
+</p>
+
+        </div>
+
+        <aside>
+          <section>
+            <div>
+              <div class="p-share">
+                <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fnl80211%2f&t=How%20to%20get%20info%20for%20the%20wireless%20interface%20using%20nl80211%20in%20C" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+                <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fnl80211%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+                <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnl80211%2f&text=How%20to%20get%20info%20for%20the%20wireless%20interface%20using%20nl80211%20in%20C&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+                <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnl80211%2f&text=%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%bb%ce%ac%ce%b2%ce%b5%cf%84%ce%b5%20%cf%80%ce%bb%ce%b7%cf%81%ce%bf%cf%86%ce%bf%cf%81%ce%af%ce%b5%cf%82%20%ce%b3%ce%b9%ce%b1%20%cf%84%ce%b7%ce%bd%20%ce%b1%cf%83%cf%8d%cf%81%ce%bc%ce%b1%cf%84%ce%b7%20%ce%b4%ce%b9%ce%b5%cf%80%ce%b1%cf%86%ce%ae%20%cf%87%cf%81%ce%b7%cf%83%ce%b9%ce%bc%ce%bf%cf%80%ce%bf%ce%b9%cf%8e%ce%bd%cf%84%ce%b1%cf%82%20%cf%84%ce%b7%ce%bd%20nl80211%20%cf%83%cf%84%ce%b7%20C&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+                <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnl80211%2f&description=How%20to%20get%20info%20for%20the%20wireless%20interface%20using%20nl80211%20in%20C&media=https://alamot.github.io/images/wifi-sign.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+                <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnl80211%2f&description=%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%bb%ce%ac%ce%b2%ce%b5%cf%84%ce%b5%20%cf%80%ce%bb%ce%b7%cf%81%ce%bf%cf%86%ce%bf%cf%81%ce%af%ce%b5%cf%82%20%ce%b3%ce%b9%ce%b1%20%cf%84%ce%b7%ce%bd%20%ce%b1%cf%83%cf%8d%cf%81%ce%bc%ce%b1%cf%84%ce%b7%20%ce%b4%ce%b9%ce%b5%cf%80%ce%b1%cf%86%ce%ae%20%cf%87%cf%81%ce%b7%cf%83%ce%b9%ce%bc%ce%bf%cf%80%ce%bf%ce%b9%cf%8e%ce%bd%cf%84%ce%b1%cf%82%20%cf%84%ce%b7%ce%bd%20nl80211%20%cf%83%cf%84%ce%b7%20C&media=https://alamot.github.io/images/wifi-sign.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+              </div>
+            </div>
+          </section>
+          
+          <section class="center">
+           <div lang="en">
+            <script>
+             email("<div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Comments will be visible after approval. Your e-mail address will NOT appear on this site.</span></div><a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Comment a8495c60a9205a6910e162f342253319", "Comment on «How to get info for the wireless interface using nl80211 in C»%0D%0Aby __Anonymous__ (<--You can put a display name here, since your e-mail address will NOT appear on the site.)%0D%0A%0D%0A*** DO NOT DELETE THE ABOVE LINES. WRITE YOUR COMMENT BELOW ***.%0D%0A%0D%0A%0D%0A","<i class='fa fa-envelope' aria-hidden='true'></i> Comment via e-mail </a>");
+            </script>
+           </div>
+           <div lang="el">
+            <script>
+             email("<div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Τα σχόλια εμφανίζονται αφότου περάσουν από έγκριση. Η διεύθυνση του η-ταχυδρομείου σας δε θα εμφανιστεί σε αυτό τον ιστότοπο.</span></div><a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Σχόλιο a8495c60a9205a6910e162f342253319", "Σχόλιο στο «Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C»%0D%0Aαπό __Ανώνυμος__ (<--Μπορείτε να βάλετε ένα εμφανιζόμενο όνομα χρήστη εδώ, μιας και η διεύθυνση του η-ταχυδρομείου σας δε θα φαίνεται στον ιστότοπο.)%0D%0A%0D%0A*** ΜΗ ΔΙΑΓΡΑΨΕΤΕ ΤΙΣ ΠΑΡΑΠΑΝΩ ΓΡΑΜΜΕΣ. ΓΡΑΨΤΕ ΤΟ ΣΧΟΛΙΟ ΣΑΣ ΑΠΟ ΚΑΤΩ ***.%0D%0A%0D%0A%0D%0A", "<i class='fa fa-envelope' aria-hidden='true'></i> Σχολιάστε μέσω η-ταχυδρομείου</a>");
+            </script>
+           </div>
+          </section>
+        </aside>
+      </article>
+
+      
+      <section id="posts-section">
+        <header lang="en">See also...</header>
+        <header lang="el">Δείτε επίσης...</header>
+        <div>
+         
+         
+         
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h2>
+      <h2 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-09-19</time><time lang="el">2016-09-19</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h2>
+      <h2 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-09-16</time><time lang="el">2016-09-16</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kiwi.svg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h2>
+      <h2 class="title" lang="el">Πώς να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2014-02-19</time><time lang="el">2014-02-19</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+        </div>
+      </section>
+      
+    </div>
+   </div> 
+  </div>
+
+
+<footer class="l-footer">
+  <span class="copyleft">&copy;</span>
+  <span lang="en">2016 Antonios Tsolis</span>
+  <span lang="el">2016 Αντώνιος Τσώλης</span>
+  <script>
+   email("<a href='mailto", "gmail.com", "antonios", "tsolis", "", "","<i class='fa fa-envelope-o' aria-hidden='true'></i></a>");
+  </script>
+</footer>
+
+<script src="https://alamot.github.io/js/jquery.min.js"></script>
+<script src="https://alamot.github.io/js/bootstrap.min.js"></script>
+<script src="https://alamot.github.io/js/moment.min.js"></script>
+<script src="https://alamot.github.io/js/el.min.js"></script>
+<script src="https://alamot.github.io/js/lunr.min.js"></script>
+<script src="https://alamot.github.io/js/custom.min.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<script>
+language = localStorage.getItem('language');
+$(document).ready(function(){
+  if (language) {
+    document.getElementById('mainbody').setAttribute('class', language);
+    $("#"+language).parent().button('toggle');
+  }
+  
+  $('time').each(function(){
+    d = $(this).text();
+    $(this).text(moment(d).locale(this.lang).format("ll")); 
+  });
+
+  $("#TableOfContents a, .navbar .dropdown-menu a").on('click', function(e) {
+    console.log(this.hash)    
+    
+    e.preventDefault();
+
+    
+    var hash = this.hash;
+
+    
+    $('html, body').animate({scrollTop: $(hash).offset().top}, 1300, function(){
+      
+      
+      window.location.hash = hash;
+    });
+  });
+  
+  var lunrIndex, lunrStore;
+  $.getJSON('https:\/\/alamot.github.io\/json/search.json', function (data) {
+    lunrStore = data.store;  
+    lunr.Pipeline.registerFunction(trimmer_all, 'trimmer_all')
+    lunr.Pipeline.registerFunction(stopwordfilter_el, 'stopwordfilter_el');
+    lunr.Pipeline.registerFunction(stemmer_el, 'stemmer_el');
+    lunrIndex = lunr.Index.load(data.index);
+    results_section = jQuery("#results-section");
+    results_div = jQuery("#results-section>div");
+    $("#search-section").show();
+    $("#search-field").keyup(function() {
+      var query = $(this).val();
+      if (query.length < 3) { results_section.hide(); return; }
+      var results = lunrIndex.search(query);
+      results_div.empty(); results_section.show();      
+      if (results.length == 0) {
+        results_div.append("<h3 lang='en'>Νο results found.</h3><h3 lang='el'>Δεν βρέθηκαν αποτελέσματα.</h3>");
+      } else {
+        results.slice(0, 10).forEach(function(result) {
+          results_div.append("<article class='li col-md-4'><a href='https:\/\/alamot.github.io\/"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(https:\/\/alamot.github.io\/images/"+lunrStore[result.ref].image+");'></div></div><footer><h2 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h2><h2 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h2><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
+        });
+        $('#results-section time').each(function(){
+            d = $(this).text();
+            $(this).text(moment(d).locale(this.lang).format("ll")); 
+        });
+      } 
+    }); 
+  }, function() {  console.log("ERROR: search.json");});
+});
+</script>
+
+  </body>
+</html>
+

@@ -273,6 +273,398 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
     </item>
     
     <item>
+      <title>How to get info for the wireless interface using nl80211 in C</title>
+      <link>https://alamot.github.io/nl80211/</link>
+      <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/nl80211/</guid>
+      <description>
+
+&lt;h1 id=&#34;nl80211&#34;&gt;nl80211&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;nl80211 is the 802.11 netlink-based userspace interface for the new cfg80211 configuration system for wireless hardware. Together they are intended to replace the old Wireless-Extensions. Current users of nl80211 include:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;H nl80211 είναι η διεπαφή χρήστη (βασισμένη στο netlink 802.11) για το νέο cfg80211 σύστημα διαρρύθμισης του ασύρματου υλικού. Μαζί προορίζονται να αντικαταστήσουν τα παλιά Wireless-Extensions. Το nl80211 χρησιμοποιείται μεταξύ αλλων από τα:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;iw&lt;/li&gt;
+&lt;li&gt;crda&lt;/li&gt;
+&lt;li&gt;hostapd&lt;/li&gt;
+&lt;li&gt;wpa_supplicant (-Dnl80211)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&#34;includes&#34;&gt;Includes&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;First of all, let&#39;s add the necessary includes:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα includes:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;#define _XOPEN_SOURCE 700&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;stdio.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;signal.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;string.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;stdlib.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;unistd.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;errno.h&amp;gt;              &lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;netlink/netlink.h&amp;gt;    //lots of netlink functions&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;netlink/genl/genl.h&amp;gt;  //genl_connect, genlmsg_put&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;netlink/genl/family.h&amp;gt;&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;netlink/genl/ctrl.h&amp;gt;  //genl_ctrl_resolve&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;span style=&#34;color: #008800&#34;&gt;#include&lt;/span&gt; &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;&amp;lt;linux/nl80211.h&amp;gt;      //NL80211 definitions&lt;/span&gt;&lt;span style=&#34;color: #008800&#34;&gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;structs&#34;&gt;Structs&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Let&#39;s define some data structures we will need later on:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ας ορίσουμε μερικέςς δομές δεδομένων που θα χρειαστούμε στη συνέχεια:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;typedef&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; {
+  &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; id;
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_sock&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; socket;
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_cb&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; cb1,&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; cb2;
+  &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; result1, result2;
+} Netlink; 
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;typedef&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; {
+  &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;char&lt;/span&gt; ifname[&lt;span style=&#34;color: #666666&#34;&gt;30&lt;/span&gt;];
+  &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; ifindex;
+  &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; signal;
+  &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; txrate;
+} Wifi;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nla_policy stats_policy[NL80211_STA_INFO_MAX &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {
+  [NL80211_STA_INFO_INACTIVE_TIME] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U32 },
+  [NL80211_STA_INFO_RX_BYTES] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U32 },
+  [NL80211_STA_INFO_TX_BYTES] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U32 },
+  [NL80211_STA_INFO_RX_PACKETS] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U32 },
+  [NL80211_STA_INFO_TX_PACKETS] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U32 },
+  [NL80211_STA_INFO_SIGNAL] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U8 },
+  [NL80211_STA_INFO_TX_BITRATE] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_NESTED },
+  [NL80211_STA_INFO_LLID] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U16 },
+  [NL80211_STA_INFO_PLID] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U16 },
+  [NL80211_STA_INFO_PLINK_STATE] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U8 },
+};
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nla_policy rate_policy[NL80211_RATE_INFO_MAX &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {
+  [NL80211_RATE_INFO_BITRATE] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U16 },
+  [NL80211_RATE_INFO_MCS] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_U8 },
+  [NL80211_RATE_INFO_40_MHZ_WIDTH] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_FLAG },
+  [NL80211_RATE_INFO_SHORT_GI] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; { .type &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; NLA_FLAG },
+};
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;functions&#34;&gt;Functions&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;We define our functions:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ορίζουμε τις συναρτήσεις μας:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;initNl80211&lt;/span&gt;(Netlink&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; nl, Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; w);
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;finish_handler&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;msg, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;arg);
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;getWifiName_callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;msg, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;arg);
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;getWifiInfo_callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;msg, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;arg);
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;getWifiStatus&lt;/span&gt;(Netlink&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; nl, Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; w);
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;initnl80211&#34;&gt;initNl80211()&lt;/h2&gt;
+
+&lt;div lang=&#34;en&#34;&gt;
+In our function initNl80211, we initialize our communication with the Κernel. We follow these steps:
+&lt;ol&gt;
+&lt;li&gt;We allocate a netlink socket (using nl_socket_alloc)&lt;/li&gt;
+&lt;li&gt;Optionally, we can set the socket buffer size (using nl_socket_set_buffer_size)&lt;/li&gt;
+&lt;li&gt;We connect to the generic netlink socket (using genl_connect)&lt;/li&gt;
+&lt;li&gt;Ask Kernel to resolve family name &#34;nl80211&#34; to family id (using genl_ctrl_resolve)&lt;/li&gt;
+&lt;li&gt;We allocate two new callback handles (using nl_cb_alloc)&lt;/li&gt;
+&lt;li&gt;We set some callbacks (using nl_cb_set).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+&lt;div lang=&#34;el&#34;&gt;
+Στην συνάρτηση μας initNl80211, αρχικοποιούμε την επικοινωνία μας με τον Πυρήνα. Aκολουθούμε τα παρακάτω βήματα:
+&lt;ol&gt;
+&lt;li&gt;Δεσμεύουμε ένα netlink socket (χρησιμοποιώντας την nl_socket_alloc)&lt;/li&gt;
+&lt;li&gt;Προαιρετικά, μπορούμε να ορίσουμε το μέγεθος του socket buffer (χρησιμοποιώντας την nl_socket_set_buffer_size)&lt;/li&gt;
+&lt;li&gt;Συνδεόμαστε στο γενικό netlink socket (χρησιμοποιώντας την genl_connect)&lt;/li&gt;
+&lt;li&gt;Ζητάμε από τον Πυρήνα να μετατρέψει το όνομα της οικογένειας (family name) σε αναγνωριστικό οικογένειας (family id) (χρησιμοποιώντας την genl_ctrl_resolve)&lt;/li&gt;
+&lt;li&gt;Δεσμεύουμε δύο νέες λαβές επανακλησης (callback handles) (χρησιμοποιώντας την nl_cb_alloc)&lt;/li&gt;
+&lt;li&gt;Ορίζουμε μερικές επανακλήσεις (χρησιμοποιώντας την nl_cb_set).&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;initNl80211&lt;/span&gt;(Netlink&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; nl, Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; w) {
+  nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nl_socket_alloc();
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket) { 
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Failed to allocate netlink socket.&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;);
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt;ENOMEM;
+  }  
+
+  nl_socket_set_buffer_size(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket, &lt;span style=&#34;color: #666666&#34;&gt;8192&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;8192&lt;/span&gt;);
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (genl_connect(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket)) { 
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Failed to connect to netlink socket.&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;); 
+    nl_close(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket);
+    nl_socket_free(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket);
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt;ENOLINK;
+  }
+   
+  nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;id &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; genl_ctrl_resolve(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;nl80211&amp;quot;&lt;/span&gt;);
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;id&lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;) {
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Nl80211 interface not found.&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;);
+    nl_close(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket);
+    nl_socket_free(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket);
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt;ENOENT;
+  }
+
+  nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb1 &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nl_cb_alloc(NL_CB_DEFAULT);
+  nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb2 &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nl_cb_alloc(NL_CB_DEFAULT);
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; ((&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb1) &lt;span style=&#34;color: #666666&#34;&gt;||&lt;/span&gt; (&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb2)) { 
+     fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Failed to allocate netlink callback.&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;); 
+     nl_close(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket);
+     nl_socket_free(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket);
+     &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; ENOMEM;
+  }
+
+  nl_cb_set(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb1, NL_CB_VALID , NL_CB_CUSTOM, getWifiName_callback, w);
+  nl_cb_set(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb1, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result1));
+  nl_cb_set(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb2, NL_CB_VALID , NL_CB_CUSTOM, getWifiInfo_callback, w);
+  nl_cb_set(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb2, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result2));
+  
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;id;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;finish-handler&#34;&gt;finish_handler()&lt;/h2&gt;
+
+&lt;p lang=&#34;en&#34;&gt;This is our finish_handler.&lt;p&gt; 
+&lt;p lang=&#34;el&#34;&gt;Αυτός είναι ο finish_handler μας.&lt;p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;finish_handler&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;msg, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;arg) {
+  &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;ret &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; arg;
+  &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;ret &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;;
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; NL_SKIP;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;The finish_handler will allow us -later on- to receive our messages from Kernel like that:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;O finish_handler μας επιτρέπει -στη συνέχεια- να λαμβάνουμε τα μηνύματά μας από τον Πυρήνα κάπως έτσι:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;while&lt;/span&gt; (nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result1 &lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;) { nl_recvmsgs(nlsocket, nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb1); }
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;while&lt;/span&gt; (nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result2 &lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;) { nl_recvmsgs(nlsocket, nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb2); }
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;getwifiiface-callback&#34;&gt;getWifiIface_callback()&lt;/h2&gt;
+
+&lt;p lang=&#34;en&#34;&gt;This is our getWifiIface_callback. Here we parse the message from the Kernel and we get the interface name (wifi_iface) and its index (wifi_index). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η getWifiIface_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το όνομα της ασύρματης διεπαφής (wifi_iface) και τον δείκτη της (wifi_index). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;getWifiName_callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;msg, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;arg) {
+ 
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; genlmsghdr &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;gnlh &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nlmsg_data(nlmsg_hdr(msg));
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nlattr &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;tb_msg[NL80211_ATTR_MAX &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;];
+
+  &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;//nl_msg_dump(msg, stdout);&lt;/span&gt;
+
+  nla_parse(tb_msg,
+            NL80211_ATTR_MAX,
+            genlmsg_attrdata(gnlh, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;),
+            genlmsg_attrlen(gnlh, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;),
+            &lt;span style=&#34;color: #AA22FF&#34;&gt;NULL&lt;/span&gt;);
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (tb_msg[NL80211_ATTR_IFNAME]) {
+    strcpy(((Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;)arg)&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;ifname, nla_get_string(tb_msg[NL80211_ATTR_IFNAME]));
+  }
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (tb_msg[NL80211_ATTR_IFINDEX]) {
+    ((Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;)arg)&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;ifindex &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nla_get_u32(tb_msg[NL80211_ATTR_IFINDEX]);
+  }
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; NL_SKIP;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;getwifiinfo-callback&#34;&gt;getWifiInfo_callback()&lt;/h2&gt;
+
+&lt;p lang=&#34;en&#34;&gt;This is our getWifiInfo_callback. Here we parse the message from the Kernel and we get the wifi signal (wifi_signal) and txrate (wifi_bitrate). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η getWifiInfo_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το σήμα της ασύρματης διεπαφής (wifi_signal) και τον ρυθμό μετάδοσης (wifi_bitrate). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;getWifiInfo_callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;msg, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;arg) {
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nlattr &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;tb[NL80211_ATTR_MAX &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;];
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; genlmsghdr &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;gnlh &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nlmsg_data(nlmsg_hdr(msg));
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nlattr &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;sinfo[NL80211_STA_INFO_MAX &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;];
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nlattr &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;rinfo[NL80211_RATE_INFO_MAX &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;];
+  
+  &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;//nl_msg_dump(msg, stdout);&lt;/span&gt;
+
+  nla_parse(tb,
+            NL80211_ATTR_MAX,
+            genlmsg_attrdata(gnlh, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;),
+            genlmsg_attrlen(gnlh, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;),
+            &lt;span style=&#34;color: #AA22FF&#34;&gt;NULL&lt;/span&gt;);
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;tb[NL80211_ATTR_STA_INFO]) {
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sta stats missing!&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;); &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; NL_SKIP;
+  }
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (nla_parse_nested(sinfo, NL80211_STA_INFO_MAX,
+                       tb[NL80211_ATTR_STA_INFO], stats_policy)) {
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;failed to parse nested attributes!&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;); &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; NL_SKIP;
+  }
+  
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (sinfo[NL80211_STA_INFO_SIGNAL]) {
+    ((Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;)arg)&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;signal &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;100+&lt;/span&gt;(&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int8_t&lt;/span&gt;)nla_get_u8(sinfo[NL80211_STA_INFO_SIGNAL]);
+  }
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (sinfo[NL80211_STA_INFO_TX_BITRATE]) {  
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (nla_parse_nested(rinfo, NL80211_RATE_INFO_MAX,
+                         sinfo[NL80211_STA_INFO_TX_BITRATE], rate_policy)) {
+      fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;failed to parse nested rate attributes!&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;); } 
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt; {
+      &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (rinfo[NL80211_RATE_INFO_BITRATE]) {
+        ((Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;)arg)&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;txrate &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nla_get_u16(rinfo[NL80211_RATE_INFO_BITRATE]);
+      } 
+    }
+  }
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; NL_SKIP;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;getwifistatus&#34;&gt;getWifiStatus()&lt;/h2&gt;
+
+&lt;div lang=&#34;en&#34;&gt;
+Let&#39;s see now what happens in our next function, getWifiStatus:
+&lt;ol&gt;
+&lt;li&gt;We allocate a netlink message structure (using nlmsg_alloc)&lt;/li&gt;
+&lt;li&gt;We add generic netlink headers to the netlink message (using genlmsg_put)&lt;/li&gt;
+&lt;li&gt;We finalize and transmit the netlink message (using nl_send_auto)&lt;/li&gt;
+&lt;li&gt;We receive a set of messages from the netlink socket (using nl_recvmsgs)&lt;/li&gt;
+&lt;li&gt;We release the netlink message reference (using nlmsg_free)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+&lt;p lang=&#34;en&#34;&gt;We execute those steps twice:&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;a) The first time we use the NL80211_CMD_GET_INTERFACE command identifier to get the wireless interface name and index.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;b) The second time we use the NL80211_CMD_GET_STATION command identifier to get signal strength and transmit bitrate. The reason for it is that the signal and bitrate values have meaning only relative to a station. Note that we have to put in the message the interface index using the nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w-&gt;ifindex). 
+&lt;/p&gt;
+
+&lt;div lang=&#34;el&#34;&gt;
+Ας δούμε τώρα τι συμβαίνει σητν επόμενη συνάρτησή μας, την getWifiStatus:
+&lt;ol&gt;
+&lt;li&gt;Δευσμεύουμε μια δομή μηνύματος netlink (χρησιμοποιώντας την nlmsg_alloc)&lt;/li&gt;
+&lt;li&gt;Προσθέτουμε γενικές netlink επικεφαλίδες στο μήνυμα netlink (χρησιμοποιώντας την genlmsg_put)&lt;/li&gt;
+&lt;li&gt;Ολοκληρώνουμε και μεταδίδουμε το μήνυμα netlink (χρησιμοποιώντας την nl_send_auto)&lt;/li&gt;
+&lt;li&gt;Λαμβάνουμε ένα σύνολο μηνυμάτων από το netlink socket (χρησιμοποιώντας την nl_recvmsgs)&lt;/li&gt;
+&lt;li&gt;Απελευθερώνουμε την αναφορά του μηνύματος netlink (χρησιμοποιώντας την nlmsg_free)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+
+&lt;p lang=&#34;el&#34;&gt;Εκτελούμε τα ανωτέρο βήματα δύο φορές:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt; α) Την πρώτη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_INTERFACE για να λάβουμε το όνομα και τον δείκτη της ασύρματης διεπαφής.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt; β) Τη δεύτερη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_STATION για να λάβουμε την ένταση του σήματος και τον ρυθμό μετάδοσης. Ο λόγος για αυτό είναι ότι οι τιμές της του σήματος και του ρυθμού μετάδοσης έχουν έννοια μόνο σε σχέση με κάποιον σταθμό. Σημειώστε ότι πρέπει να βάλουμε στο μήνυμα και τον δείκτη της διεπαφής που μας ενδιαφέρει χρησιμοποιώντας την nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w-&gt;ifindex).&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;getWifiStatus&lt;/span&gt;(Netlink&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; nl, Wifi&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; w) {
+  nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result1 &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;;
+  nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result2 &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;;
+    
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; msg1 &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nlmsg_alloc();
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;msg1) {
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Failed to allocate netlink message.&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;);
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;-2&lt;/span&gt;;
+  }
+  
+  genlmsg_put(msg1,
+              NL_AUTO_PORT,
+              NL_AUTO_SEQ,
+              nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;id,
+              &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;,
+              NLM_F_DUMP,
+              NL80211_CMD_GET_INTERFACE,
+              &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;);
+
+  nl_send_auto(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket, msg1);
+  
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;while&lt;/span&gt; (nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result1 &lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;) { nl_recvmsgs(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket, nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb1); }
+  nlmsg_free(msg1);
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (w&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;ifindex &lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;) { &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;-1&lt;/span&gt;; }
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;struct&lt;/span&gt; nl_msg&lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt; msg2 &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; nlmsg_alloc();
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #666666&#34;&gt;!&lt;/span&gt;msg2) {
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Failed to allocate netlink message.&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;);
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;-2&lt;/span&gt;;
+  }
+  
+  genlmsg_put(msg2,
+              NL_AUTO_PORT,
+              NL_AUTO_SEQ,
+              nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;id,
+              &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;,
+              NLM_F_DUMP,
+              NL80211_CMD_GET_STATION,
+              &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;);
+              
+  nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;ifindex); 
+  nl_send_auto(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket, msg2); 
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;while&lt;/span&gt; (nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;result2 &lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;) { nl_recvmsgs(nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;socket, nl&lt;span style=&#34;color: #666666&#34;&gt;-&amp;gt;&lt;/span&gt;cb2); }
+  nlmsg_free(msg2);
+  
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2 id=&#34;main&#34;&gt;main()&lt;/h2&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Εδώ βλέπουμε τη main() συνάρτησή μας. Πρώτα, αρχικοποιούμε την επικοινωνία με την initNl80211 και κατόπιν τούτου, καλούμε συνεχώς μέσα σε έναν βρόχο την getWifiStatus(), ανά 1 δευτερόλεπτο, εώς ότου ο χρήστης πατήσει ctrl + c:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; argc, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;**&lt;/span&gt;argv) {
+  Netlink nl;
+  Wifi w;
+
+  signal(SIGINT, ctrl_c_handler);
+  
+  nl.id &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; initNl80211(&lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;nl, &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;w);
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (nl.id &lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;) {
+    fprintf(stderr, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Error initializing netlink 802.11&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;);
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;-1&lt;/span&gt;;
+  }
+
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;do&lt;/span&gt; {
+    getWifiStatus(&lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;nl, &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt;w);  
+    printf(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Interface: %s | signal: %d dB | txrate: %.1f MBit/s&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;,
+           w.ifname, w.signal, (&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;float&lt;/span&gt;)w.txrate&lt;span style=&#34;color: #666666&#34;&gt;/10&lt;/span&gt;);
+    sleep(&lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;);
+  } &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;while&lt;/span&gt;(keepRunning);
+
+  printf(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;Exiting gracefully... &amp;quot;&lt;/span&gt;);
+  nl_cb_put(nl.cb1);
+  nl_cb_put(nl.cb2);
+  nl_close(nl.socket);
+  nl_socket_free(nl.socket);
+  printf(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;OK&lt;/span&gt;&lt;span style=&#34;color: #BB6622; font-weight: bold&#34;&gt;\n&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;);
+  &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;;
+}
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;
+&lt;span lang=&#34;en&#34;&gt;Here is the full code listing:&lt;/span&gt;
+&lt;span lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ:&lt;/span&gt;
+&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/nl80211_info.c
+&#34; target=&#34;_blank&#34;&gt;nl80211_info.c&lt;/a&gt;
+&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Creation of a shutdown GUI using Gtk in Python</title>
       <link>https://alamot.github.io/shutdown_manager_plain/</link>
       <pubDate>Fri, 16 Sep 2016 00:00:00 +0000</pubDate>
@@ -1241,11 +1633,11 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;This is the &amp;ldquo;dlgback_green.png&amp;rdquo; image we use as background in our window:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η είκονα &amp;ldquo;dlgback_green.png&amp;rdquo; που χρησιμοποιούμε ως φόντο στο παράθυρο μας:&lt;/p&gt;
-&lt;img class=&#34;floatcenter&#34; src=&#34;https://alamot.github.io/images/dlgback_green.png&#34; alt=&#34;dlgback_green.png&#34;&gt;&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;This is the &#34;dlgback_green.png&#34; image we use as background in our window:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η είκονα &#34;dlgback_green.png&#34; που χρησιμοποιούμε ως φόντο στο παράθυρο μας:&lt;/p&gt;
+&lt;img class=&#34;floatcenter&#34; src=&#34;https://alamot.github.io/images/dlgback_green.png&#34; alt=&#34;dlgback_green.png&#34;&gt;
 
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;The function update_width updates the width of the title area, of the content area and of the popup window. Note the hack needed for resizing the dark background of our window:&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;The function update_width updates the width of the title area, of the content area and of the popup window. Note the hack needed for resizing the dark background of our window:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Η συνάρτηση update_width ανανεώνει το πλάτος της περιοχής του τίτλου, της περιοχής του περιεχομένου και του αναδυόμενου παραθύρου. Προσέξτε το αναγκαίο τέχνασμα στο τέλος για την προσαρμογή του μεγέθους του σκοτεινού φόντου του παραθύρου μας:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;update_width&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;args):
     &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# hack to resize dark background on window resize &lt;/span&gt;
@@ -1263,9 +1655,9 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;title&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;text_size &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;width &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; dp(&lt;span style=&#34;color: #666666&#34;&gt;20&lt;/span&gt;), &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;)
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;content&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;text_size &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;width &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; dp(&lt;span style=&#34;color: #666666&#34;&gt;20&lt;/span&gt;), &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;)
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;The next function is called to update the height of the title area, of the content area and of the popup window:&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;The next function is called to update the height of the title area, of the content area and of the popup window:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;H επόμενη συνάρτηση καλείται για να ανανεώσει το ύψος της περιοχής του τίτλου, της περιοχής του περιεχομένου και του αναδυόμενου παραθύρου:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;update_height&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;args):
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;title&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;height &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;title&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;texture_size[&lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;]
@@ -1279,27 +1671,27 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
         &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;height &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; temp
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;center &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; Window&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;center
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;The following function is called to update the position and the size of the separator line between the title and the content of the popup window:&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;The following function is called to update the position and the size of the separator line between the title and the content of the popup window:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;H ακόλουθη συνάρτηση καλείται για να ανανεώσει τη θέση και το μέγεθος της διαχωριστικής γραμμής ανάμεσα στον τίτλο και το περιέχομενο του αναδυόμενου παραθύρου:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;update_sep&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;args):
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rect&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pos &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;separator&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pos
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rect&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;size &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;separator&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;size
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;On close, we dismiss the popup window and we call the callback function (if one has been set).&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;On close, we dismiss the popup window and we call the callback function (if one has been set).&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Στο κλείσιμο, αποσύρουμε το αναδυόμενο παράθυρο και καλούμε την συνάρτηση επανάκλησης (εφόσον έχει ορισθεί κάποια).&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;close&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, instance):
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;dismiss(force&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
     &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback:
         &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback()
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;Finally, let&amp;rsquo;s build a test app and run it. Note: you can &amp;lsquo;lock&amp;rsquo; the width and/or height of the popup window yourself by passing the width and/or height argument or you can leave their management to our class. If the content does not fit inside the popup window a scrollbar will appear automatically. You can also set the alpha channel i.e. the opacity of the window.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Τέλος, ας φτιάξουμε μια δοκιμαστική εφαρμογή και ας την τρέκουμε. Σημείωση: μπορείτε να &amp;ldquo;κλειδώσετε&amp;rdquo; το πλάτος ή/και το ύψος του αναδυόμενου δίνοντας τα αντίστοιχα ορίσματα width ή/και height ή μπορείτε να αφήσετε τη διαχείρισή τους στην κλάση μας. Αν το περιέχομενο δεν χωράει μέσα στο αναδυόμενο παράθυρο μια μπάρα κύλισης θα εμφανιστεί αυτόματα. Μπορείτε επίσης να ρυθμίσετε το κανάλι άλφα δηλαδή την αδιαφάνεια του παραθύρου.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Finally, let&#39;s build a test app and run it. Note: you can &#39;lock&#39; the width and/or height of the popup window yourself by passing the width and/or height argument or you can leave their management to our class. If the content does not fit inside the popup window a scrollbar will appear automatically. You can also set the alpha channel i.e. the opacity of the window.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Τέλος, ας φτιάξουμε μια δοκιμαστική εφαρμογή και ας την τρέκουμε. Σημείωση: μπορείτε να &#34;κλειδώσετε&#34; το πλάτος ή/και το ύψος του αναδυόμενου δίνοντας τα αντίστοιχα ορίσματα width ή/και height ή μπορείτε να αφήσετε τη διαχείρισή τους στην κλάση μας. Αν το περιέχομενο δεν χωράει μέσα στο αναδυόμενο παράθυρο μια μπάρα κύλισης θα εμφανιστεί αυτόματα. Μπορείτε επίσης να ρυθμίσετε το κανάλι άλφα δηλαδή την αδιαφάνεια του παραθύρου.&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0000FF&#34;&gt;TestApp&lt;/span&gt;(App):
     &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;build&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;):
         &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; Pop(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Title&amp;quot;&lt;/span&gt;,
@@ -1324,14 +1716,20 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
 
 TestApp()&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;run()
 &lt;/pre&gt;&lt;/div&gt;
-&lt;/p&gt;
 
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;Here is the result:&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Here is the result:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Εδώ βλέπετε το αποτέλεσμα:&lt;/p&gt;
 &lt;img class=&#34;floatcenter border&#34; src=&#34;https://alamot.github.io/images/kivy_popup1.png&#34; alt=&#34;Kivy popup window&#34;&gt;
 &lt;p lang=&#34;en&#34;&gt;If screen dimensions change (e.g. if the screen is rotated) the popup window will resize accordingly:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Αν οι διαστάσεις της οθόνης αλλάξουν (λ.χ. αν η οθόνη περιστραφεί) το αναδυόμενο παράθυρο θα προσαρμόσει το μέγεθός του ανάλογα:&lt;/p&gt;
-&lt;img class=&#34;img-responsive floatcenter border&#34; src=&#34;https://alamot.github.io/images/kivy_popup2.png&#34; alt=&#34;Kivy popup window&#34;&gt;&lt;/p&gt;
+&lt;img class=&#34;img-responsive floatcenter border&#34; src=&#34;https://alamot.github.io/images/kivy_popup2.png&#34; alt=&#34;Kivy popup window&#34;&gt;
+
+&lt;p&gt;
+&lt;span lang=&#34;en&#34;&gt;Here is the full code listing:&lt;/span&gt;
+&lt;span lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ:&lt;/span&gt;
+&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/kivy/kivypopup.py&#34; target=&#34;_blank&#34;&gt;kivypopup.py&lt;/a&gt;
+&lt;/p&gt;
 
 &lt;p&gt;&lt;p lang=&#34;en&#34;&gt;I have created two cross-platform kivy games that make use of popup windows, the «Alamot&amp;rsquo;s Matchstick Puzzles» and the «Retriever of Lost Dreams». If you would like to check them out, you can find both of them here:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Κλείνοντας, να σας αναφέρω ότι έχω δημιουργήσει με το Kivy δύο παιχνίδια για διαφορές πλατφόρμες που κάνουν χρήση αναδυόμενων παραθύρων, το «Alamot&amp;rsquo;s Matchstick Puzzles» και το «Retriever of Lost Dreams». Αν θέλετε να τα δείτε, μπορείτε να βρείτε και τα δύο εδώ:&lt;/p&gt;

@@ -6,276 +6,13 @@
     <description>Recent content on The Portal of Knowledge</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 19 Sep 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 09 Oct 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://alamot.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
-    <item>
-      <title>Creation of a transparent shutdown GUI using Gtk and Cairo in Python</title>
-      <link>https://alamot.github.io/shutdown_manager_transparent/</link>
-      <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
-      <guid>https://alamot.github.io/shutdown_manager_transparent/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
-
-&lt;figure&gt;
-&lt;img class=&#34;border&#34; src=&#34;https://alamot.github.io/images/shutdown_gui_3x3_transparent.jpg&#34; alt=&#34;Transparent 3x3 square shutdown GUI&#34;&gt;
-&lt;figcaption lang=&#34;en&#34;&gt;You can find free icons for every use on &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
-&lt;figcaption lang=&#34;el&#34;&gt;Μπορείτε να βρείτε δωρεάν εικονίδια για κάθε χρήση στο &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;p lang=&#34;en&#34;&gt;First, let&#39;s add the necessary imports:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
-&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;os&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;gtk&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;cairo&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;math&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; pi
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;collections&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; OrderedDict
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We offer two different layouts, one fullscreen and one windowed. Change the following variable according to your preference:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Προσφέρουμε δύο διαφορετικές διατάξεις, μια πλήρους οθόνης και μια παραθυριακή. Αλλάξτε την ακόλουθη μεταβλητή σύμφωνα με την προτίμησή σας:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;FULL_SCREEN &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We define a &lt;em&gt;get_resource_path&lt;/em&gt; function to help us find the path of our icons in the system:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Ορίζουμε μια συνάρτηση &lt;em&gt;get_resource_path&lt;/em&gt; για να μας βοηθήσει να βρούμε την τοποθεσία των εικονιδίων μας στο σύστημα:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;get_resource_path&lt;/span&gt;(rel_path):
-    dir_of_py_file &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;dirname(__file__)
-    rel_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;join(dir_of_py_file, rel_path)
-    abs_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;abspath(rel_path_to_resource)
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; abs_path_to_resource
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Next, we define our SystemDialog class (inherits from gtk.Window):&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Στη συνέχεια, ορίζουμε την κλάση SystemDialog (κληρονομεί από την gtk.Window):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0000FF&#34;&gt;SystemDialog&lt;/span&gt; (gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Window):
-    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Inside the class we define the __init__ (do &lt;strong&gt;not&lt;/strong&gt; forget to call the super):&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μέσα στην κλάση μας ορίζουμε την __init__ (&lt;strong&gt;μην&lt;/strong&gt; ξεχάσετε να καλέσετε την super):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;__init__&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;):
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;super&lt;/span&gt;(SystemDialog, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;)&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;__init__()
-    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Inside the __init__ we define a dictionary with label/command key-value pairs. The reason we use an &lt;em&gt;OrderedDict&lt;/em&gt; is that the simple &lt;em&gt;dict&lt;/em&gt; in python does not keep the order of the keys but we do not want our buttons to appear in arbitrary order. Keep in mind that you have to edit the button commands according to your system and your needs.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μέσα στην __init__ ορίζουμε ένα λεξικό με ζευγάρια από ετικέτες και εντολές. Ο λόγος που χρησιμοποιούμε ένα &lt;em&gt;OrderedDict&lt;/em&gt; είναι επειδή το απλό &lt;em&gt;dict&lt;/em&gt; στην Python δεν συγκρατεί τη σειρά των λημμάτων (=κλειδιών), αλλά εμείς δε θέλουμε τα κουμπιά μας να εμφανίζονται με αυθαίρετη σειρά. Σημειώστε ότι θα πρέπει να τροποποιήσετε τις εντολές που αντιστοιχούν στα κουμπιά ανάλογα με το σύστημα σάς και τις ανάγκες σάς.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; OrderedDict([
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Cancel&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Lock&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;slock &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Restart WM&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall dwm &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-hibernate &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep + Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend-hybrid &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Logout&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall X &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Reboot&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo reboot &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Shutdown&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo poweroff &amp;amp;&amp;quot;&lt;/span&gt;)])
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We need some &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to align vertically each icon with its label. Οur clickable &#34;buttons&#34; will be the &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  which will contain the small_vboxes.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Χρειαζόμαστε μερικά μικρά κουτιά (&lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; ) για να στοιχίσουμε κάθετα κάθε εικόνιδιο με την ετικέτα του. Τα κουμπιά μας που θα πατιούνται θα είναι τα &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  που θα εμπεριέχουν τα small_vboxes.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;table class=&#34;floatright&#34; style=&#34;border: 3px solid orange; outline:3px solid green; outline-offset: 5px; text-align:center;&#34;&gt;
-&lt;tr&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;i&gt;Label&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;p lang=&#34;en&#34;&gt;If the system supports it, we will use an rgba colormap (i.e. one with an alpha channel). &lt;strong&gt;Note&lt;/strong&gt;: You need a compositor manager, like compton or xcompmgr for example, in order for transperancy to work.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αν το σύστημα το υποστηρίζει, θα χρησιμοποιήσουμε ένα χάρτης χρώματος rgba, δηλαδή έναν που διαθέτει και κανάλι άλφα. &lt;strong&gt;Σημείωση&lt;/strong&gt;: Χρειάζεστε έναν διαχειριστή σύνθεσης (compositor manager), όπως ο compton ή ο xcompmgr για παράδειγμα, για να δουλέψει η διαφάνεια.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_screen()
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_rgba_colormap()
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;is_composited()):
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_colormap(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We make our window undecorated, paintable and we keep it on top.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Ρυθμίζουμε το παράθυρό μας να μην έχει διακοσμητικά στοιχεία, να μπορεί να ζωγραφιστεί και να παραμένει πάνω από τα άλλα παράθυρα.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_decorated(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_keep_above(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Some more settings, mostly for the fullscreen case. The function set_border_width sets the size of the outer margin. Adjust it to your liking.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μερικές ακόμη ρυθμίσεις, κυρίως για την περίπτωση της πλήρους οθόνης. Η συνάρτηση set_border_width θέτει το μέγεθος του εξωτερικού περιθωρίου. Προσαρμόστε το κατά την αρεσκεία σας.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; FULL_SCREEN:
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;150&lt;/span&gt;)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_size_request(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_width(),
-                          &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_height())
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_position(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;WIN_POS_CENTER)
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;:
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We define one &lt;span style=&#34;color:blue&#34;&gt;vertical box&lt;/span&gt; and three &lt;span style=&#34;color:red&#34;&gt;horizontal boxes&lt;/span&gt;. The vertical box will contain and align vertically the 3 horizontal boxes while each horizontal box while keep and align horizontally 3 of our &#34;buttons (events_boxes). Therefore, in the end, we will have a nice 3x3 icon square, like this:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Ορίζουμε ένα &lt;span style=&#34;color:blue&#34;&gt;κάθετο κουτί&lt;/span&gt; και τρία &lt;span style=&#34;color:red&#34;&gt;οριζόντια κουτιά&lt;/span&gt;. Το κάθετο κουτί θα εμπεριέχει και θα στοιχίζει κάθετα τα 3 οριζόντια κουτιά, ενώ κάθε οριζόντιο κουτί θα περιέχει και θα στοιχίζει οριζόντια 3 από τα &#34;κουμπιά&#34; μας (events_boxes). Οπότε, τελικά, θα έχουμε ένα ωραίο τετράγωνο 3x3 γεμάτο με εικόνιδια, όπως αυτό:&lt;/p&gt;
-&lt;table class=&#34;floatright&#34; style=&#34;outline:5px solid blue; outline-offset: 3px;&#34;&gt;
-&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; [gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
-               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
-               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)]
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p lang=&#34;en&#34;&gt;The &lt;em&gt;True&lt;/em&gt; values is about the homogenous (i.e. the same) size of the children and &lt;em&gt;5&lt;/em&gt; is the amount of space between them.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Οι τιμές &lt;em&gt;True&lt;/em&gt; έχουν να κάνουν με την ισόποση κατανομή του χώρου μεταξύ των περιεχομένων, ενώ το &lt;em&gt;5&lt;/em&gt; είναι το κενό διάστημα ανάμεσά τους.&lt;/p&gt;
-
-&lt;p lang=&#34;en&#34;&gt;Now, we are ready to create our &#34;buttons&#34;. We load each icon and we pack/align it vertically with its label inside a &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. We add each of the &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to an &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. We connect the click of &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt; with a callback event handler and we pack them inside the empty horizontal boxes (3 &#34;buttons&#34; in each &lt;span style=&#34;color:red&#34;&gt;horizontal box&lt;/span&gt;). Finally, to make our &#34;buttons&#34; transparent, we have to connect their &lt;em&gt;expose-event&lt;/em&gt; with our &lt;em&gt;self.expose&lt;/em&gt; function and to set them as &lt;em&gt;paintable&lt;/em&gt;.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Τώρα, είμαστε έτοιμοι να δημιουργήσουμε τα &#34;κουμπιά&#34; μας. Φορτώνουμε κάθε εικονίδιο και το πακετάρουμε/στοιχίζουμε κάθετα με την ετίκετά του μέσα σε ένα &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. Προσθέτουμε το καθένα από τα &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; σε ένα διαφανές &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. Συνδέσουμε το πάτημά των &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt; με έναν επανακαλούμενο χειριστή συμβάντων και τα πακετάρουμε μέσα στα άδεια οριζόντια κουτιά (3 κουμπιά σε κάθε &lt;span style=&#34;color:red&#34;&gt;οριζόντιο κουτί&lt;/span&gt;). Τέλος, για να καταστήσουμε τα &#34;κουμπιά&#34; μας διαφανή, θα πρεπει να συνδεσουμε το &lt;em&gt;expose-event&lt;/em&gt; τους με την &lt;em&gt;self.expose&lt;/em&gt; συνάρτηση μας και να τα θέσουμε ως επιδεκτικά βαψίματος &lt;em&gt;(paintable)&lt;/em&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;c &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
-boxIndex &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
-
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; key &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keys():
-
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load image&lt;/span&gt;
-    ico &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Image()
-    ico&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_from_file(get_resource_path(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;images/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;key&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;.png&amp;quot;&lt;/span&gt;))
-    
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load label&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Label(key)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;modify_fg(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;STATE_NORMAL,
-                               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;color_parse(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;#FFFFFF&amp;#39;&lt;/span&gt;))
-                               
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align image and label vertically&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(ico)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key])
-    
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Create transparent &amp;quot;buttons&amp;quot; (event_boxes)&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;EventBox()
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key])
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;button-release-event&amp;#39;&lt;/span&gt;,
-                                  &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback, key)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
-    
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align up to 3 &amp;quot;buttons&amp;quot; (event_boxes) horizontally&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes[boxIndex]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start((&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]))
-    c &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; (c &lt;span style=&#34;color: #666666&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;):
-        boxIndex &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;And now, let&#39;s pack the horizontal boxes inside the vertical box and the vertical box inside our window. Do &lt;strong&gt;not&lt;/strong&gt; forget to show all our widgets with self.show_all().&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Και τώρα, ας πακετάρουμε τα οριζόντια κουτιά μέσα στο κάθετο κουτί και το κάθετο κουτί μέσα στο παράθυρό μας. &lt;strong&gt;Μην&lt;/strong&gt; ξεχάσετε να εμφανίσετε όλα τα γραφικά στοιχεία σας με την self.show_all().&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; hbox &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes:
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(hbox, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;show_all()
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Finally, we connect some events for our window with their callback handlers:&lt;/p&gt; 
-&lt;p lang=&#34;el&#34;&gt;Τέλος, συνδέουμε μερικά συμβάντα για το παράθυρό μας με τους επανακαλούμενους χειριστές τους:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# For our window to be transparent&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
-&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If our window is destroyed, call self.callback (to exit)&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;delete-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback)
-&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If a key is pressed, call self.key_press_event&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;key-press-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;key_press_event)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;If our window is not fullscreen, we can move it where we want it. Let&#39;s put it on the bottom right corner of the screen.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αν το παράθυρο μας δεν είναι πλήρους οθόνης, μπορούμε να το μετακινήσουμε όπου θέλουμε. Ας το βάλουμε στην κάτω δεξιά γωνία της οθόνης.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; FULL_SCREEN:
-    w, h &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_size()
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;move(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_width() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; w,
-              gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_height() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; h &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;22&lt;/span&gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;The function expose is where the magic of transparency happens. Υou can set the color and the opacity (alpha channel) of our window via the &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt; .&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Η μαγεία της διαφάνειας συμβαίνει μέσα στην συνάρτηση expose. Μπορείτε να καθορίσετε την απόχρωση και την αδιαφάνεια (κανάλι άλφα) του παραθύρου μας μέσω της &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;expose&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget, event):
-    cr &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; widget&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_window()&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;cairo_create()
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_source_rgba(&lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0.65&lt;/span&gt;)
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_SOURCE)
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;paint()
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_OVER)
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;This is the our keyboard callback/event handler function. If the user has pressed &lt;strong&gt;Escape&lt;/strong&gt;, we quit:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η επανακαλούμενη συνάρτησή μας για τον χειρισμό συμβάντων πληκτρολογίου. Αν ο χρήστης έχει πατήσει το &lt;strong&gt;Escape&lt;/strong&gt;, βγαίνουμε από την εφαρμογή:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;key_press_event&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
-    keyval &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval
-    keyval_name &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval_name(keyval)
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; keyval_name &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Escape&amp;quot;&lt;/span&gt;:
-        gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;If you would like to check for some key modifier/combination you can -for example- get the ctrl key status like this:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αν τυχόν επιθυμείτε να ελέγξετε για κάποιο ειδικό πλήκτρο ή συνδυασμό μπορείτε -για παράδειγμα- να λάβετε την κατάσταση του πλήκτρου ctrl ως εξής:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;state &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;state
-ctrl &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (state &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;CONTROL_MASK)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;This is the our generic callback function which executes the commands:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η γενική μας επανακαλούμενη συνάρτηση που εκτελεί τις εντολές:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, data&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
-       data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
-       &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data] &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
-       event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;button &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;):  &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# left click&lt;/span&gt;
-            os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;system(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data])
-    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;When our program executes, an &lt;em&gt;SystemDialog&lt;/em&gt; object is created and gtk.main() is called:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Όταν η εφαρμογή μας εκτελείται, δημιουργείται ένα αντικείμενο &lt;em&gt;SystemDialog&lt;/em&gt; και καλείται η gtk.main():&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;__main__&amp;quot;&lt;/span&gt;:
-    SystemDialog()
-    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main()
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;&lt;strong&gt;Last but not least&lt;/strong&gt;: In order for our program to function without having to ask for a password, you need to add some lines in your &lt;em&gt;/etc/sudoers&lt;/em&gt; file. This is a special system file and you have to run &lt;em&gt;visudo&lt;/em&gt; with root privileges to edit it:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;&lt;strong&gt;Σημαντικό&lt;/strong&gt;: Προκειμένου η εφαρμογή μας να λειτουργεί χωρίς να χρειάζεται να ζητάει κωδικό, θα πρέπει να προσθέσετε μερικές γραμμές στο αρχείο &lt;em&gt;/etc/sudoers&lt;/em&gt;. Πρόκειται για ένα ειδικό αρχείο του συστήματος το οποίο, για να το διορθώσετε, θα πρέπει να τρέξετε την εντολή &lt;em&gt;visudo&lt;/em&gt; έχοντας δικαιώματα διαχειριστή:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# visudo&lt;/span&gt;
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/reboot
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/poweroff
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/killall
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend-hybrid
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-hibernate
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
     
     <item>
       <title>How to get info for the wireless interface using nl80211 in C</title>
       <link>https://alamot.github.io/nl80211/</link>
-      <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/nl80211/</guid>
       <description>
 
@@ -665,9 +402,272 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
     </item>
     
     <item>
+      <title>Creation of a transparent shutdown GUI using Gtk and Cairo in Python</title>
+      <link>https://alamot.github.io/shutdown_manager_transparent/</link>
+      <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/shutdown_manager_transparent/</guid>
+      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
+
+&lt;figure&gt;
+&lt;img class=&#34;border&#34; src=&#34;https://alamot.github.io/images/shutdown_gui_3x3_transparent.jpg&#34; alt=&#34;Transparent 3x3 square shutdown GUI&#34;&gt;
+&lt;figcaption lang=&#34;en&#34;&gt;You can find free icons for every use on &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
+&lt;figcaption lang=&#34;el&#34;&gt;Μπορείτε να βρείτε δωρεάν εικονίδια για κάθε χρήση στο &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p lang=&#34;en&#34;&gt;First, let&#39;s add the necessary imports:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;os&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;gtk&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;cairo&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;math&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; pi
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;collections&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; OrderedDict
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We offer two different layouts, one fullscreen and one windowed. Change the following variable according to your preference:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Προσφέρουμε δύο διαφορετικές διατάξεις, μια πλήρους οθόνης και μια παραθυριακή. Αλλάξτε την ακόλουθη μεταβλητή σύμφωνα με την προτίμησή σας:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;FULL_SCREEN &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We define a &lt;em&gt;get_resource_path&lt;/em&gt; function to help us find the path of our icons in the system:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ορίζουμε μια συνάρτηση &lt;em&gt;get_resource_path&lt;/em&gt; για να μας βοηθήσει να βρούμε την τοποθεσία των εικονιδίων μας στο σύστημα:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;get_resource_path&lt;/span&gt;(rel_path):
+    dir_of_py_file &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;dirname(__file__)
+    rel_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;join(dir_of_py_file, rel_path)
+    abs_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;abspath(rel_path_to_resource)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; abs_path_to_resource
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Next, we define our SystemDialog class (inherits from gtk.Window):&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Στη συνέχεια, ορίζουμε την κλάση SystemDialog (κληρονομεί από την gtk.Window):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0000FF&#34;&gt;SystemDialog&lt;/span&gt; (gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Window):
+    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Inside the class we define the __init__ (do &lt;strong&gt;not&lt;/strong&gt; forget to call the super):&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μέσα στην κλάση μας ορίζουμε την __init__ (&lt;strong&gt;μην&lt;/strong&gt; ξεχάσετε να καλέσετε την super):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;__init__&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;):
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;super&lt;/span&gt;(SystemDialog, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;)&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;__init__()
+    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Inside the __init__ we define a dictionary with label/command key-value pairs. The reason we use an &lt;em&gt;OrderedDict&lt;/em&gt; is that the simple &lt;em&gt;dict&lt;/em&gt; in python does not keep the order of the keys but we do not want our buttons to appear in arbitrary order. Keep in mind that you have to edit the button commands according to your system and your needs.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μέσα στην __init__ ορίζουμε ένα λεξικό με ζευγάρια από ετικέτες και εντολές. Ο λόγος που χρησιμοποιούμε ένα &lt;em&gt;OrderedDict&lt;/em&gt; είναι επειδή το απλό &lt;em&gt;dict&lt;/em&gt; στην Python δεν συγκρατεί τη σειρά των λημμάτων (=κλειδιών), αλλά εμείς δε θέλουμε τα κουμπιά μας να εμφανίζονται με αυθαίρετη σειρά. Σημειώστε ότι θα πρέπει να τροποποιήσετε τις εντολές που αντιστοιχούν στα κουμπιά ανάλογα με το σύστημα σάς και τις ανάγκες σάς.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; OrderedDict([
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Cancel&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Lock&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;slock &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Restart WM&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall dwm &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-hibernate &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep + Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend-hybrid &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Logout&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall X &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Reboot&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo reboot &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Shutdown&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo poweroff &amp;amp;&amp;quot;&lt;/span&gt;)])
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We need some &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to align vertically each icon with its label. Οur clickable &#34;buttons&#34; will be the &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  which will contain the small_vboxes.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Χρειαζόμαστε μερικά μικρά κουτιά (&lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; ) για να στοιχίσουμε κάθετα κάθε εικόνιδιο με την ετικέτα του. Τα κουμπιά μας που θα πατιούνται θα είναι τα &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  που θα εμπεριέχουν τα small_vboxes.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table class=&#34;floatright&#34; style=&#34;border: 3px solid orange; outline:3px solid green; outline-offset: 5px; text-align:center;&#34;&gt;
+&lt;tr&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;i&gt;Label&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p lang=&#34;en&#34;&gt;If the system supports it, we will use an rgba colormap (i.e. one with an alpha channel). &lt;strong&gt;Note&lt;/strong&gt;: You need a compositor manager, like compton or xcompmgr for example, in order for transperancy to work.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αν το σύστημα το υποστηρίζει, θα χρησιμοποιήσουμε ένα χάρτης χρώματος rgba, δηλαδή έναν που διαθέτει και κανάλι άλφα. &lt;strong&gt;Σημείωση&lt;/strong&gt;: Χρειάζεστε έναν διαχειριστή σύνθεσης (compositor manager), όπως ο compton ή ο xcompmgr για παράδειγμα, για να δουλέψει η διαφάνεια.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_screen()
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_rgba_colormap()
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;is_composited()):
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_colormap(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We make our window undecorated, paintable and we keep it on top.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ρυθμίζουμε το παράθυρό μας να μην έχει διακοσμητικά στοιχεία, να μπορεί να ζωγραφιστεί και να παραμένει πάνω από τα άλλα παράθυρα.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_decorated(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_keep_above(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Some more settings, mostly for the fullscreen case. The function set_border_width sets the size of the outer margin. Adjust it to your liking.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μερικές ακόμη ρυθμίσεις, κυρίως για την περίπτωση της πλήρους οθόνης. Η συνάρτηση set_border_width θέτει το μέγεθος του εξωτερικού περιθωρίου. Προσαρμόστε το κατά την αρεσκεία σας.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; FULL_SCREEN:
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;150&lt;/span&gt;)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_size_request(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_width(),
+                          &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_height())
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_position(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;WIN_POS_CENTER)
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;:
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We define one &lt;span style=&#34;color:blue&#34;&gt;vertical box&lt;/span&gt; and three &lt;span style=&#34;color:red&#34;&gt;horizontal boxes&lt;/span&gt;. The vertical box will contain and align vertically the 3 horizontal boxes while each horizontal box while keep and align horizontally 3 of our &#34;buttons (events_boxes). Therefore, in the end, we will have a nice 3x3 icon square, like this:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ορίζουμε ένα &lt;span style=&#34;color:blue&#34;&gt;κάθετο κουτί&lt;/span&gt; και τρία &lt;span style=&#34;color:red&#34;&gt;οριζόντια κουτιά&lt;/span&gt;. Το κάθετο κουτί θα εμπεριέχει και θα στοιχίζει κάθετα τα 3 οριζόντια κουτιά, ενώ κάθε οριζόντιο κουτί θα περιέχει και θα στοιχίζει οριζόντια 3 από τα &#34;κουμπιά&#34; μας (events_boxes). Οπότε, τελικά, θα έχουμε ένα ωραίο τετράγωνο 3x3 γεμάτο με εικόνιδια, όπως αυτό:&lt;/p&gt;
+&lt;table class=&#34;floatright&#34; style=&#34;outline:5px solid blue; outline-offset: 3px;&#34;&gt;
+&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; [gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
+               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
+               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)]
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p lang=&#34;en&#34;&gt;The &lt;em&gt;True&lt;/em&gt; values is about the homogenous (i.e. the same) size of the children and &lt;em&gt;5&lt;/em&gt; is the amount of space between them.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Οι τιμές &lt;em&gt;True&lt;/em&gt; έχουν να κάνουν με την ισόποση κατανομή του χώρου μεταξύ των περιεχομένων, ενώ το &lt;em&gt;5&lt;/em&gt; είναι το κενό διάστημα ανάμεσά τους.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Now, we are ready to create our &#34;buttons&#34;. We load each icon and we pack/align it vertically with its label inside a &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. We add each of the &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to an &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. We connect the click of &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt; with a callback event handler and we pack them inside the empty horizontal boxes (3 &#34;buttons&#34; in each &lt;span style=&#34;color:red&#34;&gt;horizontal box&lt;/span&gt;). Finally, to make our &#34;buttons&#34; transparent, we have to connect their &lt;em&gt;expose-event&lt;/em&gt; with our &lt;em&gt;self.expose&lt;/em&gt; function and to set them as &lt;em&gt;paintable&lt;/em&gt;.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Τώρα, είμαστε έτοιμοι να δημιουργήσουμε τα &#34;κουμπιά&#34; μας. Φορτώνουμε κάθε εικονίδιο και το πακετάρουμε/στοιχίζουμε κάθετα με την ετίκετά του μέσα σε ένα &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. Προσθέτουμε το καθένα από τα &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; σε ένα διαφανές &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. Συνδέσουμε το πάτημά των &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt; με έναν επανακαλούμενο χειριστή συμβάντων και τα πακετάρουμε μέσα στα άδεια οριζόντια κουτιά (3 κουμπιά σε κάθε &lt;span style=&#34;color:red&#34;&gt;οριζόντιο κουτί&lt;/span&gt;). Τέλος, για να καταστήσουμε τα &#34;κουμπιά&#34; μας διαφανή, θα πρεπει να συνδεσουμε το &lt;em&gt;expose-event&lt;/em&gt; τους με την &lt;em&gt;self.expose&lt;/em&gt; συνάρτηση μας και να τα θέσουμε ως επιδεκτικά βαψίματος &lt;em&gt;(paintable)&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;c &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
+boxIndex &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; key &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keys():
+
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load image&lt;/span&gt;
+    ico &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Image()
+    ico&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_from_file(get_resource_path(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;images/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;key&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;.png&amp;quot;&lt;/span&gt;))
+    
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load label&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Label(key)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;modify_fg(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;STATE_NORMAL,
+                               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;color_parse(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;#FFFFFF&amp;#39;&lt;/span&gt;))
+                               
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align image and label vertically&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(ico)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key])
+    
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Create transparent &amp;quot;buttons&amp;quot; (event_boxes)&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;EventBox()
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key])
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;button-release-event&amp;#39;&lt;/span&gt;,
+                                  &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback, key)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
+    
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align up to 3 &amp;quot;buttons&amp;quot; (event_boxes) horizontally&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes[boxIndex]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start((&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]))
+    c &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; (c &lt;span style=&#34;color: #666666&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;):
+        boxIndex &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;And now, let&#39;s pack the horizontal boxes inside the vertical box and the vertical box inside our window. Do &lt;strong&gt;not&lt;/strong&gt; forget to show all our widgets with self.show_all().&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Και τώρα, ας πακετάρουμε τα οριζόντια κουτιά μέσα στο κάθετο κουτί και το κάθετο κουτί μέσα στο παράθυρό μας. &lt;strong&gt;Μην&lt;/strong&gt; ξεχάσετε να εμφανίσετε όλα τα γραφικά στοιχεία σας με την self.show_all().&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; hbox &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes:
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(hbox, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;show_all()
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Finally, we connect some events for our window with their callback handlers:&lt;/p&gt; 
+&lt;p lang=&#34;el&#34;&gt;Τέλος, συνδέουμε μερικά συμβάντα για το παράθυρό μας με τους επανακαλούμενους χειριστές τους:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# For our window to be transparent&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
+&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If our window is destroyed, call self.callback (to exit)&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;delete-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback)
+&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If a key is pressed, call self.key_press_event&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;key-press-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;key_press_event)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;If our window is not fullscreen, we can move it where we want it. Let&#39;s put it on the bottom right corner of the screen.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αν το παράθυρο μας δεν είναι πλήρους οθόνης, μπορούμε να το μετακινήσουμε όπου θέλουμε. Ας το βάλουμε στην κάτω δεξιά γωνία της οθόνης.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; FULL_SCREEN:
+    w, h &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_size()
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;move(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_width() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; w,
+              gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_height() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; h &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;22&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;The function expose is where the magic of transparency happens. Υou can set the color and the opacity (alpha channel) of our window via the &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt; .&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Η μαγεία της διαφάνειας συμβαίνει μέσα στην συνάρτηση expose. Μπορείτε να καθορίσετε την απόχρωση και την αδιαφάνεια (κανάλι άλφα) του παραθύρου μας μέσω της &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;expose&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget, event):
+    cr &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; widget&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_window()&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;cairo_create()
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_source_rgba(&lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0.65&lt;/span&gt;)
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_SOURCE)
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;paint()
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_OVER)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;This is the our keyboard callback/event handler function. If the user has pressed &lt;strong&gt;Escape&lt;/strong&gt;, we quit:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η επανακαλούμενη συνάρτησή μας για τον χειρισμό συμβάντων πληκτρολογίου. Αν ο χρήστης έχει πατήσει το &lt;strong&gt;Escape&lt;/strong&gt;, βγαίνουμε από την εφαρμογή:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;key_press_event&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
+    keyval &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval
+    keyval_name &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval_name(keyval)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; keyval_name &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Escape&amp;quot;&lt;/span&gt;:
+        gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;If you would like to check for some key modifier/combination you can -for example- get the ctrl key status like this:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αν τυχόν επιθυμείτε να ελέγξετε για κάποιο ειδικό πλήκτρο ή συνδυασμό μπορείτε -για παράδειγμα- να λάβετε την κατάσταση του πλήκτρου ctrl ως εξής:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;state &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;state
+ctrl &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (state &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;CONTROL_MASK)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;This is the our generic callback function which executes the commands:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η γενική μας επανακαλούμενη συνάρτηση που εκτελεί τις εντολές:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, data&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
+       data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
+       &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data] &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
+       event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;button &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;):  &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# left click&lt;/span&gt;
+            os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;system(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data])
+    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;When our program executes, an &lt;em&gt;SystemDialog&lt;/em&gt; object is created and gtk.main() is called:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Όταν η εφαρμογή μας εκτελείται, δημιουργείται ένα αντικείμενο &lt;em&gt;SystemDialog&lt;/em&gt; και καλείται η gtk.main():&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;__main__&amp;quot;&lt;/span&gt;:
+    SystemDialog()
+    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main()
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;&lt;strong&gt;Last but not least&lt;/strong&gt;: In order for our program to function without having to ask for a password, you need to add some lines in your &lt;em&gt;/etc/sudoers&lt;/em&gt; file. This is a special system file and you have to run &lt;em&gt;visudo&lt;/em&gt; with root privileges to edit it:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;&lt;strong&gt;Σημαντικό&lt;/strong&gt;: Προκειμένου η εφαρμογή μας να λειτουργεί χωρίς να χρειάζεται να ζητάει κωδικό, θα πρέπει να προσθέσετε μερικές γραμμές στο αρχείο &lt;em&gt;/etc/sudoers&lt;/em&gt;. Πρόκειται για ένα ειδικό αρχείο του συστήματος το οποίο, για να το διορθώσετε, θα πρέπει να τρέξετε την εντολή &lt;em&gt;visudo&lt;/em&gt; έχοντας δικαιώματα διαχειριστή:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# visudo&lt;/span&gt;
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/reboot
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/poweroff
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/killall
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend-hybrid
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-hibernate
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Creation of a shutdown GUI using Gtk in Python</title>
       <link>https://alamot.github.io/shutdown_manager_plain/</link>
-      <pubDate>Fri, 16 Sep 2016 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 21 Jul 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/shutdown_manager_plain/</guid>
       <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
@@ -855,9 +855,13 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
       <link>https://alamot.github.io/testakia_pliroforikis/</link>
       <pubDate>Fri, 25 Sep 2015 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/testakia_pliroforikis/</guid>
-      <description>&lt;p&gt;Αυτή είναι μια εφαρμογή που δημιούργησα το 2015. Πρόκειται για ένα σύνολο από τεστάκια με ερωτήσεις πολλαπλής επιλογής πάνω στο γνωστικό αντικείμενο της Πληροφορικής. Η εφαρμογή αυτή διατίθεται εντελώς ΔΩΡΕΑΝ και ΔΕΝ περιέχει διαφημίσεις.&lt;/p&gt;
+      <description>
+
+&lt;p&gt;Αυτή είναι μια εφαρμογή που δημιούργησα το 2015. Πρόκειται για ένα σύνολο από τεστάκια με ερωτήσεις πολλαπλής επιλογής πάνω στο γνωστικό αντικείμενο της Πληροφορικής. Η εφαρμογή αυτή διατίθεται εντελώς ΔΩΡΕΑΝ και ΔΕΝ περιέχει διαφημίσεις.&lt;/p&gt;
 
 &lt;p&gt;Προς το παρόν, περιέχονται συνολικά περίπου 200 ερωτήσεις που προέρχονται από τους διαγωνισμούς του ΑΣΕΠ του 2002, 2005 και 2008. Οι ερωτήσεις αυτές έχουν κατανεμηθεί σε διάφορους επιμέρους θεματικούς τομείς της επιστήμης της Πληροφορικής.&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-screenshots-span-span-lang-el-εικόνες-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Screenshots&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εικόνες&lt;/span&gt;&lt;/h1&gt;
 
 &lt;div class=&#34;row&#34;&gt;
 &lt;div class=&#34;col-md-4&#34;&gt;
@@ -871,11 +875,14 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Χαρακτηριστικά εφαρμογής:
+&lt;h1 id=&#34;span-lang-en-features-span-span-lang-el-χαρακτηριστικά-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Features&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Χαρακτηριστικά&lt;/span&gt;&lt;/h1&gt;
+
 &lt;p&gt;★ Εξαιρετικά μικρό μέγεθος (~144 KB)&lt;/p&gt;
 &lt;p&gt;★ Αποθήκευση αγαπημένων ερωτήσεων&lt;/p&gt;
 &lt;p&gt;★ Παρακολούθηση / αποθήκευση προόδου&lt;/p&gt;
-&lt;p&gt;★ Ενεργοποίηση / απενεργοποίηση ηχητικής ανάδρασης&lt;/p&gt;&lt;/p&gt;
+&lt;p&gt;★ Ενεργοποίηση / απενεργοποίηση ηχητικής ανάδρασης&lt;/p&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-android-aria-hidden-true-i-span-lang-en-android-versions-span-span-lang-el-εκδόση-για-android-span&#34;&gt;&lt;i class=&#34;fa fa-android&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Android versions&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εκδόση για Android&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://play.google.com/store/apps/details?id=eu.alamot.infotests&#34; target=&#34;_blank&#34;&gt;
 &lt;img class=&#34;floatcenter&#34; alt=&#34;Get it on Google Play&#34; title=&#34;Get it on Google Play&#34; src=&#34;https://alamot.github.io/images/gplay.png&#34; /&gt;
@@ -886,81 +893,17 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
     </item>
     
     <item>
-      <title>Retriever of Lost Dreams</title>
-      <link>https://alamot.github.io/rold/</link>
-      <pubDate>Mon, 24 Aug 2015 00:00:00 +0000</pubDate>
-      <guid>https://alamot.github.io/rold/</guid>
-      <description>
-
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;&amp;ldquo;Your name is Rold. You live in a very special place in the Universe. This place is called Dreamland. Your job is to foster and guard the Dream Stars. For, from their stardust, the people&amp;rsquo;s dreams are born. For a long time, everything was running smoothly and you loved your job. But one day, an evil Force stole all the Dream Stars from Dreamland and hid them in a castle with many rooms, full of traps. Can you retrieve them all and return them, back home, to Dreamland? So that people can dream again&amp;hellip;&amp;rdquo;&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Ονομάζεσαι Rold. Ζεις σε μια πολύ ξεχωριστή γωνιά του σύμπαντος, σε ένα μέρος που λέγεται Ονειροχώρα. Η δουλειά σου είναι να φροντίζεις και να φυλάς τα Άστρα των Ονείρων που από την αστρόσκονή τους γεννιούνται τα όνειρα των ανθρώπων. Για πάρα πολύ καιρό, όλα κυλούσαν ομαλά και λάτρευες τη δουλειά σου. Αλλά μια μέρα, μια σκοτεινή Δύναμη έκλεψε όλα τα Άστρα των Ονείρων και τα έκρυψε σε ένα κάστρο με πολλά δωμάτια, γεμάτα παγίδες. Μπορείς να τα  ανακτήσεις όλα και να τα επιστρέψεις πίσω, εκεί που είναι η θέση τους, στην Ονειροχώρα; Ώστε οι άνθρωποι να μπορέσουν να ονειρευτούν ξανά&amp;hellip;&amp;rdquo;&lt;/p&gt;
-
-&lt;div class=&#34;row&#34;&gt;
-&lt;div class=&#34;col-md-4&#34;&gt;
-&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/rold1.jpg&#34; alt=&#34;RoLD screenshot 1&#34; title=&#34;RoLD screenshot 1&#34;&gt;
-&lt;/div&gt;
-&lt;div class=&#34;col-md-4&#34;&gt;
-&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/rold2.jpg&#34; alt=&#34;RoLD screenshot 2&#34; title=&#34;RoLD screenshot 2&#34;&gt;
-&lt;/div&gt;
-&lt;div class=&#34;col-md-4&#34;&gt;
-&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/rold3.jpg&#34; alt=&#34;RoLD screenshot 3&#34; title=&#34;RoLD screenshot 3&#34;&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&amp;ldquo;Retriever of Lost Dreams&amp;rdquo; is a puzzle game with 55 one-screen rooms. You have to collect all the Dream Stars from each one of them. But can you? It will not be an easy task.&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;
-&lt;div class=&#34;max-width640&#34;&gt;
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;//www.youtube.com/embed/mToGZgvMoEk?&#34;
-  style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/center&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;i-class-fa-fa-android-aria-hidden-true-i-android-strong-full-strong-strong-demo-strong-versions&#34;&gt;&lt;i class=&#34;fa fa-android&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; Android &lt;strong&gt;full&lt;/strong&gt; &amp;amp; &lt;strong&gt;demo&lt;/strong&gt; versions&lt;/h1&gt;
-
-&lt;div class=&#34;clearfix&#34;&gt;
-&lt;p&gt;
-&lt;a href=&#34;https://play.google.com/store/search?q=%22Retriever%20of%20Lost%20Dreams%22&amp;c=apps&#34; target=&#34;_blank&#34;&gt;
-&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Google Play&#34; src=&#34;https://alamot.github.io/images/gplay.png&#34; /&gt;
-&lt;/a&gt;
-&lt;a href=&#34;http://www.amazon.com/gp/mas/dl/android?s=Retriever%20of%20Lost%20Dreams&#34; target=&#34;_blank&#34;&gt;
-&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Amazon store&#34; src=&#34;https://alamot.github.io/images/amazon.png&#34; /&gt;
-&lt;/a&gt;
-&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h1 id=&#34;i-class-fa-fa-windows-aria-hidden-true-i-windows-strong-demo-strong-version&#34;&gt;&lt;i class=&#34;fa fa-windows&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; Windows &lt;strong&gt;demo&lt;/strong&gt; version&lt;/h1&gt;
-
-&lt;p&gt;Download the &lt;a href=&#34;http://www.mediafire.com/download/73cvd1h54417ue9/ROLD_v102_demo_setup.exe&#34; target=&#34;_blank&#34;&gt;Windows &lt;strong&gt;DEMO&lt;/strong&gt; version&lt;/a&gt; for free.&lt;/p&gt;
-
-&lt;h1 id=&#34;i-class-fa-fa-apple-aria-hidden-true-i-mac-os-x-strong-demo-strong-version&#34;&gt;&lt;i class=&#34;fa fa-apple&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; Mac OS X &lt;strong&gt;demo&lt;/strong&gt; version&lt;/h1&gt;
-
-&lt;p&gt;Download the &lt;a href=&#34;http://www.mediafire.com/download/2lwtm4bk426dnj6/Retriever_of_Lost_Dreams_%28DEMO%29.pkg.zip&#34; target=&#34;_blank&#34;&gt;Mac OS X &lt;strong&gt;DEMO&lt;/strong&gt; version &lt;/a&gt; for free.&lt;/p&gt;
-
-&lt;h1 id=&#34;i-class-fa-fa-windows-aria-hidden-true-i-i-class-fa-fa-apple-aria-hidden-true-i-buy-windows-mac-os-x-strong-full-strong-versions-bundle&#34;&gt;&lt;i class=&#34;fa fa-windows&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;i class=&#34;fa fa-apple&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt;  Buy Windows &amp;amp; Mac OS X &lt;strong&gt;full&lt;/strong&gt; versions bundle&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Buy from itch.io
-&lt;p&gt;&lt;iframe src=&#34;https://itch.io/embed/33791?dark=true&amp;linkback=true&#34; width=&#34;552&#34; height=&#34;167&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;Buy from www.humblebundle.com
-&lt;p&gt;&lt;iframe src=&#34;https://www.humblebundle.com/widget/v2/product/rold_widget/hVYtubJdbv?theme=light&#34; width=&#34;552&#34; height=&#34;327&#34; style=&#34;border: none;&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
       <title>Biology tests (available in greek only)</title>
       <link>https://alamot.github.io/testakia_viologias/</link>
       <pubDate>Sat, 22 Aug 2015 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/testakia_viologias/</guid>
-      <description>&lt;p&gt;Αυτή είναι μια εφαρμογή που δημιούργησα το 2015. Πρόκειται για ένα σύνολο από τεστάκια με ερωτήσεις πολλαπλής επιλογής πάνω στο γνωστικό αντικείμενο της Βιολογίας. Η εφαρμογή αυτή διατίθεται εντελώς ΔΩΡΕΑΝ και ΔΕΝ περιέχει διαφημίσεις.&lt;/p&gt;
+      <description>
+
+&lt;p&gt;Αυτή είναι μια εφαρμογή που δημιούργησα το 2015. Πρόκειται για ένα σύνολο από τεστάκια με ερωτήσεις πολλαπλής επιλογής πάνω στο γνωστικό αντικείμενο της Βιολογίας. Η εφαρμογή αυτή διατίθεται εντελώς ΔΩΡΕΑΝ και ΔΕΝ περιέχει διαφημίσεις.&lt;/p&gt;
 
 &lt;p&gt;Προς το παρόν, περιέχονται συνολικά περίπου 200 ερωτήσεις που προέρχονται από τους διαγωνισμούς του ΑΣΕΠ για Βιολόγους του 2002, 2004, 2006 και 2008 και μόνο από το βιολογικό μέρος του &amp;ldquo;Γνωστικού αντικειμένου&amp;rdquo;. Οι ερωτήσεις αυτές έχουν κατανεμηθεί σε διάφορους επιμέρους θεματικούς τομείς της επιστήμης της Βιολογίας.&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-screenshots-span-span-lang-el-εικόνες-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Screenshots&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εικόνες&lt;/span&gt;&lt;/h1&gt;
 
 &lt;div class=&#34;row&#34;&gt;
 &lt;div class=&#34;col-md-4&#34;&gt;
@@ -974,17 +917,164 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
 &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Χαρακτηριστικά εφαρμογής:
+&lt;h1 id=&#34;span-lang-en-features-span-span-lang-el-χαρακτηριστικά-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Features&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Χαρακτηριστικά&lt;/span&gt;&lt;/h1&gt;
+
 &lt;p&gt;★ Εξαιρετικά μικρό μέγεθος (~220 KB)&lt;/p&gt;
 &lt;p&gt;★ Αποθήκευση αγαπημένων ερωτήσεων&lt;/p&gt;
 &lt;p&gt;★ Παρακολούθηση / αποθήκευση προόδου&lt;/p&gt;
-&lt;p&gt;★ Ενεργοποίηση / απενεργοποίηση ηχητικής ανάδρασης&lt;/p&gt;&lt;/p&gt;
+&lt;p&gt;★ Ενεργοποίηση / απενεργοποίηση ηχητικής ανάδρασης&lt;/p&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-android-aria-hidden-true-i-span-lang-en-android-versions-span-span-lang-el-εκδόση-για-android-span&#34;&gt;&lt;i class=&#34;fa fa-android&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Android versions&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εκδόση για Android&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://play.google.com/store/apps/details?id=eu.alamot.bioltests&#34; target=&#34;_blank&#34;&gt;
 &lt;img class=&#34;floatcenter&#34; alt=&#34;Get it on Google Play&#34; title=&#34;Get it on Google Play&#34; src=&#34;https://alamot.github.io/images/gplay.png&#34; /&gt;
 &lt;/a&gt;&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;Σημείωση&lt;/strong&gt;: Σε περίπτωση λανθασμένης απάντησης, η εφαρμογή είναι σχεδιασμένη να ΜΗΝ δείχνει άμεσα τη σωστή. Αυτό γίνεται επί τούτου έτσι, ώστε ο χρήστης να επαναλάβει το τεστάκι και να ανακαλύψει μόνος του τη σωστή απάντηση. Επιπλέον, με αυτή τη διαδικασία του δίνεται η αφορμή να εμπεδώσει καλύτερα και τις υπόλοιπες ερωτοαπαντήσεις της εκάστοτε θεματικής ενότητας. Γιατί, όπως είναι γνωστό, &amp;ldquo;Επανάληψις, μήτηρ πάσης μαθήσεως&amp;rdquo;. (Στην πραγματικότητα η μάθηση έχεις δύο μανάδες: την επανάληψη και την περιέργεια).&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Retriever of Lost Dreams</title>
+      <link>https://alamot.github.io/rold/</link>
+      <pubDate>Sun, 16 Aug 2015 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/rold/</guid>
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;Your name is Rold. You live in a very special place in the Universe. This place is called Dreamland. Your job is to foster and guard the Dream Stars. For, from their stardust, the people&#39;s dreams are born.&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;For a long time, everything was running smoothly and you loved your job. But one day, an evil Force stole all the Dream Stars from Dreamland and hid them in a castle with many rooms, full of traps. Can you retrieve them all and return them, back home, to Dreamland? So that people can dream again...&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ονομάζεσαι Ρολντ. Ζεις σε μια πολύ ξεχωριστή γωνιά του σύμπαντος, σε ένα μέρος που λέγεται Ονειροχώρα. Η δουλειά σου είναι να φροντίζεις και να φυλάς τα Άστρα των Ονείρων, που από την αστρόσκονή τους γεννιούνται τα όνειρα των ανθρώπων.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Για πάρα πολύ καιρό, όλα κυλούσαν ομαλά και λάτρευες τη δουλειά σου. Αλλά μια μέρα, μια σκοτεινή Δύναμη έκλεψε όλα τα Άστρα των Ονείρων και τα έκρυψε σε ένα κάστρο με πολλά δωμάτια, γεμάτα παγίδες. Μπορείς να τα  ανακτήσεις όλα και να τα επιστρέψεις πίσω, εκεί που είναι η θέση τους, στην Ονειροχώρα; Ώστε οι άνθρωποι να μπορέσουν να ονειρευτούν ξανά...&lt;/p&gt;
+
+&lt;div class=&#34;row&#34;&gt;
+&lt;div class=&#34;col-md-4&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/rold1.jpg&#34; alt=&#34;RoLD screenshot 1&#34; title=&#34;RoLD screenshot 1&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;col-md-4&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/rold2.jpg&#34; alt=&#34;RoLD screenshot 2&#34; title=&#34;RoLD screenshot 2&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;col-md-4&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/rold3.jpg&#34; alt=&#34;RoLD screenshot 3&#34; title=&#34;RoLD screenshot 3&#34;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p lang=&#34;en&#34;&gt;«Retriever of Lost Dreams&#34; is a puzzle game I created in 2015. It contains 55 one-screen puzzle rooms. You have to collect all the Dream Stars from each one of them. But can you? It will not be an easy task.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;O «Ιχνηλάτης των Χαμένων Ονείρων» («Retriever of Lost Dreams») είναι ένα παιχνίδι σπαζοκεφαλιών που είχα δημιουργήσει το 2015. Διαθέτει 55 επίπεδα δωμάτια μονής οθόνης. Σκοπός είναι να συλλέξετε όλα τα Αστέρια των Ονείρων σε καθένα από αυτά. Αλλά θα μπορέσετε? Δεν θα είναι καθόλου εύκολη υπόθεση.&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;
+&lt;div class=&#34;max-width640&#34;&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/mToGZgvMoEk?&#34;
+  style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/center&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-android-aria-hidden-true-i-span-lang-en-android-strong-full-strong-strong-demo-strong-versions-span-span-lang-el-εκδόσεις-για-android-strong-πλήρης-strong-strong-επίδειξης-strong-span&#34;&gt;&lt;i class=&#34;fa fa-android&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Android &lt;strong&gt;full&lt;/strong&gt; &amp;amp; &lt;strong&gt;demo&lt;/strong&gt; versions&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εκδόσεις για Android (&lt;strong&gt;πλήρης&lt;/strong&gt; &amp;amp; &lt;strong&gt;επίδειξης&lt;/strong&gt;)&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;clearfix&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://play.google.com/store/search?q=%22Retriever%20of%20Lost%20Dreams%22&amp;c=apps&#34; target=&#34;_blank&#34;&gt;
+&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Google Play&#34; src=&#34;https://alamot.github.io/images/gplay.png&#34; /&gt;
+&lt;/a&gt;
+&lt;a href=&#34;http://www.amazon.com/gp/mas/dl/android?s=Retriever%20of%20Lost%20Dreams&#34; target=&#34;_blank&#34;&gt;
+&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Amazon store&#34; src=&#34;https://alamot.github.io/images/amazon.png&#34; /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-windows-aria-hidden-true-i-span-lang-en-windows-strong-demo-strong-version-span-span-lang-el-έκδοση-strong-επίδειξης-strong-για-windows-span&#34;&gt;&lt;i class=&#34;fa fa-windows&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Windows &lt;strong&gt;demo&lt;/strong&gt; version&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Έκδοση &lt;strong&gt;επίδειξης&lt;/strong&gt; για Windows&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Download the &lt;a href=&#34;http://www.mediafire.com/download/73cvd1h54417ue9/ROLD_v102_demo_setup.exe&#34; target=&#34;_blank&#34;&gt;Windows &lt;strong&gt;DEMO&lt;/strong&gt; version&lt;/a&gt; for free.&lt;/p&gt;
+
+&lt;p lang=&#34;el&#34;&gt;Κατεβάστε την &lt;a href=&#34;http://www.mediafire.com/download/73cvd1h54417ue9/ROLD_v102_demo_setup.exe&#34; target=&#34;_blank&#34;&gt;έκδοση &lt;strong&gt;ΕΠΙΔΕΙΞΗΣ&lt;/strong&gt; για Windows&lt;/a&gt; δωρεάν.&lt;/p&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-apple-aria-hidden-true-i-span-lang-en-mac-os-x-strong-demo-strong-version-span-span-lang-el-έκδοση-strong-επίδειξης-strong-για-mac-os-x-span&#34;&gt;&lt;i class=&#34;fa fa-apple&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Mac OS X &lt;strong&gt;demo&lt;/strong&gt; version&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Έκδοση &lt;strong&gt;επίδειξης&lt;/strong&gt; για Mac OS X&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Download the &lt;a href=&#34;http://www.mediafire.com/download/2lwtm4bk426dnj6/Retriever_of_Lost_Dreams_%28DEMO%29.pkg.zip&#34; target=&#34;_blank&#34;&gt;Mac OS X &lt;strong&gt;DEMO&lt;/strong&gt; version &lt;/a&gt; for free.&lt;/p&gt;
+
+&lt;p lang=&#34;el&#34;&gt;Κατεβάστε την &lt;a href=&#34;http://www.mediafire.com/download/2lwtm4bk426dnj6/Retriever_of_Lost_Dreams_%28DEMO%29.pkg.zip&#34; target=&#34;_blank&#34;&gt;έκδοση &lt;strong&gt;ΕΠΙΔΕΙΞΗΣ&lt;/strong&gt; για Mac OS X &lt;/a&gt; δωρεάν.&lt;/p&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-windows-aria-hidden-true-i-i-class-fa-fa-apple-aria-hidden-true-i-span-lang-en-windows-mac-os-x-strong-full-strong-versions-bundle-span-span-lang-el-strong-πλήρεις-strong-εκδόσεις-για-windows-mac-os-x-span&#34;&gt;&lt;i class=&#34;fa fa-windows&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;i class=&#34;fa fa-apple&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt; Windows &amp;amp; Mac OS X &lt;strong&gt;full&lt;/strong&gt; versions bundle&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt; &lt;strong&gt;Πλήρεις&lt;/strong&gt; εκδόσεις για Windows &amp;amp; Mac OS X&lt;/span&gt;&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span lang=&#34;en&#34;&gt;Buy from itch.io&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Αγορά από itch.io&lt;/span&gt;
+&lt;p&gt;&lt;iframe src=&#34;https://itch.io/embed/33791?dark=true&amp;linkback=true&#34; width=&#34;552&#34; height=&#34;167&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;span lang=&#34;en&#34;&gt;Buy from www.humblebundle.com&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Αγορά από www.humblebundle.com&lt;/span&gt;
+&lt;p&gt;&lt;iframe src=&#34;https://www.humblebundle.com/widget/v2/product/rold_widget/hVYtubJdbv?theme=light&#34; width=&#34;552&#34; height=&#34;327&#34; style=&#34;border: none;&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Quotests</title>
+      <link>https://alamot.github.io/quotests/</link>
+      <pubDate>Tue, 07 Jul 2015 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/quotests/</guid>
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;
+This application consists of multiple choice quizzes to test your English language skills. But there is a twist. Instead of using common boring phrases, it features text from great quotes by famous people! 
+&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;
+Αυτή η εφαρμογή περιέχει τεστάκια με ερωτήσεις πολλαπλής επιλογής για να ελέγξετε τις ικανότητές σας στην αγγλική γλώσσα. Αλλά υπάρχει μια σημαντική ανατροπή. Αντί για ανιαρές τετριμένες φράσεις, σας παρουσιάζει καταπληκτικά γνωμικά από διάσημους ανθρώπους! 
+&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-features-span-span-lang-el-χαρακτηριστικά-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Features&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Χαρακτηριστικά&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;★ Share quote via... / Send quote to ... &lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;★ Save your favorite quotes&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;★ Copy / paste quote&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;★ Progress / score tracking&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;★ Turn sound on/off&lt;/p&gt;
+
+&lt;p lang=&#34;el&#34;&gt;★ Μοιραστείτε το γνωμικό μέσω... / Στείλτε το γνωμικό σε ... &lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;★ Αποθηκεύστε τα αγαπημένα σας γνωμικά&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;★ Αντιγραφή / επικόλληση γνωμικού/p&gt;
+&lt;p lang=&#34;el&#34;&gt;★ Παρακολούθηση πρόοδου / βαθμολογίας&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;★ Ενεργοποίηση / απενεργοποίηση ήχου&lt;/p&gt;
+
+&lt;div lang=&#34;en&#34;&gt;&lt;strong&gt;To-do list&lt;/strong&gt; (if there is enough support / interest):&lt;/div&gt;
+&lt;div lang=&#34;el&#34;&gt;&lt;strong&gt;Λίστα μελλοντικών σχεδίων&lt;/strong&gt; (αν υπάρχει αρκετή υποστήριξη / ενδιαφέρον):&lt;/div&gt;
+
+&lt;p lang=&#34;en&#34;&gt;+ Add explanations and grammar rules&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;+ Add more quotes and categories&lt;/p&gt;
+
+&lt;p lang=&#34;el&#34;&gt;+ Προσθήκη επεξηγήσεων και γραμματικών κανόνων&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;+ Προσθήκη περισσότερων γνωμικών και κατηγοριών&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-screenshots-span-span-lang-el-εικόνες-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Screenshots&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εικόνες&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;row&#34;&gt;
+&lt;div class=&#34;col-md-4&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/quotests1.png&#34; alt=&#34;Quotests screenshot 1&#34; title=&#34;Quotests screenshot 1&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;col-md-4&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/quotests2.png&#34; alt=&#34;Quotests screenshot 2&#34; title=&#34;Quotests screenshot 2&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;col-md-4&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/quotests3.png&#34; alt=&#34;Quotests screenshot 3&#34; title=&#34;Quotests screenshot 3&#34;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-android-aria-hidden-true-i-span-lang-en-android-strong-full-strong-strong-demo-strong-versions-span-span-lang-el-εκδόσεις-για-android-strong-πλήρης-strong-strong-επίδειξης-strong-span&#34;&gt;&lt;i class=&#34;fa fa-android&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Android &lt;strong&gt;full&lt;/strong&gt; &amp;amp; &lt;strong&gt;demo&lt;/strong&gt; versions&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εκδόσεις για Android (&lt;strong&gt;πλήρης&lt;/strong&gt; &amp;amp; &lt;strong&gt;επίδειξης&lt;/strong&gt;)&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;clearfix&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://play.google.com/store/search?q=%22Quotests%22&amp;c=apps&#34; target=&#34;_blank&#34;&gt;
+&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Google Play&#34; src=&#34;https://alamot.github.io/images/gplay.png&#34; /&gt;
+&lt;/a&gt;
+&lt;a href=&#34;http://www.amazon.com/gp/mas/dl/android?s=Quotests&#34; target=&#34;_blank&#34;&gt;
+&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Amazon store&#34; src=&#34;https://alamot.github.io/images/amazon.png&#34; /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p lang=&#34;en&#34;&gt;&lt;strong&gt;Note&lt;/strong&gt;: All future updates will be free to the buyers of this app. :)&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;&lt;strong&gt;Σημείωση&lt;/strong&gt;: Όλες οι μελλοντικές ανανεώσεις θα διατίθονται δωρέαν στους αγοραστές αυτής της εφαρμογής. :)&lt;/p&gt;
 </description>
     </item>
     
@@ -1647,6 +1737,109 @@ In this video, I have translated to greek a traditional chastushka of the Caucas
     </item>
     
     <item>
+      <title>Alamot&#39;s matchstick puzzles</title>
+      <link>https://alamot.github.io/matchsticks/</link>
+      <pubDate>Tue, 11 Mar 2014 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/matchsticks/</guid>
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;This is a game with matchstick puzzles I created in 2014.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτό είναι ένα παιχνίδι με σπαζοκεφαλιές σπίρτων που δημιούργησα το 2014.&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-features-span-span-lang-el-χαρακτηριστικά-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Features&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Χαρακτηριστικά&lt;/span&gt;&lt;/h1&gt;
+
+&lt;section lang=&#34;en&#34;&gt;100 awesome matchstick puzzles! Can you solve them all?
+&lt;ul&gt;
+&lt;li&gt;Great variety of categories&lt;/li&gt;
+&lt;li&gt;Puzzles with movement, removal or rotation of matchsticks&lt;/li&gt;
+&lt;li&gt;Solve geometry problems&lt;/li&gt;
+&lt;li&gt;Form squares, triangles, rectangles, rhombi and other shapes&lt;/li&gt;
+&lt;li&gt;Divide figures into identical parts&lt;/li&gt;
+&lt;li&gt;Change the total surface&lt;/li&gt;
+&lt;li&gt;Transform shapes&lt;/li&gt;
+&lt;li&gt;Multiply objects&lt;/li&gt;
+&lt;li&gt;Correct math equations&lt;/li&gt;
+&lt;li&gt;Find the word problems&lt;/li&gt;
+&lt;li&gt;Solve riddles&lt;/li&gt;
+&lt;li&gt;★ Bonus ★: Under the instructions for each puzzle, there are various history facts, fun facts, trivia, quotes, proverbs, poems and even short stories about matches!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+
+&lt;section lang=&#34;el&#34;&gt;100 φοβερές σπιρτοσπαζοκεφαλιές! Μπορείτε να τις λύσετε όλες;
+&lt;ul&gt;
+&lt;li&gt;Μεγάλη ποικιλία κατηγοριών&lt;/li&gt;
+&lt;li&gt;Σπαζοκεφαλιές με μετακίνηση, αφαίρεση ή περιστροφή σπίρτων&lt;/li&gt;
+&lt;li&gt;Επιλύστε γεωμετρικά προβλάματα&lt;/li&gt;
+&lt;li&gt;Σχηματίστε τετράγωνα, τρίγωνα, ορθογώνια, ρόμβους και άλλα σχήματα&lt;/li&gt;
+&lt;li&gt;Χωρίστε σχήματα σε ταυτόσημα μέρη&lt;/li&gt;
+&lt;li&gt;Αλλάξτε την συνολογική επιφάνεια&lt;/li&gt;
+&lt;li&gt;Μεταμορφώστε σχήματα&lt;/li&gt;
+&lt;li&gt;Πολλαπλασιάστε αντικείμενα&lt;/li&gt;
+&lt;li&gt;Διορθώστε μαθηματικές εξισώσεις&lt;/li&gt;
+&lt;li&gt;Μαντέψτε τη λέξη&lt;/li&gt;
+&lt;li&gt;Λύστε γρίφους και αινίγματα&lt;/li&gt;
+&lt;li&gt;★ Μπόνους ★: Κάτω από τις οδηγίες κάθε σπαζοκεφαλιάς υπάρχουν διάφορα ιστορικά γεγονότα, γνωμικά, παροιμίες, ποιήματα, αστεία, ακόμη και μικρές ιστορίες γύρω από τα σπίρτα!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/section&gt;
+
+&lt;h1 id=&#34;span-lang-en-screenshots-span-span-lang-el-εικόνες-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Screenshots&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εικόνες&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;row&#34;&gt;
+&lt;div class=&#34;col-md-6&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/match1.png&#34; alt=&#34;Screenshot 1&#34; title=&#34;Screenshot 1&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;col-md-6&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/match2.png&#34; alt=&#34;Screenshot 2&#34; title=&#34;Screenshot 2&#34;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;row&#34;&gt;
+&lt;div class=&#34;col-md-6&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/match3.png&#34; alt=&#34;Screenshot 3&#34; title=&#34;Screenshot 3&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;col-md-6&#34;&gt;
+&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/match4.png&#34; alt=&#34;Screenshot 4&#34; title=&#34;Screenshot 4&#34;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-android-aria-hidden-true-i-span-lang-en-android-strong-full-strong-strong-demo-strong-versions-span-span-lang-el-εκδόσεις-για-android-strong-πλήρης-strong-strong-επίδειξης-strong-span&#34;&gt;&lt;i class=&#34;fa fa-android&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Android &lt;strong&gt;full&lt;/strong&gt; &amp;amp; &lt;strong&gt;demo&lt;/strong&gt; versions&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Εκδόσεις για Android (&lt;strong&gt;πλήρης&lt;/strong&gt; &amp;amp; &lt;strong&gt;επίδειξης&lt;/strong&gt;)&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;clearfix&#34;&gt;
+&lt;p&gt;
+&lt;a href=&#34;https://play.google.com/store/search?q=%22Alamot%27s%20Matchstick%20Puzzles%22&amp;c=apps&#34; target=&#34;_blank&#34;&gt;
+&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Google Play&#34; src=&#34;https://alamot.github.io/images/gplay.png&#34; /&gt;
+&lt;/a&gt;
+&lt;a href=&#34;http://www.amazon.com/gp/mas/dl/android?s=Alamot%27s%20Matchstick%20Puzzles&#34; target=&#34;_blank&#34;&gt;
+&lt;img class=&#34;floatleft&#34; alt=&#34;Get it on Amazon store&#34; src=&#34;https://alamot.github.io/images/amazon.png&#34; /&gt;
+&lt;/a&gt;
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-windows-aria-hidden-true-i-span-lang-en-windows-strong-demo-strong-version-span-span-lang-el-έκδοση-strong-επίδειξης-strong-για-windows-span&#34;&gt;&lt;i class=&#34;fa fa-windows&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Windows &lt;strong&gt;demo&lt;/strong&gt; version&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Έκδοση &lt;strong&gt;επίδειξης&lt;/strong&gt; για Windows&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Download the &lt;a href=&#34;http://www.mediafire.com/download/oanw8ctmkkfv7wu/Matchsticks_demo_setup.exe&#34; target=&#34;_blank&#34;&gt;Windows &lt;strong&gt;DEMO&lt;/strong&gt; version&lt;/a&gt; for free.&lt;/p&gt;
+
+&lt;p lang=&#34;el&#34;&gt;Κατεβάστε την &lt;a href=&#34;http://www.mediafire.com/download/oanw8ctmkkfv7wu/Matchsticks_demo_setup.exe&#34; target=&#34;_blank&#34;&gt;έκδοση &lt;strong&gt;ΕΠΙΔΕΙΞΗΣ&lt;/strong&gt; για Windows&lt;/a&gt; δωρεάν.&lt;/p&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-apple-aria-hidden-true-i-span-lang-en-mac-os-x-strong-demo-strong-version-span-span-lang-el-έκδοση-strong-επίδειξης-strong-για-mac-os-x-span&#34;&gt;&lt;i class=&#34;fa fa-apple&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt;Mac OS X &lt;strong&gt;demo&lt;/strong&gt; version&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Έκδοση &lt;strong&gt;επίδειξης&lt;/strong&gt; για Mac OS X&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Download the &lt;a href=&#34;http://www.mediafire.com/download/y8ac9o61ziyop8o/Alamot%27s_Matchstick_Puzzles_%28DEMO%29.pkg.zip&#34; target=&#34;_blank&#34;&gt;Mac OS X &lt;strong&gt;DEMO&lt;/strong&gt; version &lt;/a&gt; for free.&lt;/p&gt;
+
+&lt;p lang=&#34;el&#34;&gt;Κατεβάστε την &lt;a href=&#34;http://www.mediafire.com/download/y8ac9o61ziyop8o/Alamot%27s_Matchstick_Puzzles_%28DEMO%29.pkg.zip&#34; target=&#34;_blank&#34;&gt;έκδοση &lt;strong&gt;ΕΠΙΔΕΙΞΗΣ&lt;/strong&gt; για Mac OS X &lt;/a&gt; δωρεάν.&lt;/p&gt;
+
+&lt;h1 id=&#34;i-class-fa-fa-windows-aria-hidden-true-i-i-class-fa-fa-apple-aria-hidden-true-i-span-lang-en-windows-mac-os-x-strong-full-strong-versions-bundle-span-span-lang-el-strong-πλήρεις-strong-εκδόσεις-για-windows-mac-os-x-span&#34;&gt;&lt;i class=&#34;fa fa-windows&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;i class=&#34;fa fa-apple&#34; aria-hidden=&#34;true&#34;&gt;&lt;/i&gt; &lt;span lang=&#34;en&#34;&gt; Windows &amp;amp; Mac OS X &lt;strong&gt;full&lt;/strong&gt; versions bundle&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt; &lt;strong&gt;Πλήρεις&lt;/strong&gt; εκδόσεις για Windows &amp;amp; Mac OS X&lt;/span&gt;&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span lang=&#34;en&#34;&gt;Buy from itch.io&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Αγορά από itch.io&lt;/span&gt;
+&lt;p&gt;&lt;iframe class=&#34;embed-responsive-item&#34; src=&#34;https://itch.io/embed/33746?dark=true&amp;amp;linkback=true&#34; width=&#34;552&#34; height=&#34;167&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;span lang=&#34;en&#34;&gt;Buy from www.humblebundle.com&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Αγορά από www.humblebundle.com&lt;/span&gt;
+&lt;p&gt;&lt;iframe src=&#34;https://www.humblebundle.com/widget/v2/product/matchstick_widget/fAb10EYf7O?theme=light&#34; width=&#34;552&#34; height=&#34;327&#34; style=&#34;border: none;&#34; scrolling=&#34;no&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>How to build a responsive popup window with scrolling capability in Kivy</title>
       <link>https://alamot.github.io/kivy_popup/</link>
       <pubDate>Wed, 19 Feb 2014 00:00:00 +0000</pubDate>
@@ -2192,412 +2385,6 @@ Marshall, W. F. (2009). «Centriole evolution». Current Opinion in Cell Biology
 &lt;li&gt;Penrose,  Roger. (1994). «Shadows of the Mind».   Oxford: Oxford University Press.&lt;/li&gt;
 &lt;li&gt;Selfridge,    Oliver (1959). «Pandemonium:    A paradigm for learning».   In D. V. Blake and A. M. Uttley, editors, Proceedings of the    Symposium on Mechanization of Thought Processes, pages 511-529, London.&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Electric current and human body (available in greek only)</title>
-      <link>https://alamot.github.io/electric_current_and_human_body/</link>
-      <pubDate>Mon, 01 Jun 2009 00:00:00 +0000</pubDate>
-      <guid>https://alamot.github.io/electric_current_and_human_body/</guid>
-      <description>
-
-&lt;h1 id=&#34;βασικές-έννοιες-του-ηλεκτρισμού&#34;&gt;Βασικές έννοιες του ηλεκτρισμού&lt;/h1&gt;
-
-&lt;p&gt;Για να εξετάσουμε τις επιπτώσεις του ηλεκτρικού ρεύματος στο ανθρώπινο σώμα είναι αναγκαίο να γνωρίζουμε κάποιες βασικές έννοιες και αρχές του ηλεκτρισμού.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&#34;floatleft height10&#34; src=&#34;https://alamot.github.io/images/electrons.jpg&#34; alt=&#34;Electron flow&#34;&gt;
-&lt;strong&gt;&lt;em&gt;Ηλεκτρικό ρεύμα&lt;/em&gt;&lt;/strong&gt; ονομάζουμε το φαινόμενο της ροής ηλεκτρικού φορτίου. Το μέγεθος με το οποίο μετράμε αυτό το φαινόμενο είναι η &lt;em&gt;ένταση του ηλεκτρικού ρεύματος&lt;/em&gt; που ορίζεται ως ο ρυθμός ροής ηλεκτρικού φορτίου από μια περιοχή σε άλλη διαμέσου μίας δεδομένης επιφάνειας: &lt;div class=&#34;matheq&#34;&gt;$$I=\frac{dQ}{dt}$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;Σε έναν αγωγό, η ένταση του ρεύματος εξαρτάται από την ταχύτητα μετακίνησης των φορτισμένων σωματιδίων, τη συγκέντρωσή τους και το φορτίο τους. Η μονάδα της έντασης του ρεύματος στο S.I. είναι το ampère. Ένα ampère ορίζεται ως ίσο προς ένα coulomb ανά δευτερόλεπτο (1 Α = 1 C/s). Στα μέταλλα τα κινούμενα φορτία είναι τα αρνητικά φορτισμένα ηλεκτρόνια, σε ένα ιοντικό διάλυμα τα θετικά ή αρνητικά φορτισμένα ιόντα, ενώ στο πλάσμα και τα δύο. Όμως, κατά σύμβαση και καταχρηστικά, το ρεύμα περιγράφεται ως ροή θετικού φορτίου, ασχέτως αν οι πραγματικοί φορείς φορτίου είναι αρνητικοί ή/και θετικοί.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Συνεχές ρεύμα&lt;/em&gt;&lt;/strong&gt; (&lt;em&gt;direct current&lt;/em&gt;, DC) ονομάζουμε το ρεύμα στο οποίο η κίνηση των ηλεκτρικών φορέων έχει σταθερή φορά. Η ένταση του μπορεί να είναι σταθερή ή να μεταβάλλεται με το χρόνο.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&#34;border floatcenter height20&#34; src=&#34;https://alamot.github.io/images/types_of_current.svg&#34; alt=&#34;Types of current&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;Εναλλασσόμενο ρεύμα&lt;/em&gt;&lt;/strong&gt; (&lt;em&gt;alternative current&lt;/em&gt;, AC) ονομάζουμε το ρεύμα του οποίου η ένταση και η φορά κίνησης των ηλεκτρικών φορέων μεταβάλλονται περιοδικά με το χρόνο. Η ημιτονοειδής μορφή του AC είναι η πιο συνήθης, γιατί καθιστά τη μεταφορά ενέργειας πιο αποτελεσματική.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&#34;floatleft height9 border&#34; src=&#34;https://alamot.github.io/images/ohms_law.svg&#34; alt=&#34;Ohm&#39;s law&#34;&gt;
-Για υλικά που ακολουθούν το &lt;em&gt;νόμο του Ohm&lt;/em&gt;, η ένταση του ρεύματος που διαρρέει έναν αγωγό είναι ευθέως ανάλογη της διαφορά δυναμικού V στα άκρα του αγωγού και αντιστρόφως ανάλογη της αντίστασης του:
-&lt;div class=&#34;matheq&#34;&gt;$$I=\frac{V}{R}$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;Η μονάδα αντίστασης στο σύστημα S.I. είναι το &lt;em&gt;ohm&lt;/em&gt;, ίσο προς ένα volt ανά ampère (1 Ω = 1 V/A). Πρέπει να σημειώσουμε ότι πολλές διατάξεις δεν ακολουθούν το νόμο του Ohm αλλά εμφανίζουν μία περισσότερο πολύπλοκη σχέση τάση-ρεύματος. Η &lt;em&gt;αγωγιμότητα&lt;/em&gt; ορίζεται ως το αντίστροφο της αντίστασης:
-&lt;div class=&#34;matheq&#34;&gt;$$G=\frac{1}{R}=\frac{I}{V}$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;Σύμφωνα με τον &lt;em&gt;πρώτο νόμο του Joule&lt;/em&gt; (γνωστός και ως &lt;em&gt;νόμος Joule-Lenz&lt;/em&gt;)  η θερμότητα Q που παράγεται όταν ένα ρεύμα I διαρρέει έναν αγωγό με αντίσταση R για χρόνο t δίνεται από τη σχέση:
-&lt;div class=&#34;matheq&#34;&gt;$$Q=I^2*R*t$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;Όταν το ρεύμα εκφράζεται σε ampères, η αντίσταση σε ohms και ο χρόνος σε seconds, η μονάδα του Q είναι το &lt;em&gt;joule&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Ενεργός ένταση $I_{rms}$&lt;/em&gt; του εναλλασσόμενου ρεύματος είναι η ένταση του συνεχούς ρεύματος που προκαλεί το ίδιο θερμικό αποτέλεσμα με το εναλλασσόμενο ρεύμα όταν διαρρέει την ίδια ωμική αντίσταση κατά το ίδιο χρονικό διάστημα: &lt;div class=&#34;matheq&#34;&gt;$$I_{rms}=\frac{I_{max}}{\sqrt{2}}$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;Αντίστοιχα, ονομάζουμε &lt;em&gt;ενεργό τάση $V_{rms}$&lt;/em&gt; του εναλλασσόμενου ρεύματος την τάση του συνεχούς ρεύματος που, όταν εφαρμοστεί στα άκρα της ίδιας ωμικής αντίστασης R, δημιουργεί συνεχές ρεύμα του οποίου η ένταση είναι ίση με την ενεργό ένταση του εναλλασσόμενου ρεύματος: &lt;div class=&#34;matheq&#34;&gt;$$V_{rms}=\frac{V_{max}}{\sqrt{2}}$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;Όταν αναφερόμαστε στην τάση ή στην ένταση του εναλλασσόμενου ρεύματος, εννοούμε την ενεργό τιμή αυτών των μεγεθών.&lt;/p&gt;
-
-&lt;p&gt;&lt;em&gt;Ηλεκτρική εμπέδηση&lt;/em&gt; ή &lt;em&gt;σύνθετη αντίσταση Ζ&lt;/em&gt; ενός κυκλώματος εναλλασσόμενου ρεύματος ορίζουμε το πηλίκο του πλάτους της εναλλασσόμενης τάσης $V_{max}$ που εφαρμόζεται στα άκρα του κυκλώματος προς το πλάτος $I_{max}$ της έντασης του ρεύματος που το διαρρέει: &lt;div class=&#34;matheq&#34;&gt;$$Z=\frac{I_{max}}{V_{max}}=\frac{I_{rms}}{V_{rms}}$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;p&gt;Η εξίσωση αυτή αποτελεί ουσιαστικά γενικευμένη μορφή του νόμου του Ohm που περιλαμβάνει και κυκλώματα εναλλασσόμενου ρεύματος. Η μονάδα της εμπέδησης στο SI είναι το &lt;em&gt;ohm&lt;/em&gt;. Η &lt;em&gt;εμπέδηση&lt;/em&gt; είναι το φυσικό μέγεθος που περιγράφει τις δυσκολίες που συναντάει η ροή των ηλεκτρικών φορέων σε ένα κύκλωμα λόγω της &lt;em&gt;ωμικής αντίστασης&lt;/em&gt; R, της &lt;em&gt;επαγωγικής αντίστασης&lt;/em&gt; $Ζ_{L}$ και της &lt;em&gt;χωρητικής αντίστασης&lt;/em&gt; $Ζ_{C}$:
-&lt;div class=&#34;matheq&#34;&gt;$$Z=\sqrt{R^2+(Z_{L}-Z_{C})^2}$$&lt;/div&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;ηλεκτρισμός-και-ανθρώπινο-σώμα&#34;&gt;Ηλεκτρισμός και ανθρώπινο σώμα&lt;/h1&gt;
-
-&lt;p&gt;Ο ηλεκτρισμός που παράγεται στο εσωτερικό του σώματος χρησιμοποιείται για τη λειτουργία των νεύρων και τον έλεγχο μυών και οργάνων. Η δραστηριότητα του εγκεφάλου είναι κυρίως ηλεκτρική. Όλα τα νευρικά σήματα από και προς τον εγκέφαλο σχετίζονται με τη ροή ηλεκτρικού ρεύματος.&lt;/p&gt;
-
-&lt;h2 id=&#34;νευρώνες&#34;&gt;Νευρώνες&lt;/h2&gt;
-
-&lt;p&gt;&lt;img class=&#34;border floatright&#34; src=&#34;https://alamot.github.io/images/NaKExchanger.jpg&#34; alt=&#34;Na/K exchanger&#34;&gt;
-Τα σήματα αυτά είναι αποτέλεσμα της ηλεκτροχημικής δράσης των νευρικών κυττάρων. Όταν ένας νευρώνας βρίσκεται σε ηρεμία, εμφανίζει διαφορά δυναμικού (&lt;em&gt;δυναμικό ηρεμίας&lt;/em&gt;) μεταξύ της εξωτερικής και της εσωτερικής επιφάνειας της κυτταρικής του μεμβράνης που οφείλεται, κυρίως, στη δράση μιας αντλίας ιόντων Na+/K+. Η αντλία αυτή για κάθε δύο ιόντα Κ+ που εισάγει στο κύτταρο, εξάγει τρία ιόντα Na+. Το αποτέλεσμα είναι η εξωτερική  επιφάνεια να είναι ηλεκτροθετικότερη της εσωτερικής κατά 60 – 90 mV.  Όταν επιδράσει κάποιο ερέθισμα στην επιφάνεια ενός νευρικού κυττάρου, στο σημείο εκείνο αυξάνει η διαπερατότητα της μεμβράνης για τα ιόντα Na+ (ανοίγουν δίαυλοι ιόντων Na+) τα οποία και εισέρχονται στο εσωτερικό του κυττάρου λόγω της μεγαλύτερης συγκέντρωσής τους στον εξωκυττάριο χώρο.&lt;/p&gt;
-
-&lt;p&gt;Το αποτέλεσμα είναι η εσωτερική επιφάνεια να γίνει ηλεκτροθετικότερη της εξωτερικής κατά 40-50 mV. Έχουμε, δηλαδή, μια αναστροφή (&lt;em&gt;εκπόλωση&lt;/em&gt;) του δυναμικού (&lt;em&gt;δυναμικό ενέργειας&lt;/em&gt;). Με την αναστροφή αυτή ελαττώνεται η διαπερατότητα της κυτταρικής μεμβράνης για τα ιόντα Na+ (κλείνουν ταση-ελεγχόμενοι δίαυλοι Na+) και αυξάνεται για τα ιόντα Κ+ (ανοίγουν ταση-ελεγχόμενοι δίαυλοι Κ+) που διαχέονται προς το εξωτερικό του κυττάρου με αποτέλεσμα να αποκαθίσταται το δυναμικό ηρεμίας (&lt;em&gt;επαναπόλωση&lt;/em&gt;). Η μετάδοση του δυναμικού ενέργειας (&lt;em&gt;νευρικός παλμός&lt;/em&gt;) κατά μήκος της νευρικής ίνας αποτελεί τη &lt;em&gt;νευρική ώση&lt;/em&gt;.
-&lt;a title=&#34;By Laurentaylorj (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons&#34; href=&#34;https://commons.wikimedia.org/wiki/File%3AAction_Potential.gif&#34; target=&#34;_blank&#34;&gt;&lt;img class=&#34;border floatcenter&#34; alt=&#34;Action Potential&#34; src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Action_Potential.gif/512px-Action_Potential.gif&#34;/&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;καρδιά&#34;&gt;Καρδιά&lt;/h2&gt;
-
-&lt;p&gt;Αντίθετα με τους υπόλοιπους μύες του σώματος, των οποίων η συστολή εξαρτάται από τη μετάδοση νευρικών ώσεων, η καρδιά είναι ένα όργανο που έχει την ικανότητα να συστέλλεται χωρίς την ανάγκη ύπαρξης νευρικού ή άλλου εξωτερικού ερεθίσματος, επειδή διαθέτει ένα δικό της ειδικό ηλεκτρικό σύστημα (&lt;em&gt;ερεθισματαγωγό σύστημα της καρδιάς&lt;/em&gt;). Η παραγωγή του ερεθίσματος σε μια φυσιολογική καρδιά γίνεται σε μια περιοχή που εντοπίζεται στη συμβολή του δεξιού κόλπου και της άνω κοίλης φλέβας και ονομάζεται &lt;em&gt;φλεβόκομβος&lt;/em&gt;. Ο φλεβόκομβος είναι ένα σύνολο τροποποιημένων καρδιακών μυϊκών κυττάρων που σχηματίζουν τη λεγόμενη πρωτογενή ηλεκτρική γεννήτρια (&lt;em&gt;βηματοδότη&lt;/em&gt;) της καρδιάς. Κάθε καρδιακός παλμός που ξεκινά στο φλεβόκομβο, πυροδοτεί μια αλυσιδωτή ηλεκτροχημική αντίδραση που διαχέει το σήμα και στους δύο κόλπους, με αποτέλεσμα την κολπική σύσπαση. Το ηλεκτρικό σήμα μεταβιβάζεται στη συνέχεια στον κολποκοιλιακό κόμβο και από εκεί στις δύο κοιλίες, με αποτέλεσμα την κοιλιακή σύσπαση. Μια υγιής καρδιά χτυπά με συχνότητα περίπου 60 έως 100 παλμών ανά λεπτό, σε κατάσταση ηρεμίας.&lt;/p&gt;
-
-&lt;p&gt;&lt;a title=&#34;By Kalumet (selbst erstellt = Own work) [GFDL (http://www.gnu.org/copyleft/fdl.html) or CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/)], via Wikimedia Commons&#34; href=&#34;https://commons.wikimedia.org/wiki/File%3AECG_Principle_fast.gif&#34; target=&#34;_blank&#34;&gt;&lt;img class=&#34;border floatcenter&#34; alt=&#34;ECG Principle fast&#34; src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ECG_Principle_fast.gif/256px-ECG_Principle_fast.gif&#34;/&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;Ο &lt;em&gt;κοιλιακός ινιδισμός&lt;/em&gt;, γνωστός επίσης και ως &lt;em&gt;κοιλιακή μαρμαρυγή&lt;/em&gt;, είναι μια παθολογική κατάσταση που απειλεί άμεσα τη ζωή και χαρακτηρίζεται από ασυντόνιστη σύσπαση των μυϊκών ινών των κοιλιών της καρδίας με συνέπεια να παύει ολοκληρωτικά η επιτέλεση του αντλητικού έργου της καρδιάς. Οφείλεται, συνήθως, στη διασταύρωση του φυσιολογικού ρεύματος της καρδιάς με ένα δεύτερο, σχεδόν κάθετο, έκτοπο ρεύμα με αποτέλεσμα να δημιουργούνται ανώμαλα μοτίβα ηλεκτρικής διέγερσης των μυϊκών ινών.
-Η πιο ευάλωτη στιγμή του καρδιακού κύκλου για την πρόκληση κοιλιακής μαρμαρυγής είναι το πρώτο μισό του κύματος Τ, φάση κατά την οποία το μυοκάρδιο των κοιλιών υφίσταται επαναπόλωση (αποδιέργεση).&lt;/p&gt;
-
-&lt;h2 id=&#34;οστά&#34;&gt;Οστά&lt;/h2&gt;
-
-&lt;p&gt;Μια ακόμη ζωτική λειτουργία, που φαίνεται να είναι ελεγχόμενη ηλεκτρικά, είναι η αύξηση των οστών. Τα οστά περιέχουν &lt;em&gt;κολλαγόνο&lt;/em&gt;, που είναι &lt;em&gt;πιεζοηλεκτρικό&lt;/em&gt; υλικό, δηλαδή όταν ασκηθεί σε αυτό κάποια δύναμη δημιουργείται ένα μικρό ηλεκτρικό δυναμικό. Το κολλαγόνο έχει τέτοια δομή ώστε να επιτρέπει τη ροή κυρίως αρνητικών φορτίων. Αντίθετα, οι ανόργανοι κρύσταλλοι του οστού (&lt;em&gt;απατίτης&lt;/em&gt;) που βρίσκονται κοντά στο κολλαγόνο διαρρέονται κυρίως από θετικά φορτία. Γι’ αυτό στην ένωση αυτών των δύο τύπων &lt;em&gt;ημιαγωγών&lt;/em&gt;, το ρεύμα ρέει εύκολα προς τη μία κατεύθυνση αλλά όχι προς την αντίθετη (λειτουργούν δηλαδή ως &lt;em&gt;ηλεκτρική δίοδος&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;Έρευνες, λοιπόν, έχουν δείξει ότι οι δυνάμεις που ασκούνται στα οστά παράγουν δυναμικά που οφείλονται στο πιεζοηλεκτρικό φαινόμενο και με τον τρόπο αυτό παράγονται ρεύματα στις επαφές κολλαγόνου – απατίτη, που προκαλούν και ελέγχουν την αύξηση των οστών. Τα ρεύματα είναι ανάλογα της &lt;em&gt;μηχανικής τάσης&lt;/em&gt; (δύναμη ανά μονάδα επιφάνειας) και επομένως η αυξημένη τάση οδηγεί σε επιπλέον αύξηση του οστού.&lt;/p&gt;
-
-&lt;h2 id=&#34;ρεύμα-τραύματος&#34;&gt;Ρεύμα τραύματος&lt;/h2&gt;
-
-&lt;p&gt;Ένα άλλο ασθενές συνεχές ρεύμα, που καλείται &lt;em&gt;ρεύμα τραύματος&lt;/em&gt; (&lt;em&gt;injury current&lt;/em&gt;), παράγεται όταν μια περιοχή υφίσταται τραυματισμό. Οφείλεται στο ότι το ηλεκτρικό δυναμικό στην περιοχή του τραύματος είναι διαφορετικό από αυτό των γύρω περιοχών. Η διαφορά αυτή του δυναμικού πιστεύεται  ότι σχετίζεται με την αναγέννηση άκρων σε ζώα, όπως π.χ. η σαλαμάνδρα, και με την επούλωση πληγών ή εγκαυμάτων και την πώρωση των καταγμάτων στον άνθρωπο.&lt;/p&gt;
-
-&lt;h2 id=&#34;ηλεκτρογραφήματα&#34;&gt;Ηλεκτρογραφήματα&lt;/h2&gt;
-
-&lt;p&gt;Γενικά, μετρώντας επιλεκτικά, κατάλληλα ηλεκτρικά σήματα μπορούμε να συλλέξουμε χρήσιμες κλινικές πληροφορίες για συγκεκριμένες λειτουργίες του σώματος:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;em&gt;Ηλεκτροεγκεφαλογράφημα&lt;/em&gt; (ΗΕΓ) για έλεγχο της λειτουργίας του εγκεφάλου&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Ηλεκτροκαρδιογράφημα&lt;/em&gt; (ΗΚΓ) για τον έλεγχο της λειτουργίας της καρδιάς&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Ηλεκτρομυογράφημα&lt;/em&gt; (ΗΜΓ) για τον έλεγχο της λειτουργίας των μυών&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Ηλεκτροαμφιβληστροειδογράφημα&lt;/em&gt; (ΗΑΓ) και&lt;/li&gt;
-&lt;li&gt;&lt;em&gt;Ηλεκτροοφθαλμογράφημα&lt;/em&gt; (ΗΟΓ) για τον έλεγχο της λειτουργίας της όρασης&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;επιπτώσεις-του-ηλεκτρικού-ρεύματος-στο-ανθρώπινο-σώμα&#34;&gt;Επιπτώσεις του ηλεκτρικού ρεύματος στο ανθρώπινο σώμα&lt;/h1&gt;
-
-&lt;p&gt;Η &lt;em&gt;ηλεκτροπληξία&lt;/em&gt; είναι το παθοφυσιολογικό αποτέλεσμα ενός ηλεκτρικού ρεύματος που διέρχεται διαμέσου του ανθρώπινου σώματος. Το ηλεκτρικό ρεύμα μπορεί να έχει τις εξής επιπτώσεις στο ανθρώπινο σώμα:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Παρέμβαση στη λειτουργία του νευρoμυϊκού συστήματος, λόγω της τροποποίησης του δυναμικού ηρεμίας της κυτταρικής μεμβράνης.&lt;/li&gt;
-&lt;li&gt;Εγκαύματα και πηκτική νέκρωση λόγω μετατροπής της ηλεκτρικής ενέργειας σε θερμική.&lt;/li&gt;
-&lt;li&gt;Μηχανικό τραυματισμό αποτέλεσμα βίαιων μυϊκών συσπάσεων ή/και πτώσεων.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Η κατά κύριο λόγο ηλεκτρική φύση της μετάδοσης των νευρικών παλμών είναι υπεύθυνη για τη μεγάλη ευαισθησία του σώματος σε ηλεκτρικά ρεύματα που διοχετεύονται εξωτερικά. Ηλεκτρικά φορτία πολύ μικρά για &lt;img class=&#34;border floatleft height12&#34; src=&#34;https://alamot.github.io/images/Stromschlag.svg&#34; alt=&#34;Electric shock&#34;&gt;να προκαλέσουν θερμική βλάβη μπορεί να προκαλέσουν αλλαγή στη διαμόρφωση των πρωτεϊνών και διάτρηση (&lt;em&gt;electroporation&lt;/em&gt;) της ακεραιότητας των κυτταρικών μεμβρανών που είναι απειλητική για την ομαλή κυτταρική λειτουργία. Σε στιγμιαία επαφή με ρευματοφόρο αγωγό, προκαλείται κυτταρική βλάβη (θραύση και λύση κυττάρων) μη σχετιζόμενη με ελευθέρωση θερμότητας. Σε πιο παρατεταμένη επαφή προστίθεται το στοιχείο του θερμικού εγκαύματος. Τα αιμοφόρα αγγεία μπορεί να υποστούν θρόμβωση και απόφραξη, με αποτέλεσμα ιστική ισχαιμία και νέκρωση. Η μυϊκή καταστροφή μπορεί να οδηγήσει σε οξεία νεφρική ανεπάρκεια (λόγω απόφραξης των νεφρικών σωληναρίων από τη μυοσφαιρίνη που απελευθερώνεται). Κατάγματα οστών, ρήξη μυών και τενόντων μπορούν να προκληθούν λόγω των βίαιων μυϊκών συσπάσεων ή/και πτώσεων.&lt;/p&gt;
-
-&lt;h2 id=&#34;άμεσες-κλινικές-συνέπειες-επί-ηλεκτροπληξίας&#34;&gt;Άμεσες κλινικές συνέπειες επί ηλεκτροπληξίας&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Εγκαύματα, ιστική καταστροφή&lt;/li&gt;
-&lt;li&gt;Κακοήθεις καρδιακές αρρυθμίες, δομική μυοκαρδιακή βλάβη&lt;/li&gt;
-&lt;li&gt;Βλάβες από το κεντρικό νευρικό σύστημα και τα περιφερικά νεύρα&lt;/li&gt;
-&lt;li&gt;Βλάβες μυών, μυονέκρωση, ραβδομυόλυση, μυοσφαιρινουρία&lt;/li&gt;
-&lt;li&gt;Κατάγματα οστών, ρήξη συνδέσμων, τενόντων&lt;/li&gt;
-&lt;li&gt;Οξεία νεφρική ανεπάρκεια&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;όψιμες-κλινικές-συνέπειες-επί-ηλεκτροπληξίας&#34;&gt;Όψιμες κλινικές συνέπειες επί ηλεκτροπληξίας&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Νευρομυϊκά προβλήματα που μπορεί να οφείλονται σε μυϊκή ίνωση ή περιφερικές νευροπάθειες.&lt;/li&gt;
-&lt;li&gt;Αισθητικοκινητικές νευροπάθειες, παραισθησίες, δυσαισθησίες, αντανακλαστική συμπαθητική δυστροφία (αλγοδυστροφία).&lt;/li&gt;
-&lt;li&gt;Όψιμες νευρολογικές διαταραχές. Έχουν αναφερθεί παραπληγία και τετραπληγία μέχρι και 5 χρόνια (!) από την ηλεκτροπληξία.&lt;/li&gt;
-&lt;li&gt;Διαταραχές προσωπικότητας.&lt;/li&gt;
-&lt;li&gt;Δυσανεξία στο ψύχος.&lt;/li&gt;
-&lt;li&gt;Καταρράκτης.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;παράγοντες-που-καθορίζουν-το-είδος-και-την-έκταση-των-βλαβών&#34;&gt;Παράγοντες που καθορίζουν το είδος και την έκταση των βλαβών&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Το είδος και η έκταση των βλαβών επί ηλεκτροπληξίας εξαρτώνται από:&lt;/li&gt;
-&lt;li&gt;Την ένταση του ρεύματος που διέρχεται από τους ιστούς, η οποία με τη σειρά της εξαρτάται από την τάση του ρεύματος και την αντίσταση του σώματος (I=V/R).&lt;/li&gt;
-&lt;li&gt;Το είδος του ρεύματος (συνεχές / εναλλασσόμενο) και τη συχνότητα του ρεύματος (προκειμένου για εναλλασσόμενο).&lt;/li&gt;
-&lt;li&gt;Τη διαδρομή του ρεύματος στο σώμα, η οποία εξαρτάται από το σημείο επαφής με την πηγή («σημείο εισόδου»), το σημείο επαφής με τη γείωση («σημείο εξόδου») και την επιμέρους αντίσταση των διαφόρων ιστών.&lt;/li&gt;
-&lt;li&gt;Τη διάρκεια έκθεσης στο ρεύμα.&lt;/li&gt;
-&lt;li&gt;Την ενδεχόμενη εκτίναξη και πρόκληση μηχανικής βλάβης.&lt;/li&gt;
-&lt;li&gt;Τη γενικότερη κατάσταση υγείας του θύματος.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;η-ένταση-του-ηλεκτρικού-ρεύματος&#34;&gt;Η ένταση του ηλεκτρικού ρεύματος&lt;/h3&gt;
-
-&lt;p&gt;Εργαστηριακά πειράματα έχουν δείξει ότι λιγότερο από το 1% των ανθρώπων μπορούν να αισθανθούν εναλλασσόμενο ρεύμα έντασης 0,3 mA συχνότητας 50 Hz. Η μέση τιμή για το κατώφλι αντίληψης του ρεύματος είναι 1,1 mA στους άνδρες και 0,7 mA στις γυναίκες. Ρεύμα αύτη της έντασης δίνει μια αίσθηση «μυρμηγκιάσματος». Το κατώφλι αντίληψης για συνεχές ρεύμα κυμαίνεται από 2-10 mA. Αυτές οι τιμές μας δείχνουν τρία πράγματα:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Το κατώφλι αντίληψης διαφέρει από άνθρωπο σε άνθρωπο.&lt;/li&gt;
-&lt;li&gt;Οι γυναίκες είναι πιο ευαίσθητες στην αντίληψη του ρεύματος.&lt;/li&gt;
-&lt;li&gt;Το ανθρώπινο σώμα είναι πιο ευαίσθητο στα εναλλασσόμενα σήματα από ότι στα συνεχή.&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Ρεύμα έντασης 5 mA (0,005 Α) 50 Hz θεωρείται ως το μέγιστο που είναι ακίνδυνο, αν και το σοκ («τίναγμα») που προκαλεί μπορεί να είναι αρκετά ενοχλητικό.&lt;/p&gt;
-
-&lt;p&gt;Αν ένας άνθρωπος πιάσει με το χέρι του ένα ρευματοφόρο αγωγό οι μύες του χεριού διεγείρονται και συστέλλονται. Έτσι το άτομο αναγκάζεται να κρατήσει πιο σφικτά τον αγωγό παρόλο που υφίσταται ηλεκτροπληξία. Σε σχετικά χαμηλά επίπεδα έντασης ρεύματος το άτομο μπορεί να ελέγξει τους μύες του, υπερνικώντας το ρεύμα και έτσι να απαγκιστρωθεί από το ρευματοφόρο αγωγό. Τα επίπεδα αυτά εξαρτώνται από την μυϊκή μάζα. Έτσι στα 50 Hz για τους άνδρες είναι 10-16 mA, για τις γυναίκες 6-10 mA, ενώ για τα παιδιά 3-6 mA. Τα επίπεδα αυτά για συνεχές ρεύμα είναι, γενικά, περίπου 50 mA - 75mA.&lt;/p&gt;
-
-&lt;p&gt;Ένα ρεύμα έντασης 10 mA – 20 mA (0,01 Α – 0,02 Α) μέσα από το χέρι ή το πόδι είναι αρκετά επώδυνο και μπορεί να προκαλέσει ισχυρές μυϊκές συσπάσεις. Ρεύμα 20 mA (0,02 Α) μέσω του χεριού που κρατά ρευματοφόρο αγωγό καθιστά το άτομο πρακτικά ανίκανο να απαγκιστρωθεί από τον αγωγό λόγω της τετανικής σύσπασης που προκαλείται στους μύες του χεριού. Αν το θύμα δεν κρατά τον αγωγό, η ισχυρή μυϊκή σύσπαση συνήθως το εκτινάσσει μακριά με κίνδυνο μηχανικών κακώσεων. Ρεύματα της ίδιας έντασης μέσα από το στήθος μπορούν να προκαλέσουν &lt;em&gt;κοιλιακή μαρμαρυγή&lt;/em&gt; (άτακτη σύσπαση των μυϊκών ινών των κοιλιών της καρδίας) εντός 30 δευτερολέπτων. Είναι αξιοσημείωτο ότι η διαφορά ανάμεσα σε ένα ρεύμα που γίνεται μόλις αντιληπτό και σε ένα που μπορεί να σκοτώσει είναι λιγότερο από 20 mA.&lt;/p&gt;
-
-&lt;p&gt;Ρεύμα έντασης 20 mA - 50 mA (0,02 Α – 0,05 Α) 50 Hz είναι εξαιρετικά επώδυνο και μπορεί να προκαλέσει παράλυση των αναπνευστικών μυών (&lt;em&gt;αναπνευστική παύση&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;Εναλλασσόμενα ρεύματα της τάξης του 60 mA – 100 mA (0,06 A - 0,1 Α) 50 Hz που διέρχονται από το θώρακα ενήλικα, ενώ είναι πολύ μικρά για να προκαλέσουν ουσιαστική θέρμανση,  μπορούν να αποβούν θανατηφόρα επειδή παρεμβαίνουν στο νευρικό σύστημα και κυρίως στην καρδιά και μπορούν να προκαλέσουν απειλητικές για τη ζωή καρδιακές αρρυθμίες σε λιγότερο από ένα δευτερόλεπτο. Απαιτούνται 300 mA – 500 mA (0,3 A – 0,5 Α) συνεχούς ρεύματος για να προκληθεί αντίστοιχο αποτέλεσμα. Εάν ένα ρεύμα εφαρμοσθεί απευθείας στην καρδιά (&lt;em&gt;μικροσόκ&lt;/em&gt;) μέσω π.χ. ενός καθετήρα ή ενός ηλεκτρόδιου, τότε αρκεί λιγότερο από 1 mA (AC ή DC) για να προκληθεί κοιλιακή μαρμαρυγή.&lt;/p&gt;
-
-&lt;p&gt;Τα πολύ μεγάλα ρεύματα (πάνω από 0,1 Α) είναι λιγότερο επικίνδυνα να προκαλέσουν θανατηφόρα κοιλιακή μαρμαρυγή, επειδή το μυοκάρδιο ακινητοποιείται σε μία θέση. Αυτό βρίσκει εφαρμογή στους &lt;em&gt;απινιδωτές&lt;/em&gt;.
-Ρεύμα 0,2 Α - 0,5 Α μπορεί να προκαλέσει πολύ σοβαρές βλάβες εν τω βάθει ιστών αν η επαφή είναι αρκετά παρατεταμένη ώστε να προκληθεί έγκαυμα. Ρεύμα πάνω από 1 Α προκαλεί βλάβη σκελετικών μυών και περιφερικών νεύρων και καρδιοαναπνευστική ανακοπή.&lt;/p&gt;
-
-&lt;h3 id=&#34;η-τάση-του-ηλεκτρικού-ρεύματος&#34;&gt;Η τάση του ηλεκτρικού ρεύματος&lt;/h3&gt;
-
-&lt;p&gt;Από τις παραμέτρους που περιγράφονται από το νόμο του Ohm, η τάση είναι αυτή που συνήθως είναι γνωστή και θα μπορούσε να χρησιμοποιηθεί ως ένα μέτρο του μεγέθους της έκθεσης στο ρεύμα και κατά συνέπεια του μεγέθους της πιθανής βλάβης. Η τάση είναι ένα μέτρο της διαφοράς του ηλεκτρικού δυναμικού μεταξύ δύο σημείων και καθορίζεται από την ηλεκτρική πηγή. Οι περισσότερες ηλεκτροπληξίες προέρχονται από &lt;em&gt;πηγές σταθερής τάσης&lt;/em&gt;, δηλαδή η τάση δεν αλλάζει τιμή με το χρόνο, άσχετα από την ένταση του ρεύματος που διοχετεύεται στο σύστημα από την πηγή.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&#34;border floatright height12&#34; src=&#34;https://alamot.github.io/images/high-voltage-and-sky.jpg&#34; alt=&#34;High voltage&#34;&gt;
-Για να ρέουν, λοιπόν, τα φορτία σε ένα αγωγό πρέπει να υπάρχει μια τάση, δηλαδή μια διαφορά δυναμικού ανάμεσα σε δύο σημεία του αγωγού. Έτσι τα πουλιά που κάθονται πάνω σε ηλεκτροφόρα σύρματα δε παθαίνουν ηλεκτροπληξία γιατί και τα δύο τους πόδια ακουμπάνε πάνω στο ίδιο σύρμα. Έτσι, δεν υπάρχει ουσιαστική διαφορά δυναμικού μεταξύ τους και άρα δε ρέει ρεύμα διαμέσου του σώματος του πουλιού. Θα μπορούσε κάποιος, λοιπόν, να σκεφτεί ότι είναι αδύνατο να πάθει ηλεκτροπληξία ακουμπώντας μονάχα σε ένα σύρμα ή σε ένα σημείο. Δυστυχώς, για τους ανθρώπους, τις περισσότερες φορές δεν ισχύει κάτι τέτοιο, επειδή πατάνε στο έδαφός και τα υποδήματα που συνήθως φοράνε δεν είναι από μονωτικό υλικό με αποτέλεσμα να «κλείνει» το ηλεκτρικό κύκλωμα, χρησιμοποιώντας τη γη ως αγωγό.&lt;/p&gt;
-
-&lt;p&gt;Οι βλάβες από ηλεκτροπληξία χωρίζονται παραδοσιακά σε χαμηλής και υψηλής τάσης, με τα 500 ή 1000 V να αποτελούν αυθαίρετα την πιο συνηθισμένη διαχωριστική γραμμή. Η χρήση υψηλών τάσεων καθιστά της μεταφοράς ισχύος πιο αποτελεσματική, όμως αυξάνει ταυτόχρονα τον κίνδυνο ηλεκτροπληξίας. Αν και τόσο οι βλάβες από υψηλές τάσεις όσο και αυτές από χαμηλές τάσεις μπορούν να προκαλέσουν σημαντική νοσηρότητα και θνησιμότητα, ο γενικός κανόνας λέει ότι όσο υψηλότερη η τάση τόσο μεγαλύτερη είναι η ιστική καταστροφή, εξαιτίας του μεγαλύτερου ρεύματος που διαρρέει το σώμα. Στις υψηλές τάσεις, οι βλάβες οφείλονται κυρίως στην θερμότητα και οι ιστολογικές μελέτες που έχουν γίνει σε τέτοιες περιπτώσεις δείχνουν πηκτική νέκρωση συμβατή με θερμική βλάβη. Πρέπει να σημειώσουμε ότι η ηλεκτρική ενέργεια που προέρχεται από υψηλή τάση μειώνει δραματικά την αντίσταση του σώματος γιατί λύει πολύ γρήγορα το ανθρώπινο δέρμα. Όταν το δέρμα διατρηθεί, το ρεύμα αυξάνει κατακόρυφα.&lt;/p&gt;
-
-&lt;p&gt;Γενικά πάντως, δεν μπορούμε να λάβουμε υπόψιν μόνο την τάση, γιατί πολύ χαμηλές τάσεις μπορεί να είναι επικίνδυνες σε ειδικές περιπτώσεις που θα εξετάσουμε στη συνέχεια, ενώ, αντίστροφα, πολύ υψηλές τάσεις μπορεί να είναι εντελώς ακίνδυνες, όπως π.χ. η ηλεκτροστατική εκκένωση, που υφίσταται κανείς όταν περπατά πάνω σε χαλί και αγγίζει ύστερα κάποιο μεταλλικό αντικείμενο, μπορεί να αφορά χιλιάδες volts αλλά δεν έχει καμία σοβαρή επίπτωση στο ανθρώπινο σώμα.&lt;/p&gt;
-
-&lt;h3 id=&#34;η-αντίσταση-του-ανθρώπινου-σώματος&#34;&gt;Η αντίσταση του ανθρώπινου σώματος&lt;/h3&gt;
-
-&lt;p&gt;Η αντίσταση του ανθρώπινου σώματος είναι εξαιρετικά ευμετάβλητη. Το δέρμα αποτελεί την κύρια αντίσταση (&lt;em&gt;«αντίσταση επαφής»&lt;/em&gt;) που συναντά το ρεύμα και ο βαθμός αυτός της αντίστασης εξαρτάται από το πάχος και την υγρασία του δέρματος, καθώς και από την επιφάνεια της επαφής. Κυμαίνεται από 500 $Ω/cm^2$ για λεπτό και υγρό δέρμα μέχρι 1-2 $MΩ/cm^2$ για πολύ παχύ και ξηρό δέρμα. Γενικά, το υγρό δέρμα έχει μόνο το 1% της αντίστασης του στεγνού. Αν το δέρμα δεν είναι άθικτο (έχει αμυχές) ή το ρεύμα εφαρμοστεί σε υγρούς βλεννογόνους (π.χ. στόμα) η αντίσταση  μπορεί να είναι μόλις 100 $Ω/cm^2$.&lt;/p&gt;
-
-&lt;div style=&#34;overflow-x:auto;&#34;&gt;
-&lt;table class=&#34;coloredtable table-hover text-center&#34;&gt;
-&lt;tr&gt;&lt;th style=&#34;text-align:center&#34;&gt;Ιστός&lt;/th&gt;&lt;th style=&#34;text-align:center&#34;&gt;Αντίσταση&lt;/th&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Βλεννογόνοι ή αμυχές&lt;/td&gt;&lt;td&gt;100 – 500 $Ω/cm^2$&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Βρεγμένο δέρμα&lt;/td&gt;&lt;td&gt;500 – 1.500 $Ω/cm^2$&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Ιδρωμένο δέρμα &lt;/td&gt;&lt;td&gt;1.500 – 2.500 $Ω/cm^2$&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Παλάμη, έσω μηρός (αγγειώδεις περιοχές)&lt;/td&gt;&lt;td&gt;2.500 – 10.000 $Ω/cm^2$&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Στεγνό δέρμα&lt;/td&gt;&lt;td&gt;10.000 – 100.000 $Ω/cm^2$&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Πέλμα του ποδιού&lt;/td&gt;&lt;td&gt;100.000 – 200.000 $Ω/cm^2$&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;Πολύ παχύ δέρμα&lt;/td&gt;&lt;td&gt;1.000.000 – 2.000.000 $Ω/cm^2$&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Χαμηλότερη αντίσταση έχουν τα νεύρα, οι μύες και τα αιμοφόρα αγγεία. Γενικότερα, τα υγρά του σώματος είναι καλοί αγωγοί λόγω των σημαντικών συγκεντρώσεων ιόντων. Την υψηλότερη αντίσταση την έχουν τα οστά. Πρέπει να σημειώσουμε ότι τα παιδιά έχουν εκτός από λεπτότερο δέρμα και μεγαλύτερο ποσοστό ύδατος στο σώμα τους και ως εκ τούτου είναι πιο ευάλωτα σε ηλεκτροπληξία.&lt;/p&gt;
-
-&lt;div style=&#34;overflow-x:auto;&#34;&gt;
-&lt;table class=&#34;coloredtable table-hover text-center&#34;&gt;
-&lt;tr&gt;&lt;th&gt;Ένταση ρεύματος&lt;/th&gt;&lt;th&gt;Απαιτούμενη τάση για στεγνό δέρμα (R=100kΩ)&lt;/th&gt;&lt;th&gt;Απαιτούμενη τάση για υγρό δέρμα (R=1kΩ)&lt;/th&gt;&lt;th&gt;Παθοφυσιολογικό  αποτέλεσμα&lt;/th&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;1 mA&lt;/td&gt;&lt;td&gt;100 V&lt;/td&gt;&lt;td&gt;1 V&lt;/td&gt;&lt;td&gt;Κατώφλι αίσθησης. Αίσθημα «μυρμηγκιάσματος».&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;5 mA&lt;/td&gt;&lt;td&gt;500 V&lt;/td&gt;&lt;td&gt;5 V&lt;/td&gt;&lt;td&gt;Το μέγιστο ακίνδυνο. Προκαλεί ενοχλητικό σοκ.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;20 mA&lt;/td&gt;&lt;td&gt;2000 V&lt;/td&gt;&lt;td&gt;20 V&lt;/td&gt;&lt;td&gt;Τετανικές μυϊκές συσπάσεις.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;100 mA&lt;/td&gt;&lt;td&gt;10000 V&lt;/td&gt;&lt;td&gt;100 V&lt;/td&gt;&lt;td&gt;Κοιλιακή μαρμαρυγή.&lt;/td&gt;&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;2 A&lt;/td&gt;&lt;td&gt;200000 V&lt;/td&gt;&lt;td&gt;2000 V&lt;/td&gt;&lt;td&gt;Καρδιοαναπνευστική ανακοπή. Εγκαύματα.&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/div&gt;
-
-&lt;p&gt;Αν η αντίσταση του δέρματος είναι μεγάλη η ηλεκτρική ενέργεια μετατρέπεται σε θερμική, με αποτέλεσμα σοβαρά δερματικά εγκαύματα στα σημεία επαφής, αλλά λιγότερες εσωτερικές βλάβες. Αν η αντίσταση του δέρματος είναι χαμηλή τα δερματικά εγκαύματα είναι λιγότερο εκτεταμένα ή απουσιάζουν, με περισσότερη ηλεκτρική ενέργεια να εκλύεται σε εσωτερικές δομές. Αυτό σημαίνει ότι η απουσία επιφανειακών εγκαυμάτων &lt;u&gt;δεν&lt;/u&gt; συνεπάγεται την απουσία βλαβών και η σοβαρότητα των εγκαυμάτων &lt;u&gt;δεν&lt;/u&gt; είναι ενδεικτική της σοβαρότητα των εσωτερικών βλαβών.&lt;/p&gt;
-
-&lt;p&gt;Η βλάβη στους εσωτερικούς ιστούς εξαρτάται εκτός από την αντίσταση τους και από την &lt;em&gt;πυκνότητα του ρεύματος&lt;/em&gt; (ρεύμα ανά μονάδα επιφάνειας) και αυτό γιατί περισσότερη ενέργεια συγκεντρώνεται σε ένα σημείο όταν το ίδιο ρεύμα ρέει διαμέσου μικρότερης επιφάνειας. Για παράδειγμα, καθώς η ηλεκτρική ενέργεια ρέει σε ένα χέρι (κυρίως διαμέσου ιστών χαμηλής αντίστασης όπως νεύρα, μύες, αγγεία), η πυκνότητα του ρεύματος αυξάνει στις αρθρώσεις γιατί σε μεγάλο ποσοστό αποτελούνται από ιστούς με μεγάλη αντίσταση (π.χ. οστά, τένοντες), με αποτέλεσμα να μειώνεται η επιφάνεια ιστών χαμηλής αντίστασης. Έτσι, η βλάβη που προκαλείται στους χαμηλής αντίστασης ιστούς τείνει να είναι πιο σοβαρή στις αρθρώσεις.&lt;/p&gt;
-
-&lt;h3 id=&#34;σύγκριση-συνεχούς-και-εναλλασσόμενου-ρεύματος&#34;&gt;Σύγκριση συνεχούς και εναλλασσόμενου ρεύματος&lt;/h3&gt;
-
-&lt;p&gt;Ένας από τους παράγοντες που επηρεάζουν τη φύση και τη σοβαρότητα των βλαβών που προκαλούνται από ηλεκτροπληξία είναι το είδος του ρεύματος, αν δηλαδή πρόκειται για συνεχές (DC) ή για εναλλασσόμενο ρεύμα (AC). Γενικά, η έκθεση σε εναλλασσόμενη πηγή θεωρείται 3-5 φορές πιο επικίνδυνη από την έκθεση σε συνεχή της ίδιας τάσης, εξαιτίας της ενδεχόμενης τετανίας που μπορεί να προκληθεί με συνέπεια την παρατεταμένη επαφή του θύματος με την πηγή. Επιπλέον, η επαναληπτική φύση του εναλλασσόμενου ρεύματος αυξάνει την πιθανότητα πρόκλησης θανατηφόρας κοιλιακής μαρμαρυγής.&lt;/p&gt;
-
-&lt;p&gt;Αντίθετα, η επαφή με υψηλής τάσης συνεχές συνήθως προκαλεί μία μοναδική βίαια μυϊκή σύσπαση που, συχνά, εκτινάσσει το θύμα μακριά από την πηγή. Το γεγονός αυτό καθιστά μικρότερη τη διάρκεια έκθεσης αλλά αυξάνει την πιθανότητα μηχανικού τραυματισμού. Το συνεχές ρεύμα προκαλεί συνήθως καρδιακή ασυστολή που έχει καλύτερη πρόγνωση από την κοιλιακή μαρμαρυγή μιας και η καρδιά σε αυτή την περίπτωση μπορεί να επανέλθει από μόνης της. Τέλος, το συνεχές ρεύμα προκαλεί ηλεκτρολυτική διάσπαση των φυσιολογικών υγρών του σώματος.&lt;/p&gt;
-
-&lt;h3 id=&#34;η-συχνότητα-του-ρεύματος&#34;&gt;Η συχνότητα του ρεύματος&lt;/h3&gt;
-
-&lt;p&gt;Η συχνότητα του ρεύματος επηρεάζει τόσο το κατώφλι όσο και το αίσθημα της αντίληψης του ρεύματος. Απαιτείται ρεύμα 7 mA συχνότητας 5 kHz για να προκαλέσει αίσθημα μυρμηγκιάσματος, ενώ ανάμεσα στα 100 με 200 kHz η αντίληψη αλλάζει σε αίσθημα θερμότητας. Συνεχής μυϊκή σύσπαση (τετανία) προκαλείται όταν οι μυϊκές ίνες διεγείρονται 40-110 φόρες το δευτερόλεπτο.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/plot_SensingVSFreq.png&#34; alt=&#34;Current Sensing Threshold vs Current Frequency plot&#34;&gt;&lt;/p&gt;
-
-&lt;p&gt;Έχει βρεθεί ότι εναλλασσόμενα ρεύματα 30 - 60 Hz είναι τα πιο επικίνδυνα να προκαλέσουν κοιλιακή μαρμαρυγή απαιτώντας τη μικρότερη ένταση από ρεύμα οποιασδήποτε άλλης συχνότητας. Δυστυχώς, η συχνότητα μεταφοράς του οικιακού ρεύματος είναι 50 Hz στην Ευρώπη και 60 Hz στις Η.Π.Α.&lt;/p&gt;
-
-&lt;p&gt;Εναλλασσόμενα ρεύματα με συχνότητες της τάξης του 106 Hz (1 ΜHz) δεν παρεμβαίνουν σημαντικά στις λειτουργίες των νεύρων και μπορούν να χρησιμοποιηθούν για διαθερμίες σε περιπτώσεις αρθρίτιδας, ιγμορίτιδας κ.α. Αν κάποιο ηλεκτρόδιο είναι πολύ μικρό, η προκύπτουσα συγκεντρωμένη θέρμανση  μπορεί να χρησιμοποιηθεί για την τοπική καταστροφή των ιστών όπως όγκων ή για κοπή ιστών σε μερικές χειρουργικές επεμβάσεις.&lt;/p&gt;
-
-&lt;figure&gt;&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/plot_CurVSFreq.png&#34; alt=&#34;Current vs Frequency plot&#34;&gt;&lt;figcaption&gt;
-Γραφική παράσταση του μέγιστου ρεύματος που επιτρέπει απαγκίστρωση από τα ηλεκτρόδια που κρατά ένας άνθρωπος, ένα σε κάθε χέρι του, σε συνάρτηση με τη συχνότητα του ρεύματος.
-&lt;/figcaption&gt;&lt;/figure&gt;
-
-&lt;p&gt;Η εμπέδηση του σώματος στα 50 Hz είναι ουσιαστικά ωμική. Καθώς η συχνότητα αυξάνει η εμπέδηση διαφοροποιείται και λειτουργεί σαν ένα δίκτυο αντιστάτη-πυκνωτή και γίνεται μη γραμμική. Περίπου στα 50 kHz η εμπέδηση του σώματος μπορεί να μειωθεί περισσότερο από 50% και η αντίσταση επαφής είναι αμελητέα.&lt;/p&gt;
-
-&lt;figure&gt;&lt;img class=&#34;border floatcenter&#34; src=&#34;https://alamot.github.io/images/current_passage_tissues.jpg&#34; alt=&#34;Current passage through tissues&#34;&gt;&lt;figcaption&gt;
-Τα ρεύματα χαμηλής συχνότητας ρέουν, κυρίως, διαμέσου του εξωκυττάριου υγρού λόγω της μεγάλης εμπέδησης που εμφανίζει η κυτταρική μεμβράνη. Τα ρεύματα υψηλής συχνότητας ρέουν και στον εξωκυττάριο και στο ενδοκυττάριο υγρό.
-&lt;/figcaption&gt;&lt;/figure&gt;
-
-&lt;h3 id=&#34;η-διαδρομή-του-ρεύματος-στο-ανθρώπινο-σώμα&#34;&gt;Η διαδρομή του ρεύματος στο ανθρώπινο σώμα&lt;/h3&gt;
-
-&lt;p&gt;Η διαδρομή του ρεύματος στο ανθρώπινο σώμα καθορίζει ποιοι ιστοί και ποιες δομές διατρέχουν κίνδυνο και τι τύπος βλάβης θα προκύψει. Η εφαρμογή ρεύματος σε ανέπαφο δέρμα ονομάζεται &lt;em&gt;μακροσόκ&lt;/em&gt;, ενώ η απευθείας εφαρμογή του ρεύματος στον καρδιακό ιστό &lt;em&gt;μικροσόκ&lt;/em&gt;. Όπως είδαμε στην περίπτωση του μικροσοκ αρκεί λιγότερο από 1 mA (AC ή DC) για να προκληθεί κοιλιακή μαρμαρυγή.&lt;/p&gt;
-
-&lt;p&gt;&lt;img class=&#34;border floatleft height15&#34; src=&#34;https://alamot.github.io/images/Electric-shock.svg&#34; alt=&#34;Electric shock&#34;&gt;
-Οι όροι &lt;em&gt;σημείο εισόδου&lt;/em&gt; και &lt;em&gt;σημείο εξόδου&lt;/em&gt; χρησιμοποιούνται για την περιγραφή των ηλεκτρικών βλαβών, αλλά όταν αναφερόμαστε σε ηλεκτροπληξία από εναλλασσόμενο ρεύμα είναι πιο εύστοχο να μιλάμε για &lt;em&gt;σημείο επαφής με την πηγή&lt;/em&gt; και &lt;em&gt;σημείο επαφής με τη γείωση&lt;/em&gt; επειδή στο εναλλασσόμενο έχουμε συνεχή εναλλαγή της φοράς του. Το χέρι είναι το πιο σύνηθες σημείο επαφής με την πηγή, ακολουθούμενο από το κεφάλι. Επειδή οι καμπτήρες μύες του χεριού είναι πολύ πιο δυνατοί από τους εκτείνοντες, συστολή των καμπτηρών μυών στον καρπό, αγκώνα και τον ώμο θα συμβεί, προκαλώντας το χέρι που κρατά την πηγή να τραβήξει την πηγή ακόμη πιο κοντά στο σώμα. Έτσι παρατείνεται η διάρκεια έκθεσης στο ηλεκτρικό ρεύμα. Το πόδι είναι το πιο σύνηθες σημείο επαφής με τη γείωση.&lt;/p&gt;
-
-&lt;p&gt;Ηλεκτρικό ρεύμα που διαρρέει το κεφάλι ή τον θώρακα είναι πιο πιθανό να αποβεί μοιραίο. Τα &lt;em&gt;διαθωρακικά ρεύματα&lt;/em&gt; μπορούν να προκαλέσουν θανατηφόρα καρδιακή αρρυθμία ή άμεση καρδιακή ιστική βλάβη. Τετανία των μυών του διαφράγματος ή / και των μεσοπλεύριων μυών μπορεί να οδηγήσει σε αναπνευστική παύση. Τέτοια ρεύματα προκύπτουν όταν το ρεύμα ρέει από χέρι σε χέρι, από χέρι σε πόδι, ή από κεφάλι σε χέρι ή πόδι. Τα &lt;em&gt;διακρανιακά ρεύματα&lt;/em&gt; επιφέρουν άμεση απώλεια των αισθήσεων επειδή αποπολώνουν τους εγκεφαλικούς νευρώνες. Ακόμη, μπορεί να προκαλέσουν εγκεφαλική ιστική βλάβη, επιληψία, παράλυση. Από την δίοδο του ρεύματος στο αναπνευστικό κέντρο του εγκεφάλου (προμήκης μυελός), μπορεί να επέλθει αναπνευστική παύση. Αν ρεύμα διαρρεύσει κοντά στα μάτια μπορεί να οδηγήσει σε καταρράκτη. Ο καταρράκτης μπορεί να αναπτυχθεί μέσα σε μερικές μέρες από το ατύχημα ή ακόμα και χρόνια αργότερα. Τα ρεύματα που ταξιδεύουν από πόδι σε πόδι θεωρούνται πιο ακίνδυνα.&lt;/p&gt;
-
-&lt;h3 id=&#34;η-διάρκεια-έκθεσης-στο-ηλεκτρικό-ρεύμα&#34;&gt;Η διάρκεια έκθεσης στο ηλεκτρικό ρεύμα&lt;/h3&gt;
-
-&lt;p&gt;Από δεδομένα που συλλέχτηκαν κυρίως από πειράματα σε ζώα προκύπτει ότι τα επίπεδα ρεύματος που απαιτούνται για την πρόκληση κοιλιακής μαρμαρυγής στους ανθρώπους εξαρτώνται από τη διάρκεια έκθεσης, τη μάζα του σώματος, τη διαδρομή του ρεύματος και την ένταση του ρεύματος.
-Έχει βρεθεί μια εμπειρική εξίσωση που συνδέει το διάστημα του χρόνου με το ελάχιστο ρεύμα το οποίο απαιτείται για να προκληθεί κοιλιακή μαρμαρυγή:&lt;/p&gt;
-
-&lt;div&gt;$$I_{in}=\frac{116}{\sqrt{t}}$$&lt;/div&gt;
-
-&lt;p&gt;Όπως βλέπουμε το ελάχιστο ρεύμα για κοιλιακή μαρμαρυγή είναι αντιστρόφως ανάλογο της τετραγωνική ρίζας του χρόνου έκθεσης.&lt;/p&gt;
-
-&lt;p&gt;&amp;nbsp;
-&lt;figure&gt;
-&lt;a title=&#34;By Cmglee (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons&#34; href=&#34;https://commons.wikimedia.org/wiki/File%3AIEC_TS_60479-1_electric_shock_graph.svg&#34; target=&#34;_blank&#34;&gt;&lt;img class=&#34;border&#34; alt=&#34;IEC TS 60479-1 electric shock graph&#34; src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/IEC_TS_60479-1_electric_shock_graph.svg/800px-IEC_TS_60479-1_electric_shock_graph.svg.png&#34;/&gt;&lt;/a&gt;
-&lt;figcaption&gt;
-Διάγραμμα με ζώνες χρόνου-ρεύματος των αποτελεσμάτων του εναλλασσόμενου ρεύματος (50 Hz) στο ανθρώπινο σώμα όταν ακολουθεί διαδρομή από το αριστερό χέρι στα πόδια.&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;&lt;strong&gt;Ζώνη ΑC-1&lt;/strong&gt;: Μη αντιληπτή&lt;/th&gt;
-&lt;th&gt;&lt;strong&gt;Καμπύλη Α&lt;/strong&gt;: Όριο αντίληψης&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Ζώνη AC-2&lt;/strong&gt;: Αντιληπτή&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;Kαμπύλη B&lt;/strong&gt;: Όριο μυϊκών αντιδράσεων&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Ζώνη AC-3&lt;/strong&gt;: Αναστρέψιμα αποτελέσματα: μυϊκή σύσπαση&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;Καμπύλη C1&lt;/strong&gt;: Όριο 0% πιθανότητας κοιλιακής μαρμαρυγής&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Ζώνη AC-4.1&lt;/strong&gt;: Έως 5% πιθανότητα κοιλιακής μαρμαρυγής&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;Καμπύλη C2&lt;/strong&gt;: Όριο 5% πιθανότητας κοιλιακής μαρμαρυγής&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Ζώνη AC-4.2&lt;/strong&gt;: Έως 50% πιθανότητα κοιλιακής μαρμαρυγής&lt;/td&gt;
-&lt;td&gt;&lt;strong&gt;Καμπύλη C3&lt;/strong&gt;: Όριο 50% πιθανότητας κοιλιακής μαρμαρυγής&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;&lt;strong&gt;Ζώνη AC-4.3&lt;/strong&gt;: &amp;gt; 50% πιθανότητα κοιλιακής μαρμαρυγής&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-
-&lt;p&gt;Για μικρής διάρκειας σοκ, μικρότερης του καρδιακού κύκλου (&amp;lt; 1 s) το ηλεκτρικό ρεύμα που θα προκαλέσει κοιλιακή μαρμαρυγή πρέπει να είναι μεγάλο και να επιδράσει στην ευάλωτη φάση του καρδιακού κύκλου (κύμα Τ, φάσης επαναπόλωσης των κοιλιών). Σοκ μεγαλύτερης διάρκειας από τον καρδιακό κύκλο προκαλούν πρόωρες έκτατες συστολές,  που καθιστούν πιο ευάλωτο το μυοκάρδιο ύστερα από 4-5 κύκλους.&lt;/p&gt;
-
-&lt;p&gt;Το ποσό της θερμότητας που εκλύεται ισούται με $Q=I^2*R*t$. Άρα, για ένα δεδομένο ρεύμα όσο μεγαλύτερη η διάρκεια έκθεσης τόσο μεγαλύτερη θερμική βλάβη υφίστανται οι ιστοί.&lt;/p&gt;
-
-&lt;p&gt;Τέλος, πρέπει να σημειώσουμε ότι όταν ένας άνθρωπος υφίσταται ηλεκτροπληξία διεγείρονται οι ιδρωτοποιοί αδένες με αποτέλεσμα την έκκριση ιδρώτα που μειώνει την αντίσταση του δέρματος με συνέπεια να αυξάνει το ρεύμα καθώς περνάει ο χρόνος.&lt;/p&gt;
-
-&lt;h3 id=&#34;το-μηχανικό-τραύμα&#34;&gt;Το μηχανικό τραύμα&lt;/h3&gt;
-
-&lt;p&gt;Εάν ένα άτομο π.χ. βρίσκεται πάνω σε μια σκαλωσιά μια ξαφνική μυϊκή σύσπαση μπορεί να τον κάνει να χάσει την ισορροπία και να τον ρίξει από ύψος με συνέπεια βαρύτατο μηχανικό τραυματισμό. Σε υψηλά ρεύματα οι μυϊκές συσπάσεις μπορεί να είναι τόσο βίαιες ώστε να προκαλέσουν οι ίδιες οστικά κατάγματα και ρήξη συνδέσμων και τενόντων.&lt;/p&gt;
-
-&lt;h3 id=&#34;η-γενική-κατάσταση-υγείας&#34;&gt;Η γενική κατάσταση υγείας&lt;/h3&gt;
-
-&lt;p&gt;Ηλεκτροπληξίες που κανονικά δεν είναι απειλητικές για τη ζωή μπορούν να αποβούν μοιραίες σε ειδικές καταστάσεις, όταν η γενική κατάσταση υγείας του θύματος δεν είναι ιδανική. Παραδείγματός χάριν ένα άτομο που πάσχει από καρδιολογικά  προβλήματα είναι πιο πιθανό να εμφανίσει θανατηφόρες αρρυθμίες. Επίσης, έχει βρεθεί ότι όταν ένα άτομο είναι καταβεβλημένο είτε από κούραση είτε από ασθένεια αυξάνεται η αγωγιμότητα του σώματός του. Οι έγκυες γυναίκες είναι, επίσης, πιο ευαίσθητες στα αποτελέσματα του ρεύματος, ίσως λόγω του μεγαλύτερου ποσοστού ύδατος που έχουν εξαιτίας της κατακράτησης υγρών, της ανάπτυξης του εμβρύου, αλλά και διαφόρων άλλων ορμονοεπαγόμενων αλλαγών που υφίσταται το σώμα τους.&lt;/p&gt;
-
-&lt;h1 id=&#34;στατικός-ηλεκτρισμός&#34;&gt;Στατικός ηλεκτρισμός&lt;/h1&gt;
-
-&lt;p&gt;&lt;img class=&#34;floatright border height15&#34; src=&#34;https://alamot.github.io/images/static_electricity.png&#34; alt=&#34;Static electricity&#34;&gt; Όταν δύο υλικά πλησιάζουν αρκετά μεταξύ τους, έρχονται σε επαφή ή τρίβονται μπορεί να αναπτύσσουν ηλεκτροστατικά φορτία ως αποτέλεσμα της μετατόπισης των ηλεκτρονίων τους. Οι άνθρωποι, ιδιαίτερα όταν περπατάνε, βρίσκονται σε κατάσταση ηλεκτροστατικής φόρτισης. Το φορτίο συνήθως είναι πολύ μικρό και περνάει απαρατήρητο. Στην περίπτωση που το άτομο είναι γειωμένο είτε άμεσα είτε έμμεσα μέσω των παπουτσιών και του δαπέδου ή της υγρής ατμόσφαιρας, τότε το φορτίο διαρρέει και μπορεί να είναι μηδενικό.
-Η συσσώρευση στατικού φορτίου στο σώμα μπορεί να οδηγήσει σε δυσάρεστες εμπειρίες. Οι περισσότεροι άνθρωποι μπορεί να έχουν βιώσει μια ηλεκτροστατική εκκένωση, όταν άγγιξαν ένα μεταλλικό αντικείμενο αφού προηγουμένως περπατούσαν σε ένα χαλί. Η εκκένωση δημιουργείται όταν κάποιο μέρος του σώματος πλησιάσει σε ένα γειωμένο αγωγό. Η διαφορά δυναμικού ανάμεσα στο σώμα και τον αγωγό δημιουργεί ένα ηλεκτρικό πεδίο και μια ηλεκτρική εκκένωση. Παρόλα αυτά το ηλεκτροστατικό σοκ στο ανθρώπινο σώμα δε θεωρείται επικίνδυνο.&lt;/p&gt;
-
-&lt;p&gt;Όπως γνωρίζουμε, το ηλεκτρικό ρεύμα χρειάζεται μια ολοκληρωμένη διαδρομή (κλειστό κύκλωμα) για να ρέει συνεχώς. Αυτό είναι ο λόγος που το σοκ που προκαλείται από στατικό ηλεκτρισμό είναι μια στιγμιαία εκκένωση. Η ροή των ηλεκτρονίων διαρκεί μέχρι τα στατικά φορτία να εξισωθούν ανάμεσα στα δύο σώματα.
-Ρεύματα τόσο μικρής αυτοπεριοριζόμενης διάρκειας σπάνια είναι επικίνδυνα για τον άνθρωπο.  Αντίθετα χρειάζεται ιδιαίτερη προσοχή ο χειρισμός ευαίσθητων ηλεκτρονικών διατάξεων ή η διαχείριση εύφλεκτων υλικών λόγω του κίνδυνου να δημιουργηθεί σπινθήρας και να επακολουθήσει ανάφλεξη. Ειδική κατηγορία ηλεκτροστατικής εκκένωσης αποτελεί ο κεραυνός.&lt;/p&gt;
-
-&lt;h1 id=&#34;κεραυνοπληξία&#34;&gt;Κεραυνοπληξία&lt;/h1&gt;
-
-&lt;p&gt;Ο κεραυνός είναι ένα ακραίο παράδειγμα ηλεκτροστατικής εκκένωσης. Πρόκειται ουσιαστικά για ένα μεγάλο ρεύμα (&amp;gt; 30 kA) μονής κατεύθυνσης που διαρκεί από &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;1000&lt;/sub&gt; έως &lt;sup&gt;1&lt;/sup&gt;&amp;frasl;&lt;sub&gt;10&lt;/sub&gt; του δευτερολέπτου. Οφείλεται στη δημιουργία ηλεκτρικού πεδίου στην ατμόσφαιρα από τάσεις που συχνά ξεπερνάνε τα 10 εκατομμύρια Volts (10 MV). Το ηλεκτρικό τόξο του κεραυνού δημιουργεί εξαιρετικά υψηλές θερμοκρασίες (&amp;gt; 20.000 °C). Έτσι προκαλείται συμπίεση και γρήγορη εκτόνωση του αέρα που δημιουργεί κρουστικό ηχητικό κύμα. Ανάλογα με τον τρόπο που πλήττεται το θύμα  διακρίνομε τρεις κατηγορίες κεραυνοπληξίας:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Άμεσο χτύπημα&lt;/strong&gt;: ο κεραυνός χτυπάει απευθείας το θύμα, εισέρχεται συνήθως από το κεφάλι και φεύγει από τα πόδια διασχίζοντας το σώμα. Η πιο θανατηφόρα μορφή. 80% των θυμάτων καταλήγουν. Ευτυχώς, τα άμεσα χτυπήματα είναι συνήθως σπάνια.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Έμμεσο χτύπημα&lt;/strong&gt;: όταν ο κεραυνός χτυπάει ένα άλλο αντικείμενο και μεταπηδάει στο θύμα.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Χτύπημα εδάφους&lt;/strong&gt;: όταν ο κεραυνός χτυπήσει το έδαφος πλησίον του θύματος. Σε αυτήν την περίπτωση αν υπάρχει διαφορά δυναμικού μεταξύ των ποδιών του θύματος (&lt;em&gt;step voltage&lt;/em&gt;) το ρεύμα εισέρχεται από το ένα πόδι και βγαίνει από το άλλο. Ιδιαίτερα θανατηφόρο για τα μεγάλα τετράποδα ζώα επειδή τα μπροστινά πόδια τους απέχουν αρκετά από τα πίσω.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Η κυριότερη διαφορά ανάμεσα στην κεραυνοπληξία και την ηλεκτροπληξία από υψηλή τάση είναι η διάρκεια της έκθεσης στο ρεύμα. Λόγω της πολύ σύντομης διάρκειας η κεραυνοπληξία κατά κανόνα δεν προκαλεί σοβαρά εγκαύματα ή εσωτερική ιστική καταστροφή. Η κεραυνοπληξία συνήθως προκαλεί επιφανειακά εγκαύματα. Η συνηθέστερη αιτία θανάτου για τα θύματα του κεραυνού είναι η καρδιοαναπνευστική ανακοπή. Σε πολλές περιπτώσεις η καρδιά επανέρχεται από μόνη της αλλά η αναπνευστική παύση λόγω σπασμού των θωρακικών μυών και καταστολής του αναπνευστικού κέντρου μπορεί να συνεχιστεί και μετά την αυθόρμητη αποκατάσταση της κυκλοφορίας του αίματος. Σε αυτήν την περίπτωση, εκτός κι αν η αναπνοή υποστηριχτεί τεχνητά, αναπτύσσεται δευτερογενής καρδιακή ανακοπή λόγω υποξίας. Άτομα που δεν παθαίνουν άμεσα ανακοπή, σπάνια καταλήγουν. Γενικά τα θύματα κεραυνοπληξίας έχουν καλές πιθανότες επιβίωσης, αλλά η πιθανότητα για μόνιμες βλάβες είναι πολύ αυξημένη. Έτσι, η νοσηρότητα στα άτομα που επιζούν φτάνει το 70% γιατί πλήττεται το νευρικό σύστημα, ο εγκέφαλος, το ΑΝΣ και τα περιφερικά νεύρα. Οι βλάβες περιλαμβάνουν απώλεια των αισθήσεων, προσωρινές ή μόνιμες νευρολογικές βλάβες. Μηχανικές κακώσεις μπορεί να συμβούν αφού το ωστικό κύμα που δημιουργεί ο κεραυνός μπορεί να πετάξει το θύμα σε αρκετή απόσταση. Περίπου τα &lt;sup&gt;2&lt;/sup&gt;&amp;frasl;&lt;sub&gt;3&lt;/sub&gt; των θυμάτων που χτυπήθηκαν από κεραυνό είχαν υποστεί και ρήξη τυμπάνων.
-&amp;nbsp;
-&lt;figure&gt;
-&lt;a title=&#34;By James Heilman, MD (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0) or GFDL (http://www.gnu.org/copyleft/fdl.html)], via Wikimedia Commons&#34; href=&#34;https://commons.wikimedia.org/wiki/File%3ALightning_injury.jpg&#34; target=&#34;_blank&#34;&gt;
-&lt;img class=&#34;border floatcenter&#34; alt=&#34;Lightning injury&#34; src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Lightning_injury.jpg/512px-Lightning_injury.jpg&#34;/&gt;&lt;/a&gt;
-&lt;figcaption&gt;
-Επιφανειακά έγκαυματα σχήματος &lt;em&gt;Lichtenberg&lt;/em&gt; σε θύμα κεραυνοπληξίας. Δεν είναι σοβαρά αλλά αποτελούν χαρακτηριστικό διαγνωστικό σημείο της κεραυνοπληξίας. Πιθανότατα οφείλονται στην καταστροφή  τριχοειδών αγγείων του δέρματος από τη διεύλεση του ρεύματος. (Δείτε επίσης &lt;a href=&#34;http://www.nejm.org/doi/full/10.1056/NEJM200011233432105#t=article&#34; target=&#34;_blank&#34;&gt;εδώ&lt;/a&gt;)
-&lt;/figcaption&gt;
-&lt;/figure&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;ηλεκτροθεραπεία&#34;&gt;Ηλεκτροθεραπεία&lt;/h1&gt;
-
-&lt;p&gt;Η διοχέτευση ηλεκτρικού ρεύματος μπορεί να χρησιμοποιηθεί ως μέσο θεραπείας, κάτω από προσεχτικά ελεγχόμενες συνθήκες:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Ψυχιατρική ηλεκτροθεραπεία (ECT)&lt;/strong&gt;: Σκοπός της θεραπείας είναι να επάγει μια επιληπτική κρίση που θα επιφέρει θεραπευτικό αποτέλεσμα. Δεν υπάρχει αίσθηση του σοκ γιατί ο ασθενής αναισθητοποιείται. Αυτή η μέθοδος επινοήθηκε ύστερα από παρατηρήσεις που έγιναν σε καταθλιπτικούς ασθενείς που έπασχαν επίσης και από επιληψία παρουσίαζαν ύφεση των συμπτωμάτων ύστερα από μια αυθόρμητη επιληπτική κρίση. Μία από τις παρενέργειες της ECT είναι η αμνησία.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Διαδερμική ηλεκτρική νευρική διέγερση (TENS)&lt;/strong&gt;: H TENS (Transcutaneous Electrical Nerve Stimulation) είναι μια ειδική διαδερμική τεχνική που στοχεύει στην ανακούφιση του πόνου, μέσω της ηλεκτρικής διέργεσης των νεύρων.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Ηλεκτροθεραπείας επούλωσης&lt;/strong&gt;: Έχει βρεθεί ότι ερεθισμός καταγμάτων με συνεχή ρεύματα έντασης 1 ως 3 nA προάγει την πώρωση των καταγμάτων των οστών στις περιπτώσεις όπου παρατηρείται καθυστέρηση αυτής. Επίσης, συμβάλλει στην επούλωση περιοχών που έχουν υποστεί έγκαυμα.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Αισθητική ηλεκτροθεραπεία&lt;/strong&gt;: Χρησιμοποιείται για εκγύμναση των μυών, αδυνάτισμα, βελτίωση της επιδερμίδας. Οι συσκευές αυτού του είδους ηλεκτροθεραπείας αυξάνουν το μυϊκό τόνο, ερεθίζοντας συγκεκριμένες μυϊκές δεσμίδες. Η αλληλουχία των παλμών προκαλεί κίνηση στον μυ με αποτέλεσμα τη βελτίωση της ροής του αίματος &amp;amp; την αύξηση της πρόσληψης του οξυγόνου.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Απινίδωση&lt;/strong&gt;: Οι απινιδωτές είναι συσκευές που προκαλούν ηλεκτροσόκ στο θώρακα. Χρησιμοποιούνται σε επείγοντα ιατρικά περιστατικά. Εφαρμόζουν ένα πολύ μεγάλο παλμό ρεύματος για να σταματήσει το μυοκάρδιο και κατ’ επέκταση η μαρμαρυγή και έτσι να δώσουν στην καρδιά μια ευκαιρία να ξαναβρεί τον κανονικό της ρυθμό. Είναι εξαιρετικά δύσκολο και σπάνιο μια καρδιά ευρισκόμενη σε κοιλιακή μαρμαρυγή να επανέλθει από μόνη της.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Ηλεκτροθεραπεία διέγερσης νεύρων / μυών&lt;/strong&gt;: Γίνεται συνήθως με εμφύτευση ηλεκτροδίων και χρησιμοποιείται σε νευρολογικές, νευρομυϊκές ή καρδιολογικές ασθένειες (νόσος του Parkinson, τραυματισμός του νωτιαίου μυελού, καρδιακές αρρυθμίες κ.α.).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p style=&#34;text-align: right;&#34;&gt;&lt;em&gt;Αντώνιος Τσώλης&lt;/em&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;βιβλιογραφία&#34;&gt;Βιβλιογραφία&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Hugh D. Young, «Πανεπιστημιακή φυσική», 8η έκδοση,  Εκδόσεις Παπαζήση, 1994&lt;/li&gt;
-&lt;li&gt;Serway A. Raymond, «Physics for scientists &amp;amp; engineers», 3rd edition, 1990, Απόδοση στα ελληνικά: Λεωνίδας Κ. Ρεσβάνης.&lt;/li&gt;
-&lt;li&gt;Cameron R. John, Skofronick G. James, Grant M. Roderick, «Φυσική του ανθρώπινου σώματος», Επιστημονικές εκδόσεις Παρισιάνου, 2001&lt;/li&gt;
-&lt;li&gt;Guyton C. Arthur, Hall E. John, «Φυσιολογία του ανθρώπου και μηχανισμοί των νόσων», Επιστημονικές εκδόσεις Παρισιάνου, 2001&lt;/li&gt;
-&lt;li&gt;Raphael Carl Lee, Ernest G. Cravalho, John Francis Burke, «Electrical trauma: the pathophysiology, manifestations and clinical management», Cambridge University Press, 1992&lt;/li&gt;
-&lt;li&gt;Frank S. Barnes, Ben Greenebaum, «Biological and Medical Aspects of Electromagnetic Fields», 3rd edition, CRC Press, 2006&lt;/li&gt;
-&lt;li&gt;Robert O. Becker, Gary Selden, «The body electric: Electromagnetism and the foundation of life», Quill, 1987&lt;/li&gt;
-&lt;li&gt;Malmivuo Jaakko, Plonsey Robert, «Bioelectromagnetism: principles and applications of bioelectric and biomagnetic fields», Oxford University Press,  1995&lt;/li&gt;
-&lt;li&gt;Titomir Leonid Ivanovich, Kneppo Peter, «Bioelectric and biomagnetic fields: theory and applications in electrocardiology», CRC Press, 1994&lt;/li&gt;
-&lt;li&gt;D. Jennings, A. Flint, B.C.H. Turton, L.D.M. Nokes, «Introduction to medical electronics applications», Butterworth-Heinemann, 1995&lt;/li&gt;
-&lt;li&gt;Günter Lüttgens, Norman Wilson, «Electrostatic hazards», Butterworth-Heinemann, 1997&lt;/li&gt;
-&lt;li&gt;James Keener, James Sneyd, «Mathematical physiology», Springer-Verlag, 1998&lt;/li&gt;
-&lt;li&gt;Ihor Gussak, Charles Antzelevitch, «Electrical Diseases of the Heart: Genetics, Mechanisms, * Treatment, Prevention», Springer-Verlag London Limited, 2008&lt;/li&gt;
-&lt;li&gt;Μπαλτόπουλος Ι. Γεώργιος, «Πρώτες βοήθειες»,  Ιατρικές εκδόσεις Πασχαλίδης, 2001&lt;/li&gt;
-&lt;li&gt;Dalziel C., «The threshold of perception currents», IEEE Transactions, Power apparatus and systems, Vol. 73, 1954:990-996.&lt;/li&gt;
-&lt;li&gt;Bernstein Theodore, «Electrical shock hazards and safety standards», IEEE Transactions on education, Vol. 34, No. 3, August 1991&lt;/li&gt;
-&lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>French songs with greek subtitles</title>
-      <link>https://alamot.github.io/music_fr2el_subs/</link>
-      <pubDate>Fri, 08 May 2009 00:00:00 +0000</pubDate>
-      <guid>https://alamot.github.io/music_fr2el_subs/</guid>
-      <description>
-
-&lt;h1 id=&#34;anne-marie-david-je-suis-l-enfant-soleil&#34;&gt;Anne-Marie David - Je suis l&amp;rsquo;enfant-soleil&lt;/h1&gt;
-
-&lt;p&gt;&lt;p lang=en&gt;The french participation  in the Eurovision Song Contest 1979:&lt;/p&gt;
-&lt;p lang=el&gt;Η συμμετοχή της Γαλλίας στην Eurovision του 1979:&lt;/p&gt;
-&lt;div class=&#34;max-width640&#34;&gt;
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;//www.youtube.com/embed/0SICm_UbbME?&#34;
-  style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;h1 id=&#34;ishtar-comme-toi&#34;&gt;Ishtar - Comme toi&lt;/h1&gt;
-
-&lt;p&gt;&lt;p lang=en&gt;Lyrics, music &amp;amp; 1st performance: Jean-Jacques Goldman. The songwriter tells his daughter, while she is sleeping, the story of a girl killed during the World War II. Dedicated to all child victims of war.&lt;/p&gt;
-&lt;p lang=el&gt;Στίχοι, μουσική &amp;amp; 1η εκτέλεση: Jean-Jacques Goldman. Ο στιχουργός διηγείται στην κόρη του, ενώ αυτή κοιμάται, την ιστορία ενός κοριτσιού που σκοτώθηκε κατά τον 2ο παγκόσμιο πόλεμο. Αφιερωμένο σε όλα τα παιδιά-θύματα πολέμου.&lt;/p&gt;
-&lt;div class=&#34;max-width640&#34;&gt;
-
-&lt;div style=&#34;position: relative; padding-bottom: 56.25%; padding-top: 30px; height: 0; overflow: hidden;&#34;&gt;
-  &lt;iframe src=&#34;//www.youtube.com/embed/_EJirbuTPew?&#34;
-  style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%;&#34; allowfullscreen frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
-&lt;/div&gt;
-&lt;/div&gt;&lt;/p&gt;
 </description>
     </item>
     

@@ -9,272 +9,9 @@
     <atom:link href="https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/linux/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>Creation of a transparent shutdown GUI using Gtk and Cairo in Python</title>
-      <link>https://alamot.github.io/shutdown_manager_transparent/</link>
-      <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
-      <guid>https://alamot.github.io/shutdown_manager_transparent/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
-
-&lt;figure&gt;
-&lt;img class=&#34;border&#34; src=&#34;https://alamot.github.io/images/shutdown_gui_3x3_transparent.jpg&#34; alt=&#34;Transparent 3x3 square shutdown GUI&#34;&gt;
-&lt;figcaption lang=&#34;en&#34;&gt;You can find free icons for every use on &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
-&lt;figcaption lang=&#34;el&#34;&gt;Μπορείτε να βρείτε δωρεάν εικονίδια για κάθε χρήση στο &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
-&lt;/figure&gt;
-
-&lt;p lang=&#34;en&#34;&gt;First, let&#39;s add the necessary imports:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
-&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;os&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;gtk&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;cairo&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;math&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; pi
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;collections&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; OrderedDict
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We offer two different layouts, one fullscreen and one windowed. Change the following variable according to your preference:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Προσφέρουμε δύο διαφορετικές διατάξεις, μια πλήρους οθόνης και μια παραθυριακή. Αλλάξτε την ακόλουθη μεταβλητή σύμφωνα με την προτίμησή σας:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;FULL_SCREEN &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We define a &lt;em&gt;get_resource_path&lt;/em&gt; function to help us find the path of our icons in the system:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Ορίζουμε μια συνάρτηση &lt;em&gt;get_resource_path&lt;/em&gt; για να μας βοηθήσει να βρούμε την τοποθεσία των εικονιδίων μας στο σύστημα:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;get_resource_path&lt;/span&gt;(rel_path):
-    dir_of_py_file &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;dirname(__file__)
-    rel_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;join(dir_of_py_file, rel_path)
-    abs_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;abspath(rel_path_to_resource)
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; abs_path_to_resource
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Next, we define our SystemDialog class (inherits from gtk.Window):&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Στη συνέχεια, ορίζουμε την κλάση SystemDialog (κληρονομεί από την gtk.Window):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0000FF&#34;&gt;SystemDialog&lt;/span&gt; (gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Window):
-    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Inside the class we define the __init__ (do &lt;strong&gt;not&lt;/strong&gt; forget to call the super):&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μέσα στην κλάση μας ορίζουμε την __init__ (&lt;strong&gt;μην&lt;/strong&gt; ξεχάσετε να καλέσετε την super):&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;__init__&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;):
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;super&lt;/span&gt;(SystemDialog, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;)&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;__init__()
-    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Inside the __init__ we define a dictionary with label/command key-value pairs. The reason we use an &lt;em&gt;OrderedDict&lt;/em&gt; is that the simple &lt;em&gt;dict&lt;/em&gt; in python does not keep the order of the keys but we do not want our buttons to appear in arbitrary order. Keep in mind that you have to edit the button commands according to your system and your needs.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μέσα στην __init__ ορίζουμε ένα λεξικό με ζευγάρια από ετικέτες και εντολές. Ο λόγος που χρησιμοποιούμε ένα &lt;em&gt;OrderedDict&lt;/em&gt; είναι επειδή το απλό &lt;em&gt;dict&lt;/em&gt; στην Python δεν συγκρατεί τη σειρά των λημμάτων (=κλειδιών), αλλά εμείς δε θέλουμε τα κουμπιά μας να εμφανίζονται με αυθαίρετη σειρά. Σημειώστε ότι θα πρέπει να τροποποιήσετε τις εντολές που αντιστοιχούν στα κουμπιά ανάλογα με το σύστημα σάς και τις ανάγκες σάς.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; OrderedDict([
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Cancel&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Lock&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;slock &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Restart WM&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall dwm &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-hibernate &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep + Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend-hybrid &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Logout&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall X &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Reboot&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo reboot &amp;amp;&amp;quot;&lt;/span&gt;),
-    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Shutdown&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo poweroff &amp;amp;&amp;quot;&lt;/span&gt;)])
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We need some &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to align vertically each icon with its label. Οur clickable &#34;buttons&#34; will be the &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  which will contain the small_vboxes.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Χρειαζόμαστε μερικά μικρά κουτιά (&lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; ) για να στοιχίσουμε κάθετα κάθε εικόνιδιο με την ετικέτα του. Τα κουμπιά μας που θα πατιούνται θα είναι τα &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  που θα εμπεριέχουν τα small_vboxes.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;table class=&#34;floatright&#34; style=&#34;border: 3px solid orange; outline:3px solid green; outline-offset: 5px; text-align:center;&#34;&gt;
-&lt;tr&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;i&gt;Label&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-
-&lt;p lang=&#34;en&#34;&gt;If the system supports it, we will use an rgba colormap (i.e. one with an alpha channel). &lt;strong&gt;Note&lt;/strong&gt;: You need a compositor manager, like compton or xcompmgr for example, in order for transperancy to work.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αν το σύστημα το υποστηρίζει, θα χρησιμοποιήσουμε ένα χάρτης χρώματος rgba, δηλαδή έναν που διαθέτει και κανάλι άλφα. &lt;strong&gt;Σημείωση&lt;/strong&gt;: Χρειάζεστε έναν διαχειριστή σύνθεσης (compositor manager), όπως ο compton ή ο xcompmgr για παράδειγμα, για να δουλέψει η διαφάνεια.&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_screen()
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_rgba_colormap()
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;is_composited()):
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_colormap(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We make our window undecorated, paintable and we keep it on top.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Ρυθμίζουμε το παράθυρό μας να μην έχει διακοσμητικά στοιχεία, να μπορεί να ζωγραφιστεί και να παραμένει πάνω από τα άλλα παράθυρα.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_decorated(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_keep_above(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Some more settings, mostly for the fullscreen case. The function set_border_width sets the size of the outer margin. Adjust it to your liking.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μερικές ακόμη ρυθμίσεις, κυρίως για την περίπτωση της πλήρους οθόνης. Η συνάρτηση set_border_width θέτει το μέγεθος του εξωτερικού περιθωρίου. Προσαρμόστε το κατά την αρεσκεία σας.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; FULL_SCREEN:
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;150&lt;/span&gt;)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_size_request(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_width(),
-                          &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_height())
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_position(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;WIN_POS_CENTER)
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;:
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;We define one &lt;span style=&#34;color:blue&#34;&gt;vertical box&lt;/span&gt; and three &lt;span style=&#34;color:red&#34;&gt;horizontal boxes&lt;/span&gt;. The vertical box will contain and align vertically the 3 horizontal boxes while each horizontal box while keep and align horizontally 3 of our &#34;buttons (events_boxes). Therefore, in the end, we will have a nice 3x3 icon square, like this:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Ορίζουμε ένα &lt;span style=&#34;color:blue&#34;&gt;κάθετο κουτί&lt;/span&gt; και τρία &lt;span style=&#34;color:red&#34;&gt;οριζόντια κουτιά&lt;/span&gt;. Το κάθετο κουτί θα εμπεριέχει και θα στοιχίζει κάθετα τα 3 οριζόντια κουτιά, ενώ κάθε οριζόντιο κουτί θα περιέχει και θα στοιχίζει οριζόντια 3 από τα &#34;κουμπιά&#34; μας (events_boxes). Οπότε, τελικά, θα έχουμε ένα ωραίο τετράγωνο 3x3 γεμάτο με εικόνιδια, όπως αυτό:&lt;/p&gt;
-&lt;table class=&#34;floatright&#34; style=&#34;outline:5px solid blue; outline-offset: 3px;&#34;&gt;
-&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
-&lt;/table&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; [gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
-               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
-               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)]
-&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p lang=&#34;en&#34;&gt;The &lt;em&gt;True&lt;/em&gt; values is about the homogenous (i.e. the same) size of the children and &lt;em&gt;5&lt;/em&gt; is the amount of space between them.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Οι τιμές &lt;em&gt;True&lt;/em&gt; έχουν να κάνουν με την ισόποση κατανομή του χώρου μεταξύ των περιεχομένων, ενώ το &lt;em&gt;5&lt;/em&gt; είναι το κενό διάστημα ανάμεσά τους.&lt;/p&gt;
-
-&lt;p lang=&#34;en&#34;&gt;Now, we are ready to create our &#34;buttons&#34;. We load each icon and we pack/align it vertically with its label inside a &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. We add each of the &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to an &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. We connect the click of &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt; with a callback event handler and we pack them inside the empty horizontal boxes (3 &#34;buttons&#34; in each &lt;span style=&#34;color:red&#34;&gt;horizontal box&lt;/span&gt;). Finally, to make our &#34;buttons&#34; transparent, we have to connect their &lt;em&gt;expose-event&lt;/em&gt; with our &lt;em&gt;self.expose&lt;/em&gt; function and to set them as &lt;em&gt;paintable&lt;/em&gt;.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Τώρα, είμαστε έτοιμοι να δημιουργήσουμε τα &#34;κουμπιά&#34; μας. Φορτώνουμε κάθε εικονίδιο και το πακετάρουμε/στοιχίζουμε κάθετα με την ετίκετά του μέσα σε ένα &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. Προσθέτουμε το καθένα από τα &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; σε ένα διαφανές &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. Συνδέσουμε το πάτημά των &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt; με έναν επανακαλούμενο χειριστή συμβάντων και τα πακετάρουμε μέσα στα άδεια οριζόντια κουτιά (3 κουμπιά σε κάθε &lt;span style=&#34;color:red&#34;&gt;οριζόντιο κουτί&lt;/span&gt;). Τέλος, για να καταστήσουμε τα &#34;κουμπιά&#34; μας διαφανή, θα πρεπει να συνδεσουμε το &lt;em&gt;expose-event&lt;/em&gt; τους με την &lt;em&gt;self.expose&lt;/em&gt; συνάρτηση μας και να τα θέσουμε ως επιδεκτικά βαψίματος &lt;em&gt;(paintable)&lt;/em&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;c &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
-boxIndex &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
-
-&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; key &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keys():
-
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load image&lt;/span&gt;
-    ico &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Image()
-    ico&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_from_file(get_resource_path(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;images/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;key&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;.png&amp;quot;&lt;/span&gt;))
-    
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load label&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Label(key)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;modify_fg(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;STATE_NORMAL,
-                               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;color_parse(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;#FFFFFF&amp;#39;&lt;/span&gt;))
-                               
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align image and label vertically&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(ico)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key])
-    
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Create transparent &amp;quot;buttons&amp;quot; (event_boxes)&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;EventBox()
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key])
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;button-release-event&amp;#39;&lt;/span&gt;,
-                                  &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback, key)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
-    
-    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align up to 3 &amp;quot;buttons&amp;quot; (event_boxes) horizontally&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes[boxIndex]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start((&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]))
-    c &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; (c &lt;span style=&#34;color: #666666&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;):
-        boxIndex &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;And now, let&#39;s pack the horizontal boxes inside the vertical box and the vertical box inside our window. Do &lt;strong&gt;not&lt;/strong&gt; forget to show all our widgets with self.show_all().&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Και τώρα, ας πακετάρουμε τα οριζόντια κουτιά μέσα στο κάθετο κουτί και το κάθετο κουτί μέσα στο παράθυρό μας. &lt;strong&gt;Μην&lt;/strong&gt; ξεχάσετε να εμφανίσετε όλα τα γραφικά στοιχεία σας με την self.show_all().&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; hbox &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes:
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(hbox, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox)
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;show_all()
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Finally, we connect some events for our window with their callback handlers:&lt;/p&gt; 
-&lt;p lang=&#34;el&#34;&gt;Τέλος, συνδέουμε μερικά συμβάντα για το παράθυρό μας με τους επανακαλούμενους χειριστές τους:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# For our window to be transparent&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
-&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If our window is destroyed, call self.callback (to exit)&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;delete-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback)
-&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If a key is pressed, call self.key_press_event&lt;/span&gt;
-&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;key-press-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;key_press_event)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;If our window is not fullscreen, we can move it where we want it. Let&#39;s put it on the bottom right corner of the screen.&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αν το παράθυρο μας δεν είναι πλήρους οθόνης, μπορούμε να το μετακινήσουμε όπου θέλουμε. Ας το βάλουμε στην κάτω δεξιά γωνία της οθόνης.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; FULL_SCREEN:
-    w, h &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_size()
-    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;move(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_width() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; w,
-              gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_height() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; h &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;22&lt;/span&gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;The function expose is where the magic of transparency happens. Υou can set the color and the opacity (alpha channel) of our window via the &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt; .&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Η μαγεία της διαφάνειας συμβαίνει μέσα στην συνάρτηση expose. Μπορείτε να καθορίσετε την απόχρωση και την αδιαφάνεια (κανάλι άλφα) του παραθύρου μας μέσω της &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt;.&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;expose&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget, event):
-    cr &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; widget&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_window()&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;cairo_create()
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_source_rgba(&lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0.65&lt;/span&gt;)
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_SOURCE)
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;paint()
-    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_OVER)
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;This is the our keyboard callback/event handler function. If the user has pressed &lt;strong&gt;Escape&lt;/strong&gt;, we quit:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η επανακαλούμενη συνάρτησή μας για τον χειρισμό συμβάντων πληκτρολογίου. Αν ο χρήστης έχει πατήσει το &lt;strong&gt;Escape&lt;/strong&gt;, βγαίνουμε από την εφαρμογή:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;key_press_event&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
-    keyval &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval
-    keyval_name &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval_name(keyval)
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; keyval_name &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Escape&amp;quot;&lt;/span&gt;:
-        gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;If you would like to check for some key modifier/combination you can -for example- get the ctrl key status like this:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αν τυχόν επιθυμείτε να ελέγξετε για κάποιο ειδικό πλήκτρο ή συνδυασμό μπορείτε -για παράδειγμα- να λάβετε την κατάσταση του πλήκτρου ctrl ως εξής:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;state &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;state
-ctrl &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (state &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;CONTROL_MASK)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;This is the our generic callback function which executes the commands:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η γενική μας επανακαλούμενη συνάρτηση που εκτελεί τις εντολές:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, data&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
-    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
-       data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
-       &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data] &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
-       event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;button &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;):  &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# left click&lt;/span&gt;
-            os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;system(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data])
-    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;When our program executes, an &lt;em&gt;SystemDialog&lt;/em&gt; object is created and gtk.main() is called:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Όταν η εφαρμογή μας εκτελείται, δημιουργείται ένα αντικείμενο &lt;em&gt;SystemDialog&lt;/em&gt; και καλείται η gtk.main():&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;__main__&amp;quot;&lt;/span&gt;:
-    SystemDialog()
-    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main()
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;&lt;strong&gt;Last but not least&lt;/strong&gt;: In order for our program to function without having to ask for a password, you need to add some lines in your &lt;em&gt;/etc/sudoers&lt;/em&gt; file. This is a special system file and you have to run &lt;em&gt;visudo&lt;/em&gt; with root privileges to edit it:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;&lt;strong&gt;Σημαντικό&lt;/strong&gt;: Προκειμένου η εφαρμογή μας να λειτουργεί χωρίς να χρειάζεται να ζητάει κωδικό, θα πρέπει να προσθέσετε μερικές γραμμές στο αρχείο &lt;em&gt;/etc/sudoers&lt;/em&gt;. Πρόκειται για ένα ειδικό αρχείο του συστήματος το οποίο, για να το διορθώσετε, θα πρέπει να τρέξετε την εντολή &lt;em&gt;visudo&lt;/em&gt; έχοντας δικαιώματα διαχειριστή:&lt;/p&gt;
-
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# visudo&lt;/span&gt;
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/reboot
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/poweroff
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/killall
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend-hybrid
-username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-hibernate
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>How to get info for the wireless interface using nl80211 in C</title>
       <link>https://alamot.github.io/nl80211/</link>
-      <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
+      <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/nl80211/</guid>
       <description>
 
@@ -664,9 +401,272 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
     </item>
     
     <item>
+      <title>Creation of a transparent shutdown GUI using Gtk and Cairo in Python</title>
+      <link>https://alamot.github.io/shutdown_manager_transparent/</link>
+      <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/shutdown_manager_transparent/</guid>
+      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
+
+&lt;figure&gt;
+&lt;img class=&#34;border&#34; src=&#34;https://alamot.github.io/images/shutdown_gui_3x3_transparent.jpg&#34; alt=&#34;Transparent 3x3 square shutdown GUI&#34;&gt;
+&lt;figcaption lang=&#34;en&#34;&gt;You can find free icons for every use on &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
+&lt;figcaption lang=&#34;el&#34;&gt;Μπορείτε να βρείτε δωρεάν εικονίδια για κάθε χρήση στο &lt;a href=&#34;https://openclipart.org&#34; target=&#34;_blank&#34;&gt;openclipart.org&lt;/a&gt;&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p lang=&#34;en&#34;&gt;First, let&#39;s add the necessary imports:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
+&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;os&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;gtk&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;cairo&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;math&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; pi
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;collections&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; OrderedDict
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We offer two different layouts, one fullscreen and one windowed. Change the following variable according to your preference:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Προσφέρουμε δύο διαφορετικές διατάξεις, μια πλήρους οθόνης και μια παραθυριακή. Αλλάξτε την ακόλουθη μεταβλητή σύμφωνα με την προτίμησή σας:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;FULL_SCREEN &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We define a &lt;em&gt;get_resource_path&lt;/em&gt; function to help us find the path of our icons in the system:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ορίζουμε μια συνάρτηση &lt;em&gt;get_resource_path&lt;/em&gt; για να μας βοηθήσει να βρούμε την τοποθεσία των εικονιδίων μας στο σύστημα:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;get_resource_path&lt;/span&gt;(rel_path):
+    dir_of_py_file &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;dirname(__file__)
+    rel_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;join(dir_of_py_file, rel_path)
+    abs_path_to_resource &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;abspath(rel_path_to_resource)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; abs_path_to_resource
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Next, we define our SystemDialog class (inherits from gtk.Window):&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Στη συνέχεια, ορίζουμε την κλάση SystemDialog (κληρονομεί από την gtk.Window):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0000FF&#34;&gt;SystemDialog&lt;/span&gt; (gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Window):
+    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Inside the class we define the __init__ (do &lt;strong&gt;not&lt;/strong&gt; forget to call the super):&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μέσα στην κλάση μας ορίζουμε την __init__ (&lt;strong&gt;μην&lt;/strong&gt; ξεχάσετε να καλέσετε την super):&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;__init__&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;):
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;super&lt;/span&gt;(SystemDialog, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;)&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;__init__()
+    &lt;span style=&#34;color: #666666&#34;&gt;...&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Inside the __init__ we define a dictionary with label/command key-value pairs. The reason we use an &lt;em&gt;OrderedDict&lt;/em&gt; is that the simple &lt;em&gt;dict&lt;/em&gt; in python does not keep the order of the keys but we do not want our buttons to appear in arbitrary order. Keep in mind that you have to edit the button commands according to your system and your needs.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μέσα στην __init__ ορίζουμε ένα λεξικό με ζευγάρια από ετικέτες και εντολές. Ο λόγος που χρησιμοποιούμε ένα &lt;em&gt;OrderedDict&lt;/em&gt; είναι επειδή το απλό &lt;em&gt;dict&lt;/em&gt; στην Python δεν συγκρατεί τη σειρά των λημμάτων (=κλειδιών), αλλά εμείς δε θέλουμε τα κουμπιά μας να εμφανίζονται με αυθαίρετη σειρά. Σημειώστε ότι θα πρέπει να τροποποιήσετε τις εντολές που αντιστοιχούν στα κουμπιά ανάλογα με το σύστημα σάς και τις ανάγκες σάς.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; OrderedDict([
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Cancel&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Lock&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;slock &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Restart WM&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall dwm &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-hibernate &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Sleep + Hibernate&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo pm-suspend-hybrid &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Logout&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo killall X &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Reboot&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo reboot &amp;amp;&amp;quot;&lt;/span&gt;),
+    (&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Shutdown&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;sudo poweroff &amp;amp;&amp;quot;&lt;/span&gt;)])
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We need some &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to align vertically each icon with its label. Οur clickable &#34;buttons&#34; will be the &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  which will contain the small_vboxes.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Χρειαζόμαστε μερικά μικρά κουτιά (&lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; ) για να στοιχίσουμε κάθετα κάθε εικόνιδιο με την ετικέτα του. Τα κουμπιά μας που θα πατιούνται θα είναι τα &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt;  που θα εμπεριέχουν τα small_vboxes.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {}
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;table class=&#34;floatright&#34; style=&#34;border: 3px solid orange; outline:3px solid green; outline-offset: 5px; text-align:center;&#34;&gt;
+&lt;tr&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;i&gt;Label&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;p lang=&#34;en&#34;&gt;If the system supports it, we will use an rgba colormap (i.e. one with an alpha channel). &lt;strong&gt;Note&lt;/strong&gt;: You need a compositor manager, like compton or xcompmgr for example, in order for transperancy to work.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αν το σύστημα το υποστηρίζει, θα χρησιμοποιήσουμε ένα χάρτης χρώματος rgba, δηλαδή έναν που διαθέτει και κανάλι άλφα. &lt;strong&gt;Σημείωση&lt;/strong&gt;: Χρειάζεστε έναν διαχειριστή σύνθεσης (compositor manager), όπως ο compton ή ο xcompmgr για παράδειγμα, για να δουλέψει η διαφάνεια.&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_screen()
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_rgba_colormap()
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;is_composited()):
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_colormap(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rgba_colormap)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We make our window undecorated, paintable and we keep it on top.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ρυθμίζουμε το παράθυρό μας να μην έχει διακοσμητικά στοιχεία, να μπορεί να ζωγραφιστεί και να παραμένει πάνω από τα άλλα παράθυρα.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_decorated(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_keep_above(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Some more settings, mostly for the fullscreen case. The function set_border_width sets the size of the outer margin. Adjust it to your liking.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μερικές ακόμη ρυθμίσεις, κυρίως για την περίπτωση της πλήρους οθόνης. Η συνάρτηση set_border_width θέτει το μέγεθος του εξωτερικού περιθωρίου. Προσαρμόστε το κατά την αρεσκεία σας.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; FULL_SCREEN:
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;150&lt;/span&gt;)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_size_request(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_width(),
+                          &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_height())
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_position(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;WIN_POS_CENTER)
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;:
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_border_width(&lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;We define one &lt;span style=&#34;color:blue&#34;&gt;vertical box&lt;/span&gt; and three &lt;span style=&#34;color:red&#34;&gt;horizontal boxes&lt;/span&gt;. The vertical box will contain and align vertically the 3 horizontal boxes while each horizontal box while keep and align horizontally 3 of our &#34;buttons (events_boxes). Therefore, in the end, we will have a nice 3x3 icon square, like this:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ορίζουμε ένα &lt;span style=&#34;color:blue&#34;&gt;κάθετο κουτί&lt;/span&gt; και τρία &lt;span style=&#34;color:red&#34;&gt;οριζόντια κουτιά&lt;/span&gt;. Το κάθετο κουτί θα εμπεριέχει και θα στοιχίζει κάθετα τα 3 οριζόντια κουτιά, ενώ κάθε οριζόντιο κουτί θα περιέχει και θα στοιχίζει οριζόντια 3 από τα &#34;κουμπιά&#34; μας (events_boxes). Οπότε, τελικά, θα έχουμε ένα ωραίο τετράγωνο 3x3 γεμάτο με εικόνιδια, όπως αυτό:&lt;/p&gt;
+&lt;table class=&#34;floatright&#34; style=&#34;outline:5px solid blue; outline-offset: 3px;&#34;&gt;
+&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/i&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;tr style=&#34;outline:2px solid red; outline-offset:-3px;&#34;&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;td&gt;&lt;i class=&#34;fa fa-picture-o lgfont&#34;&gt;&lt;/td&gt;&lt;/tr&gt;
+&lt;/table&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; [gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
+               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;),
+               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;HBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;5&lt;/span&gt;)]
+&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p lang=&#34;en&#34;&gt;The &lt;em&gt;True&lt;/em&gt; values is about the homogenous (i.e. the same) size of the children and &lt;em&gt;5&lt;/em&gt; is the amount of space between them.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Οι τιμές &lt;em&gt;True&lt;/em&gt; έχουν να κάνουν με την ισόποση κατανομή του χώρου μεταξύ των περιεχομένων, ενώ το &lt;em&gt;5&lt;/em&gt; είναι το κενό διάστημα ανάμεσά τους.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Now, we are ready to create our &#34;buttons&#34;. We load each icon and we pack/align it vertically with its label inside a &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. We add each of the &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; to an &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. We connect the click of &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt; with a callback event handler and we pack them inside the empty horizontal boxes (3 &#34;buttons&#34; in each &lt;span style=&#34;color:red&#34;&gt;horizontal box&lt;/span&gt;). Finally, to make our &#34;buttons&#34; transparent, we have to connect their &lt;em&gt;expose-event&lt;/em&gt; with our &lt;em&gt;self.expose&lt;/em&gt; function and to set them as &lt;em&gt;paintable&lt;/em&gt;.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Τώρα, είμαστε έτοιμοι να δημιουργήσουμε τα &#34;κουμπιά&#34; μας. Φορτώνουμε κάθε εικονίδιο και το πακετάρουμε/στοιχίζουμε κάθετα με την ετίκετά του μέσα σε ένα &lt;span style=&#34;color:orange&#34;&gt;small_vbox&lt;/span&gt;. Προσθέτουμε το καθένα από τα &lt;span style=&#34;color:orange&#34;&gt;small_vboxes&lt;/span&gt; σε ένα διαφανές &lt;span style=&#34;color:green&#34;&gt;event_box&lt;/span&gt;. Συνδέσουμε το πάτημά των &lt;span style=&#34;color:green&#34;&gt;event_boxes&lt;/span&gt; με έναν επανακαλούμενο χειριστή συμβάντων και τα πακετάρουμε μέσα στα άδεια οριζόντια κουτιά (3 κουμπιά σε κάθε &lt;span style=&#34;color:red&#34;&gt;οριζόντιο κουτί&lt;/span&gt;). Τέλος, για να καταστήσουμε τα &#34;κουμπιά&#34; μας διαφανή, θα πρεπει να συνδεσουμε το &lt;em&gt;expose-event&lt;/em&gt; τους με την &lt;em&gt;self.expose&lt;/em&gt; συνάρτηση μας και να τα θέσουμε ως επιδεκτικά βαψίματος &lt;em&gt;(paintable)&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;c &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
+boxIndex &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; key &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keys():
+
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load image&lt;/span&gt;
+    ico &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Image()
+    ico&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_from_file(get_resource_path(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;images/&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;key&lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;.png&amp;quot;&lt;/span&gt;))
+    
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Load label&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;Label(key)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;modify_fg(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;STATE_NORMAL,
+                               gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;color_parse(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;#FFFFFF&amp;#39;&lt;/span&gt;))
+                               
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align image and label vertically&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;VBox(&lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(ico)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;labels[key])
+    
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Create transparent &amp;quot;buttons&amp;quot; (event_boxes)&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;EventBox()
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;small_vboxes[key])
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;button-release-event&amp;#39;&lt;/span&gt;,
+                                  &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback, key)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_app_paintable(&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
+    
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# Pack/align up to 3 &amp;quot;buttons&amp;quot; (event_boxes) horizontally&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes[boxIndex]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start((&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;event_boxes[key]))
+    c &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; (c &lt;span style=&#34;color: #666666&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;):
+        boxIndex &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;And now, let&#39;s pack the horizontal boxes inside the vertical box and the vertical box inside our window. Do &lt;strong&gt;not&lt;/strong&gt; forget to show all our widgets with self.show_all().&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Και τώρα, ας πακετάρουμε τα οριζόντια κουτιά μέσα στο κάθετο κουτί και το κάθετο κουτί μέσα στο παράθυρό μας. &lt;strong&gt;Μην&lt;/strong&gt; ξεχάσετε να εμφανίσετε όλα τα γραφικά στοιχεία σας με την self.show_all().&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; hbox &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;hboxes:
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pack_start(hbox, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;add(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;vbox)
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;show_all()
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Finally, we connect some events for our window with their callback handlers:&lt;/p&gt; 
+&lt;p lang=&#34;el&#34;&gt;Τέλος, συνδέουμε μερικά συμβάντα για το παράθυρό μας με τους επανακαλούμενους χειριστές τους:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# For our window to be transparent&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;expose-event&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;expose)
+&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If our window is destroyed, call self.callback (to exit)&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;delete-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback)
+&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# If a key is pressed, call self.key_press_event&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;connect(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;key-press-event&amp;quot;&lt;/span&gt;, &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;key_press_event)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;If our window is not fullscreen, we can move it where we want it. Let&#39;s put it on the bottom right corner of the screen.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αν το παράθυρο μας δεν είναι πλήρους οθόνης, μπορούμε να το μετακινήσουμε όπου θέλουμε. Ας το βάλουμε στην κάτω δεξιά γωνία της οθόνης.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; FULL_SCREEN:
+    w, h &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_size()
+    &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;move(gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_width() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; w,
+              gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;screen_height() &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; h &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;22&lt;/span&gt;)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;The function expose is where the magic of transparency happens. Υou can set the color and the opacity (alpha channel) of our window via the &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt; .&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Η μαγεία της διαφάνειας συμβαίνει μέσα στην συνάρτηση expose. Μπορείτε να καθορίσετε την απόχρωση και την αδιαφάνεια (κανάλι άλφα) του παραθύρου μας μέσω της &lt;em&gt;set_source_rgba(r, g, b, a)&lt;/em&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;expose&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget, event):
+    cr &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; widget&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;get_window()&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;cairo_create()
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_source_rgba(&lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;0.65&lt;/span&gt;)
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_SOURCE)
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;paint()
+    cr&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;set_operator(cairo&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;OPERATOR_OVER)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;This is the our keyboard callback/event handler function. If the user has pressed &lt;strong&gt;Escape&lt;/strong&gt;, we quit:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η επανακαλούμενη συνάρτησή μας για τον χειρισμό συμβάντων πληκτρολογίου. Αν ο χρήστης έχει πατήσει το &lt;strong&gt;Escape&lt;/strong&gt;, βγαίνουμε από την εφαρμογή:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;key_press_event&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
+    keyval &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval
+    keyval_name &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keyval_name(keyval)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; keyval_name &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Escape&amp;quot;&lt;/span&gt;:
+        gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;If you would like to check for some key modifier/combination you can -for example- get the ctrl key status like this:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αν τυχόν επιθυμείτε να ελέγξετε για κάποιο ειδικό πλήκτρο ή συνδυασμό μπορείτε -για παράδειγμα- να λάβετε την κατάσταση του πλήκτρου ctrl ως εξής:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;state &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;state
+ctrl &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (state &lt;span style=&#34;color: #666666&#34;&gt;&amp;amp;&lt;/span&gt; gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;gdk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;CONTROL_MASK)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;This is the our generic callback function which executes the commands:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αυτή είναι η γενική μας επανακαλούμενη συνάρτηση που εκτελεί τις εντολές:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;callback&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, widget&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, event&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;, data&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;):
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
+       data &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
+       &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data] &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;is&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;not&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;and&lt;/span&gt;
+       event&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;button &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;):  &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# left click&lt;/span&gt;
+            os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;system(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;actions[data])
+    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main_quit()
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;When our program executes, an &lt;em&gt;SystemDialog&lt;/em&gt; object is created and gtk.main() is called:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Όταν η εφαρμογή μας εκτελείται, δημιουργείται ένα αντικείμενο &lt;em&gt;SystemDialog&lt;/em&gt; και καλείται η gtk.main():&lt;/p&gt;
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;__main__&amp;quot;&lt;/span&gt;:
+    SystemDialog()
+    gtk&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;main()
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;&lt;strong&gt;Last but not least&lt;/strong&gt;: In order for our program to function without having to ask for a password, you need to add some lines in your &lt;em&gt;/etc/sudoers&lt;/em&gt; file. This is a special system file and you have to run &lt;em&gt;visudo&lt;/em&gt; with root privileges to edit it:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;&lt;strong&gt;Σημαντικό&lt;/strong&gt;: Προκειμένου η εφαρμογή μας να λειτουργεί χωρίς να χρειάζεται να ζητάει κωδικό, θα πρέπει να προσθέσετε μερικές γραμμές στο αρχείο &lt;em&gt;/etc/sudoers&lt;/em&gt;. Πρόκειται για ένα ειδικό αρχείο του συστήματος το οποίο, για να το διορθώσετε, θα πρέπει να τρέξετε την εντολή &lt;em&gt;visudo&lt;/em&gt; έχοντας δικαιώματα διαχειριστή:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# visudo&lt;/span&gt;
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/reboot
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /sbin/poweroff
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/bin/killall
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-suspend-hybrid
+username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-hibernate
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Creation of a shutdown GUI using Gtk in Python</title>
       <link>https://alamot.github.io/shutdown_manager_plain/</link>
-      <pubDate>Fri, 16 Sep 2016 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 21 Jul 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/shutdown_manager_plain/</guid>
       <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;

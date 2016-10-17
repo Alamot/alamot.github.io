@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.17-DEV" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <link rel='stylesheet' href="https://alamot.github.io/css/googlefonts.css">
+    <link rel="stylesheet" href="https://alamot.github.io/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://alamot.github.io/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://alamot.github.io/css/styles.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://alamot.github.io/index.xml">
+    
+
+    
+      <title>Git &amp; Mercurial: How to commit-push fast and easily - The Portal of Knowledge</title>
+      <meta property='og:title' content="Git &amp; Mercurial: How to commit-push fast and easily - The Portal of Knowledge">
+      <meta property="og:type" content="article">
+      <meta name="description" content="Git and Mercurial are cross-platform, distributed revision-control tools for software development and other version control tasks. Here we present two bash scripts, one for each tool, to help us commit and push our changes fast and easily. Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες έλεγχου έκδοσης. Εδώ παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.">
+      <meta property="og:description" content="Git and Mercurial are cross-platform, distributed revision-control tools for software development and other version control tasks. Here we present two bash scripts, one for each tool, to help us commit and push our changes fast and easily. Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες έλεγχου έκδοσης. Εδώ παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.">
+      <meta property="og:image" content="https://alamot.github.io/images/binary_flow.jpg">
+    
+
+    <meta property="og:url" content="https://alamot.github.io/fast_commit_push/">
+
+    <script>
+    function email(starting,server,firstname,lastname,subject,body,closing) {
+      document.write(starting);
+      document.write(":" + lastname);
+      document.write("." + firstname);
+      document.write("@");
+      document.write(server + "?subject=" + subject + "&body=" + body + "' target='_blank'>");
+      document.write(closing); }
+    </script>
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id":"https:\/\/alamot.github.io\/"
+    },
+    "headline": "Git \x26 Mercurial: How to commit-push fast and easily |  ",
+    "image": {
+      "@type": "ImageObject",
+      "url": "",
+      "height": 700,
+      "width": 700
+    },
+    "datePublished": "2016-10-17T00:00:00JST",
+    "dateModified": "2016-10-17T00:00:00JST",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
+        "height": 60,
+        "width": 60
+      }
+    },
+    "description": ""
+  }
+</script>
+</head>
+<body id="mainbody" class="en">
+<nav class="navbar navbar-default navbar-fixed-top">
+<div class="container-fluid">
+  <ul class="nav nav-pills pull-left navbar-btn">
+  
+  <li>
+    <div class="btn-group">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span><span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu scroll-menu">
+       <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></li></a>
+       
+       
+       
+       
+       
+        
+ 
+<li><a href="#span-lang-en-git-script-span-span-lang-el-σενάριο-git-span"><span lang="en">Git script</span><span lang="el">Σενάριο Git</span></a></li>
+<li><a href="#span-lang-en-mercurial-script-span-span-lang-el-σενάριο-mercurial-span"><span lang="en">Mercurial script</span><span lang="el">Σενάριο Mercurial</span></a></li>
+<li><a href="#span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
+ 
+ 
+       <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></li></a>
+    </ul>
+    </div>
+  </li>
+  
+  </ul>
+  <ul class="nav nav-pills">
+     
+      <li><a class="p-logo" href="https://alamot.github.io/"><i class="fa fa-home" aria-hidden="true"></i> <span class="hidden768" lang="en">The Portal of Knowledge</span><span class="hidden768" lang="el">Η Πύλη της Γνώσης</span></a></li>
+    
+  </ul>    
+  <ul class="nav nav-pills pull-right navbar-btn"> 
+    <li>
+    <button lang="en" type="button" class="btn btn-danger" onclick="document.body.className='el'; localStorage.setItem('language', 'el');">English</button>
+    <button lang="el" type="button" class="btn btn-primary" onclick="document.body.className='en'; localStorage.setItem('language', 'en');">Ελληνικά</button>
+    </li>  
+  </ul>
+</div>
+</nav>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <article class="single">
+        <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+        <div class="body">
+          <div lang="en">
+            <h1 id="title" class="title">Git &amp; Mercurial: How to commit-push fast and easily</h1>
+            <i class="fa fa-calendar"></i>  
+            <time lang="en">2016-10-17</time>
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='https://alamot.github.io/categories/coding'>Coding</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='https://alamot.github.io/tags/linux'>linux</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/tags/git'>git</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/tags/mercurial'>mercurial</a>
+            
+          </div>
+          <div lang="el">
+            <h1 class="title">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h1>
+            <i class="fa fa-calendar"></i> 
+            <time lang="el">2016-10-17</time>
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='https://alamot.github.io/%CE%BA%CE%B1%CF%84%CE%B7%CE%B3%CE%BF%CF%81%CE%B9%CE%B5%CF%82/%CF%80%CF%81%CE%BF%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CE%B1%CF%84%CE%B9%CF%83%CE%BC%CF%8C%CF%82'>Προγραμματισμός</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/linux'>linux</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/git'>git</a>
+            
+              <a class="label label-primary" href='https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/mercurial'>mercurial</a>
+            
+          </div>
+
+         
+         <aside>
+          <section>
+            <header lang="en">Contents</header>
+            <header lang="el">Περιεχόμενα</header>
+            <div><nav id="TableOfContents">
+<ul>
+<li><a href="#span-lang-en-git-script-span-span-lang-el-σενάριο-git-span"><span lang="en">Git script</span><span lang="el">Σενάριο Git</span></a></li>
+<li><a href="#span-lang-en-mercurial-script-span-span-lang-el-σενάριο-mercurial-span"><span lang="en">Mercurial script</span><span lang="el">Σενάριο Mercurial</span></a></li>
+<li><a href="#span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
+</ul>
+</nav></div>
+          </section>
+         </aside>
+        
+        
+          
+
+<p lang="en">Git and Mercurial are cross-platform, distributed revision-control tools for software development and other version control tasks. Here we present two bash scripts, one for each tool, to help us commit and push our changes fast and easily.</p>
+<p lang="el">Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες έλεγχου έκδοσης. Εδώ παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.</p>
+
+<h1 id="span-lang-en-git-script-span-span-lang-el-σενάριο-git-span"><span lang="en">Git script</span><span lang="el">Σενάριο Git</span></h1>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic">#!/bin/bash</span>
+
+<span style="color: #AA22FF; font-weight: bold">if</span> <span style="color: #666666">[</span> <span style="color: #B8860B">$#</span> -eq <span style="color: #666666">0</span> <span style="color: #666666">]</span>
+<span style="color: #AA22FF; font-weight: bold">then</span>
+  <span style="color: #AA22FF">echo</span> <span style="color: #BB4444">&quot;No message supplied. Using current date.&quot;</span>
+  git commit -a -m <span style="color: #BB4444">&quot;Automatic commit </span><span style="color: #AA22FF; font-weight: bold">$(</span>date<span style="color: #AA22FF; font-weight: bold">)</span><span style="color: #BB4444">&quot;</span> 
+<span style="color: #AA22FF; font-weight: bold">else</span>
+  <span style="color: #B8860B">str</span><span style="color: #666666">=</span><span style="color: #BB4444">&quot;&#39;</span><span style="color: #B8860B">$*</span><span style="color: #BB4444">&#39;&quot;</span>
+  <span style="color: #AA22FF">echo</span> <span style="color: #BB4444">&quot;Message: </span>$<span style="color: #BB4444">str&quot;</span>
+  bash -c <span style="color: #BB4444">&quot;git commit -a -m </span><span style="color: #BB6688; font-weight: bold">${</span><span style="color: #B8860B">str</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB4444">&quot;</span>
+<span style="color: #AA22FF; font-weight: bold">fi</span>
+
+git push origin master
+</pre></div>
+
+
+<h1 id="span-lang-en-mercurial-script-span-span-lang-el-σενάριο-mercurial-span"><span lang="en">Mercurial script</span><span lang="el">Σενάριο Mercurial</span></h1>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic">#!/bin/bash</span>
+
+<span style="color: #AA22FF; font-weight: bold">if</span> <span style="color: #666666">[</span> <span style="color: #B8860B">$#</span> -eq <span style="color: #666666">0</span> <span style="color: #666666">]</span>
+<span style="color: #AA22FF; font-weight: bold">then</span>
+  <span style="color: #AA22FF">echo</span> <span style="color: #BB4444">&quot;No message supplied. Using current date.&quot;</span>
+  hg commit -m <span style="color: #BB4444">&quot;Automatic commit </span><span style="color: #AA22FF; font-weight: bold">$(</span>date<span style="color: #AA22FF; font-weight: bold">)</span><span style="color: #BB4444">&quot;</span> 
+<span style="color: #AA22FF; font-weight: bold">else</span>
+  <span style="color: #B8860B">str</span><span style="color: #666666">=</span><span style="color: #BB4444">&quot;&#39;</span><span style="color: #B8860B">$*</span><span style="color: #BB4444">&#39;&quot;</span>
+  <span style="color: #AA22FF">echo</span> <span style="color: #BB4444">&quot;Message: </span>$<span style="color: #BB4444">str&quot;</span>
+  bash -c <span style="color: #BB4444">&quot;hg commit -m </span><span style="color: #BB6688; font-weight: bold">${</span><span style="color: #B8860B">str</span><span style="color: #BB6688; font-weight: bold">}</span><span style="color: #BB4444">&quot;</span>
+<span style="color: #AA22FF; font-weight: bold">fi</span>
+
+hg push
+</pre></div>
+
+
+<p lang="en">You can name these scripts with single english letters (g and h respectively, for example) and copy them somewhere in your $PATH. Do not forget to make them executable: chmod +x filename.</p>
+<p lang="el">Μπορείτε να ονομάσετε αυτά τα σενάρια με μονά γράμματα του αγγλικού αλφαβήτου (g και h αντίστοιχα, για παράδειγμα) και να τα αντιγράψετε κάπου μέσα στην $PATH σας. Μην ξεχάσετε να τα καταστήσετε εκτελέσιμα: chmod +x filename.</p>
+
+<p lang="en">From now on you can commit and push your changes by typing just one letter:</p>
+<p lang="el">Από εδώ και στο εξής μπορείτε να κάνετε commit και push τις αλλαγές σας πληκτρολογώντας μονάχα ένα γράμμα:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ g 
+</pre></div>
+
+
+<p lang="en">Optionally, you can provide a commit message, directly, like this (without using quotes):</p>
+<p lang="el">Προαιρετικά, μπορείτε να παρέχετε ένα μήνυμα για το commit, απευθείας, ως εξής (χωρίς τη χρήση εισαγωγικών):</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ g some optional commit message
+</pre></div>
+
+
+<p lang="en">If you do not provide a message then the current date is used automatically.</p>
+<p lang="en">Αν δεν παρέχετε κάποιο μήνυμα τότε χρησιμοποιείται αυτόματα η τρέχουσα ημερομηνία.</p>
+
+<h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
+
+<p lang="en">You can find the scripts here:</p>
+<p lang="el">Μπορείτε να βρείτε τα σενάρια εδώ:</p>
+
+<ul>
+<li><a href="https://github.com/Alamot/code-snippets/blob/master/hg_git/g" target="_blank">g (git)</a></li>
+<li><a href="https://github.com/Alamot/code-snippets/blob/master/hg_git/h" target="_blank">h (mercurial)</a></li>
+</ul>
+
+        </div>
+
+        <aside>
+          <section>
+            <div>
+              <div class="p-share">
+                <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&t=Git%20%26%20Mercurial%3a%20How%20to%20commit-push%20fast%20and%20easily" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+                <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+                <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&text=Git%20%26%20Mercurial%3a%20How%20to%20commit-push%20fast%20and%20easily&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+                <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&text=Git%20%26%20Mercurial%3a%20%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%ba%ce%ac%ce%bd%ce%b5%cf%84%ce%b5%20commit-push%20%ce%b3%cf%81%ce%ae%ce%b3%ce%bf%cf%81%ce%b1%20%ce%ba%ce%b1%ce%b9%20%ce%b5%cf%8d%ce%ba%ce%bf%ce%bb%ce%b1&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+                <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&description=Git%20%26%20Mercurial%3a%20How%20to%20commit-push%20fast%20and%20easily&media=https://alamot.github.io/images/binary_flow.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+                <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&description=Git%20%26%20Mercurial%3a%20%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%ba%ce%ac%ce%bd%ce%b5%cf%84%ce%b5%20commit-push%20%ce%b3%cf%81%ce%ae%ce%b3%ce%bf%cf%81%ce%b1%20%ce%ba%ce%b1%ce%b9%20%ce%b5%cf%8d%ce%ba%ce%bf%ce%bb%ce%b1&media=https://alamot.github.io/images/binary_flow.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+              </div>
+            </div>
+          </section>
+          
+          <section class="center">
+           <div lang="en">
+            <script>
+             email("<div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Comments will be visible after approval. Your e-mail address will NOT appear on this site.</span></div><a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Comment 5d60a28db0db1047b7a5af58b2e72f44", "Comment on «Git \x26 Mercurial: How to commit-push fast and easily»%0D%0Aby __Anonymous__ (<--You can put a display name here, since your e-mail address will NOT appear on the site.)%0D%0A%0D%0A*** DO NOT DELETE THE ABOVE LINES. WRITE YOUR COMMENT BELOW ***.%0D%0A%0D%0A%0D%0A","<i class='fa fa-envelope' aria-hidden='true'></i> Comment via e-mail </a>");
+            </script>
+           </div>
+           <div lang="el">
+            <script>
+             email("<div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Τα σχόλια εμφανίζονται αφότου περάσουν από έγκριση. Η διεύθυνση του η-ταχυδρομείου σας δε θα εμφανιστεί σε αυτό τον ιστότοπο.</span></div><a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Σχόλιο 5d60a28db0db1047b7a5af58b2e72f44", "Σχόλιο στο «Git \x26 Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα»%0D%0Aαπό __Ανώνυμος__ (<--Μπορείτε να βάλετε ένα εμφανιζόμενο όνομα χρήστη εδώ, μιας και η διεύθυνση του η-ταχυδρομείου σας δε θα φαίνεται στον ιστότοπο.)%0D%0A%0D%0A*** ΜΗ ΔΙΑΓΡΑΨΕΤΕ ΤΙΣ ΠΑΡΑΠΑΝΩ ΓΡΑΜΜΕΣ. ΓΡΑΨΤΕ ΤΟ ΣΧΟΛΙΟ ΣΑΣ ΑΠΟ ΚΑΤΩ ***.%0D%0A%0D%0A%0D%0A", "<i class='fa fa-envelope' aria-hidden='true'></i> Σχολιάστε μέσω η-ταχυδρομείου</a>");
+            </script>
+           </div>
+          </section>
+        </aside>
+      </article>
+
+      
+      <section id="posts-section">
+        <header lang="en">See also...</header>
+        <header lang="el">Δείτε επίσης...</header>
+        <div>
+         
+         
+         
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h2>
+      <h2 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-10-09</time><time lang="el">2016-10-09</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h2>
+      <h2 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-09-19</time><time lang="el">2016-09-19</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h2>
+      <h2 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-07-21</time><time lang="el">2016-07-21</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kiwi.svg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h2>
+      <h2 class="title" lang="el">Πώς να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2014-02-19</time><time lang="el">2014-02-19</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+        </div>
+      </section>
+      
+    </div>
+   </div> 
+  </div>
+
+
+<footer class="l-footer">
+  <span class="copyleft">&copy;</span>
+  <span lang="en">2016 Antonios Tsolis</span>
+  <span lang="el">2016 Αντώνιος Τσώλης</span>
+  <script>
+   email("<a href='mailto", "gmail.com", "antonios", "tsolis", "", "","<i class='fa fa-envelope-o' aria-hidden='true'></i></a>");
+  </script>
+</footer>
+
+<script src="https://alamot.github.io/js/jquery.min.js"></script>
+<script src="https://alamot.github.io/js/bootstrap.min.js"></script>
+<script src="https://alamot.github.io/js/moment.min.js"></script>
+<script src="https://alamot.github.io/js/el.min.js"></script>
+<script src="https://alamot.github.io/js/lunr.min.js"></script>
+<script src="https://alamot.github.io/js/custom.min.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<script>
+language = localStorage.getItem('language');
+$(document).ready(function(){
+  if (language) {
+    document.getElementById('mainbody').setAttribute('class', language);
+    $("#"+language).parent().button('toggle');
+  }
+  
+  $('time').each(function(){
+    d = $(this).text();
+    $(this).text(moment(d).locale(this.lang).format("ll")); 
+  });
+
+  $("#TableOfContents a, .navbar .dropdown-menu a").on('click', function(e) {
+    console.log(this.hash)    
+    
+    e.preventDefault();
+
+    
+    var hash = this.hash;
+
+    
+    $('html, body').animate({scrollTop: $(hash).offset().top}, 1300, function(){
+      
+      
+      window.location.hash = hash;
+    });
+  });
+  
+  var lunrIndex, lunrStore;
+  $.getJSON('https:\/\/alamot.github.io\/json/search.json', function (data) {
+    lunrStore = data.store;  
+    lunr.Pipeline.registerFunction(trimmer_all, 'trimmer_all')
+    lunr.Pipeline.registerFunction(stopwordfilter_el, 'stopwordfilter_el');
+    lunr.Pipeline.registerFunction(stemmer_el, 'stemmer_el');
+    lunrIndex = lunr.Index.load(data.index);
+    results_section = jQuery("#results-section");
+    results_div = jQuery("#results-section>div");
+    $("#search-section").show();
+    $("#search-field").keyup(function() {
+      var query = $(this).val();
+      if (query.length < 3) { results_section.hide(); return; }
+      var results = lunrIndex.search(query);
+      results_div.empty(); results_section.show();      
+      if (results.length == 0) {
+        results_div.append("<h3 lang='en'>Νο results found.</h3><h3 lang='el'>Δεν βρέθηκαν αποτελέσματα.</h3>");
+      } else {
+        results.slice(0, 10).forEach(function(result) {
+          results_div.append("<article class='li col-md-4'><a href='https:\/\/alamot.github.io\/"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(https:\/\/alamot.github.io\/images/"+lunrStore[result.ref].image+");'></div></div><footer><h2 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h2><h2 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h2><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
+        });
+        $('#results-section time').each(function(){
+            d = $(this).text();
+            $(this).text(moment(d).locale(this.lang).format("ll")); 
+        });
+      } 
+    }); 
+  }, function() {  console.log("ERROR: search.json");});
+});
+</script>
+
+  </body>
+</html>
+

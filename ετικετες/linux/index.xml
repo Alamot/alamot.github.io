@@ -9,6 +9,84 @@
     <atom:link href="https://alamot.github.io/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/linux/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Git &amp; Mercurial: How to commit-push fast and easily</title>
+      <link>https://alamot.github.io/fast_commit_push/</link>
+      <pubDate>Mon, 17 Oct 2016 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/fast_commit_push/</guid>
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;Git and Mercurial are cross-platform, distributed revision-control tools for software development and other version control tasks. Here we present two bash scripts, one for each tool, to help us commit and push our changes fast and easily.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες έλεγχου έκδοσης. Εδώ παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-git-script-span-span-lang-el-σενάριο-git-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Git script&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Σενάριο Git&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color: #B8860B&#34;&gt;$#&lt;/span&gt; -eq &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;then&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;No message supplied. Using current date.&amp;quot;&lt;/span&gt;
+  git commit -a -m &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Automatic commit &lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;$(&lt;/span&gt;date&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt; 
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;
+  &lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;$*&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;&amp;quot;&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Message: &lt;/span&gt;$&lt;span style=&#34;color: #BB4444&#34;&gt;str&amp;quot;&lt;/span&gt;
+  bash -c &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;git commit -a -m &lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;${&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;fi&lt;/span&gt;
+
+git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;span-lang-en-mercurial-script-span-span-lang-el-σενάριο-mercurial-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Mercurial script&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Σενάριο Mercurial&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color: #B8860B&#34;&gt;$#&lt;/span&gt; -eq &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;then&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;No message supplied. Using current date.&amp;quot;&lt;/span&gt;
+  hg commit -m &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Automatic commit &lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;$(&lt;/span&gt;date&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt; 
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;
+  &lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;$*&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;&amp;quot;&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Message: &lt;/span&gt;$&lt;span style=&#34;color: #BB4444&#34;&gt;str&amp;quot;&lt;/span&gt;
+  bash -c &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;hg commit -m &lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;${&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;fi&lt;/span&gt;
+
+hg push
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;You can name these scripts with single english letters (g and h respectively, for example) and copy them somewhere in your $PATH. Do not forget to make them executable: chmod +x filename.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να ονομάσετε αυτά τα σενάρια με μονά γράμματα του αγγλικού αλφαβήτου (g και h αντίστοιχα, για παράδειγμα) και να τα αντιγράψετε κάπου μέσα στην $PATH σας. Μην ξεχάσετε να τα καταστήσετε εκτελέσιμα: chmod +x filename.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;From now on you can commit and push your changes by typing just one letter:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Από εδώ και στο εξής μπορείτε να κάνετε commit και push τις αλλαγές σας πληκτρολογώντας μονάχα ένα γράμμα:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ g 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Optionally, you can provide a commit message, directly, like this (without using quotes):&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Προαιρετικά, μπορείτε να παρέχετε ένα μήνυμα για το commit, απευθείας, ως εξής (χωρίς τη χρήση εισαγωγικών):&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ g some optional commit message
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;If you do not provide a message then the current date is used automatically.&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;Αν δεν παρέχετε κάποιο μήνυμα τότε χρησιμοποιείται αυτόματα η τρέχουσα ημερομηνία.&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;You can find the scripts here:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να βρείτε τα σενάρια εδώ:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/hg_git/g&#34; target=&#34;_blank&#34;&gt;g (git)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/hg_git/h&#34; target=&#34;_blank&#34;&gt;h (mercurial)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>How to get info for the wireless interface using nl80211 in C</title>
       <link>https://alamot.github.io/nl80211/</link>
       <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
@@ -359,7 +437,7 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
 
 &lt;h2 id=&#34;main&#34;&gt;main()&lt;/h2&gt;
 
-&lt;p lang=&#34;en&#34;&gt;Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:&lt;/p&gt;
+&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Εδώ βλέπουμε τη main() συνάρτησή μας. Πρώτα, αρχικοποιούμε την επικοινωνία με την initNl80211 και κατόπιν τούτου, καλούμε συνεχώς μέσα σε έναν βρόχο την getWifiStatus(), ανά 1 δευτερόλεπτο, εώς ότου ο χρήστης πατήσει ctrl + c:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; argc, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;**&lt;/span&gt;argv) {
   Netlink nl;
@@ -389,16 +467,16 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
   &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;;
 }
 &lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;
-&lt;span lang=&#34;en&#34;&gt;Here is the full code listing:&lt;/span&gt;
-&lt;span lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ:&lt;/span&gt;
-&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/nl80211_info.c
-&#34; target=&#34;_blank&#34;&gt;nl80211_info.c&lt;/a&gt;
-&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/makefile
-&#34; target=&#34;_blank&#34;&gt;makefile&lt;/a&gt;
 &lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;Here is the full code listing:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να βρείτε τον πλήρη κώδικα εδώ:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/nl80211_info.c&#34; target=&#34;_blank&#34;&gt;nl80211_info.c&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/makefile&#34; target=&#34;_blank&#34;&gt;makefile&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -407,7 +485,9 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
       <link>https://alamot.github.io/shutdown_manager_transparent/</link>
       <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/shutdown_manager_transparent/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
 
 &lt;figure&gt;
@@ -660,6 +740,8 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
 &lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -670,7 +752,9 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
       <link>https://alamot.github.io/shutdown_manager_plain/</link>
       <pubDate>Thu, 21 Jul 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/shutdown_manager_plain/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
 
 &lt;figure&gt;
@@ -845,6 +929,8 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
 username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=(&lt;/span&gt;root&lt;span style=&#34;color: #666666&#34;&gt;)&lt;/span&gt; NOPASSWD: /usr/sbin/pm-hibernate
 &lt;/pre&gt;&lt;/div&gt;
 
+
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-plain&#34; target=&#34;_blank&#34;&gt;shutdown-manager-plain&lt;/a&gt;&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-plain&#34; target=&#34;_blank&#34;&gt;shutdown-manager-plain&lt;/a&gt;&lt;/p&gt;

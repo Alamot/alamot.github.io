@@ -9,6 +9,84 @@
     <atom:link href="https://alamot.github.io/%CE%BA%CE%B1%CF%84%CE%B7%CE%B3%CE%BF%CF%81%CE%B9%CE%B5%CF%82/%CF%80%CF%81%CE%BF%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CE%B1%CF%84%CE%B9%CF%83%CE%BC%CF%8C%CF%82/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
+      <title>Git &amp; Mercurial: How to commit-push fast and easily</title>
+      <link>https://alamot.github.io/fast_commit_push/</link>
+      <pubDate>Mon, 17 Oct 2016 00:00:00 +0000</pubDate>
+      <guid>https://alamot.github.io/fast_commit_push/</guid>
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;Git and Mercurial are cross-platform, distributed revision-control tools for software development and other version control tasks. Here we present two bash scripts, one for each tool, to help us commit and push our changes fast and easily.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες έλεγχου έκδοσης. Εδώ παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-git-script-span-span-lang-el-σενάριο-git-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Git script&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Σενάριο Git&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color: #B8860B&#34;&gt;$#&lt;/span&gt; -eq &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;then&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;No message supplied. Using current date.&amp;quot;&lt;/span&gt;
+  git commit -a -m &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Automatic commit &lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;$(&lt;/span&gt;date&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt; 
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;
+  &lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;$*&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;&amp;quot;&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Message: &lt;/span&gt;$&lt;span style=&#34;color: #BB4444&#34;&gt;str&amp;quot;&lt;/span&gt;
+  bash -c &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;git commit -a -m &lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;${&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;fi&lt;/span&gt;
+
+git push origin master
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;span-lang-en-mercurial-script-span-span-lang-el-σενάριο-mercurial-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Mercurial script&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Σενάριο Mercurial&lt;/span&gt;&lt;/h1&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;[&lt;/span&gt; &lt;span style=&#34;color: #B8860B&#34;&gt;$#&lt;/span&gt; -eq &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;]&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;then&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;No message supplied. Using current date.&amp;quot;&lt;/span&gt;
+  hg commit -m &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Automatic commit &lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;$(&lt;/span&gt;date&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt; 
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;
+  &lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;$*&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;&amp;quot;&lt;/span&gt;
+  &lt;span style=&#34;color: #AA22FF&#34;&gt;echo&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Message: &lt;/span&gt;$&lt;span style=&#34;color: #BB4444&#34;&gt;str&amp;quot;&lt;/span&gt;
+  bash -c &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;hg commit -m &lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;${&lt;/span&gt;&lt;span style=&#34;color: #B8860B&#34;&gt;str&lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;fi&lt;/span&gt;
+
+hg push
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;You can name these scripts with single english letters (g and h respectively, for example) and copy them somewhere in your $PATH. Do not forget to make them executable: chmod +x filename.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να ονομάσετε αυτά τα σενάρια με μονά γράμματα του αγγλικού αλφαβήτου (g και h αντίστοιχα, για παράδειγμα) και να τα αντιγράψετε κάπου μέσα στην $PATH σας. Μην ξεχάσετε να τα καταστήσετε εκτελέσιμα: chmod +x filename.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;From now on you can commit and push your changes by typing just one letter:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Από εδώ και στο εξής μπορείτε να κάνετε commit και push τις αλλαγές σας πληκτρολογώντας μονάχα ένα γράμμα:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ g 
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Optionally, you can provide a commit message, directly, like this (without using quotes):&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Προαιρετικά, μπορείτε να παρέχετε ένα μήνυμα για το commit, απευθείας, ως εξής (χωρίς τη χρήση εισαγωγικών):&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ g some optional commit message
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;If you do not provide a message then the current date is used automatically.&lt;/p&gt;
+&lt;p lang=&#34;en&#34;&gt;Αν δεν παρέχετε κάποιο μήνυμα τότε χρησιμοποιείται αυτόματα η τρέχουσα ημερομηνία.&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;You can find the scripts here:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να βρείτε τα σενάρια εδώ:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/hg_git/g&#34; target=&#34;_blank&#34;&gt;g (git)&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/hg_git/h&#34; target=&#34;_blank&#34;&gt;h (mercurial)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
       <title>How to get info for the wireless interface using nl80211 in C</title>
       <link>https://alamot.github.io/nl80211/</link>
       <pubDate>Sun, 09 Oct 2016 00:00:00 +0000</pubDate>
@@ -359,7 +437,7 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
 
 &lt;h2 id=&#34;main&#34;&gt;main()&lt;/h2&gt;
 
-&lt;p lang=&#34;en&#34;&gt;Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:&lt;/p&gt;
+&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Εδώ βλέπουμε τη main() συνάρτησή μας. Πρώτα, αρχικοποιούμε την επικοινωνία με την initNl80211 και κατόπιν τούτου, καλούμε συνεχώς μέσα σε έναν βρόχο την getWifiStatus(), ανά 1 δευτερόλεπτο, εώς ότου ο χρήστης πατήσει ctrl + c:&lt;/p&gt;
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;main&lt;/span&gt;(&lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;int&lt;/span&gt; argc, &lt;span style=&#34;color: #00BB00; font-weight: bold&#34;&gt;char&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;**&lt;/span&gt;argv) {
   Netlink nl;
@@ -389,16 +467,16 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
   &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;;
 }
 &lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;
-&lt;span lang=&#34;en&#34;&gt;Here is the full code listing:&lt;/span&gt;
-&lt;span lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ:&lt;/span&gt;
-&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/nl80211_info.c
-&#34; target=&#34;_blank&#34;&gt;nl80211_info.c&lt;/a&gt;
-&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/makefile
-&#34; target=&#34;_blank&#34;&gt;makefile&lt;/a&gt;
 &lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;Here is the full code listing:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να βρείτε τον πλήρη κώδικα εδώ:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/nl80211_info.c&#34; target=&#34;_blank&#34;&gt;nl80211_info.c&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/nl80211_info/makefile&#34; target=&#34;_blank&#34;&gt;makefile&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/p&gt;
 </description>
     </item>
     
@@ -407,7 +485,9 @@ Let&#39;s see now what happens in our next function, getWifiStatus:
       <link>https://alamot.github.io/shutdown_manager_transparent/</link>
       <pubDate>Mon, 19 Sep 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/shutdown_manager_transparent/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
 
 &lt;figure&gt;
@@ -660,6 +740,8 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
 &lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-transparent&#34; target=&#34;_blank&#34;&gt;shutdown-manager-transparent&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -670,7 +752,9 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
       <link>https://alamot.github.io/shutdown_manager_plain/</link>
       <pubDate>Thu, 21 Jul 2016 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/shutdown_manager_plain/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;Many window managers in Linux are lacking a graphical &#34;shutdown&#34; interface. Here, we show how we can implement one, quite easily, using gtk and python.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Πολλοί διαχειριστές παραθύρων στο Linux δε διαθέτουν μια γραφική διεπαφή κλεισίματος. Εδώ, θα δείξουμε πώς μπορείτε να υλοποιήσετε μία, αρκετά εύκολα, χρησιμοποιώντας gtk και python.&lt;/p&gt;
 
 &lt;figure&gt;
@@ -846,6 +930,8 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
 &lt;p lang=&#34;en&#34;&gt;Here is the full code listing: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-plain&#34; target=&#34;_blank&#34;&gt;shutdown-manager-plain&lt;/a&gt;&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ: &lt;a href=&#34;https://github.com/Alamot/adwm/blob/master/shutdown-manager-plain&#34; target=&#34;_blank&#34;&gt;shutdown-manager-plain&lt;/a&gt;&lt;/p&gt;
 </description>
@@ -856,11 +942,14 @@ username &lt;span style=&#34;color: #B8860B&#34;&gt;ALL&lt;/span&gt;&lt;span sty
       <link>https://alamot.github.io/kivy_popup/</link>
       <pubDate>Wed, 19 Feb 2014 00:00:00 +0000</pubDate>
       <guid>https://alamot.github.io/kivy_popup/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;&lt;a href=&#34;https://kivy.org/&#34; target=&#34;_blank&#34;&gt;Kivy&lt;/a&gt; is a cross-platform Python framework for rapid development of applications that make use of innovative user interfaces, such as multi-touch etc. In this article, we show how to build a responsive popup window with scrolling capability.&lt;/p&gt;
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;&lt;a href=&#34;https://kivy.org/&#34; target=&#34;_blank&#34;&gt;Kivy&lt;/a&gt; is a cross-platform Python framework for rapid development of applications that make use of innovative user interfaces, such as multi-touch etc. In this article, we show how to build a responsive popup window with scrolling capability.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;To &lt;a href=&#34;https://kivy.org/&#34; target=&#34;_blank&#34;&gt;Kivy&lt;/a&gt; είναι ένα  cross-platform Python για γρήγορη ανάπτυξη εφαρμογών σε πολλές διαφορετικές πλατφόρμες που χρησιμοποιεί πρωτοποριακές διεπαφές χρήστη, όπως πολλαπλή αφή κλπ. Σε αυτό το άρθρο, δείχνουμε πως φτιάχνεται ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης.&lt;/p&gt;
 
 &lt;p lang=&#34;en&#34;&gt;First, let&#39;s add the necessary imports:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:&lt;/p&gt;
+
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
 &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;kivy&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; platform, require
 require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/span&gt;)
@@ -879,6 +968,7 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
 
 &lt;p lang=&#34;en&#34;&gt;We define our class &lt;em&gt;Pop&lt;/em&gt; which inherits from &lt;em&gt;Modalview&lt;/em&gt;:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Ορίζουμε την κλάση μας &lt;em&gt;Pop&lt;/em&gt; η οποία κληρονομεί από την &lt;em&gt;Modalview&lt;/em&gt;:&lt;/p&gt;
+
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0000FF&#34;&gt;Pop&lt;/span&gt;(ModalView):
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -982,7 +1072,8 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
 
 &lt;p lang=&#34;en&#34;&gt;The function update_width updates the width of the title area, of the content area and of the popup window. Note the hack needed for resizing the dark background of our window:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Η συνάρτηση update_width ανανεώνει το πλάτος της περιοχής του τίτλου, της περιοχής του περιεχομένου και του αναδυόμενου παραθύρου. Προσέξτε το αναγκαίο τέχνασμα στο τέλος για την προσαρμογή του μεγέθους του σκοτεινού φόντου του παραθύρου μας:&lt;/p&gt;
-&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;update_width&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;args):
+
+&lt;p&gt;&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;update_width&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;args):
     &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# hack to resize dark background on window resize &lt;/span&gt;
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;center &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; Window&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;center
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;_window &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;
@@ -998,10 +1089,11 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;title&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;text_size &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;width &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; dp(&lt;span style=&#34;color: #666666&#34;&gt;20&lt;/span&gt;), &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;)
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;content&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;text_size &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; (&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;width &lt;span style=&#34;color: #666666&#34;&gt;-&lt;/span&gt; dp(&lt;span style=&#34;color: #666666&#34;&gt;20&lt;/span&gt;), &lt;span style=&#34;color: #AA22FF&#34;&gt;None&lt;/span&gt;)
 &lt;/pre&gt;&lt;/div&gt;
-
+&lt;/p&gt;
 
 &lt;p lang=&#34;en&#34;&gt;The next function is called to update the height of the title area, of the content area and of the popup window:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;H επόμενη συνάρτηση καλείται για να ανανεώσει το ύψος της περιοχής του τίτλου, της περιοχής του περιεχομένου και του αναδυόμενου παραθύρου:&lt;/p&gt;
+
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;update_height&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;args):
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;title&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;height &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;title&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;texture_size[&lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;]
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;content&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;height &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;content&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;texture_size[&lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;]
@@ -1018,6 +1110,7 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
 
 &lt;p lang=&#34;en&#34;&gt;The following function is called to update the position and the size of the separator line between the title and the content of the popup window:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;H ακόλουθη συνάρτηση καλείται για να ανανεώσει τη θέση και το μέγεθος της διαχωριστικής γραμμής ανάμεσα στον τίτλο και το περιέχομενο του αναδυόμενου παραθύρου:&lt;/p&gt;
+
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;update_sep&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, &lt;span style=&#34;color: #666666&#34;&gt;*&lt;/span&gt;args):
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rect&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pos &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;separator&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;pos
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;rect&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;size &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;separator&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;size
@@ -1026,6 +1119,7 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
 
 &lt;p lang=&#34;en&#34;&gt;On close, we dismiss the popup window and we call the callback function (if one has been set).&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Στο κλείσιμο, αποσύρουμε το αναδυόμενο παράθυρο και καλούμε την συνάρτηση επανάκλησης (εφόσον έχει ορισθεί κάποια).&lt;/p&gt;
+
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;close&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;, instance):
     &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;dismiss(force&lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color: #AA22FF&#34;&gt;True&lt;/span&gt;)
     &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;callback:
@@ -1035,6 +1129,7 @@ require(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;1.9.0&amp;#39;&lt;/s
 
 &lt;p lang=&#34;en&#34;&gt;Finally, let&#39;s build a test app and run it. Note: you can &#39;lock&#39; the width and/or height of the popup window yourself by passing the width and/or height argument or you can leave their management to our class. If the content does not fit inside the popup window a scrollbar will appear automatically. You can also set the alpha channel i.e. the opacity of the window.&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Τέλος, ας φτιάξουμε μια δοκιμαστική εφαρμογή και ας την τρέκουμε. Σημείωση: μπορείτε να &#34;κλειδώσετε&#34; το πλάτος ή/και το ύψος του αναδυόμενου δίνοντας τα αντίστοιχα ορίσματα width ή/και height ή μπορείτε να αφήσετε τη διαχείρισή τους στην κλάση μας. Αν το περιέχομενο δεν χωράει μέσα στο αναδυόμενο παράθυρο μια μπάρα κύλισης θα εμφανιστεί αυτόματα. Μπορείτε επίσης να ρυθμίσετε το κανάλι άλφα δηλαδή την αδιαφάνεια του παραθύρου.&lt;/p&gt;
+
 &lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color: #0000FF&#34;&gt;TestApp&lt;/span&gt;(App):
     &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;build&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;self&lt;/span&gt;):
         &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;return&lt;/span&gt; Pop(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Title&amp;quot;&lt;/span&gt;,
@@ -1063,20 +1158,26 @@ TestApp()&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;run()
 
 &lt;p lang=&#34;en&#34;&gt;Here is the result:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Εδώ βλέπετε το αποτέλεσμα:&lt;/p&gt;
-&lt;img class=&#34;floatcenter border&#34; src=&#34;https://alamot.github.io/images/kivy_popup1.png&#34; alt=&#34;Kivy popup window&#34;&gt;
+
+&lt;p&gt;&lt;img class=&#34;floatcenter border&#34; src=&#34;https://alamot.github.io/images/kivy_popup1.png&#34; alt=&#34;Kivy popup window&#34;/&gt;&lt;/p&gt;
+
 &lt;p lang=&#34;en&#34;&gt;If screen dimensions change (e.g. if the screen is rotated) the popup window will resize accordingly:&lt;/p&gt;
 &lt;p lang=&#34;el&#34;&gt;Αν οι διαστάσεις της οθόνης αλλάξουν (λ.χ. αν η οθόνη περιστραφεί) το αναδυόμενο παράθυρο θα προσαρμόσει το μέγεθός του ανάλογα:&lt;/p&gt;
-&lt;img class=&#34;img-responsive floatcenter border&#34; src=&#34;https://alamot.github.io/images/kivy_popup2.png&#34; alt=&#34;Kivy popup window&#34;&gt;
+
+&lt;p&gt;&lt;img class=&#34;img-responsive floatcenter border&#34; src=&#34;https://alamot.github.io/images/kivy_popup2.png&#34; alt=&#34;Kivy popup window&#34;&gt;&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;I have created two cross-platform kivy games that make use of popup windows, the «Alamot&#39;s Matchstick Puzzles» and the «Retriever of Lost Dreams». If you would like to check them out, you can find both of them here:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Κλείνοντας, να αναφέρω ότι έχω δημιουργήσει με το Kivy δύο παιχνίδια για διαφορές πλατφόρμες που κάνουν χρήση αναδυόμενων παραθύρων, το «Alamot&#39;s Matchstick Puzzles» και το «Retriever of Lost Dreams». Αν θέλετε να τα δείτε, μπορείτε να βρείτε και τα δύο εδώ:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://alamot.eu/&#34; target=&#34;_blank&#34;&gt;&lt;img class=&#34;floatcenter border&#34; src=&#34;https://alamot.github.io/images/alamot_software.jpg&#34; alt=&#34;Alamot Software&#34;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
 
 &lt;p&gt;
 &lt;span lang=&#34;en&#34;&gt;Here is the full code listing:&lt;/span&gt;
 &lt;span lang=&#34;el&#34;&gt;Μπορείτε να δείτε τον πλήρη κώδικα εδώ:&lt;/span&gt;
 &lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/kivy/kivypopup.py&#34; target=&#34;_blank&#34;&gt;kivypopup.py&lt;/a&gt;
 &lt;/p&gt;
-
-&lt;p&gt;&lt;p lang=&#34;en&#34;&gt;I have created two cross-platform kivy games that make use of popup windows, the «Alamot&amp;rsquo;s Matchstick Puzzles» and the «Retriever of Lost Dreams». If you would like to check them out, you can find both of them here:&lt;/p&gt;
-&lt;p lang=&#34;el&#34;&gt;Κλείνοντας, να αναφέρω ότι έχω δημιουργήσει με το Kivy δύο παιχνίδια για διαφορές πλατφόρμες που κάνουν χρήση αναδυόμενων παραθύρων, το «Alamot&amp;rsquo;s Matchstick Puzzles» και το «Retriever of Lost Dreams». Αν θέλετε να τα δείτε, μπορείτε να βρείτε και τα δύο εδώ:&lt;/p&gt;
-&lt;a href=&#34;http://alamot.eu/&#34; target=&#34;_blank&#34;&gt;&lt;img class=&#34;floatcenter border&#34; src=&#34;https://alamot.github.io/images/alamot_software.jpg&#34; alt=&#34;Alamot Software&#34;&gt;&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     

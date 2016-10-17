@@ -50,8 +50,10 @@
   </ul>    
   <ul class="nav nav-pills pull-right navbar-btn"> 
     <li>
-    <button lang="en" type="button" class="btn btn-danger" onclick="document.body.className='el'; localStorage.setItem('language', 'el');">English</button>
-    <button lang="el" type="button" class="btn btn-primary" onclick="document.body.className='en'; localStorage.setItem('language', 'en');">Ελληνικά</button>
+    <select id="langselector" class="form-control btn-primary" onchange="document.body.className=this.value; localStorage.setItem('language', this.value);">
+      <option value="en">English</option>
+      <option value="el">Ελληνικά</option>
+    </select>
     </li>  
   </ul>
 </div>
@@ -190,8 +192,10 @@ language = localStorage.getItem('language');
 $(document).ready(function(){
   if (language) {
     document.getElementById('mainbody').setAttribute('class', language);
+    $("#langselector").val(language);
     $("#"+language).parent().button('toggle');
   }
+
   
   $('time').each(function(){
     d = $(this).text();

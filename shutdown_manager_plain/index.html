@@ -77,10 +77,10 @@
   
   <li>
     <div class="btn-group">
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span><span class="caret"></span>
+    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span><span class="caret"></span>
     </button>
     <ul class="dropdown-menu scroll-menu">
-       <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></li></a>
+       <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></a></li>
        
        
        
@@ -91,7 +91,7 @@
 <li><a href="#span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
  
  
-       <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></li></a>
+       <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
     </ul>
     </div>
   </li>
@@ -104,8 +104,10 @@
   </ul>    
   <ul class="nav nav-pills pull-right navbar-btn"> 
     <li>
-    <button lang="en" type="button" class="btn btn-danger" onclick="document.body.className='el'; localStorage.setItem('language', 'el');">English</button>
-    <button lang="el" type="button" class="btn btn-primary" onclick="document.body.className='en'; localStorage.setItem('language', 'en');">Ελληνικά</button>
+    <select id="langselector" class="form-control btn-primary" onchange="document.body.className=this.value; localStorage.setItem('language', this.value);">
+      <option value="en">English</option>
+      <option value="el">Ελληνικά</option>
+    </select>
     </li>  
   </ul>
 </div>
@@ -686,8 +688,10 @@ language = localStorage.getItem('language');
 $(document).ready(function(){
   if (language) {
     document.getElementById('mainbody').setAttribute('class', language);
+    $("#langselector").val(language);
     $("#"+language).parent().button('toggle');
   }
+
   
   $('time').each(function(){
     d = $(this).text();

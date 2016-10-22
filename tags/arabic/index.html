@@ -5,25 +5,26 @@
     <meta name="generator" content="Hugo 0.17-DEV" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <link rel="stylesheet" href="https://alamot.github.io/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://alamot.github.io/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://alamot.github.io/css/styles.css">
-    <link rel="alternate" type="application/rss+xml" title="RSS" href="https://alamot.github.io/index.xml">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/index.xml">
     
-    <link href="https://alamot.github.io/tags/arabic/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
-    <link href="https://alamot.github.io/tags/arabic/index.xml" rel="feed" type="application/rss+xml" title="The Portal of Knowledge" />
+    <link href="/tags/arabic/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
+    <link href="/tags/arabic/index.xml" rel="feed" type="application/rss+xml" title="The Portal of Knowledge" />
     
-
     
-      <title>arabic - The Portal of Knowledge</title>
-      <meta property='og:title' content="arabic - The Portal of Knowledge">
-      <meta property="og:type" content="article">
-      <meta name="description" content=" ">
-      <meta property="og:description" content=" ">
-      <meta property="og:image" content="https://alamot.github.io/images/">
+     
+      <title>arabic</title>
+      <meta property='og:title' content="arabic">
+      <meta property="og:type" content="website">
+      <meta name="description" content="Welcome to my personal website. My name is Antonios Tsolis and I am always keen to learn new things and broaden my horizons. On this website you will find some articles I have written and some things I have made from time to time.">
+      <meta property="og:description" content="Welcome to my personal website. My name is Antonios Tsolis and I am always keen to learn new things and broaden my horizons. On this website you will find some articles I have written and some things I have made from time to time.">
+      <meta property="og:image" content="/images/portal.jpg">
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
     
-
-    <meta property="og:url" content="https://alamot.github.io/tags/arabic/">
+    <meta property="og:url" content="/tags/arabic/">
 
     <script>
     function email(starting,server,firstname,lastname,subject,body,closing) {
@@ -36,12 +37,12 @@
     </script>
 
 </head>
-<body id="mainbody" class="en">
+<body id="mainbody" class="en" lang="en">
 <nav class="navbar navbar-default navbar-fixed-top">
 <div class="container-fluid">
   
    <ul class="nav nav-pills pull-left">
-     <li><a class="p-logo text-smaller" href="https://alamot.github.io/"><i class="fa fa-home" aria-hidden="true"></i> <strong><span lang="en">The Portal of Knowledge</span><span lang="el">Η Πύλη της Γνώσης</span></strong></a></li>
+     <li><a class="p-logo text-smaller" href="/"><i class="fa fa-home" aria-hidden="true"></i> <strong><span lang="en">The Portal of Knowledge</span><span lang="el">Η Πύλη της Γνώσης</span></strong></a></li>
    </ul> 
   
   
@@ -71,8 +72,8 @@
         
         <div class="col-sm-4">
           <article class="grid">
-  <a href="https://alamot.github.io/music_ar2el_subs/">
-    <div class="image" style="background-image: url(https://alamot.github.io/images/arabic.jpg);"></div>
+  <a href="/music_ar2el_subs/">
+    <div class="image" style="background-image: url(/images/arabic.jpg);"></div>
     <footer>
       <div lang="en">
         <i class="fa fa-calendar"></i> 
@@ -106,12 +107,12 @@
   </script>
 </footer>
 
-<script src="https://alamot.github.io/js/jquery.min.js"></script>
-<script src="https://alamot.github.io/js/bootstrap.min.js"></script>
-<script src="https://alamot.github.io/js/moment.min.js"></script>
-<script src="https://alamot.github.io/js/el.min.js"></script>
-<script src="https://alamot.github.io/js/lunr.min.js"></script>
-<script src="https://alamot.github.io/js/custom.min.js"></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/el.min.js"></script>
+<script src="/js/lunr.min.js"></script>
+<script src="/js/custom.min.js"></script>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
     tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], }
@@ -125,6 +126,7 @@ language = localStorage.getItem('language');
 $(document).ready(function(){
   if (language) {
     document.getElementById('mainbody').setAttribute('class', language);
+    document.getElementById('mainbody').setAttribute('lang', language);
     if (language == 'el') { langtext="Ελληνικά"; }
     $("#language-selector").parents('.btn-group').find('.dropdown-toggle').html(langtext+' <span class="caret"></span>');
   }
@@ -132,7 +134,8 @@ $(document).ready(function(){
   $("#language-selector li a").click(function(){
     var langid = this.id;
     var selText = this.text;
-    document.body.className=langid;
+    document.getElementById('mainbody').setAttribute('class', langid);
+    document.getElementById('mainbody').setAttribute('lang', langid);
     localStorage.setItem('language', langid);
     $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
   });
@@ -159,7 +162,7 @@ $(document).ready(function(){
   });
   
   var lunrIndex, lunrStore;
-  $.getJSON('https:\/\/alamot.github.io\/json/search.json', function (data) {
+  $.getJSON('\/json/search.json', function (data) {
     lunrStore = data.store;  
     lunr.Pipeline.registerFunction(trimmer_all, 'trimmer_all')
     lunr.Pipeline.registerFunction(stopwordfilter_el, 'stopwordfilter_el');
@@ -177,7 +180,7 @@ $(document).ready(function(){
         results_div.append("<h3 lang='en'>Νο results found.</h3><h3 lang='el'>Δεν βρέθηκαν αποτελέσματα.</h3>");
       } else {
         results.slice(0, 10).forEach(function(result) {
-          results_div.append("<article class='li col-md-4'><a href='https:\/\/alamot.github.io\/"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(https:\/\/alamot.github.io\/images/"+lunrStore[result.ref].image+");'></div></div><footer><h2 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h2><h2 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h2><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
+          results_div.append("<article class='li col-md-4'><a href='\/"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(\/images/"+lunrStore[result.ref].image+");'></div></div><footer><h2 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h2><h2 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h2><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
         });
         $('#results-section time').each(function(){
             d = $(this).text();

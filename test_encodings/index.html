@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>
+    function email(starting,server,firstname,lastname,subject,body,closing) {
+      document.write(starting);
+      document.write(":" + lastname);
+      document.write("." + firstname);
+      document.write("@");
+      document.write(server + "?subject=" + subject + "&body=" + body + "' target='_blank'>");
+      document.write(closing); }
+    </script>
+    <meta charset="utf-8">
+    <meta name="generator" content="Hugo 0.17-DEV" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="alternate" type="application/rss+xml" title="RSS" href="/index.xml">
+    
+    
+    
+      <title>How to determine the character encoding of a text file - The Portal of Knowledge</title>
+      <meta property='og:title' content="How to determine the character encoding of a text file - The Portal of Knowledge">
+      <meta property="og:type" content="article">
+      <meta name="description" content="If you have ever encountered a text file with gibberish characters, then you know that many times it is very difficult to determine its correct character encoding. Αν έχετε βρεθεί ποτέ αντιμέτωπος με ένα αρχείο κειμένου με ακαταλαβίστικους χαρακτήρες, τότε γνωρίζετε ότι πολλές φορές είναι πολύ δύσκολο να αναγνωρίσετε ποια είναι η σωστή κωδικοποίηση των χαρακτήρων.">
+      <meta property="og:description" content="If you have ever encountered a text file with gibberish characters, then you know that many times it is very difficult to determine its correct character encoding. Αν έχετε βρεθεί ποτέ αντιμέτωπος με ένα αρχείο κειμένου με ακαταλαβίστικους χαρακτήρες, τότε γνωρίζετε ότι πολλές φορές είναι πολύ δύσκολο να αναγνωρίσετε ποια είναι η σωστή κωδικοποίηση των χαρακτήρων.">
+      <meta property="og:image" content="/images/encodings.jpg">
+      <meta property="og:image:width" content="768" />
+      <meta property="og:image:height" content="384" />
+    
+    <meta property="og:url" content="/test_encodings/">
+
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "mainEntityOfPage":{
+      "@type":"WebPage",
+      "@id":"\/"
+    },
+    "headline": "How to determine the character encoding of a text file |  ",
+    "image": {
+      "@type": "ImageObject",
+      "url": "",
+      "height": 700,
+      "width": 700
+    },
+    "datePublished": "2016-10-21T00:00:00JST",
+    "dateModified": "2016-10-21T00:00:00JST",
+    "author": {
+      "@type": "Person",
+      "name": "",
+      "image": "\/images/logo.png"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "\/images/logo.png",
+        "height": 60,
+        "width": 60
+      }
+    },
+    "description": ""
+  }
+</script>
+</head>
+<body id="mainbody" class="en" lang="en">
+<nav class="navbar navbar-default navbar-fixed-top">
+<div class="container-fluid">
+  
+   <ul class="nav nav-pills pull-left navbar-btn">
+   <li>
+    <div class="btn-group">
+    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span><span class="caret"></span>
+    </button>
+    <ul id="content-selector" class="dropdown-menu scroll-menu">
+       <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></a></li>
+       
+       
+       
+       
+       
+        
+ 
+<li><a href="#span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
+ 
+ 
+       <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
+    </ul>
+    </div>
+    </li>
+   </ul>
+  
+   
+  <ul class="nav nav-pills">
+      <li><a class="p-logo" href="/"><i class="fa fa-home" aria-hidden="true"></i> <span class="hidden768" lang="en">The Portal of Knowledge</span><span class="hidden768" lang="el">Η Πύλη της Γνώσης</span></a></li>
+  </ul>
+  
+  <ul class="nav nav-pills pull-right navbar-btn"> 
+    <li>
+      <div class="btn-group">
+      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language<span class="caret"></span>
+    </button>
+    <ul id="language-selector" class="dropdown-menu">
+       <li><a id="en" href="#">English</a></li>
+       <li><a id="el" href="#">Ελληνικά</a></li>
+    </ul>
+    </div>
+    </li>  
+  </ul>
+</div>
+</nav>
+
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-12">
+      <article class="single">
+        <div class="image" style="background-image: url(/images/encodings.jpg);"></div>
+        <div class="body">
+          <div lang="en">
+            <h1 id="title" class="title">How to determine the character encoding of a text file</h1>
+            <i class="fa fa-calendar"></i>  
+            <time lang="en">2016-10-21</time>
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='/categories/coding'>Coding</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='/tags/encoding'>encoding</a>
+            
+              <a class="label label-primary" href='/tags/python'>python</a>
+            
+          </div>
+          <div lang="el">
+            <h1 class="title">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h1>
+            <i class="fa fa-calendar"></i> 
+            <time lang="el">2016-10-21</time>
+            &middot; <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+            
+              <a class="label label-success" href='/%CE%BA%CE%B1%CF%84%CE%B7%CE%B3%CE%BF%CF%81%CE%B9%CE%B5%CF%82/%CF%80%CF%81%CE%BF%CE%B3%CF%81%CE%B1%CE%BC%CE%BC%CE%B1%CF%84%CE%B9%CF%83%CE%BC%CF%8C%CF%82'>Προγραμματισμός</a>
+            
+            &middot; <i class="fa fa-tags"></i>
+            
+              <a class="label label-primary" href='/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/%CE%BA%CF%89%CE%B4%CE%B9%CE%BA%CE%BF%CF%80%CE%BF%CE%AF%CE%B7%CF%83%CE%B7'>κωδικοποίηση</a>
+            
+              <a class="label label-primary" href='/%CE%B5%CF%84%CE%B9%CE%BA%CE%B5%CF%84%CE%B5%CF%82/python'>python</a>
+            
+          </div>
+
+         
+        
+          
+
+<p lang="en">If you have ever encountered a text file with gibberish characters, then you know that many times it is very difficult to determine its correct character encoding.</p>
+<p lang="el">Αν έχετε βρεθεί ποτέ αντιμέτωπος με ένα αρχείο κειμένου με ακαταλαβίστικους χαρακτήρες, τότε γνωρίζετε ότι πολλές φορές είναι πολύ δύσκολο να αναγνωρίσετε ποια είναι η σωστή κωδικοποίηση των χαρακτήρων.</p>
+
+<p lang="en">There is an automatic universal encoding detector for Python 2 and 3 here: <a href="https://pypi.python.org/pypi/chardet" target="_blank">https://pypi.python.org/pypi/chardet</a>.
+The chardet detector comes with a command-line script which reports on the encodings of one or more files:
+</p>
+<p lang="el">Υπάρχει ένας εργαλείο ανίχνευσης της κωδικοποίησης για Python 2 και 3 εδώ: <a href="https://pypi.python.org/pypi/chardet" target="_blank">https://pypi.python.org/pypi/chardet</a>.
+Ο ανιχνευτής chardet διαθέτει και ένα σενάριο για τη γραμμή εργαλείων που αναφέρει την πιθανή κωδικοποίηση ενός ή περισσότερων αρχείων
+</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ chardetect sometextfile 
+sometextfile: windows-1252 with confidence 0.5
+</pre></div>
+
+
+<p lang="en">Unfortunately, <em>chardetect</em> does not always find the correct encoding. For example, I had a text file with a cp737 encoding but <em>chardetect</em> predicted an IBM866 encoding for that file (with a low confidence of 0.261435096117). For these difficult cases, I wrote a tool which converts one line from a text file to every (?) possible character encoding and saves them to a new text file using the same filename but appending the '.encodings' extension to it. Now, we can examine this file visually to find out the correct encoding.</p>
+<p lang="el">Δυστυχώς, όμως, το <em>chardetect</em> δεν βρίσκει πάντα την σωστή κωδικοποίηση. Για παράδειγμα, είχα ένα αρχείο κειμένου με κωδικοποίηση cp737 αλλά το <em>chardetect</em> προέβλεψε μια κωδικοποίηση IBM866 για εκείνο. Για τέτοιες δύσκολες περιπτώσεις, έγραψα ένα εργαλείο το οποίο μετατρέπει μια γραμμή από ένα αρχείο κειμενο σε όλες (;) τις δυνατές κωδικοποίησεις και τις αποθηκεύει σε ένα νέο αρχείο κειμένου χρησιμοποιώντας το ίδιο όνομα αρχείου αλλά προσθέτοντας την κατάληξη '.encodings' σε αυτό. Τώρα, μπορούμε να εξετάσουμε οπτικά αυτό το αρχειο και να ανακαλύψουμε τη σωστή κωδικοποίηση.</p>
+
+<p lang="en"><b>Usage</b>: &nbsp; test_encodings.py &nbsp; filename &nbsp; [number of line to test]</p>
+<p lang="el"><b>Χρήση</b>: &nbsp; test_encodings.py &nbsp; όνομα_αρχείου &nbsp; [αριθμός γραμμής προς έλεγχο]</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ test_encodings.py sometextfile 3
+
+Processing line number: 3
+Writing tested encodings in sometextfile.encodings
+<span style="color: #666666">53</span> out of <span style="color: #666666">53</span> tested encodings were written.
+
+$ cat sometextfile.encodings
+</pre></div>
+
+
+<p><img class="border floatcenter" src="/images/testencodings_output.png"></p>
+
+<p lang="en">Here is the code. It runs under both Python 2 & 3:</p>
+<p lang="el">Ιδού ο κώδικας. Τρέχει τόσο στην Python 2 όσο και στην Python 3:</p>
+
+<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic">#!/usr/bin/env python</span>
+
+<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">io</span>
+<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">os</span>
+<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">sys</span>
+<span style="color: #AA22FF; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">encodings.aliases</span> <span style="color: #AA22FF; font-weight: bold">import</span> aliases
+
+
+encs <span style="color: #666666">=</span> {
+    <span style="color: #BB4444">&quot;ascii&quot;</span>,
+    <span style="color: #BB4444">&quot;big5&quot;</span>,
+    <span style="color: #BB4444">&quot;big5hkscs&quot;</span>,
+    <span style="color: #BB4444">&quot;cp037&quot;</span>,
+    <span style="color: #BB4444">&quot;cp424&quot;</span>,
+    <span style="color: #BB4444">&quot;cp437&quot;</span>,
+    <span style="color: #BB4444">&quot;cp500&quot;</span>,
+    <span style="color: #BB4444">&quot;cp720&quot;</span>,
+    <span style="color: #BB4444">&quot;cp737&quot;</span>,
+    <span style="color: #BB4444">&quot;cp775&quot;</span>,
+    <span style="color: #BB4444">&quot;cp850&quot;</span>,
+    <span style="color: #BB4444">&quot;cp852&quot;</span>,
+    <span style="color: #BB4444">&quot;cp855&quot;</span>,
+    <span style="color: #BB4444">&quot;cp856&quot;</span>,
+    <span style="color: #BB4444">&quot;cp857&quot;</span>,
+    <span style="color: #BB4444">&quot;cp858&quot;</span>,
+    <span style="color: #BB4444">&quot;cp860&quot;</span>,
+    <span style="color: #BB4444">&quot;cp861&quot;</span>,
+    <span style="color: #BB4444">&quot;cp862&quot;</span>,
+    <span style="color: #BB4444">&quot;cp863&quot;</span>,
+    <span style="color: #BB4444">&quot;cp864&quot;</span>,
+    <span style="color: #BB4444">&quot;cp865&quot;</span>,
+    <span style="color: #BB4444">&quot;cp866&quot;</span>,
+    <span style="color: #BB4444">&quot;cp869&quot;</span>,
+    <span style="color: #BB4444">&quot;cp874&quot;</span>,
+    <span style="color: #BB4444">&quot;cp875&quot;</span>,
+    <span style="color: #BB4444">&quot;cp932&quot;</span>,
+    <span style="color: #BB4444">&quot;cp949&quot;</span>,
+    <span style="color: #BB4444">&quot;cp950&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1006&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1026&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1140&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1250&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1251&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1252&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1253&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1254&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1255&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1256&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1257&quot;</span>,
+    <span style="color: #BB4444">&quot;cp1258&quot;</span>,
+    <span style="color: #BB4444">&quot;euc_jp&quot;</span>,
+    <span style="color: #BB4444">&quot;euc_jis_2004&quot;</span>,
+    <span style="color: #BB4444">&quot;euc_jisx0213&quot;</span>,
+    <span style="color: #BB4444">&quot;euc_kr&quot;</span>,
+    <span style="color: #BB4444">&quot;gb2312&quot;</span>,
+    <span style="color: #BB4444">&quot;gbk&quot;</span>,
+    <span style="color: #BB4444">&quot;gb18030&quot;</span>,
+    <span style="color: #BB4444">&quot;hz&quot;</span>,
+    <span style="color: #BB4444">&quot;iso2022_jp&quot;</span>,
+    <span style="color: #BB4444">&quot;iso2022_jp_1&quot;</span>,
+    <span style="color: #BB4444">&quot;iso2022_jp_2&quot;</span>,
+    <span style="color: #BB4444">&quot;iso2022_jp_2004&quot;</span>,
+    <span style="color: #BB4444">&quot;iso2022_jp_3&quot;</span>,
+    <span style="color: #BB4444">&quot;iso2022_jp_ext&quot;</span>,
+    <span style="color: #BB4444">&quot;iso2022_kr&quot;</span>,
+    <span style="color: #BB4444">&quot;latin_1&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_2&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_3&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_4&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_5&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_6&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_7&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_8&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_9&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_10&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_13&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_14&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_15&quot;</span>,
+    <span style="color: #BB4444">&quot;iso8859_16&quot;</span>,
+    <span style="color: #BB4444">&quot;johab&quot;</span>,
+    <span style="color: #BB4444">&quot;koi8_r&quot;</span>,
+    <span style="color: #BB4444">&quot;koi8_u&quot;</span>,
+    <span style="color: #BB4444">&quot;mac_cyrillic&quot;</span>,
+    <span style="color: #BB4444">&quot;mac_greek&quot;</span>,
+    <span style="color: #BB4444">&quot;mac_iceland&quot;</span>,
+    <span style="color: #BB4444">&quot;mac_latin2&quot;</span>,
+    <span style="color: #BB4444">&quot;mac_roman&quot;</span>,
+    <span style="color: #BB4444">&quot;mac_turkish&quot;</span>,
+    <span style="color: #BB4444">&quot;ptcp154&quot;</span>,
+    <span style="color: #BB4444">&quot;shift_jis&quot;</span>,
+    <span style="color: #BB4444">&quot;shift_jis_2004&quot;</span>,
+    <span style="color: #BB4444">&quot;shift_jisx0213&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_32&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_32_be&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_32_le&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_16&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_16_be&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_16_le&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_7&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_8&quot;</span>,
+    <span style="color: #BB4444">&quot;utf_8_sig&quot;</span>,
+    <span style="color: #BB4444">&quot;idna&quot;</span>,
+    <span style="color: #BB4444">&quot;mbcs&quot;</span>,
+    <span style="color: #BB4444">&quot;palmos&quot;</span>,
+    <span style="color: #BB4444">&quot;punycode&quot;</span>,
+    <span style="color: #BB4444">&quot;raw_unicode_escape&quot;</span>,
+    <span style="color: #BB4444">&quot;rot_13&quot;</span>,
+    <span style="color: #BB4444">&quot;undefined&quot;</span>,
+    <span style="color: #BB4444">&quot;unicode_escape&quot;</span>,
+    <span style="color: #BB4444">&quot;unicode_internal&quot;</span>,
+    <span style="color: #BB4444">&quot;base64_codec&quot;</span>,
+    <span style="color: #BB4444">&quot;bz2_codec&quot;</span>,
+    <span style="color: #BB4444">&quot;hex_codec&quot;</span>,
+    <span style="color: #BB4444">&quot;uu_codec&quot;</span>,
+    <span style="color: #BB4444">&quot;zlib_codec&quot;</span>
+}
+
+
+<span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">write_encodings</span>(filename, line_number):
+    <span style="color: #008800; font-style: italic"># To ensure that we cover as many as possible encodings,</span>
+    <span style="color: #008800; font-style: italic"># we take the union of our predefined encodings and the</span>
+    <span style="color: #008800; font-style: italic"># values of encodings.aliases.aliases</span>
+    encodings <span style="color: #666666">=</span> encs<span style="color: #666666">.</span>union(<span style="color: #AA22FF">set</span>(aliases<span style="color: #666666">.</span>values()))
+    encodings<span style="color: #666666">.</span>remove(<span style="color: #BB4444">&quot;quopri_codec&quot;</span>)
+    
+    data <span style="color: #666666">=</span> <span style="color: #AA22FF">dict</span>()
+
+    <span style="color: #AA22FF; font-weight: bold">try</span>:
+        <span style="color: #AA22FF; font-weight: bold">with</span> io<span style="color: #666666">.</span>open(filename, <span style="color: #BB4444">&quot;rb&quot;</span>) <span style="color: #AA22FF; font-weight: bold">as</span> f:
+            lines <span style="color: #666666">=</span> f<span style="color: #666666">.</span>readlines()
+            line <span style="color: #666666">=</span> lines[line_number<span style="color: #666666">-1</span>]
+            <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Processing line number: &quot;</span> <span style="color: #666666">+</span> <span style="color: #AA22FF">str</span>(line_number))
+            <span style="color: #AA22FF; font-weight: bold">if</span> <span style="color: #AA22FF">len</span>(line) <span style="color: #666666">&lt;</span> <span style="color: #666666">3</span>:
+                <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;!!!Warning!!!: Possible empty line.&quot;</span>)
+    <span style="color: #AA22FF; font-weight: bold">except</span> <span style="color: #D2413A; font-weight: bold">Exception</span>:
+        _, err, _ <span style="color: #666666">=</span> sys<span style="color: #666666">.</span>exc_info()
+        <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Error reading &quot;</span> <span style="color: #666666">+</span> filename)
+        <span style="color: #AA22FF; font-weight: bold">print</span>(err)
+        sys<span style="color: #666666">.</span>exit(<span style="color: #666666">1</span>)
+
+    <span style="color: #AA22FF; font-weight: bold">for</span> enc <span style="color: #AA22FF; font-weight: bold">in</span> encodings:
+        <span style="color: #AA22FF; font-weight: bold">try</span>:
+            data[enc] <span style="color: #666666">=</span> line<span style="color: #666666">.</span>decode(enc)
+        <span style="color: #AA22FF; font-weight: bold">except</span> <span style="color: #D2413A; font-weight: bold">Exception</span>:
+            <span style="color: #AA22FF; font-weight: bold">continue</span>
+
+    fpath <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>abspath(filename)
+
+    newfilename <span style="color: #666666">=</span> fpath <span style="color: #666666">+</span> <span style="color: #BB4444">&#39;.encodings&#39;</span>
+    <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Writing tested encodings in &quot;</span> <span style="color: #666666">+</span> newfilename)
+    
+    <span style="color: #AA22FF; font-weight: bold">with</span> <span style="color: #AA22FF">open</span>(newfilename, <span style="color: #BB4444">&#39;w&#39;</span>) <span style="color: #AA22FF; font-weight: bold">as</span> out:
+        c <span style="color: #666666">=</span> <span style="color: #666666">0</span>
+        <span style="color: #AA22FF; font-weight: bold">for</span> enc <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">sorted</span>(data<span style="color: #666666">.</span>keys()):
+            <span style="color: #AA22FF; font-weight: bold">try</span>:
+                out<span style="color: #666666">.</span>write(<span style="color: #BB4444">&quot;</span><span style="color: #BB6688; font-weight: bold">%-20s</span><span style="color: #BB4444">&quot;</span> <span style="color: #666666">%</span> enc)
+                <span style="color: #AA22FF; font-weight: bold">if</span> (sys<span style="color: #666666">.</span>version_info[<span style="color: #666666">0</span>] <span style="color: #666666">&lt;</span> <span style="color: #666666">3</span>):
+                    line <span style="color: #666666">=</span> data[enc]<span style="color: #666666">.</span>encode(<span style="color: #BB4444">&#39;utf_8&#39;</span>)
+                <span style="color: #AA22FF; font-weight: bold">else</span>:
+                    line <span style="color: #666666">=</span> data[enc]
+                out<span style="color: #666666">.</span>write(line)
+                out<span style="color: #666666">.</span>write(os<span style="color: #666666">.</span>linesep)
+                c <span style="color: #666666">+=</span> <span style="color: #666666">1</span>
+            <span style="color: #AA22FF; font-weight: bold">except</span> <span style="color: #D2413A; font-weight: bold">Exception</span>:
+                _, err, _ <span style="color: #666666">=</span> sys<span style="color: #666666">.</span>exc_info()
+                <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Exception in processing the &quot;</span> <span style="color: #666666">+</span> enc <span style="color: #666666">+</span> <span style="color: #BB4444">&quot; encoding.&quot;</span>)
+                <span style="color: #AA22FF; font-weight: bold">print</span>(err)
+                
+    <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #AA22FF">str</span>(c) <span style="color: #666666">+</span> <span style="color: #BB4444">&quot; out of &quot;</span> <span style="color: #666666">+</span> <span style="color: #AA22FF">str</span>(<span style="color: #AA22FF">len</span>(data<span style="color: #666666">.</span>keys())) <span style="color: #666666">+</span>
+          <span style="color: #BB4444">&quot; tested encodings were written.&quot;</span>)
+
+
+<span style="color: #AA22FF; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #BB4444">&#39;__main__&#39;</span>:
+    nargs <span style="color: #666666">=</span> <span style="color: #AA22FF">len</span>(sys<span style="color: #666666">.</span>argv)<span style="color: #666666">-1</span>
+    <span style="color: #AA22FF; font-weight: bold">if</span> nargs <span style="color: #666666">&lt;</span> <span style="color: #666666">1</span> <span style="color: #AA22FF; font-weight: bold">or</span> nargs <span style="color: #666666">&gt;</span> <span style="color: #666666">2</span>:
+        <span style="color: #AA22FF">exit</span>(<span style="color: #BB4444">&quot;Usage: test_encodings.py filename [number of line to test]&quot;</span>)
+    <span style="color: #AA22FF; font-weight: bold">if</span> nargs <span style="color: #666666">==</span> <span style="color: #666666">2</span>:
+        line_number <span style="color: #666666">=</span> <span style="color: #AA22FF">int</span>(sys<span style="color: #666666">.</span>argv[<span style="color: #666666">2</span>])
+    <span style="color: #AA22FF; font-weight: bold">else</span>:
+        line_number <span style="color: #666666">=</span> <span style="color: #666666">1</span>
+    write_encodings(sys<span style="color: #666666">.</span>argv[<span style="color: #666666">1</span>], line_number)
+</pre></div>
+
+
+<h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
+
+<p lang="en">You can download the full code listing here: <a href="https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py" target="_blank">test_encodings.py</a></p>
+<p lang="el">Μπορείτε να κατεβάσετε τον πλήρη κώδικα από εδώ: <a href="https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py" target="_blank">test_encodings.py</a></p>
+
+        </div>
+
+        <aside>
+          <section>
+            <div>
+              <div class="p-share">
+                <a href="http://www.facebook.com/sharer.php?src=bm&u=%2ftest_encodings%2f&t=How%20to%20determine%20the%20character%20encoding%20of%20a%20text%20file" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+                <a href="https://plus.google.com/share?url=%2ftest_encodings%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+                <a lang="en" href="http://twitter.com/intent/tweet?url=%2ftest_encodings%2f&text=How%20to%20determine%20the%20character%20encoding%20of%20a%20text%20file&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+                <a lang="el" href="http://twitter.com/intent/tweet?url=%2ftest_encodings%2f&text=%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%b1%ce%bd%ce%b1%ce%b3%ce%bd%cf%89%cf%81%ce%af%cf%83%ce%b5%cf%84%ce%b5%20%cf%84%ce%b7%ce%bd%20%ce%ba%cf%89%ce%b4%ce%b9%ce%ba%ce%bf%cf%80%ce%bf%ce%af%ce%b7%cf%83%ce%b7%20%cf%87%ce%b1%cf%81%ce%b1%ce%ba%cf%84%ce%ae%cf%81%cf%89%ce%bd%20%ce%b5%ce%bd%cf%8c%cf%82%20%ce%b1%cf%81%cf%87%ce%b5%ce%af%ce%bf%cf%85%20%ce%ba%ce%b5%ce%b9%ce%bc%ce%ad%ce%bd%ce%bf%cf%85&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+                <a lang="en" href="http://pinterest.com/pin/create/link/?url==%2ftest_encodings%2f&description=How%20to%20determine%20the%20character%20encoding%20of%20a%20text%20file&media=/images/encodings.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+                <a lang="el" href="http://pinterest.com/pin/create/link/?url==%2ftest_encodings%2f&description=%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%b1%ce%bd%ce%b1%ce%b3%ce%bd%cf%89%cf%81%ce%af%cf%83%ce%b5%cf%84%ce%b5%20%cf%84%ce%b7%ce%bd%20%ce%ba%cf%89%ce%b4%ce%b9%ce%ba%ce%bf%cf%80%ce%bf%ce%af%ce%b7%cf%83%ce%b7%20%cf%87%ce%b1%cf%81%ce%b1%ce%ba%cf%84%ce%ae%cf%81%cf%89%ce%bd%20%ce%b5%ce%bd%cf%8c%cf%82%20%ce%b1%cf%81%cf%87%ce%b5%ce%af%ce%bf%cf%85%20%ce%ba%ce%b5%ce%b9%ce%bc%ce%ad%ce%bd%ce%bf%cf%85&media=/images/encodings.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+              </div>
+            </div>
+          </section>
+          
+          <section class="center">
+           <div lang="en">
+            <script>
+             email("<div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Comments will be visible after approval. Your e-mail address will NOT appear on this site.</span></div><a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Comment 9aa01cc3d2b7929659fdb6b8f3fab43f", "Comment on «How to determine the character encoding of a text file»%0D%0Aby __Anonymous__ (<--You can put a display name here, since your e-mail address will NOT appear on the site.)%0D%0A%0D%0A*** DO NOT DELETE THE ABOVE LINES. WRITE YOUR COMMENT BELOW ***.%0D%0A%0D%0A%0D%0A","<i class='fa fa-envelope' aria-hidden='true'></i> Comment via e-mail </a>");
+            </script>
+           </div>
+           <div lang="el">
+            <script>
+             email("<div class='csstooltip'><span class='badge badge-info'>?</span><span class='tooltiptext'>Τα σχόλια εμφανίζονται αφότου περάσουν από έγκριση. Η διεύθυνση του η-ταχυδρομείου σας δε θα εμφανιστεί σε αυτό τον ιστότοπο.</span></div><a class='btn btn-warning' href='mailto", "gmail.com", "antonios", "tsolis", "Σχόλιο 9aa01cc3d2b7929659fdb6b8f3fab43f", "Σχόλιο στο «Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου»%0D%0Aαπό __Ανώνυμος__ (<--Μπορείτε να βάλετε ένα εμφανιζόμενο όνομα χρήστη εδώ, μιας και η διεύθυνση του η-ταχυδρομείου σας δε θα φαίνεται στον ιστότοπο.)%0D%0A%0D%0A*** ΜΗ ΔΙΑΓΡΑΨΕΤΕ ΤΙΣ ΠΑΡΑΠΑΝΩ ΓΡΑΜΜΕΣ. ΓΡΑΨΤΕ ΤΟ ΣΧΟΛΙΟ ΣΑΣ ΑΠΟ ΚΑΤΩ ***.%0D%0A%0D%0A%0D%0A", "<i class='fa fa-envelope' aria-hidden='true'></i> Σχολιάστε μέσω η-ταχυδρομείου</a>");
+            </script>
+           </div>
+          </section>
+        </aside>
+      </article>
+
+      
+      <section id="posts-section">
+        <header lang="en">See also...</header>
+        <header lang="el">Δείτε επίσης...</header>
+        <div>
+         
+         
+         
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h2>
+      <h2 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-09-19</time><time lang="el">2016-09-19</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h2>
+      <h2 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-07-21</time><time lang="el">2016-07-21</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h2>
+      <h2 class="title" lang="el">Πώς να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2014-02-19</time><time lang="el">2014-02-19</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h2>
+      <h2 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-10-17</time><time lang="el">2016-10-17</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-md-4">
+  <a href="/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h2 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h2>
+      <h2 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h2>
+      <i class="fa fa-calendar"></i>&nbsp;<time lang="en">2016-10-09</time><time lang="el">2016-10-09</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+        </div>
+      </section>
+      
+    </div>
+   </div> 
+  </div>
+
+
+<footer class="l-footer">
+  <span class="copyleft">&copy;</span>
+  <span lang="en">2016 Antonios Tsolis</span>
+  <span lang="el">2016 Αντώνιος Τσώλης</span>
+  <script>
+   email("<a href='mailto", "gmail.com", "antonios", "tsolis", "", "","<i class='fa fa-envelope-o' aria-hidden='true'></i></a>");
+  </script>
+</footer>
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/moment.min.js"></script>
+<script src="/js/el.min.js"></script>
+<script src="/js/lunr.min.js"></script>
+<script src="/js/custom.min.js"></script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], }
+  });
+</script>
+<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+<script>
+langtext = "English";
+language = localStorage.getItem('language');
+$(document).ready(function(){
+  if (language) {
+    document.getElementById('mainbody').setAttribute('class', language);
+    document.getElementById('mainbody').setAttribute('lang', language);
+    if (language == 'el') { langtext="Ελληνικά"; }
+    $("#language-selector").parents('.btn-group').find('.dropdown-toggle').html(langtext+' <span class="caret"></span>');
+  }
+
+  $("#language-selector li a").click(function(){
+    var langid = this.id;
+    var selText = this.text;
+    document.getElementById('mainbody').setAttribute('class', langid);
+    document.getElementById('mainbody').setAttribute('lang', langid);
+    localStorage.setItem('language', langid);
+    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+  });
+
+  $('time').each(function(){
+    d = $(this).text();
+    $(this).text(moment(d).locale(this.lang).format("ll")); 
+  });
+
+  $("#TableOfContents a, #content-selector a").on('click', function(e) {
+    
+    e.preventDefault();
+
+    
+    var hash = this.hash;
+    console.log(hash);
+
+    
+    $('html, body').animate({scrollTop: $(hash).offset().top}, 1300, function(){
+      
+      
+      window.location.hash = hash;
+    });
+  });
+  
+  var lunrIndex, lunrStore;
+  $.getJSON('\/json/search.json', function (data) {
+    lunrStore = data.store;  
+    lunr.Pipeline.registerFunction(trimmer_all, 'trimmer_all')
+    lunr.Pipeline.registerFunction(stopwordfilter_el, 'stopwordfilter_el');
+    lunr.Pipeline.registerFunction(stemmer_el, 'stemmer_el');
+    lunrIndex = lunr.Index.load(data.index);
+    results_section = jQuery("#results-section");
+    results_div = jQuery("#results-section>div");
+    $("#search-section").show();
+    $("#search-field").keyup(function() {
+      var query = $(this).val();
+      if (query.length < 3) { results_section.hide(); return; }
+      var results = lunrIndex.search(query);
+      results_div.empty(); results_section.show();      
+      if (results.length == 0) {
+        results_div.append("<h3 lang='en'>Νο results found.</h3><h3 lang='el'>Δεν βρέθηκαν αποτελέσματα.</h3>");
+      } else {
+        results.slice(0, 10).forEach(function(result) {
+          results_div.append("<article class='li col-md-4'><a href='\/"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(\/images/"+lunrStore[result.ref].image+");'></div></div><footer><h2 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h2><h2 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h2><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
+        });
+        $('#results-section time').each(function(){
+            d = $(this).text();
+            $(this).text(moment(d).locale(this.lang).format("ll")); 
+        });
+      } 
+    }); 
+  }, function() {  console.log("ERROR: search.json");});
+});
+</script>
+
+  </body>
+</html>
+

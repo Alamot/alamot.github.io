@@ -6,8 +6,242 @@
     <description>Recent content on The Portal of Knowledge</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 17 Oct 2016 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 21 Oct 2016 00:00:00 +0000</lastBuildDate>
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>How to determine the character encoding of a text file</title>
+      <link>/test_encodings/</link>
+      <pubDate>Fri, 21 Oct 2016 00:00:00 +0000</pubDate>
+      <guid>/test_encodings/</guid>
+      <description>
+
+&lt;p lang=&#34;en&#34;&gt;If you have ever encountered a text file with gibberish characters, then you know that many times it is very difficult to determine its correct character encoding.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Αν έχετε βρεθεί ποτέ αντιμέτωπος με ένα αρχείο κειμένου με ακαταλαβίστικους χαρακτήρες, τότε γνωρίζετε ότι πολλές φορές είναι πολύ δύσκολο να αναγνωρίσετε ποια είναι η σωστή κωδικοποίηση των χαρακτήρων.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;There is an automatic universal encoding detector for Python 2 and 3 here: &lt;a href=&#34;https://pypi.python.org/pypi/chardet&#34; target=&#34;_blank&#34;&gt;https://pypi.python.org/pypi/chardet&lt;/a&gt;.
+The chardet detector comes with a command-line script which reports on the encodings of one or more files:
+&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Υπάρχει ένας εργαλείο ανίχνευσης της κωδικοποίησης για Python 2 και 3 εδώ: &lt;a href=&#34;https://pypi.python.org/pypi/chardet&#34; target=&#34;_blank&#34;&gt;https://pypi.python.org/pypi/chardet&lt;/a&gt;.
+Ο ανιχνευτής chardet διαθέτει και ένα σενάριο για τη γραμμή εργαλείων που αναφέρει την πιθανή κωδικοποίηση ενός ή περισσότερων αρχείων
+&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ chardetect sometextfile 
+sometextfile: windows-1252 with confidence 0.5
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p lang=&#34;en&#34;&gt;Unfortunately, &lt;em&gt;chardetect&lt;/em&gt; does not always find the correct encoding. For example, I had a text file with a cp737 encoding but &lt;em&gt;chardetect&lt;/em&gt; predicted an IBM866 encoding for that file (with a low confidence of 0.261435096117). For these difficult cases, I wrote a tool which converts one line from a text file to every (?) possible character encoding and saves them to a new text file using the same filename but appending the &#39;.encodings&#39; extension to it. Now, we can examine this file visually to find out the correct encoding.&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Δυστυχώς, όμως, το &lt;em&gt;chardetect&lt;/em&gt; δεν βρίσκει πάντα την σωστή κωδικοποίηση. Για παράδειγμα, είχα ένα αρχείο κειμένου με κωδικοποίηση cp737 αλλά το &lt;em&gt;chardetect&lt;/em&gt; προέβλεψε μια κωδικοποίηση IBM866 για εκείνο. Για τέτοιες δύσκολες περιπτώσεις, έγραψα ένα εργαλείο το οποίο μετατρέπει μια γραμμή από ένα αρχείο κειμενο σε όλες (;) τις δυνατές κωδικοποίησεις και τις αποθηκεύει σε ένα νέο αρχείο κειμένου χρησιμοποιώντας το ίδιο όνομα αρχείου αλλά προσθέτοντας την κατάληξη &#39;.encodings&#39; σε αυτό. Τώρα, μπορούμε να εξετάσουμε οπτικά αυτό το αρχειο και να ανακαλύψουμε τη σωστή κωδικοποίηση.&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;&lt;b&gt;Usage&lt;/b&gt;: &amp;nbsp; test_encodings.py &amp;nbsp; filename &amp;nbsp; [number of line to test]&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;&lt;b&gt;Χρήση&lt;/b&gt;: &amp;nbsp; test_encodings.py &amp;nbsp; όνομα_αρχείου &amp;nbsp; [αριθμός γραμμής προς έλεγχο]&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;$ test_encodings.py sometextfile 3
+
+Processing line number: 3
+Writing tested encodings in sometextfile.encodings
+&lt;span style=&#34;color: #666666&#34;&gt;53&lt;/span&gt; out of &lt;span style=&#34;color: #666666&#34;&gt;53&lt;/span&gt; tested encodings were written.
+
+$ cat sometextfile.encodings
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img class=&#34;border floatcenter&#34; src=&#34;/images/testencodings_output.png&#34;&gt;&lt;/p&gt;
+
+&lt;p lang=&#34;en&#34;&gt;Here is the code. It runs under both Python 2 &amp; 3:&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Ιδού ο κώδικας. Τρέχει τόσο στην Python 2 όσο και στην Python 3:&lt;/p&gt;
+
+&lt;div class=&#34;highlight&#34; style=&#34;background: #f8f8f8&#34;&gt;&lt;pre style=&#34;line-height: 125%&#34;&gt;&lt;span&gt;&lt;/span&gt;&lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;io&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;os&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;sys&lt;/span&gt;
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;from&lt;/span&gt; &lt;span style=&#34;color: #0000FF; font-weight: bold&#34;&gt;encodings.aliases&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;import&lt;/span&gt; aliases
+
+
+encs &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; {
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;ascii&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;big5&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;big5hkscs&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp037&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp424&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp437&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp500&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp720&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp737&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp775&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp850&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp852&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp855&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp856&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp857&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp858&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp860&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp861&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp862&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp863&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp864&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp865&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp866&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp869&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp874&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp875&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp932&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp949&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp950&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1006&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1026&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1140&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1250&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1251&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1252&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1253&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1254&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1255&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1256&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1257&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;cp1258&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;euc_jp&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;euc_jis_2004&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;euc_jisx0213&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;euc_kr&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;gb2312&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;gbk&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;gb18030&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;hz&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso2022_jp&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso2022_jp_1&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso2022_jp_2&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso2022_jp_2004&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso2022_jp_3&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso2022_jp_ext&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso2022_kr&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;latin_1&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_2&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_3&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_4&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_5&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_6&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_7&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_8&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_9&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_10&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_13&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_14&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_15&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;iso8859_16&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;johab&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;koi8_r&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;koi8_u&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;mac_cyrillic&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;mac_greek&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;mac_iceland&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;mac_latin2&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;mac_roman&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;mac_turkish&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;ptcp154&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;shift_jis&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;shift_jis_2004&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;shift_jisx0213&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_32&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_32_be&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_32_le&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_16&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_16_be&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_16_le&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_7&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_8&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;utf_8_sig&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;idna&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;mbcs&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;palmos&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;punycode&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;raw_unicode_escape&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;rot_13&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;undefined&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;unicode_escape&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;unicode_internal&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;base64_codec&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;bz2_codec&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;hex_codec&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;uu_codec&amp;quot;&lt;/span&gt;,
+    &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;zlib_codec&amp;quot;&lt;/span&gt;
+}
+
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;def&lt;/span&gt; &lt;span style=&#34;color: #00A000&#34;&gt;write_encodings&lt;/span&gt;(filename, line_number):
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# To ensure that we cover as many as possible encodings,&lt;/span&gt;
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# we take the union of our predefined encodings and the&lt;/span&gt;
+    &lt;span style=&#34;color: #008800; font-style: italic&#34;&gt;# values of encodings.aliases.aliases&lt;/span&gt;
+    encodings &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; encs&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;union(&lt;span style=&#34;color: #AA22FF&#34;&gt;set&lt;/span&gt;(aliases&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;values()))
+    encodings&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;remove(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;quopri_codec&amp;quot;&lt;/span&gt;)
+    
+    data &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;dict&lt;/span&gt;()
+
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;try&lt;/span&gt;:
+        &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;with&lt;/span&gt; io&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;open(filename, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;rb&amp;quot;&lt;/span&gt;) &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;as&lt;/span&gt; f:
+            lines &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; f&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;readlines()
+            line &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; lines[line_number&lt;span style=&#34;color: #666666&#34;&gt;-1&lt;/span&gt;]
+            &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Processing line number: &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;str&lt;/span&gt;(line_number))
+            &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;len&lt;/span&gt;(line) &lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;:
+                &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;!!!Warning!!!: Possible empty line.&amp;quot;&lt;/span&gt;)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;except&lt;/span&gt; &lt;span style=&#34;color: #D2413A; font-weight: bold&#34;&gt;Exception&lt;/span&gt;:
+        _, err, _ &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; sys&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;exc_info()
+        &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Error reading &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; filename)
+        &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(err)
+        sys&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;exit(&lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;)
+
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; enc &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; encodings:
+        &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;try&lt;/span&gt;:
+            data[enc] &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; line&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;decode(enc)
+        &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;except&lt;/span&gt; &lt;span style=&#34;color: #D2413A; font-weight: bold&#34;&gt;Exception&lt;/span&gt;:
+            &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;continue&lt;/span&gt;
+
+    fpath &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;path&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;abspath(filename)
+
+    newfilename &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; fpath &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;.encodings&amp;#39;&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Writing tested encodings in &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; newfilename)
+    
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;with&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;open&lt;/span&gt;(newfilename, &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;w&amp;#39;&lt;/span&gt;) &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;as&lt;/span&gt; out:
+        c &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;
+        &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;for&lt;/span&gt; enc &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;in&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;sorted&lt;/span&gt;(data&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keys()):
+            &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;try&lt;/span&gt;:
+                out&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;write(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span style=&#34;color: #BB6688; font-weight: bold&#34;&gt;%-20s&lt;/span&gt;&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;%&lt;/span&gt; enc)
+                &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; (sys&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;version_info[&lt;span style=&#34;color: #666666&#34;&gt;0&lt;/span&gt;] &lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;3&lt;/span&gt;):
+                    line &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; data[enc]&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;encode(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;utf_8&amp;#39;&lt;/span&gt;)
+                &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;:
+                    line &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; data[enc]
+                out&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;write(line)
+                out&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;write(os&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;linesep)
+                c &lt;span style=&#34;color: #666666&#34;&gt;+=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
+            &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;except&lt;/span&gt; &lt;span style=&#34;color: #D2413A; font-weight: bold&#34;&gt;Exception&lt;/span&gt;:
+                _, err, _ &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; sys&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;exc_info()
+                &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Exception in processing the &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; enc &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot; encoding.&amp;quot;&lt;/span&gt;)
+                &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(err)
+                
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;print&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;str&lt;/span&gt;(c) &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot; out of &amp;quot;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;str&lt;/span&gt;(&lt;span style=&#34;color: #AA22FF&#34;&gt;len&lt;/span&gt;(data&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;keys())) &lt;span style=&#34;color: #666666&#34;&gt;+&lt;/span&gt;
+          &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot; tested encodings were written.&amp;quot;&lt;/span&gt;)
+
+
+&lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; __name__ &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #BB4444&#34;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
+    nargs &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;len&lt;/span&gt;(sys&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;argv)&lt;span style=&#34;color: #666666&#34;&gt;-1&lt;/span&gt;
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; nargs &lt;span style=&#34;color: #666666&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt; &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;or&lt;/span&gt; nargs &lt;span style=&#34;color: #666666&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;2&lt;/span&gt;:
+        &lt;span style=&#34;color: #AA22FF&#34;&gt;exit&lt;/span&gt;(&lt;span style=&#34;color: #BB4444&#34;&gt;&amp;quot;Usage: test_encodings.py filename [number of line to test]&amp;quot;&lt;/span&gt;)
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;if&lt;/span&gt; nargs &lt;span style=&#34;color: #666666&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;2&lt;/span&gt;:
+        line_number &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #AA22FF&#34;&gt;int&lt;/span&gt;(sys&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;argv[&lt;span style=&#34;color: #666666&#34;&gt;2&lt;/span&gt;])
+    &lt;span style=&#34;color: #AA22FF; font-weight: bold&#34;&gt;else&lt;/span&gt;:
+        line_number &lt;span style=&#34;color: #666666&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;
+    write_encodings(sys&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;argv[&lt;span style=&#34;color: #666666&#34;&gt;1&lt;/span&gt;], line_number)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1 id=&#34;span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span&#34;&gt;&lt;span lang=&#34;en&#34;&gt;Source code&lt;/span&gt;&lt;span lang=&#34;el&#34;&gt;Πηγαίος κώδικας&lt;/span&gt;&lt;/h1&gt;
+
+&lt;p lang=&#34;en&#34;&gt;You can download the full code listing here: &lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py&#34; target=&#34;_blank&#34;&gt;test_encodings.py&lt;/a&gt;&lt;/p&gt;
+&lt;p lang=&#34;el&#34;&gt;Μπορείτε να κατεβάσετε τον πλήρη κώδικα από εδώ: &lt;a href=&#34;https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py&#34; target=&#34;_blank&#34;&gt;test_encodings.py&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Git &amp; Mercurial: How to commit-push fast and easily</title>
@@ -3634,21 +3868,6 @@ TestApp()&lt;span style=&#34;color: #666666&#34;&gt;.&lt;/span&gt;run()
 &lt;ul&gt;
 &lt;li&gt;Fleur Ponton, Fernando Otálora-Luna, Thierry Lefèvre, Patrick M. Guerin, Camille Lebarbenchon, David Duneau, David G. Biron, and Frédéric Thomas. Water-seeking behavior in worm-infected crickets and reversibility of parasitic manipulation Behavioral Ecology (2011) 22 (2): 392-400 first published online February 8, 2011 doi:10.1093/beheco/arq215 (&lt;a href=&#34;http://beheco.oxfordjournals.org/content/22/2/392.full&#34; target=&#34;_blank&#34;&gt;&lt;a href=&#34;http://beheco.oxfordjournals.org/content/22/2/392.full&#34;&gt;http://beheco.oxfordjournals.org/content/22/2/392.full&lt;/a&gt;&lt;/a&gt;)&lt;/li&gt;
 &lt;/ul&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>A consensus method for the prediction of aggregation-prone peptides in globular proteins</title>
-      <link>/amylpred2/</link>
-      <pubDate>Thu, 10 Jan 2013 00:00:00 +0000</pubDate>
-      <guid>/amylpred2/</guid>
-      <description>&lt;p lang=&#34;en&#34;&gt;My Bachelor&#39;s thesis in Biology was about developing a consensus method for the prediction of amyloidogenic determinants in globular proteins. Several studies suggest that not all regions of a polypeptide chain are equally important for determining its aggregation tendency. It seems that protein aggregation is mediated by short aggregation prone segments. These aggregation nucleating regions can be detected in the sequence of a protein in silico based on physicochemical principles (phenomenological models) or/and molecular simulation approaches. Many prediction algorithms have been developed over the years to perform this task. Amyloid structures constitute a specific subset of insoluble fibrous protein aggregates formed by sequences that allow the intermolecular beta-sheet arrangements to pack in a three dimensional structure, resulting in the formation of highly stable amyloid fibrils. The biological properties of these fibrils differ from those of amorphous aggregates. Amyloid fibrils have functional roles throughout all kingdoms of life as structural scaffolds, adhesives, water tension modulators, protective formations etc. Furthermore, protein deposits found in association with a range of human diseases are often enriched in amyloid structure. For the prediction of the potential amyloidogenic regions, a consensus method has been developed, the web-based tool AMYLPRED2, which combines 11 different methods. This tool allows comparison of the individual predictions and provides more objective results. Protein aggregation and amyloid fibril formation prediction methods might be used for screening therapeutic approaches against amyloidosis and the control and fine-tuning of protein solubility in the field of biotechnology. Last but not least, these methods may improve the understanding of amyloid-ﬁbril formation process.&lt;/p&gt;
-
-&lt;p lang=&#34;en&#34;&gt;You can find more details for this work in the &lt;a href=&#34;http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054175&#34; target=&#34;_blank&#34;&gt;corresponding paper&lt;/a&gt; publlished in PLoS ONE.&lt;/p&gt;
-
-&lt;p lang=&#34;el&#34;&gt;Η πτυχιακή μου εργασία στη Βιολογία είχε να κάνει με την ανάπτυξη μια συναινετικής μεθόδου για την πρόγνωση αμυλοειδογόνων καθοριστών σε σφαιρικές πρωτεΐνες. Πολλές μελέτες δείχνουν ότι δεν είναι όλες οι περιοχές μιας πολυπεπτιδικής αλυσίδας εξίσου σημαντικές στον καθορισμό της τάσης συσσωμάτωσης που αυτή εμφανίζει. Φαίνεται ότι η συσσωμάτωση των πρωτεϊνών διαμεσολαβείται από μικρά τμήματα που είναι επιρρεπή προς συσσωμάτωση. Αυτές οι περιοχές που αποτελούν τους πυρήνες συσσωμάτωσης μπορούν να εντοπισθούν στην αλληλουχία της πρωτεΐνης in silico με βάση φυσικοχημικές αρχές (φαινομενολογικά μοντέλα) ή/και προσεγγίσεις μοριακής προσομοίωσης. Πολλοί προγνωστικοί αλγόριθμοι έχουν αναπτυχθεί κατά τα τελευταία χρόνια για την εκπλήρωση αυτού του σκοπού. Οι αμυλοειδείς δομές αποτελούν ένα ειδικό υποσύνολο αδιάλυτων ινωδών πρωτεϊνικών συσσωματωμάτων που σχηματίζονται από αλληλουχίες που επιτρέπουν διαμοριακές β-πτυχωτές επιφάνειες να πακεταριστούν σε μια τρισδιάστατη δομή, καταλήγοντας στο σχηματισμό πολύ σταθερών αμυλοειδών ινιδίων. Οι βιολογικές ιδιότητες αυτών των ινιδίων διαφέρουν από αυτές των άμορφων συσσωματωμάτων. Τα αμυλοειδή ινίδια απαντώνται με λειτουργικούς ρόλους σε όλα τα βασίλεια της ζωής ως δομικά ικριώματα, δομές προσκόλλησης, ρυθμιστές της επιφανειακής τάσης του νερού, προστατευτικοί σχηματισμοί κλπ. Επιπλέον, πρωτεϊνικές εναποθέσεις που εντοπίζονται σε συσχέτιση με πλήθος ασθενειών στον άνθρωπο είναι συχνά πλούσιες σε αμυλοειδή δομή. Για την πρόγνωση πιθανών αμυλοειδογενών περιοχών, αναπτύχθηκε μια συναινετική μέθοδος, το διαδικτυακό εργαλείο AMYLPRED2, που συνδυάζει 11 διαφορετικές μεθόδους. Αυτό το εργαλείο επιτρέπει τη σύγκριση των επιμέρους προγνώσεων και παρέχει πιο αντικειμενικά αποτελέσματα. Οι μέθοδοι πρόγνωσης πρωτεϊνικής συσσωμάτωσης και σχηματισμού αμυλοειδών ινιδίων μπορούν να χρησιμοποιηθούν για τη διερεύνηση θεραπευτικών προσεγγίσεων ενάντια στις αμυλοειδώσεις και στον έλεγχο και τη λεπτή ρύθμιση της διαλυτότητας των πρωτεϊνών στο πεδίο της βιοτεχνολογίας. Τέλος, είναι σημαντικό οτι αυτές οι μέθοδοι μπορούν να συμβάλλουν στην κατανόηση της διαδικασίας του σχηματισμού των αμυλοειδών ινιδίων.&lt;/p&gt;
-
-&lt;p lang=&#34;el&#34;&gt;Μπορείτε να βρείτε περισσότερες λεπτομέρειες για αυτή τη δουλειά στο &lt;a href=&#34;http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0054175&#34; target=&#34;_blank&#34;&gt;σχετικό άρθρο&lt;/a&gt; που έχει δημοσιευτεί στο PLoS ONE.&lt;/p&gt;
 </description>
     </item>
     

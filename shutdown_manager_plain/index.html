@@ -177,63 +177,63 @@ You can find free icons for every use on <a href="https://openclipart.org" targe
 
 <p lang="en">First, let's add the necessary imports:</p>
 <p lang="el">Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic">#!/usr/bin/env python</span>
-<span style="color: #008800; font-style: italic"># -*- coding: utf-8 -*-</span>
-<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">os</span>
-<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">gtk</span>
-<span style="color: #AA22FF; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">collections</span> <span style="color: #AA22FF; font-weight: bold">import</span> OrderedDict
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">gtk</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">OrderedDict</span>
+</code></pre></div>
 
 
 <p lang="en">We define a <em>get_resource_path</em> function to help us find the path of our icons in the system:</p>
 <p lang="el">Ορίζουμε μια συνάρτηση <em>get_resource_path</em> για να μας βοηθήσει να βρούμε την τοποθεσία των εικονιδίων μας στο σύστημα:</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">get_resource_path</span>(rel_path):
-    dir_of_py_file <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>dirname(__file__)
-    rel_path_to_resource <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>join(dir_of_py_file, rel_path)
-    abs_path_to_resource <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>abspath(rel_path_to_resource)
-    <span style="color: #AA22FF; font-weight: bold">return</span> abs_path_to_resource
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">get_resource_path</span><span class="p">(</span><span class="n">rel_path</span><span class="p">):</span>
+    <span class="n">dir_of_py_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+    <span class="n">rel_path_to_resource</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_of_py_file</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
+    <span class="n">abs_path_to_resource</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">rel_path_to_resource</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">abs_path_to_resource</span>
+</code></pre></div>
 
 
 <p lang="en">Next, we define our SystemDialog class (inherits from gtk.Window):</p>
 <p lang="el">Στη συνέχεια, ορίζουμε την κλάση SystemDialog (κληρονομεί από την gtk.Window):</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">class</span> <span style="color: #0000FF">SystemDialog</span> (gtk<span style="color: #666666">.</span>Window):
-    <span style="color: #666666">...</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">class</span> <span class="nc">SystemDialog</span> <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">Window</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre></div>
 
 
 <p lang="en">Inside the class we define the __init__ (do <strong>not</strong> forget to call the super):</p>
 <p lang="el">Μέσα στην κλάση μας ορίζουμε την __init__ (<strong>μην</strong> ξεχάσετε να καλέσετε την super):</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">__init__</span>(<span style="color: #AA22FF">self</span>):
-    <span style="color: #AA22FF">super</span>(SystemDialog, <span style="color: #AA22FF">self</span>)<span style="color: #666666">.</span>__init__()
-    <span style="color: #666666">...</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="nb">super</span><span class="p">(</span><span class="n">SystemDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
+    <span class="o">...</span>
+</code></pre></div>
 
 
 <p lang="en">Inside the __init__ we define a dictionary with label/command key-value pairs. The reason we use an <em>OrderedDict</em> is that the simple <em>dict</em> in python does not keep the order of the keys but we do not want our buttons to appear in arbitrary order. Keep in mind that you have to edit the button commands according to your system and your needs.</p>
 <p lang="el">Μέσα στην __init__ ορίζουμε ένα λεξικό με ζευγάρια από ετικέτες και εντολές. Ο λόγος που χρησιμοποιούμε ένα <em>OrderedDict</em> είναι επειδή το απλό <em>dict</em> στην Python δεν συγκρατεί τη σειρά των λημμάτων (=κλειδιών) αλλά εμείς δε θέλουμε τα κουμπιά μας να εμφανίζονται με αυθαίρετη σειρά. Σημειώστε ότι θα πρέπει να τροποποιήσετε τις εντολές που αντιστοιχούν στα κουμπιά ανάλογα με το σύστημα σάς και τις ανάγκες σάς.</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions <span style="color: #666666">=</span> OrderedDict([
-    (<span style="color: #BB4444">&quot;Cancel&quot;</span>, <span style="color: #AA22FF">None</span>),
-    (<span style="color: #BB4444">&quot;Lock&quot;</span>, <span style="color: #BB4444">&quot;slock &amp;&quot;</span>),
-    (<span style="color: #BB4444">&quot;Restart WM&quot;</span>, <span style="color: #BB4444">&quot;sudo killall dwm &amp;&quot;</span>),
-    (<span style="color: #BB4444">&quot;Sleep&quot;</span>, <span style="color: #BB4444">&quot;sudo pm-suspend &amp;&quot;</span>),
-    (<span style="color: #BB4444">&quot;Hibernate&quot;</span>, <span style="color: #BB4444">&quot;sudo pm-hibernate &amp;&quot;</span>),
-    (<span style="color: #BB4444">&quot;Sleep + Hibernate&quot;</span>, <span style="color: #BB4444">&quot;sudo pm-suspend-hybrid &amp;&quot;</span>),
-    (<span style="color: #BB4444">&quot;Logout&quot;</span>, <span style="color: #BB4444">&quot;sudo killall X &amp;&quot;</span>),
-    (<span style="color: #BB4444">&quot;Reboot&quot;</span>, <span style="color: #BB4444">&quot;sudo reboot &amp;&quot;</span>),
-    (<span style="color: #BB4444">&quot;Shutdown&quot;</span>, <span style="color: #BB4444">&quot;sudo poweroff &amp;&quot;</span>)])
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&quot;Cancel&quot;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Lock&quot;</span><span class="p">,</span> <span class="s2">&quot;slock &amp;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Restart WM&quot;</span><span class="p">,</span> <span class="s2">&quot;sudo killall dwm &amp;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Sleep&quot;</span><span class="p">,</span> <span class="s2">&quot;sudo pm-suspend &amp;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Hibernate&quot;</span><span class="p">,</span> <span class="s2">&quot;sudo pm-hibernate &amp;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Sleep + Hibernate&quot;</span><span class="p">,</span> <span class="s2">&quot;sudo pm-suspend-hybrid &amp;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Logout&quot;</span><span class="p">,</span> <span class="s2">&quot;sudo killall X &amp;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Reboot&quot;</span><span class="p">,</span> <span class="s2">&quot;sudo reboot &amp;&quot;</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">&quot;Shutdown&quot;</span><span class="p">,</span> <span class="s2">&quot;sudo poweroff &amp;&quot;</span><span class="p">)])</span>
     
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>buttons <span style="color: #666666">=</span> {}
-</pre></div>
+<span class="bp">self</span><span class="o">.</span><span class="n">buttons</span> <span class="o">=</span> <span class="p">{}</span>
+</code></pre></div>
 
 
 <p lang="en">We make our window borderless, undecorated, centered on screen and we keep it on top.</p>
 <p lang="el">Ρυθμίζουμε το παράθυρό μας να μην έχει οριογραμμές ή άλλα διακοσμητικά στοιχεία, να είναι κεντραρισμένο στην οθόνη και να παραμένει πάνω από τα άλλα παράθυρα.</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_border_width(<span style="color: #666666">0</span>)
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_decorated(<span style="color: #AA22FF">False</span>)
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_position(gtk<span style="color: #666666">.</span>WIN_POS_CENTER)
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>set_keep_above(<span style="color: #AA22FF">True</span>)
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="bp">self</span><span class="o">.</span><span class="n">set_border_width</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">set_decorated</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">WIN_POS_CENTER</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">set_keep_above</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div>
 
 
 <p lang="en">We define one <span style="color:blue">vertical box</span> and three <span style="color:red">horizontal boxes</span>. The vertical box will contain and align vertically the 3 horizontal boxes while each horizontal box while keep and align horizontally 3 of our buttons. Therefore, in the end, we will have a nice 3x3 button square, like this:</p>
@@ -243,100 +243,102 @@ You can find free icons for every use on <a href="https://openclipart.org" targe
 <tr style="outline:2px solid red; outline-offset:-3px;"><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td></tr>
 <tr style="outline:2px solid red; outline-offset:-3px;"><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td><td><i class="fa fa-picture-o lgfont"></td></tr>
 </table>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF">self</span><span style="color: #666666">.</span>vbox <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>VBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>)
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>hboxes <span style="color: #666666">=</span> [gtk<span style="color: #666666">.</span>HBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>),
-               gtk<span style="color: #666666">.</span>HBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>),
-               gtk<span style="color: #666666">.</span>HBox(<span style="color: #AA22FF">True</span>, <span style="color: #666666">5</span>)]
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="bp">self</span><span class="o">.</span><span class="n">vbox</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">VBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+               <span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+               <span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span>
+</code></pre></div>
 
 <p lang="en">The <em>True</em> values is about the homogenous (i.e. the same) size of the children and <em>5</em> is the amount of space between them.</p>
 <p lang="el">Οι τιμές <em>True</em> έχουν να κάνουν με την ισόποση κατανομή του χώρου μεταξύ των περιεχομένων, ενώ το <em>5</em> είναι το κενό διάστημα ανάμεσά τους.</p>
 
 <p lang="en">Now, let's create our buttons, put some icons and labels on them, connect their click event with a callback event handler and pack them inside the empty horizontal boxes (3 buttons in each horizontal box).</p>
 <p lang="el">Τώρα, ας δημιουργήσουμε τα κουμπιά μας, ας βάλουμε μερικές ετικέτες και εικονίδια πάνω τους, ας συνδέσουμε το πάτημά τους με έναν επανακαλούμενο χειριστή συμβάντων και ας τα πακετάρουμε μέσα στα άδεια οριζόντια κουτιά (3 κουμπιά σε κάθε οριζόντιο κουτί).</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>c <span style="color: #666666">=</span> <span style="color: #666666">0</span>
-boxIndex <span style="color: #666666">=</span> <span style="color: #666666">0</span>
-<span style="color: #AA22FF; font-weight: bold">for</span> label <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions<span style="color: #666666">.</span>keys():
-    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>buttons[label] <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>Button(label)
-    ico <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>Image()
-    ico<span style="color: #666666">.</span>set_from_file(get_resource_path(<span style="color: #BB4444">&quot;images/&quot;</span><span style="color: #666666">+</span>label<span style="color: #666666">+</span><span style="color: #BB4444">&quot;.png&quot;</span>))
-    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>buttons[label]<span style="color: #666666">.</span>set_image(ico)
-    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>buttons[label]<span style="color: #666666">.</span>set_image_position(gtk<span style="color: #666666">.</span>POS_TOP)
-    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>hboxes[boxIndex]<span style="color: #666666">.</span>pack_start(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>buttons[label])
-    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>buttons[label]<span style="color: #666666">.</span>connect(<span style="color: #BB4444">&#39;clicked&#39;</span>, <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>callback, label)
-    c <span style="color: #666666">+=</span> <span style="color: #666666">1</span> 
-    <span style="color: #AA22FF; font-weight: bold">if</span> <span style="color: #AA22FF; font-weight: bold">not</span> (c <span style="color: #666666">%</span> <span style="color: #666666">3</span>):
-        boxIndex <span style="color: #666666">+=</span> <span style="color: #666666">1</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">boxIndex</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">buttons</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">Button</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">ico</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">Image</span><span class="p">()</span>
+    <span class="n">ico</span><span class="o">.</span><span class="n">set_from_file</span><span class="p">(</span><span class="n">get_resource_path</span><span class="p">(</span><span class="s2">&quot;images/&quot;</span><span class="o">+</span><span class="n">label</span><span class="o">+</span><span class="s2">&quot;.png&quot;</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">buttons</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">ico</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">buttons</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">set_image_position</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">POS_TOP</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span><span class="p">[</span><span class="n">boxIndex</span><span class="p">]</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">buttons</span><span class="p">[</span><span class="n">label</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">buttons</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;clicked&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span> 
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">c</span> <span class="o">%</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="n">boxIndex</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div>
 
 
 <p lang="en">And now, let's pack the horizontal boxes inside the vertical box and the vertical box inside our window. Do <strong>not</strong> forget to show all our widgets with self.show_all().</p>
 <p lang="el">Και τώρα, ας πακετάρουμε τα οριζόντια κουτιά μέσα στο κάθετο κουτί και το κάθετο κουτί μέσα στο παράθυρό μας. <strong>Μην</strong> ξεχάσετε να εμφανίσετε όλα τα γραφικά στοιχεία σας με την self.show_all().</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">for</span> hbox <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>hboxes:
-    <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>vbox<span style="color: #666666">.</span>pack_start(hbox)
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>add(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>vbox)
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>show_all()
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">for</span> <span class="n">hbox</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">vbox</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">hbox</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vbox</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">show_all</span><span class="p">()</span>
+</code></pre></div>
 
 
 <p lang="en">Finally, we connect some more events with their callback handlers:</p> 
 <p lang="el">Τέλος, συνδέουμε μερικά ακόμη συμβάντα με τους επανακαλούμενους χειριστές τους:</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic">#If our window is destroyed call self.callback (to exit)</span>
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>connect(<span style="color: #BB4444">&quot;delete-event&quot;</span>, <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>callback)
-<span style="color: #008800; font-style: italic">#If a key is pressed call self.key_press_event</span>
-<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>connect(<span style="color: #BB4444">&quot;key-press-event&quot;</span>, <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>key_press_event)
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1">#If our window is destroyed call self.callback (to exit)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;delete-event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">)</span>
+<span class="c1">#If a key is pressed call self.key_press_event</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;key-press-event&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">key_press_event</span><span class="p">)</span>
+</code></pre></div>
 
 
 <p lang="en">This is the our keyboard callback/event handler function. If the user has pressed <strong>Escape</strong>, we quit:</p>
 <p lang="el">Αυτή είναι η επανακαλούμενη συνάρτησή μας για τον χειρισμό συμβάντων πληκτρολογίου. Αν ο χρήστης έχει πατήσει το <strong>Escape</strong>, βγαίνουμε από την εφαρμογή:</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">key_press_event</span>(<span style="color: #AA22FF">self</span>, widget <span style="color: #666666">=</span> <span style="color: #AA22FF">None</span>, event <span style="color: #666666">=</span> <span style="color: #AA22FF">None</span>):
-    keyval <span style="color: #666666">=</span> event<span style="color: #666666">.</span>keyval
-    keyval_name <span style="color: #666666">=</span> gtk<span style="color: #666666">.</span>gdk<span style="color: #666666">.</span>keyval_name(keyval)
-    <span style="color: #AA22FF; font-weight: bold">if</span> keyval_name <span style="color: #666666">==</span> <span style="color: #BB4444">&quot;Escape&quot;</span>:
-        gtk<span style="color: #666666">.</span>main_quit()
-    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #AA22FF">False</span>
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">event</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="n">keyval</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">keyval</span>
+    <span class="n">keyval_name</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">gdk</span><span class="o">.</span><span class="n">keyval_name</span><span class="p">(</span><span class="n">keyval</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">keyval_name</span> <span class="o">==</span> <span class="s2">&quot;Escape&quot;</span><span class="p">:</span>
+        <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div>
 
 
 <p lang="en">If you would like to check for some key modifier/combination you can -for example- get the ctrl key status like this:</p>
 <p lang="el">Αν τυχόν επιθυμείτε να ελέγξετε για κάποιο ειδικό πλήκτρο ή συνδυασμό μπορείτε -για παράδειγμα- να λάβετε την κατάσταση του πλήκτρου ctrl ως εξής:</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>state <span style="color: #666666">=</span> event<span style="color: #666666">.</span>state
-ctrl <span style="color: #666666">=</span> (state <span style="color: #666666">&amp;</span> gtk<span style="color: #666666">.</span>gdk<span style="color: #666666">.</span>CONTROL_MASK)
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="n">state</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">state</span>
+<span class="n">ctrl</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span> <span class="o">&amp;</span> <span class="n">gtk</span><span class="o">.</span><span class="n">gdk</span><span class="o">.</span><span class="n">CONTROL_MASK</span><span class="p">)</span>
+</code></pre></div>
 
 
 <p lang="en">This is the our generic callback function which executes the commands:</p>
 <p lang="el">Αυτή είναι η γενική μας επανακαλούμενη συνάρτηση που εκτελεί τις εντολές:</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">callback</span>(<span style="color: #AA22FF">self</span>, widget <span style="color: #666666">=</span> <span style="color: #AA22FF">None</span>, data <span style="color: #666666">=</span> <span style="color: #AA22FF">None</span>):
-    <span style="color: #AA22FF; font-weight: bold">if</span> (data <span style="color: #AA22FF; font-weight: bold">is</span> <span style="color: #AA22FF; font-weight: bold">not</span> <span style="color: #AA22FF">None</span> <span style="color: #AA22FF; font-weight: bold">and</span> 
-       data <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions <span style="color: #AA22FF; font-weight: bold">and</span> 
-       <span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions[data] <span style="color: #AA22FF; font-weight: bold">is</span> <span style="color: #AA22FF; font-weight: bold">not</span> <span style="color: #AA22FF">None</span>):
-            os<span style="color: #666666">.</span>system(<span style="color: #AA22FF">self</span><span style="color: #666666">.</span>actions[data])
-    gtk<span style="color: #666666">.</span>main_quit()
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> 
+       <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="ow">and</span> 
+       <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">data</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">data</span><span class="p">])</span>
+    <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
+</code></pre></div>
 
 
 <p lang="en">When our program executes, an <em>SystemDialog</em> object is created and gtk.main() is called:</p>
 <p lang="el">Όταν η εφαρμογή μας εκτελείται, δημιουργείται ένα αντικείμενο <em>SystemDialog</em> και καλείται η gtk.main():</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #BB4444">&quot;__main__&quot;</span>:
-    SystemDialog()
-    gtk<span style="color: #666666">.</span>main()
-</pre></div>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">SystemDialog</span><span class="p">()</span>
+    <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</code></pre></div>
 
 
 <p lang="en"><strong>Last but not least</strong>: In order for our program to function without having to ask for a password, you need to add some lines in your <em>/etc/sudoers</em> file. This is a special system file and you have to run <em>visudo</em> with root privileges to edit it:</p>
 <p lang="el"><strong>Σημαντικό</strong>: Προκειμένου η εφαρμογή μας να λειτουργεί χωρίς να χρειάζεται να ζητάει κωδικό, θα πρέπει να προσθέσετε μερικές γραμμές στο αρχείο <em>/etc/sudoers</em>. Πρόκειται για ένα ειδικό αρχείο του συστήματος το οποίο, για να το διορθώσετε, θα πρέπει να τρέξετε την εντολή <em>visudo</em> έχοντας δικαιώματα διαχειριστή:</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic"># visudo</span>
-username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /sbin/reboot
-username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /sbin/poweroff
-username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/bin/killall
-username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/sbin/pm-suspend
-username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/sbin/pm-suspend-hybrid
-username <span style="color: #B8860B">ALL</span><span style="color: #666666">=(</span>root<span style="color: #666666">)</span> NOPASSWD: /usr/sbin/pm-hibernate
-</pre></div>
+<div class="bg-black"> 
+<div class="highlight"><pre><code class="language-shell" data-lang="shell"><span></span><span class="c1"># visudo</span>
+username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /sbin/reboot
+username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /sbin/poweroff
+username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/killall
+username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/pm-suspend
+username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/pm-suspend-hybrid
+username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /usr/sbin/pm-hibernate
+</code></pre></div>
 
+</div>
 
 <h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
 

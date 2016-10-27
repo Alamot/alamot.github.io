@@ -87,7 +87,10 @@
        
         
  
+<li><a href="#span-lang-en-introduction-span-span-lang-el-εισαγωγή-span"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></a></li>
+<li><a href="#span-lang-en-testing-encodings-span-span-lang-el-δοκιμάζοντας-κωδικοποίησεις-span"><span lang="en">Testing encodings</span><span lang="el">Δοκιμάζοντας κωδικοποίησεις</span></a></li>
 <li><a href="#span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
+<li><a href="#span-lang-en-download-source-code-span-span-lang-el-κατέβασμα-πηγαίου-κώδικα-span"><span lang="en">Download source code</span><span lang="el">Κατέβασμα πηγαίου κώδικα</span></a></li>
  
  
        <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -158,6 +161,8 @@
         
           
 
+<h1 id="span-lang-en-introduction-span-span-lang-el-εισαγωγή-span"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></h1>
+
 <p lang="en">If you have ever encountered a text file with gibberish characters, then you know that many times it is very difficult to determine its correct character encoding.</p>
 <p lang="el">Αν έχετε βρεθεί ποτέ αντιμέτωπος με ένα αρχείο κειμένου με ακαταλαβίστικους χαρακτήρες, τότε γνωρίζετε ότι πολλές φορές είναι πολύ δύσκολο να αναγνωρίσετε ποια είναι η σωστή κωδικοποίηση των χαρακτήρων.</p>
 
@@ -168,10 +173,14 @@ The chardet detector comes with a command-line script which reports on the encod
 Ο ανιχνευτής chardet διαθέτει και ένα σενάριο για τη γραμμή εργαλείων που αναφέρει την πιθανή κωδικοποίηση ενός ή περισσότερων αρχείων
 </p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ chardetect sometextfile 
-sometextfile: windows-1252 with confidence 0.5
-</pre></div>
+<div class="bg-black"> 
+<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> chardetect sometextfile 
+<span class="go">sometextfile: windows-1252 with confidence 0.5</span>
+</code></pre></div>
 
+</div>
+
+<h1 id="span-lang-en-testing-encodings-span-span-lang-el-δοκιμάζοντας-κωδικοποίησεις-span"><span lang="en">Testing encodings</span><span lang="el">Δοκιμάζοντας κωδικοποίησεις</span></h1>
 
 <p lang="en">Unfortunately, <em>chardetect</em> does not always find the correct encoding. For example, I had a text file with a cp737 encoding but <em>chardetect</em> predicted an IBM866 encoding for that file (with a low confidence of 0.26). For these difficult cases, I wrote a tool which decodes one line from a text file using every (?) possible character encoding and saves the results to a new utf-8 text file (same filename + an '.encodings' extension). Now, we can examine this file visually to find out the correct encoding.</p>
 <p lang="el">Δυστυχώς, όμως, το <em>chardetect</em> δεν βρίσκει πάντα την σωστή κωδικοποίηση. Για παράδειγμα, είχα ένα αρχείο κειμένου με κωδικοποίηση cp737 αλλά το <em>chardetect</em> προέβλεψε μια κωδικοποίηση IBM866 για εκείνο. Για τέτοιες δύσκολες περιπτώσεις, έγραψα ένα εργαλείο το οποίο αποκωδικοποιεί μια γραμμή από ένα αρχείο κειμένου χρησιμοποιώντας όλες (;) τις δυνατές κωδικοποίησεις και αποθηκεύει τα αποτελέσματα σε ένα νέο utf-8 αρχείο κειμένου (ίδιο όνομα αρχείου + μια κατάληξη '.encodings'). Τώρα, μπορούμε να εξετάσουμε οπτικά αυτό το αρχειο και να ανακαλύψουμε τη σωστή κωδικοποίηση.</p>
@@ -179,206 +188,224 @@ sometextfile: windows-1252 with confidence 0.5
 <p lang="en"><b>Usage</b>: &nbsp; test_encodings.py &nbsp; filename &nbsp; [number of line to test]</p>
 <p lang="el"><b>Χρήση</b>: &nbsp; test_encodings.py &nbsp; όνομα_αρχείου &nbsp; [αριθμός γραμμής προς έλεγχο]</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span>$ test_encodings.py sometextfile 3
+<div class="bg-black"> 
+<div class="highlight"><pre><code class="language-shell-session" data-lang="shell-session"><span></span><span class="gp">$</span> test_encodings.py sometextfile 3
 
-Processing line number: 3
-Writing tested encodings in sometextfile.encodings
-<span style="color: #666666">53</span> out of <span style="color: #666666">53</span> tested encodings were written.
+<span class="go">Processing line number: 3</span>
+<span class="go">Writing successfully tested encodings in sometextfile.encodings</span>
+<span class="go">53 out of 111 tested encodings were written.</span>
 
-$ cat sometextfile.encodings
-</pre></div>
+<span class="gp">$</span> cat sometextfile.encodings
+</code></pre></div>
 
+</div>
 
 <p><img class="border floatcenter" src="/images/testencodings_output.png"></p>
+
+<p lang="en">Having found the correct encoding, we can convert our text file to a different encoding using an editor (e.g. geany) or using a command-line tool (e.g. iconv):</p>
+<p lang="el">Έχοντας βρει τη σωστή κωδικοποίηση, μπορούμε να μετατρέψουμε το αρχείο κειμένου μας σε μια διαφορετική κωδικοποίηση χρησιμοποιώντας έναν διορθώτη κειμένου (λ.χ. τον geany) ή κάποιο εργαλείο της γραμμής εντολών (λ.χ. το iconv):</p>
+
+<div class="bg-black"> 
+<div class="highlight"><pre><code class="language-shell-session" data-lang="shell-session"><span></span><span class="gp">$</span> iconv -f cp737 -t UTF-8 in.txt &gt; out.txt
+</code></pre></div>
+
+</div>
+
+<h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
 
 <p lang="en">Here is the code. It runs under both Python 2 & 3:</p>
 <p lang="el">Ιδού ο κώδικας. Τρέχει τόσο στην Python 2 όσο και στην Python 3:</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800; font-style: italic">#!/usr/bin/env python</span>
+<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
 
-<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">io</span>
-<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">os</span>
-<span style="color: #AA22FF; font-weight: bold">import</span> <span style="color: #0000FF; font-weight: bold">sys</span>
-<span style="color: #AA22FF; font-weight: bold">from</span> <span style="color: #0000FF; font-weight: bold">encodings.aliases</span> <span style="color: #AA22FF; font-weight: bold">import</span> aliases
-
-
-encs <span style="color: #666666">=</span> {
-    <span style="color: #BB4444">&quot;ascii&quot;</span>,
-    <span style="color: #BB4444">&quot;big5&quot;</span>,
-    <span style="color: #BB4444">&quot;big5hkscs&quot;</span>,
-    <span style="color: #BB4444">&quot;cp037&quot;</span>,
-    <span style="color: #BB4444">&quot;cp424&quot;</span>,
-    <span style="color: #BB4444">&quot;cp437&quot;</span>,
-    <span style="color: #BB4444">&quot;cp500&quot;</span>,
-    <span style="color: #BB4444">&quot;cp720&quot;</span>,
-    <span style="color: #BB4444">&quot;cp737&quot;</span>,
-    <span style="color: #BB4444">&quot;cp775&quot;</span>,
-    <span style="color: #BB4444">&quot;cp850&quot;</span>,
-    <span style="color: #BB4444">&quot;cp852&quot;</span>,
-    <span style="color: #BB4444">&quot;cp855&quot;</span>,
-    <span style="color: #BB4444">&quot;cp856&quot;</span>,
-    <span style="color: #BB4444">&quot;cp857&quot;</span>,
-    <span style="color: #BB4444">&quot;cp858&quot;</span>,
-    <span style="color: #BB4444">&quot;cp860&quot;</span>,
-    <span style="color: #BB4444">&quot;cp861&quot;</span>,
-    <span style="color: #BB4444">&quot;cp862&quot;</span>,
-    <span style="color: #BB4444">&quot;cp863&quot;</span>,
-    <span style="color: #BB4444">&quot;cp864&quot;</span>,
-    <span style="color: #BB4444">&quot;cp865&quot;</span>,
-    <span style="color: #BB4444">&quot;cp866&quot;</span>,
-    <span style="color: #BB4444">&quot;cp869&quot;</span>,
-    <span style="color: #BB4444">&quot;cp874&quot;</span>,
-    <span style="color: #BB4444">&quot;cp875&quot;</span>,
-    <span style="color: #BB4444">&quot;cp932&quot;</span>,
-    <span style="color: #BB4444">&quot;cp949&quot;</span>,
-    <span style="color: #BB4444">&quot;cp950&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1006&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1026&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1140&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1250&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1251&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1252&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1253&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1254&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1255&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1256&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1257&quot;</span>,
-    <span style="color: #BB4444">&quot;cp1258&quot;</span>,
-    <span style="color: #BB4444">&quot;euc_jp&quot;</span>,
-    <span style="color: #BB4444">&quot;euc_jis_2004&quot;</span>,
-    <span style="color: #BB4444">&quot;euc_jisx0213&quot;</span>,
-    <span style="color: #BB4444">&quot;euc_kr&quot;</span>,
-    <span style="color: #BB4444">&quot;gb2312&quot;</span>,
-    <span style="color: #BB4444">&quot;gbk&quot;</span>,
-    <span style="color: #BB4444">&quot;gb18030&quot;</span>,
-    <span style="color: #BB4444">&quot;hz&quot;</span>,
-    <span style="color: #BB4444">&quot;iso2022_jp&quot;</span>,
-    <span style="color: #BB4444">&quot;iso2022_jp_1&quot;</span>,
-    <span style="color: #BB4444">&quot;iso2022_jp_2&quot;</span>,
-    <span style="color: #BB4444">&quot;iso2022_jp_2004&quot;</span>,
-    <span style="color: #BB4444">&quot;iso2022_jp_3&quot;</span>,
-    <span style="color: #BB4444">&quot;iso2022_jp_ext&quot;</span>,
-    <span style="color: #BB4444">&quot;iso2022_kr&quot;</span>,
-    <span style="color: #BB4444">&quot;latin_1&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_2&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_3&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_4&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_5&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_6&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_7&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_8&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_9&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_10&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_13&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_14&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_15&quot;</span>,
-    <span style="color: #BB4444">&quot;iso8859_16&quot;</span>,
-    <span style="color: #BB4444">&quot;johab&quot;</span>,
-    <span style="color: #BB4444">&quot;koi8_r&quot;</span>,
-    <span style="color: #BB4444">&quot;koi8_u&quot;</span>,
-    <span style="color: #BB4444">&quot;mac_cyrillic&quot;</span>,
-    <span style="color: #BB4444">&quot;mac_greek&quot;</span>,
-    <span style="color: #BB4444">&quot;mac_iceland&quot;</span>,
-    <span style="color: #BB4444">&quot;mac_latin2&quot;</span>,
-    <span style="color: #BB4444">&quot;mac_roman&quot;</span>,
-    <span style="color: #BB4444">&quot;mac_turkish&quot;</span>,
-    <span style="color: #BB4444">&quot;ptcp154&quot;</span>,
-    <span style="color: #BB4444">&quot;shift_jis&quot;</span>,
-    <span style="color: #BB4444">&quot;shift_jis_2004&quot;</span>,
-    <span style="color: #BB4444">&quot;shift_jisx0213&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_32&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_32_be&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_32_le&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_16&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_16_be&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_16_le&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_7&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_8&quot;</span>,
-    <span style="color: #BB4444">&quot;utf_8_sig&quot;</span>,
-    <span style="color: #BB4444">&quot;idna&quot;</span>,
-    <span style="color: #BB4444">&quot;mbcs&quot;</span>,
-    <span style="color: #BB4444">&quot;palmos&quot;</span>,
-    <span style="color: #BB4444">&quot;punycode&quot;</span>,
-    <span style="color: #BB4444">&quot;raw_unicode_escape&quot;</span>,
-    <span style="color: #BB4444">&quot;rot_13&quot;</span>,
-    <span style="color: #BB4444">&quot;undefined&quot;</span>,
-    <span style="color: #BB4444">&quot;unicode_escape&quot;</span>,
-    <span style="color: #BB4444">&quot;unicode_internal&quot;</span>,
-    <span style="color: #BB4444">&quot;base64_codec&quot;</span>,
-    <span style="color: #BB4444">&quot;bz2_codec&quot;</span>,
-    <span style="color: #BB4444">&quot;hex_codec&quot;</span>,
-    <span style="color: #BB4444">&quot;uu_codec&quot;</span>,
-    <span style="color: #BB4444">&quot;zlib_codec&quot;</span>
-}
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">encodings.aliases</span> <span class="kn">import</span> <span class="n">aliases</span>
 
 
-<span style="color: #AA22FF; font-weight: bold">def</span> <span style="color: #00A000">write_encodings</span>(filename, line_number):
-    <span style="color: #008800; font-style: italic"># To ensure that we cover as many as possible encodings,</span>
-    <span style="color: #008800; font-style: italic"># we take the union of our predefined encodings and the</span>
-    <span style="color: #008800; font-style: italic"># values of encodings.aliases.aliases</span>
-    encodings <span style="color: #666666">=</span> encs<span style="color: #666666">.</span>union(<span style="color: #AA22FF">set</span>(aliases<span style="color: #666666">.</span>values()))
-    encodings<span style="color: #666666">.</span>remove(<span style="color: #BB4444">&quot;quopri_codec&quot;</span>)
-    
-    data <span style="color: #666666">=</span> <span style="color: #AA22FF">dict</span>()
+<span class="n">encs</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;ascii&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;big5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;big5hkscs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp037&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp424&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp437&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp500&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp720&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp737&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp775&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp850&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp852&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp855&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp856&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp857&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp858&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp860&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp861&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp862&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp863&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp864&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp865&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp866&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp869&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp874&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp875&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp932&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp949&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp950&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1006&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1026&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1140&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1250&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1251&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1252&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1253&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1254&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1255&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1256&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1257&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cp1258&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;euc_jp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;euc_jis_2004&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;euc_jisx0213&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;euc_kr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gb2312&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gbk&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;gb18030&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hz&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2022_jp&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2022_jp_1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2022_jp_2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2022_jp_2004&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2022_jp_3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2022_jp_ext&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso2022_kr&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;latin_1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_3&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_5&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_6&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_9&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_10&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_13&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_14&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_15&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;iso8859_16&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;johab&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;koi8_r&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;koi8_u&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mac_cyrillic&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mac_greek&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mac_iceland&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mac_latin2&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mac_roman&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mac_turkish&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ptcp154&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;shift_jis&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;shift_jis_2004&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;shift_jisx0213&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_32&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_32_be&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_32_le&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_16&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_16_be&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_16_le&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_8&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utf_8_sig&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;idna&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;mbcs&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;palmos&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;punycode&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;raw_unicode_escape&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rot_13&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;undefined&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;unicode_escape&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;unicode_internal&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;base64_codec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bz2_codec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;hex_codec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;uu_codec&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;zlib_codec&quot;</span>
+<span class="p">}</span>
 
-    <span style="color: #AA22FF; font-weight: bold">try</span>:
-        <span style="color: #AA22FF; font-weight: bold">with</span> io<span style="color: #666666">.</span>open(filename, <span style="color: #BB4444">&quot;rb&quot;</span>) <span style="color: #AA22FF; font-weight: bold">as</span> f:
-            lines <span style="color: #666666">=</span> f<span style="color: #666666">.</span>readlines()
-            line <span style="color: #666666">=</span> lines[line_number<span style="color: #666666">-1</span>]
-            <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Processing line number: &quot;</span> <span style="color: #666666">+</span> <span style="color: #AA22FF">str</span>(line_number))
-            <span style="color: #AA22FF; font-weight: bold">if</span> <span style="color: #AA22FF">len</span>(line) <span style="color: #666666">&lt;</span> <span style="color: #666666">3</span>:
-                <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;!!!Warning!!!: Possible empty line.&quot;</span>)
-    <span style="color: #AA22FF; font-weight: bold">except</span> <span style="color: #D2413A; font-weight: bold">Exception</span>:
-        _, err, _ <span style="color: #666666">=</span> sys<span style="color: #666666">.</span>exc_info()
-        <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Error reading &quot;</span> <span style="color: #666666">+</span> filename)
-        <span style="color: #AA22FF; font-weight: bold">print</span>(err)
-        sys<span style="color: #666666">.</span>exit(<span style="color: #666666">1</span>)
 
-    <span style="color: #AA22FF; font-weight: bold">for</span> enc <span style="color: #AA22FF; font-weight: bold">in</span> encodings:
-        <span style="color: #AA22FF; font-weight: bold">try</span>:
-            data[enc] <span style="color: #666666">=</span> line<span style="color: #666666">.</span>decode(enc)
-        <span style="color: #AA22FF; font-weight: bold">except</span> <span style="color: #D2413A; font-weight: bold">Exception</span>:
-            <span style="color: #AA22FF; font-weight: bold">continue</span>
+<span class="k">def</span> <span class="nf">write_encodings</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">line_number</span><span class="p">,</span> <span class="n">final_encoding</span><span class="p">):</span>
+    <span class="c1"># To ensure that we cover as many as possible encodings,</span>
+    <span class="c1"># we take the union between our predefined encoding set and the</span>
+    <span class="c1"># set of the values from the encodings.aliases.aliases.</span>
+    <span class="n">encodings</span> <span class="o">=</span> <span class="n">encs</span><span class="o">.</span><span class="n">union</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">aliases</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
 
-    fpath <span style="color: #666666">=</span> os<span style="color: #666666">.</span>path<span style="color: #666666">.</span>abspath(filename)
+    <span class="n">data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
-    newfilename <span style="color: #666666">=</span> fpath <span style="color: #666666">+</span> <span style="color: #BB4444">&#39;.encodings&#39;</span>
-    <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Writing tested encodings in &quot;</span> <span style="color: #666666">+</span> newfilename)
-    
-    <span style="color: #AA22FF; font-weight: bold">with</span> <span style="color: #AA22FF">open</span>(newfilename, <span style="color: #BB4444">&#39;w&#39;</span>) <span style="color: #AA22FF; font-weight: bold">as</span> out:
-        c <span style="color: #666666">=</span> <span style="color: #666666">0</span>
-        <span style="color: #AA22FF; font-weight: bold">for</span> enc <span style="color: #AA22FF; font-weight: bold">in</span> <span style="color: #AA22FF">sorted</span>(data<span style="color: #666666">.</span>keys()):
-            <span style="color: #AA22FF; font-weight: bold">try</span>:
-                out<span style="color: #666666">.</span>write(<span style="color: #BB4444">&quot;</span><span style="color: #BB6688; font-weight: bold">%-20s</span><span style="color: #BB4444">&quot;</span> <span style="color: #666666">%</span> enc)
-                <span style="color: #AA22FF; font-weight: bold">if</span> (sys<span style="color: #666666">.</span>version_info[<span style="color: #666666">0</span>] <span style="color: #666666">&lt;</span> <span style="color: #666666">3</span>):
-                    line <span style="color: #666666">=</span> data[enc]<span style="color: #666666">.</span>encode(<span style="color: #BB4444">&#39;utf_8&#39;</span>)
-                <span style="color: #AA22FF; font-weight: bold">else</span>:
-                    line <span style="color: #666666">=</span> data[enc]
-                out<span style="color: #666666">.</span>write(line)
-                out<span style="color: #666666">.</span>write(os<span style="color: #666666">.</span>linesep)
-                c <span style="color: #666666">+=</span> <span style="color: #666666">1</span>
-            <span style="color: #AA22FF; font-weight: bold">except</span> <span style="color: #D2413A; font-weight: bold">Exception</span>:
-                _, err, _ <span style="color: #666666">=</span> sys<span style="color: #666666">.</span>exc_info()
-                <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #BB4444">&quot;Exception in processing the &quot;</span> <span style="color: #666666">+</span> enc <span style="color: #666666">+</span> <span style="color: #BB4444">&quot; encoding.&quot;</span>)
-                <span style="color: #AA22FF; font-weight: bold">print</span>(err)
-                
-    <span style="color: #AA22FF; font-weight: bold">print</span>(<span style="color: #AA22FF">str</span>(c) <span style="color: #666666">+</span> <span style="color: #BB4444">&quot; out of &quot;</span> <span style="color: #666666">+</span> <span style="color: #AA22FF">str</span>(<span style="color: #AA22FF">len</span>(data<span style="color: #666666">.</span>keys())) <span style="color: #666666">+</span>
-          <span style="color: #BB4444">&quot; tested encodings were written.&quot;</span>)
+    <span class="c1"># Read line from file</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_number</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Processing line number: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">line_number</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;!!!Warning!!!: Possible empty line.&quot;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error reading &quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Decode it using every possible encoding</span>
+    <span class="k">for</span> <span class="n">enc</span> <span class="ow">in</span> <span class="n">encodings</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">enc</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Cannot decode using &quot;</span> <span class="o">+</span> <span class="n">enc</span><span class="p">)</span>
+            <span class="c1"># print(err)</span>
+
+    <span class="c1"># We write the results in a new utf-8 text file</span>
+    <span class="c1"># We use the same filename + an &#39;.encodings&#39; extension</span>
+    <span class="n">fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">newfilename</span> <span class="o">=</span> <span class="n">fpath</span> <span class="o">+</span> <span class="s1">&#39;.encodings&#39;</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Writing successfully tested encodings in &quot;</span> <span class="o">+</span> <span class="n">newfilename</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">newfilename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">enc</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-20s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">enc</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">):</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">enc</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">final_encoding</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">enc</span><span class="p">]</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">linesep</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Cannot encode &quot;</span> <span class="o">+</span> <span class="n">enc</span> <span class="o">+</span> <span class="s2">&quot; to &quot;</span> <span class="o">+</span> <span class="n">final_encoding</span><span class="p">)</span>
+                <span class="c1"># print(err)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; out of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">encodings</span><span class="p">))</span> <span class="o">+</span>
+          <span class="s2">&quot; tested encodings were written.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
-<span style="color: #AA22FF; font-weight: bold">if</span> __name__ <span style="color: #666666">==</span> <span style="color: #BB4444">&#39;__main__&#39;</span>:
-    nargs <span style="color: #666666">=</span> <span style="color: #AA22FF">len</span>(sys<span style="color: #666666">.</span>argv)<span style="color: #666666">-1</span>
-    <span style="color: #AA22FF; font-weight: bold">if</span> nargs <span style="color: #666666">&lt;</span> <span style="color: #666666">1</span> <span style="color: #AA22FF; font-weight: bold">or</span> nargs <span style="color: #666666">&gt;</span> <span style="color: #666666">2</span>:
-        <span style="color: #AA22FF">exit</span>(<span style="color: #BB4444">&quot;Usage: test_encodings.py filename [number of line to test]&quot;</span>)
-    <span style="color: #AA22FF; font-weight: bold">if</span> nargs <span style="color: #666666">==</span> <span style="color: #666666">2</span>:
-        line_number <span style="color: #666666">=</span> <span style="color: #AA22FF">int</span>(sys<span style="color: #666666">.</span>argv[<span style="color: #666666">2</span>])
-    <span style="color: #AA22FF; font-weight: bold">else</span>:
-        line_number <span style="color: #666666">=</span> <span style="color: #666666">1</span>
-    write_encodings(sys<span style="color: #666666">.</span>argv[<span style="color: #666666">1</span>], line_number)
-</pre></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">nargs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">nargs</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">nargs</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="s2">&quot;Usage: test_encodings.py filename [number of line to test]&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">nargs</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">line_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">line_number</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">write_encodings</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line_number</span><span class="p">,</span> <span class="s1">&#39;utf_8&#39;</span><span class="p">)</span>
+</code></pre></div>
 
 
-<h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
+<h1 id="span-lang-en-download-source-code-span-span-lang-el-κατέβασμα-πηγαίου-κώδικα-span"><span lang="en">Download source code</span><span lang="el">Κατέβασμα πηγαίου κώδικα</span></h1>
 
 <p lang="en">You can download the full code listing here: <a href="https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py" target="_blank">test_encodings.py</a></p>
 <p lang="el">Μπορείτε να κατεβάσετε τον πλήρη κώδικα από εδώ: <a href="https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py" target="_blank">test_encodings.py</a></p>

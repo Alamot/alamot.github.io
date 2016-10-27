@@ -215,19 +215,19 @@
 <p lang="en">First of all, let's add the necessary includes:</p>
 <p lang="el">Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα includes:</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #008800">#define _XOPEN_SOURCE 700</span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;stdio.h&gt;</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;signal.h&gt;</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;string.h&gt;</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;stdlib.h&gt;</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;unistd.h&gt;</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;errno.h&gt;              </span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/netlink.h&gt;    //lots of netlink functions</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/genl/genl.h&gt;  //genl_connect, genlmsg_put</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/genl/family.h&gt;</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;netlink/genl/ctrl.h&gt;  //genl_ctrl_resolve</span><span style="color: #008800"></span>
-<span style="color: #008800">#include</span> <span style="color: #008800; font-style: italic">&lt;linux/nl80211.h&gt;      //NL80211 definitions</span><span style="color: #008800"></span>
-</pre></div>
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="cp">#define _XOPEN_SOURCE 700</span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;              </span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;netlink/netlink.h&gt;    //lots of netlink functions</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/genl.h&gt;  //genl_connect, genlmsg_put</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/family.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/ctrl.h&gt;  //genl_ctrl_resolve</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;linux/nl80211.h&gt;      //NL80211 definitions</span><span class="cp"></span>
+</code></pre></div>
 
 
 <h1 id="structs">Structs</h1>
@@ -235,40 +235,40 @@
 <p lang="en">Let's define some data structures we will need later on:</p>
 <p lang="el">Ας ορίσουμε μερικές δομές δεδομένων που θα χρειαστούμε στη συνέχεια:</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">typedef</span> <span style="color: #AA22FF; font-weight: bold">struct</span> {
-  <span style="color: #00BB00; font-weight: bold">int</span> id;
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_sock<span style="color: #666666">*</span> socket;
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_cb<span style="color: #666666">*</span> cb1,<span style="color: #666666">*</span> cb2;
-  <span style="color: #00BB00; font-weight: bold">int</span> result1, result2;
-} Netlink; 
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">nl_sock</span><span class="o">*</span> <span class="n">socket</span><span class="p">;</span>
+  <span class="k">struct</span> <span class="n">nl_cb</span><span class="o">*</span> <span class="n">cb1</span><span class="p">,</span><span class="o">*</span> <span class="n">cb2</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">result1</span><span class="p">,</span> <span class="n">result2</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">Netlink</span><span class="p">;</span> 
 
-<span style="color: #AA22FF; font-weight: bold">typedef</span> <span style="color: #AA22FF; font-weight: bold">struct</span> {
-  <span style="color: #00BB00; font-weight: bold">char</span> ifname[<span style="color: #666666">30</span>];
-  <span style="color: #00BB00; font-weight: bold">int</span> ifindex;
-  <span style="color: #00BB00; font-weight: bold">int</span> signal;
-  <span style="color: #00BB00; font-weight: bold">int</span> txrate;
-} Wifi;
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">char</span> <span class="n">ifname</span><span class="p">[</span><span class="mi">30</span><span class="p">];</span>
+  <span class="kt">int</span> <span class="n">ifindex</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">signal</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">txrate</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">Wifi</span><span class="p">;</span>
 
-<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #AA22FF; font-weight: bold">struct</span> nla_policy stats_policy[NL80211_STA_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>] <span style="color: #666666">=</span> {
-  [NL80211_STA_INFO_INACTIVE_TIME] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
-  [NL80211_STA_INFO_RX_BYTES] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
-  [NL80211_STA_INFO_TX_BYTES] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
-  [NL80211_STA_INFO_RX_PACKETS] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
-  [NL80211_STA_INFO_TX_PACKETS] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U32 },
-  [NL80211_STA_INFO_SIGNAL] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U8 },
-  [NL80211_STA_INFO_TX_BITRATE] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_NESTED },
-  [NL80211_STA_INFO_LLID] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U16 },
-  [NL80211_STA_INFO_PLID] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U16 },
-  [NL80211_STA_INFO_PLINK_STATE] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U8 },
-};
+<span class="k">static</span> <span class="k">struct</span> <span class="n">nla_policy</span> <span class="n">stats_policy</span><span class="p">[</span><span class="n">NL80211_STA_INFO_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_INACTIVE_TIME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U32</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_RX_BYTES</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U32</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_TX_BYTES</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U32</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_RX_PACKETS</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U32</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_TX_PACKETS</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U32</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_SIGNAL</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U8</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_TX_BITRATE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_NESTED</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_LLID</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U16</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_PLID</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U16</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_STA_INFO_PLINK_STATE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U8</span> <span class="p">},</span>
+<span class="p">};</span>
 
-<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #AA22FF; font-weight: bold">struct</span> nla_policy rate_policy[NL80211_RATE_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>] <span style="color: #666666">=</span> {
-  [NL80211_RATE_INFO_BITRATE] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U16 },
-  [NL80211_RATE_INFO_MCS] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_U8 },
-  [NL80211_RATE_INFO_40_MHZ_WIDTH] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_FLAG },
-  [NL80211_RATE_INFO_SHORT_GI] <span style="color: #666666">=</span> { .type <span style="color: #666666">=</span> NLA_FLAG },
-};
-</pre></div>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">nla_policy</span> <span class="n">rate_policy</span><span class="p">[</span><span class="n">NL80211_RATE_INFO_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="p">[</span><span class="n">NL80211_RATE_INFO_BITRATE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U16</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_RATE_INFO_MCS</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U8</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_RATE_INFO_40_MHZ_WIDTH</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_FLAG</span> <span class="p">},</span>
+  <span class="p">[</span><span class="n">NL80211_RATE_INFO_SHORT_GI</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_FLAG</span> <span class="p">},</span>
+<span class="p">};</span>
+</code></pre></div>
 
 
 <h1 id="functions">Functions</h1>
@@ -276,12 +276,12 @@
 <p lang="en">We define our functions:</p>
 <p lang="el">Ορίζουμε τις συναρτήσεις μας:</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">initNl80211</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w);
-<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">finish_handler</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg);
-<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiName_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg);
-<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiInfo_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg);
-<span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiStatus</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w);
-</pre></div>
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">initNl80211</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">finish_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiName_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiInfo_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiStatus</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">);</span>
+</code></pre></div>
 
 
 <h2 id="initnl80211">initNl80211()</h2>
@@ -310,47 +310,47 @@ In our function initNl80211, we initialize our communication with the Κernel. W
 </ol>
 </div>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">initNl80211</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w) {
-  nl<span style="color: #666666">-&gt;</span>socket <span style="color: #666666">=</span> nl_socket_alloc();
-  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>nl<span style="color: #666666">-&gt;</span>socket) { 
-    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink socket.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
-    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-</span>ENOMEM;
-  }  
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">initNl80211</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span> <span class="o">=</span> <span class="n">nl_socket_alloc</span><span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">)</span> <span class="p">{</span> 
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink socket.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
+  <span class="p">}</span>  
 
-  nl_socket_set_buffer_size(nl<span style="color: #666666">-&gt;</span>socket, <span style="color: #666666">8192</span>, <span style="color: #666666">8192</span>);
+  <span class="n">nl_socket_set_buffer_size</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="mi">8192</span><span class="p">,</span> <span class="mi">8192</span><span class="p">);</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (genl_connect(nl<span style="color: #666666">-&gt;</span>socket)) { 
-    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to connect to netlink socket.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); 
-    nl_close(nl<span style="color: #666666">-&gt;</span>socket);
-    nl_socket_free(nl<span style="color: #666666">-&gt;</span>socket);
-    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-</span>ENOLINK;
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="n">genl_connect</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">))</span> <span class="p">{</span> 
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to connect to netlink socket.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> 
+    <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
+    <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">ENOLINK</span><span class="p">;</span>
+  <span class="p">}</span>
    
-  nl<span style="color: #666666">-&gt;</span>id <span style="color: #666666">=</span> genl_ctrl_resolve(nl<span style="color: #666666">-&gt;</span>socket, <span style="color: #BB4444">&quot;nl80211&quot;</span>);
-  <span style="color: #AA22FF; font-weight: bold">if</span> (nl<span style="color: #666666">-&gt;</span>id<span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) {
-    fprintf(stderr, <span style="color: #BB4444">&quot;Nl80211 interface not found.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
-    nl_close(nl<span style="color: #666666">-&gt;</span>socket);
-    nl_socket_free(nl<span style="color: #666666">-&gt;</span>socket);
-    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-</span>ENOENT;
-  }
+  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span> <span class="o">=</span> <span class="n">genl_ctrl_resolve</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="s">&quot;nl80211&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span><span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Nl80211 interface not found.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
+    <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">ENOENT</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  nl<span style="color: #666666">-&gt;</span>cb1 <span style="color: #666666">=</span> nl_cb_alloc(NL_CB_DEFAULT);
-  nl<span style="color: #666666">-&gt;</span>cb2 <span style="color: #666666">=</span> nl_cb_alloc(NL_CB_DEFAULT);
-  <span style="color: #AA22FF; font-weight: bold">if</span> ((<span style="color: #666666">!</span>nl<span style="color: #666666">-&gt;</span>cb1) <span style="color: #666666">||</span> (<span style="color: #666666">!</span>nl<span style="color: #666666">-&gt;</span>cb2)) { 
-     fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink callback.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); 
-     nl_close(nl<span style="color: #666666">-&gt;</span>socket);
-     nl_socket_free(nl<span style="color: #666666">-&gt;</span>socket);
-     <span style="color: #AA22FF; font-weight: bold">return</span> ENOMEM;
-  }
+  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span> <span class="o">=</span> <span class="n">nl_cb_alloc</span><span class="p">(</span><span class="n">NL_CB_DEFAULT</span><span class="p">);</span>
+  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span> <span class="o">=</span> <span class="n">nl_cb_alloc</span><span class="p">(</span><span class="n">NL_CB_DEFAULT</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="o">!</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">))</span> <span class="p">{</span> 
+     <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink callback.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> 
+     <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
+     <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
+     <span class="k">return</span> <span class="n">ENOMEM</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb1, NL_CB_VALID , NL_CB_CUSTOM, getWifiName_callback, w);
-  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb1, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, <span style="color: #666666">&amp;</span>(nl<span style="color: #666666">-&gt;</span>result1));
-  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb2, NL_CB_VALID , NL_CB_CUSTOM, getWifiInfo_callback, w);
-  nl_cb_set(nl<span style="color: #666666">-&gt;</span>cb2, NL_CB_FINISH, NL_CB_CUSTOM, finish_handler, <span style="color: #666666">&amp;</span>(nl<span style="color: #666666">-&gt;</span>result2));
+  <span class="n">nl_cb_set</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">,</span> <span class="n">NL_CB_VALID</span> <span class="p">,</span> <span class="n">NL_CB_CUSTOM</span><span class="p">,</span> <span class="n">getWifiName_callback</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+  <span class="n">nl_cb_set</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">,</span> <span class="n">NL_CB_FINISH</span><span class="p">,</span> <span class="n">NL_CB_CUSTOM</span><span class="p">,</span> <span class="n">finish_handler</span><span class="p">,</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result1</span><span class="p">));</span>
+  <span class="n">nl_cb_set</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">,</span> <span class="n">NL_CB_VALID</span> <span class="p">,</span> <span class="n">NL_CB_CUSTOM</span><span class="p">,</span> <span class="n">getWifiInfo_callback</span><span class="p">,</span> <span class="n">w</span><span class="p">);</span>
+  <span class="n">nl_cb_set</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">,</span> <span class="n">NL_CB_FINISH</span><span class="p">,</span> <span class="n">NL_CB_CUSTOM</span><span class="p">,</span> <span class="n">finish_handler</span><span class="p">,</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span><span class="p">));</span>
   
-  <span style="color: #AA22FF; font-weight: bold">return</span> nl<span style="color: #666666">-&gt;</span>id;
-}
-</pre></div>
+  <span class="k">return</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <h2 id="finish-handler">finish_handler()</h2>
@@ -358,20 +358,20 @@ In our function initNl80211, we initialize our communication with the Κernel. W
 <p lang="en">This is our finish_handler.<p> 
 <p lang="el">Αυτός είναι ο finish_handler μας.<p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">finish_handler</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg) {
-  <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #666666">*</span>ret <span style="color: #666666">=</span> arg;
-  <span style="color: #666666">*</span>ret <span style="color: #666666">=</span> <span style="color: #666666">0</span>;
-  <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
-}
-</pre></div>
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">finish_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="o">*</span><span class="n">ret</span> <span class="o">=</span> <span class="n">arg</span><span class="p">;</span>
+  <span class="o">*</span><span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <p lang="en">The finish_handler will allow us -later on- to receive our messages from Kernel like that:</p>
 <p lang="el">O finish_handler μας επιτρέπει -στη συνέχεια- να λαμβάνουμε τα μηνύματά μας από τον Πυρήνα κάπως έτσι:</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result1 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nlsocket, nl<span style="color: #666666">-&gt;</span>cb1); }
-<span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result2 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nlsocket, nl<span style="color: #666666">-&gt;</span>cb2); }
-</pre></div>
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nlsocket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">);</span> <span class="p">}</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nlsocket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">);</span> <span class="p">}</span>
+</code></pre></div>
 
 
 <h2 id="getwifiname-callback">getWifiName_callback()</h2>
@@ -379,31 +379,31 @@ In our function initNl80211, we initialize our communication with the Κernel. W
 <p lang="en">This is our getWifiName_callback. Here we parse the message from the Kernel and we get the interface name (wifi_iface) and its index (wifi_index). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.</p>
 <p lang="el">Αυτή είναι η getWifiName_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το όνομα της ασύρματης διεπαφής (wifi_iface) και τον δείκτη της (wifi_index). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiName_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg) {
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiName_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
  
-  <span style="color: #AA22FF; font-weight: bold">struct</span> genlmsghdr <span style="color: #666666">*</span>gnlh <span style="color: #666666">=</span> nlmsg_data(nlmsg_hdr(msg));
+  <span class="k">struct</span> <span class="n">genlmsghdr</span> <span class="o">*</span><span class="n">gnlh</span> <span class="o">=</span> <span class="n">nlmsg_data</span><span class="p">(</span><span class="n">nlmsg_hdr</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
 
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>tb_msg[NL80211_ATTR_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+  <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">tb_msg</span><span class="p">[</span><span class="n">NL80211_ATTR_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
 
-  <span style="color: #008800; font-style: italic">//nl_msg_dump(msg, stdout);</span>
+  <span class="c1">//nl_msg_dump(msg, stdout);</span>
 
-  nla_parse(tb_msg,
-            NL80211_ATTR_MAX,
-            genlmsg_attrdata(gnlh, <span style="color: #666666">0</span>),
-            genlmsg_attrlen(gnlh, <span style="color: #666666">0</span>),
-            <span style="color: #AA22FF">NULL</span>);
+  <span class="n">nla_parse</span><span class="p">(</span><span class="n">tb_msg</span><span class="p">,</span>
+            <span class="n">NL80211_ATTR_MAX</span><span class="p">,</span>
+            <span class="n">genlmsg_attrdata</span><span class="p">(</span><span class="n">gnlh</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">genlmsg_attrlen</span><span class="p">(</span><span class="n">gnlh</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="nb">NULL</span><span class="p">);</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (tb_msg[NL80211_ATTR_IFNAME]) {
-    strcpy(((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>ifname, nla_get_string(tb_msg[NL80211_ATTR_IFNAME]));
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="n">tb_msg</span><span class="p">[</span><span class="n">NL80211_ATTR_IFNAME</span><span class="p">])</span> <span class="p">{</span>
+    <span class="n">strcpy</span><span class="p">(((</span><span class="n">Wifi</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">ifname</span><span class="p">,</span> <span class="n">nla_get_string</span><span class="p">(</span><span class="n">tb_msg</span><span class="p">[</span><span class="n">NL80211_ATTR_IFNAME</span><span class="p">]));</span>
+  <span class="p">}</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (tb_msg[NL80211_ATTR_IFINDEX]) {
-    ((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>ifindex <span style="color: #666666">=</span> nla_get_u32(tb_msg[NL80211_ATTR_IFINDEX]);
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="n">tb_msg</span><span class="p">[</span><span class="n">NL80211_ATTR_IFINDEX</span><span class="p">])</span> <span class="p">{</span>
+    <span class="p">((</span><span class="n">Wifi</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">ifindex</span> <span class="o">=</span> <span class="n">nla_get_u32</span><span class="p">(</span><span class="n">tb_msg</span><span class="p">[</span><span class="n">NL80211_ATTR_IFINDEX</span><span class="p">]);</span>
+  <span class="p">}</span>
 
-  <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
-}
-</pre></div>
+  <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <h2 id="getwifiinfo-callback">getWifiInfo_callback()</h2>
@@ -411,46 +411,46 @@ In our function initNl80211, we initialize our communication with the Κernel. W
 <p lang="en">This is our getWifiInfo_callback. Here we parse the message from the Kernel and we get the wifi signal (wifi_signal) and txrate (wifi_bitrate). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.</p>
 <p lang="el">Αυτή είναι η getWifiInfo_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το σήμα της ασύρματης διεπαφής (wifi_signal) και τον ρυθμό μετάδοσης (wifi_bitrate). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiInfo_callback</span>(<span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg <span style="color: #666666">*</span>msg, <span style="color: #00BB00; font-weight: bold">void</span> <span style="color: #666666">*</span>arg) {
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>tb[NL80211_ATTR_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
-  <span style="color: #AA22FF; font-weight: bold">struct</span> genlmsghdr <span style="color: #666666">*</span>gnlh <span style="color: #666666">=</span> nlmsg_data(nlmsg_hdr(msg));
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>sinfo[NL80211_STA_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nlattr <span style="color: #666666">*</span>rinfo[NL80211_RATE_INFO_MAX <span style="color: #666666">+</span> <span style="color: #666666">1</span>];
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiInfo_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">tb</span><span class="p">[</span><span class="n">NL80211_ATTR_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+  <span class="k">struct</span> <span class="n">genlmsghdr</span> <span class="o">*</span><span class="n">gnlh</span> <span class="o">=</span> <span class="n">nlmsg_data</span><span class="p">(</span><span class="n">nlmsg_hdr</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+  <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
+  <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">rinfo</span><span class="p">[</span><span class="n">NL80211_RATE_INFO_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
   
-  <span style="color: #008800; font-style: italic">//nl_msg_dump(msg, stdout);</span>
+  <span class="c1">//nl_msg_dump(msg, stdout);</span>
 
-  nla_parse(tb,
-            NL80211_ATTR_MAX,
-            genlmsg_attrdata(gnlh, <span style="color: #666666">0</span>),
-            genlmsg_attrlen(gnlh, <span style="color: #666666">0</span>),
-            <span style="color: #AA22FF">NULL</span>);
+  <span class="n">nla_parse</span><span class="p">(</span><span class="n">tb</span><span class="p">,</span>
+            <span class="n">NL80211_ATTR_MAX</span><span class="p">,</span>
+            <span class="n">genlmsg_attrdata</span><span class="p">(</span><span class="n">gnlh</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="n">genlmsg_attrlen</span><span class="p">(</span><span class="n">gnlh</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+            <span class="nb">NULL</span><span class="p">);</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>tb[NL80211_ATTR_STA_INFO]) {
-    fprintf(stderr, <span style="color: #BB4444">&quot;sta stats missing!</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">tb</span><span class="p">[</span><span class="n">NL80211_ATTR_STA_INFO</span><span class="p">])</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;sta stats missing!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (nla_parse_nested(sinfo, NL80211_STA_INFO_MAX,
-                       tb[NL80211_ATTR_STA_INFO], stats_policy)) {
-    fprintf(stderr, <span style="color: #BB4444">&quot;failed to parse nested attributes!</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="n">nla_parse_nested</span><span class="p">(</span><span class="n">sinfo</span><span class="p">,</span> <span class="n">NL80211_STA_INFO_MAX</span><span class="p">,</span>
+                       <span class="n">tb</span><span class="p">[</span><span class="n">NL80211_ATTR_STA_INFO</span><span class="p">],</span> <span class="n">stats_policy</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;failed to parse nested attributes!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
+  <span class="p">}</span>
   
-  <span style="color: #AA22FF; font-weight: bold">if</span> (sinfo[NL80211_STA_INFO_SIGNAL]) {
-    ((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>signal <span style="color: #666666">=</span> <span style="color: #666666">100+</span>(<span style="color: #00BB00; font-weight: bold">int8_t</span>)nla_get_u8(sinfo[NL80211_STA_INFO_SIGNAL]);
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_SIGNAL</span><span class="p">])</span> <span class="p">{</span>
+    <span class="p">((</span><span class="n">Wifi</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">signal</span> <span class="o">=</span> <span class="mi">100</span><span class="o">+</span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">nla_get_u8</span><span class="p">(</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_SIGNAL</span><span class="p">]);</span>
+  <span class="p">}</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (sinfo[NL80211_STA_INFO_TX_BITRATE]) {  
-    <span style="color: #AA22FF; font-weight: bold">if</span> (nla_parse_nested(rinfo, NL80211_RATE_INFO_MAX,
-                         sinfo[NL80211_STA_INFO_TX_BITRATE], rate_policy)) {
-      fprintf(stderr, <span style="color: #BB4444">&quot;failed to parse nested rate attributes!</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>); } 
-    <span style="color: #AA22FF; font-weight: bold">else</span> {
-      <span style="color: #AA22FF; font-weight: bold">if</span> (rinfo[NL80211_RATE_INFO_BITRATE]) {
-        ((Wifi<span style="color: #666666">*</span>)arg)<span style="color: #666666">-&gt;</span>txrate <span style="color: #666666">=</span> nla_get_u16(rinfo[NL80211_RATE_INFO_BITRATE]);
-      } 
-    }
-  }
-  <span style="color: #AA22FF; font-weight: bold">return</span> NL_SKIP;
-}
-</pre></div>
+  <span class="k">if</span> <span class="p">(</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_TX_BITRATE</span><span class="p">])</span> <span class="p">{</span>  
+    <span class="k">if</span> <span class="p">(</span><span class="n">nla_parse_nested</span><span class="p">(</span><span class="n">rinfo</span><span class="p">,</span> <span class="n">NL80211_RATE_INFO_MAX</span><span class="p">,</span>
+                         <span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_TX_BITRATE</span><span class="p">],</span> <span class="n">rate_policy</span><span class="p">))</span> <span class="p">{</span>
+      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;failed to parse nested rate attributes!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> <span class="p">}</span> 
+    <span class="k">else</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">rinfo</span><span class="p">[</span><span class="n">NL80211_RATE_INFO_BITRATE</span><span class="p">])</span> <span class="p">{</span>
+        <span class="p">((</span><span class="n">Wifi</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">txrate</span> <span class="o">=</span> <span class="n">nla_get_u16</span><span class="p">(</span><span class="n">rinfo</span><span class="p">[</span><span class="n">NL80211_RATE_INFO_BITRATE</span><span class="p">]);</span>
+      <span class="p">}</span> 
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <h2 id="getwifistatus">getWifiStatus()</h2>
@@ -488,90 +488,90 @@ Let's see now what happens in our next function, getWifiStatus:
 <p lang="el"> α) Την πρώτη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_INTERFACE για να λάβουμε το όνομα και τον δείκτη της ασύρματης διεπαφής.</p>
 <p lang="el"> β) Τη δεύτερη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_STATION για να λάβουμε την ένταση του σήματος και τον ρυθμό μετάδοσης. Ο λόγος για αυτό είναι ότι οι τιμές της του σήματος και του ρυθμού μετάδοσης έχουν έννοια μόνο σε σχέση με κάποιον σταθμό. Σημειώστε ότι πρέπει να βάλουμε στο μήνυμα και τον δείκτη της διεπαφής που μας ενδιαφέρει χρησιμοποιώντας την nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w->ifindex).</p>
 
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #AA22FF; font-weight: bold">static</span> <span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">getWifiStatus</span>(Netlink<span style="color: #666666">*</span> nl, Wifi<span style="color: #666666">*</span> w) {
-  nl<span style="color: #666666">-&gt;</span>result1 <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
-  nl<span style="color: #666666">-&gt;</span>result2 <span style="color: #666666">=</span> <span style="color: #666666">1</span>;
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiStatus</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">result1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
     
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg<span style="color: #666666">*</span> msg1 <span style="color: #666666">=</span> nlmsg_alloc();
-  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>msg1) {
-    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink message.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
-    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-2</span>;
-  }
+  <span class="k">struct</span> <span class="n">nl_msg</span><span class="o">*</span> <span class="n">msg1</span> <span class="o">=</span> <span class="n">nlmsg_alloc</span><span class="p">();</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">msg1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink message.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span>
   
-  genlmsg_put(msg1,
-              NL_AUTO_PORT,
-              NL_AUTO_SEQ,
-              nl<span style="color: #666666">-&gt;</span>id,
-              <span style="color: #666666">0</span>,
-              NLM_F_DUMP,
-              NL80211_CMD_GET_INTERFACE,
-              <span style="color: #666666">0</span>);
+  <span class="n">genlmsg_put</span><span class="p">(</span><span class="n">msg1</span><span class="p">,</span>
+              <span class="n">NL_AUTO_PORT</span><span class="p">,</span>
+              <span class="n">NL_AUTO_SEQ</span><span class="p">,</span>
+              <span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">,</span>
+              <span class="mi">0</span><span class="p">,</span>
+              <span class="n">NLM_F_DUMP</span><span class="p">,</span>
+              <span class="n">NL80211_CMD_GET_INTERFACE</span><span class="p">,</span>
+              <span class="mi">0</span><span class="p">);</span>
 
-  nl_send_auto(nl<span style="color: #666666">-&gt;</span>socket, msg1);
+  <span class="n">nl_send_auto</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="n">msg1</span><span class="p">);</span>
   
-  <span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result1 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nl<span style="color: #666666">-&gt;</span>socket, nl<span style="color: #666666">-&gt;</span>cb1); }
-  nlmsg_free(msg1);
+  <span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">);</span> <span class="p">}</span>
+  <span class="n">nlmsg_free</span><span class="p">(</span><span class="n">msg1</span><span class="p">);</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (w<span style="color: #666666">-&gt;</span>ifindex <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) { <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-1</span>; }
+  <span class="k">if</span> <span class="p">(</span><span class="n">w</span><span class="o">-&gt;</span><span class="n">ifindex</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="p">}</span>
 
-  <span style="color: #AA22FF; font-weight: bold">struct</span> nl_msg<span style="color: #666666">*</span> msg2 <span style="color: #666666">=</span> nlmsg_alloc();
+  <span class="k">struct</span> <span class="n">nl_msg</span><span class="o">*</span> <span class="n">msg2</span> <span class="o">=</span> <span class="n">nlmsg_alloc</span><span class="p">();</span>
 
-  <span style="color: #AA22FF; font-weight: bold">if</span> (<span style="color: #666666">!</span>msg2) {
-    fprintf(stderr, <span style="color: #BB4444">&quot;Failed to allocate netlink message.</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
-    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-2</span>;
-  }
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">msg2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink message.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span>
   
-  genlmsg_put(msg2,
-              NL_AUTO_PORT,
-              NL_AUTO_SEQ,
-              nl<span style="color: #666666">-&gt;</span>id,
-              <span style="color: #666666">0</span>,
-              NLM_F_DUMP,
-              NL80211_CMD_GET_STATION,
-              <span style="color: #666666">0</span>);
+  <span class="n">genlmsg_put</span><span class="p">(</span><span class="n">msg2</span><span class="p">,</span>
+              <span class="n">NL_AUTO_PORT</span><span class="p">,</span>
+              <span class="n">NL_AUTO_SEQ</span><span class="p">,</span>
+              <span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">,</span>
+              <span class="mi">0</span><span class="p">,</span>
+              <span class="n">NLM_F_DUMP</span><span class="p">,</span>
+              <span class="n">NL80211_CMD_GET_STATION</span><span class="p">,</span>
+              <span class="mi">0</span><span class="p">);</span>
               
-  nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w<span style="color: #666666">-&gt;</span>ifindex); 
-  nl_send_auto(nl<span style="color: #666666">-&gt;</span>socket, msg2); 
-  <span style="color: #AA22FF; font-weight: bold">while</span> (nl<span style="color: #666666">-&gt;</span>result2 <span style="color: #666666">&gt;</span> <span style="color: #666666">0</span>) { nl_recvmsgs(nl<span style="color: #666666">-&gt;</span>socket, nl<span style="color: #666666">-&gt;</span>cb2); }
-  nlmsg_free(msg2);
+  <span class="n">nla_put_u32</span><span class="p">(</span><span class="n">msg2</span><span class="p">,</span> <span class="n">NL80211_ATTR_IFINDEX</span><span class="p">,</span> <span class="n">w</span><span class="o">-&gt;</span><span class="n">ifindex</span><span class="p">);</span> 
+  <span class="n">nl_send_auto</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="n">msg2</span><span class="p">);</span> 
+  <span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">);</span> <span class="p">}</span>
+  <span class="n">nlmsg_free</span><span class="p">(</span><span class="n">msg2</span><span class="p">);</span>
   
-  <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">0</span>;
-}
-</pre></div>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 
 
 <h2 id="main">main()</h2>
 
 <p><p lang="en">Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:</p>
 <p lang="el">Εδώ βλέπουμε τη main() συνάρτησή μας. Πρώτα, αρχικοποιούμε την επικοινωνία με την initNl80211 και κατόπιν τούτου, καλούμε συνεχώς μέσα σε έναν βρόχο την getWifiStatus(), ανά 1 δευτερόλεπτο, εώς ότου ο χρήστης πατήσει ctrl + c:</p>
-<div class="highlight" style="background: #f8f8f8"><pre style="line-height: 125%"><span></span><span style="color: #00BB00; font-weight: bold">int</span> <span style="color: #00A000">main</span>(<span style="color: #00BB00; font-weight: bold">int</span> argc, <span style="color: #00BB00; font-weight: bold">char</span> <span style="color: #666666">**</span>argv) {
-  Netlink nl;
-  Wifi w;
+<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">Netlink</span> <span class="n">nl</span><span class="p">;</span>
+  <span class="n">Wifi</span> <span class="n">w</span><span class="p">;</span>
 
-  signal(SIGINT, ctrl_c_handler);
+  <span class="n">signal</span><span class="p">(</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">ctrl_c_handler</span><span class="p">);</span>
   
-  nl.id <span style="color: #666666">=</span> initNl80211(<span style="color: #666666">&amp;</span>nl, <span style="color: #666666">&amp;</span>w);
-  <span style="color: #AA22FF; font-weight: bold">if</span> (nl.id <span style="color: #666666">&lt;</span> <span style="color: #666666">0</span>) {
-    fprintf(stderr, <span style="color: #BB4444">&quot;Error initializing netlink 802.11</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
-    <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">-1</span>;
-  }
+  <span class="n">nl</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">initNl80211</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Error initializing netlink 802.11</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
 
-  <span style="color: #AA22FF; font-weight: bold">do</span> {
-    getWifiStatus(<span style="color: #666666">&amp;</span>nl, <span style="color: #666666">&amp;</span>w);  
-    printf(<span style="color: #BB4444">&quot;Interface: %s | signal: %d dB | txrate: %.1f MBit/s</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>,
-           w.ifname, w.signal, (<span style="color: #00BB00; font-weight: bold">float</span>)w.txrate<span style="color: #666666">/10</span>);
-    sleep(<span style="color: #666666">1</span>);
-  } <span style="color: #AA22FF; font-weight: bold">while</span>(keepRunning);
+  <span class="k">do</span> <span class="p">{</span>
+    <span class="n">getWifiStatus</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">);</span>  
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Interface: %s | signal: %d dB | txrate: %.1f MBit/s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+           <span class="n">w</span><span class="p">.</span><span class="n">ifname</span><span class="p">,</span> <span class="n">w</span><span class="p">.</span><span class="n">signal</span><span class="p">,</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">w</span><span class="p">.</span><span class="n">txrate</span><span class="o">/</span><span class="mi">10</span><span class="p">);</span>
+    <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">keepRunning</span><span class="p">);</span>
 
-  printf(<span style="color: #BB4444">&quot;</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">Exiting gracefully... &quot;</span>);
-  nl_cb_put(nl.cb1);
-  nl_cb_put(nl.cb2);
-  nl_close(nl.socket);
-  nl_socket_free(nl.socket);
-  printf(<span style="color: #BB4444">&quot;OK</span><span style="color: #BB6622; font-weight: bold">\n</span><span style="color: #BB4444">&quot;</span>);
-  <span style="color: #AA22FF; font-weight: bold">return</span> <span style="color: #666666">0</span>;
-}
-</pre></div>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Exiting gracefully... &quot;</span><span class="p">);</span>
+  <span class="n">nl_cb_put</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">cb1</span><span class="p">);</span>
+  <span class="n">nl_cb_put</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">cb2</span><span class="p">);</span>
+  <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">socket</span><span class="p">);</span>
+  <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">socket</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;OK</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
 </p>
 
 <h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>

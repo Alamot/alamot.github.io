@@ -1,1 +1,0 @@
-# alamot.github.io

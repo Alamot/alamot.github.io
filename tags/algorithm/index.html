@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta name="generator" content="Hugo 0.17-DEV" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <link rel="stylesheet" href="https://alamot.github.io/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://alamot.github.io/css/styles.css">    
+    <style>
+
+    </style>
     <link rel="alternate" type="application/rss+xml" title="RSS" href="https://alamot.github.io/index.xml">
     
     <link href="https://alamot.github.io/tags/algorithm/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
@@ -106,7 +107,6 @@
 </footer>
 
 <script defer src="https://alamot.github.io/js/jquery-bootstrap.min.js"></script>
-<script defer src="https://alamot.github.io/js/moment.min.js"></script>
 <script defer src="https://alamot.github.io/js/lunr.min.js" onload="init()"></script>
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -116,6 +116,12 @@
 <script defer src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 
 <script>
+short_months = {
+  "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  "el": ["Ιαν", "Φεβ", "Μαρ", "Απρ", "Μαϊ", "Ιουν", "Ιουλ", "Αυγ", "Σεπ", "Οκτ", "Νοε", "Δεκ"]
+}
+
+    
 function init () {
 langtext = "English";
 language = localStorage.getItem('language');
@@ -137,8 +143,9 @@ $(document).ready(function(){
   });
 
   $('time').each(function(){
-    d = $(this).text();
-    $(this).text(moment(d).locale(this.lang).format("ll")); 
+    d = $(this).text().split("-");
+    if (this.lang === "en") { $(this).text(short_months["en"][d[1]-1]+' '+d[2]+', '+d[0]); }
+    else if (this.lang === "el") { $(this).text(d[2]+' '+short_months["el"][d[1]-1]+' '+d[0]); }     
   });
 
   $("#TableOfContents a, #content-selector a").on('click', function(e) {
@@ -179,8 +186,9 @@ $(document).ready(function(){
           results_div.append("<article class='li col-md-4'><a href='https:\/\/alamot.github.io\/"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(https:\/\/alamot.github.io\/images/"+lunrStore[result.ref].image+");'></div></div><footer><h2 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h2><h2 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h2><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
         });
         $('#results-section time').each(function(){
-            d = $(this).text();
-            $(this).text(moment(d).locale(this.lang).format("ll")); 
+            d = $(this).text().split("-");
+            if (this.lang === "en") { $(this).text(short_months["en"][d[1]-1]+' '+d[2]+', '+d[0]); }
+            else if (this.lang === "el") { $(this).text(d[2]+' '+short_months["el"][d[1]-1]+' '+d[0]); }  
         });
       } 
     }); 
@@ -190,6 +198,8 @@ $(document).ready(function(){
 </script>
 </body>
 </html>
+<link rel="stylesheet" href="https://alamot.github.io/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://alamot.github.io/css/styles.css"> 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&subset=cyrillic,greek">
 <link rel="stylesheet" href="https://alamot.github.io/css/font-awesome.min.css">
 

@@ -67,26 +67,24 @@
 <div class="container-fluid">
   
    <ul class="nav nav-pills pull-left navbar-btn">
-   <li>
-    <div class="btn-group">
-    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span> <i class="fa fa-caret-down" aria-hidden="true"></i></button>
-    <ul id="content-selector" class="dropdown-menu scroll-menu">
-       <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></a></li>
-       
-       
-       
-       
-       
+    <li role="presentation" class="dropdown">
+    <a class="dropdown-toggle btn-danger" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><span lang="en">Contents</span><span lang="el">Περιεχόμενα</span></a>
+      <ul id="content-selector" class="dropdown-menu scroll-menu">
+        <li><a href="#title"><span lang="en">Start</span><span lang="el">Αρχή</span></a></li>
         
+        
+        
+        
+        
+         
  
 <li><a href="#anne-marie-david-je-suis-l-enfant-soleil">Anne-Marie David - Je suis l&rsquo;enfant-soleil</a></li>
 <li><a href="#ishtar-comme-toi">Ishtar - Comme toi</a></li>
 <li><a href="#noir-désir-des-armes">Noir Désir - Des armes</a></li>
  
  
-       <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
-    </ul>
-    </div>
+        <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
+      </ul>
     </li>
    </ul>
   
@@ -96,13 +94,12 @@
   </ul>
   
   <ul class="nav nav-pills pull-right navbar-btn"> 
-    <li>
-      <div class="btn-group">
-      <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language<i class="fa fa-caret-down" aria-hidden="true"></i></button>
-    <ul id="language-selector" class="dropdown-menu">
+    <li id="language-selector" role="presentation" class="dropdown">
+      <a class="dropdown-toggle btn-primary" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language</a>
+      <ul class="dropdown-menu">
        <li><a id="en" href="#">English</a></li>
        <li><a id="el" href="#">Ελληνικά</a></li>
-    </ul>
+      </ul>
     </div>
     </li>  
   </ul>
@@ -1116,16 +1113,16 @@ $(document).ready(function(){
     document.getElementById('mainbody').setAttribute('class', language);
     document.getElementById('mainbody').setAttribute('lang', language);
     if (language == 'el') { langtext="Ελληνικά"; }
-    $("#language-selector").parents('.btn-group').find('.dropdown-toggle').html(langtext+' <span class="caret"></span>');
+    $("#language-selector>a").html(langtext);
   }
 
-  $("#language-selector li a").click(function(){
+  $("#language-selector>ul>li>a").click(function(){
     var langid = this.id;
     var selText = this.text;
     document.getElementById('mainbody').setAttribute('class', langid);
     document.getElementById('mainbody').setAttribute('lang', langid);
     localStorage.setItem('language', langid);
-    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+    $("#language-selector>a").html(selText);
   });
 
   $('time').each(function(){

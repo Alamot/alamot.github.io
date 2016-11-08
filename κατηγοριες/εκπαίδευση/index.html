@@ -1288,17 +1288,27 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h2.
   
   
   <ul class="nav nav-pills pull-right topmargin6"> 
-    <li id="language-selector" role="presentation" class="dropdown">
-      <a class="dropdown-toggle btn-primary" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language <i class="fa fa-caret-down" aria-hidden="true"></i></a>
+    <li id="lang-selector" role="presentation" class="dropdown">
+      <a id="lang-index" class="dropdown-toggle btn-primary" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Language <i class="fa fa-caret-down" aria-hidden="true"></i></a>
       <ul class="dropdown-menu">
-       <li><a id="en" href="#">English</a></li>
-       <li><a id="el" href="#">Ελληνικά</a></li>
+        <li><a id="en" href="#">English</a></li>
+        <li><a id="el" href="#">Ελληνικά</a></li>
       </ul>
     </div>
     </li>  
   </ul>
 </div>
 </nav>
+<script>
+langtext = "English";
+language = localStorage.getItem('language');
+if (language) {
+  document.getElementById('mainbody').setAttribute('class', language);
+  document.getElementById('mainbody').setAttribute('lang', language);
+  if (language == 'el') { langtext="Ελληνικά"; }
+  document.getElementById("lang-index").innerHTML=langtext+' <i class="fa fa-caret-down" aria-hidden="true"></i>';
+}
+</script>
 
 <div class="container-fluid side-margins-1">
 <div class="row">
@@ -1504,23 +1514,14 @@ short_months = {
   "el": ["Ιαν", "Φεβ", "Μαρ", "Απρ", "Μαϊ", "Ιουν", "Ιουλ", "Αυγ", "Σεπ", "Οκτ", "Νοε", "Δεκ"]
 }
 function init () {
-langtext = "English";
-language = localStorage.getItem('language');
 $(document).ready(function(){
-  if (language) {
-    document.getElementById('mainbody').setAttribute('class', language);
-    document.getElementById('mainbody').setAttribute('lang', language);
-    if (language == 'el') { langtext="Ελληνικά"; }
-    $("#language-selector>a").html(langtext+' <i class="fa fa-caret-down" aria-hidden="true"></i>');
-  }
-
-  $("#language-selector>ul>li>a").click(function(){
+  $("#lang-selector>ul>li>a").click(function(){
     var langid = this.id;
     var selText = this.text;
     document.getElementById('mainbody').setAttribute('class', langid);
     document.getElementById('mainbody').setAttribute('lang', langid);
     localStorage.setItem('language', langid);
-    $("#language-selector>a").html(selText+' <i class="fa fa-caret-down" aria-hidden="true"></i>');
+    $("#lang-selector>a").html(selText+' <i class="fa fa-caret-down" aria-hidden="true"></i>');
   });
 
   $('time').each(function(){

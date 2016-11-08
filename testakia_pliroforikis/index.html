@@ -2120,38 +2120,22 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h2.
 
 
 <footer class="l-footer">
-  <span class="copyleft">&copy;</span>
-  <span lang="en">2016 &nbsp; Antonios Tsolis &nbsp; </span>
-  <span lang="el">2016 &nbsp; Αντώνιος Τσώλης &nbsp; </span>
-  <script>
-   function email(starting,server,firstname,lastname,subject,body,closing) {
-      document.write(starting);
-      document.write(lastname);
-      document.write("." + firstname);
-      document.write("@" + server);
-      if (Boolean(subject)){
-        document.write("?subject=" + subject + "&body=" + body);
-      }  
-      document.write(closing);
-   }
-   email("<a class='mymail' href='mailto:", "gmail.com", "antonios", "tsolis", "", "","' target='_blank'><i class='fa fa-envelope-o' aria-hidden='true'></i></a>");
-  </script>
+ <span class="copyleft">&copy;</span>
+ <span lang="en">2016 &nbsp; Antonios Tsolis &nbsp; </span>
+ <span lang="el">2016 &nbsp; Αντώνιος Τσώλης &nbsp; </span>
+ <script>
+  function email(starting,server,firstname,lastname,subject,body,closing) {
+    document.write(starting); document.write(lastname); document.write("." + firstname); document.write("@" + server);if (Boolean(subject)) { document.write("?subject=" + subject + "&body=" + body); }
+    document.write(closing); }
+  email("<a class='mymail' href='mailto:", "gmail.com", "antonios", "tsolis", "", "","' target='_blank'><i class='fa fa-envelope-o' aria-hidden='true'></i></a>");
+ </script>
 </footer>
-
-<script defer src="https://alamot.github.io/js/jq-btsp-lunr.min.js" onload="init()"></script>
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: { inlineMath: [['$','$'], ['\\(','\\)']], }
-  });
-</script>
-<script defer src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
-
+<script async src="https://alamot.github.io/js/jq-btsp-lunr.min.js" onload="init()"></script>
 <script>
 short_months = {
   "en": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   "el": ["Ιαν", "Φεβ", "Μαρ", "Απρ", "Μαϊ", "Ιουν", "Ιουλ", "Αυγ", "Σεπ", "Οκτ", "Νοε", "Δεκ"]
 }
-
 function init () {
 langtext = "English";
 language = localStorage.getItem('language');
@@ -2193,36 +2177,8 @@ $(document).ready(function(){
       window.location.hash = hash;
     });
   });
+
   
-  var lunrIndex, lunrStore;
-  $.getJSON('https:\/\/alamot.github.io\/json/search.json', function (data) {
-    lunrStore = data.store;  
-    lunr.Pipeline.registerFunction(trimmer_all, 'trimmer_all')
-    lunr.Pipeline.registerFunction(stopwordfilter_el, 'stopwordfilter_el');
-    lunr.Pipeline.registerFunction(stemmer_el, 'stemmer_el');
-    lunrIndex = lunr.Index.load(data.index);
-    results_section = jQuery("#results-section");
-    results_div = jQuery("#results-section>div");
-    $("#search-section").show();
-    $("#search-field").keyup(function() {
-      var query = $(this).val();
-      if (query.length < 3) { results_section.hide(); return; }
-      var results = lunrIndex.search(query);
-      results_div.empty(); results_section.show();      
-      if (results.length == 0) {
-        results_div.append("<h3 lang='en'>Νο results found.</h3><h3 lang='el'>Δεν βρέθηκαν αποτελέσματα.</h3>");
-      } else {
-        results.slice(0, 10).forEach(function(result) {
-          results_div.append("<article class='li col-md-4'><a href='https:\/\/alamot.github.io\/"+result.ref+"' class='clearfix'><div class='cell'><div class='image' style='background-image:url(https:\/\/alamot.github.io\/images/"+lunrStore[result.ref].image+");'></div></div><footer><h3 class='title' lang='en'>"+lunrStore[result.ref]['title']+"</h3><h3 class='title' lang='el'>"+lunrStore[result.ref]['τιτλος']+"</h3><i class='fa fa-calendar'></i>&nbsp;<time lang='en'>"+lunrStore[result.ref].date+"</time><time lang='el'>"+lunrStore[result.ref].date+"</time></footer></a></article>");
-        });
-        $('#results-section time').each(function(){
-            d = $(this).text().split("-");
-            if (this.lang === "en") { $(this).text(short_months["en"][d[1]-1]+' '+d[2]+', '+d[0]); }
-            else if (this.lang === "el") { $(this).text(d[2]+' '+short_months["el"][d[1]-1]+' '+d[0]); }  
-        });
-      } 
-    }); 
-  }, function() {  console.log("ERROR: search.json");});
 });
 }
 </script>

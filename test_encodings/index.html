@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.17-DEV" />
+<meta name="generator" content="Hugo 0.38.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -134,6 +134,8 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 </style>
 <link rel="alternate" type="application/rss+xml" title="RSS" href="https://alamot.github.io/index.xml">
 
+  <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
+
 
   <title>How to determine the character encoding of a text file - The Portal of Knowledge</title>
   <meta property='og:title' content="How to determine the character encoding of a text file - The Portal of Knowledge">
@@ -153,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https:\/\/alamot.github.io\/"
+      "@id":"https://alamot.github.io/"
     },
     "headline": "How to determine the character encoding of a text file |  ",
     "image": {
@@ -166,15 +168,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "dateModified": "2016-10-21T00:00:00JST",
     "author": {
       "@type": "Person",
-      "name": "",
-      "image": "https:\/\/alamot.github.io\/images/logo.png"
+      "name": "Antonios Tsolis",
+      "image": "https://alamot.github.io/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https:\/\/alamot.github.io\/images/logo.png",
+        "url": "https://alamot.github.io/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -283,10 +285,8 @@ The chardet detector comes with a command-line script which reports on the encod
 </p>
 
 <div class="bg-black"> 
-<div class="highlight"><pre><code class="language-console" data-lang="console"><span></span><span class="gp">$</span> chardetect sometextfile 
-<span class="go">sometextfile: windows-1252 with confidence 0.5</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ chardetect sometextfile 
+sometextfile: windows-1252 with confidence 0.5</code></pre></div>
 </div>
 
 <h1 id="span-lang-en-testing-encodings-span-span-lang-el-δοκιμάζοντας-κωδικοποίησεις-span"><span lang="en">Testing encodings</span><span lang="el">Δοκιμάζοντας κωδικοποίησεις</span></h1>
@@ -298,15 +298,13 @@ The chardet detector comes with a command-line script which reports on the encod
 <p lang="el"><b>Χρήση</b>: &nbsp; test_encodings.py &nbsp; όνομα_αρχείου &nbsp; [αριθμός γραμμής προς έλεγχο]</p>
 
 <div class="bg-black"> 
-<div class="highlight"><pre><code class="language-shell-session" data-lang="shell-session"><span></span><span class="gp">$</span> test_encodings.py sometextfile <span class="m">3</span>
+<div class="highlight"><pre class="chroma"><code class="language-shell-session" data-lang="shell-session">$ test_encodings.py sometextfile 3
 
-<span class="go">Processing line number: 3</span>
-<span class="go">Writing successfully tested encodings in sometextfile.encodings</span>
-<span class="go">53 out of 111 tested encodings were written.</span>
+Processing line number: 3
+Writing successfully tested encodings in sometextfile.encodings
+53 out of 111 tested encodings were written.
 
-<span class="gp">$</span> cat sometextfile.encodings
-</code></pre></div>
-
+$ cat sometextfile.encodings</code></pre></div>
 </div>
 
 <p><img class="centered" src="/images/testencodings_output.png" alt="Output of cat sometextfile.encodings" title="Output of cat sometextfile.encodings"></p>
@@ -315,9 +313,7 @@ The chardet detector comes with a command-line script which reports on the encod
 <p lang="el">Έχοντας βρει τη σωστή κωδικοποίηση, μπορούμε να μετατρέψουμε το αρχείο κειμένου μας σε μια διαφορετική κωδικοποίηση χρησιμοποιώντας έναν διορθώτη κειμένου (λ.χ. τον geany) ή κάποιο εργαλείο της γραμμής εντολών (λ.χ. το iconv):</p>
 
 <div class="bg-black"> 
-<div class="highlight"><pre><code class="language-shell-session" data-lang="shell-session"><span></span><span class="gp">$</span> iconv -f cp737 -t UTF-8 in.txt &gt; out.txt
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-shell-session" data-lang="shell-session">$ iconv -f cp737 -t UTF-8 in.txt &gt; out.txt</code></pre></div>
 </div>
 
 <h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
@@ -325,7 +321,7 @@ The chardet detector comes with a command-line script which reports on the encod
 <p lang="en">Here is the code. It runs under both Python 2 & 3:</p>
 <p lang="el">Ιδού ο κώδικας. Τρέχει τόσο στην Python 2 όσο και στην Python 3:</p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python</span>
 
 <span class="kn">import</span> <span class="nn">io</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -334,30 +330,30 @@ The chardet detector comes with a command-line script which reports on the encod
 
 
 <span class="n">encs</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;ascii&quot;</span><span class="p">,</span> <span class="s2">&quot;big5&quot;</span><span class="p">,</span> <span class="s2">&quot;big5hkscs&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cp037&quot;</span><span class="p">,</span> <span class="s2">&quot;cp424&quot;</span><span class="p">,</span> <span class="s2">&quot;cp437&quot;</span><span class="p">,</span> <span class="s2">&quot;cp500&quot;</span><span class="p">,</span> <span class="s2">&quot;cp720&quot;</span><span class="p">,</span> <span class="s2">&quot;cp737&quot;</span><span class="p">,</span> <span class="s2">&quot;cp775&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cp850&quot;</span><span class="p">,</span> <span class="s2">&quot;cp852&quot;</span><span class="p">,</span> <span class="s2">&quot;cp855&quot;</span><span class="p">,</span> <span class="s2">&quot;cp856&quot;</span><span class="p">,</span> <span class="s2">&quot;cp857&quot;</span><span class="p">,</span> <span class="s2">&quot;cp858&quot;</span><span class="p">,</span> <span class="s2">&quot;cp860&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cp861&quot;</span><span class="p">,</span> <span class="s2">&quot;cp862&quot;</span><span class="p">,</span> <span class="s2">&quot;cp863&quot;</span><span class="p">,</span> <span class="s2">&quot;cp864&quot;</span><span class="p">,</span> <span class="s2">&quot;cp865&quot;</span><span class="p">,</span> <span class="s2">&quot;cp866&quot;</span><span class="p">,</span> <span class="s2">&quot;cp869&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cp874&quot;</span><span class="p">,</span> <span class="s2">&quot;cp875&quot;</span><span class="p">,</span> <span class="s2">&quot;cp932&quot;</span><span class="p">,</span> <span class="s2">&quot;cp949&quot;</span><span class="p">,</span> <span class="s2">&quot;cp950&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cp1006&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1026&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1140&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1250&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1251&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1252&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cp1253&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1254&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1255&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1256&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1257&quot;</span><span class="p">,</span> <span class="s2">&quot;cp1258&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;euc_jp&quot;</span><span class="p">,</span> <span class="s2">&quot;euc_jis_2004&quot;</span><span class="p">,</span> <span class="s2">&quot;euc_jisx0213&quot;</span><span class="p">,</span> <span class="s2">&quot;euc_kr&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;gb2312&quot;</span><span class="p">,</span> <span class="s2">&quot;gbk&quot;</span><span class="p">,</span> <span class="s2">&quot;gb18030&quot;</span><span class="p">,</span> <span class="s2">&quot;hz&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;iso2022_jp&quot;</span><span class="p">,</span> <span class="s2">&quot;iso2022_jp_1&quot;</span><span class="p">,</span> <span class="s2">&quot;iso2022_jp_2&quot;</span><span class="p">,</span> <span class="s2">&quot;iso2022_jp_2004&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;iso2022_jp_3&quot;</span><span class="p">,</span> <span class="s2">&quot;iso2022_jp_ext&quot;</span><span class="p">,</span> <span class="s2">&quot;iso2022_kr&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;latin_1&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_2&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_3&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_4&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_5&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;iso8859_6&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_7&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_8&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_9&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_10&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;iso8859_13&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_14&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_15&quot;</span><span class="p">,</span> <span class="s2">&quot;iso8859_16&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;johab&quot;</span><span class="p">,</span> <span class="s2">&quot;koi8_r&quot;</span><span class="p">,</span> <span class="s2">&quot;koi8_u&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mac_cyrillic&quot;</span><span class="p">,</span> <span class="s2">&quot;mac_greek&quot;</span><span class="p">,</span> <span class="s2">&quot;mac_iceland&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mac_latin2&quot;</span><span class="p">,</span> <span class="s2">&quot;mac_roman&quot;</span><span class="p">,</span> <span class="s2">&quot;mac_turkish&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ptcp154&quot;</span><span class="p">,</span> <span class="s2">&quot;shift_jis&quot;</span><span class="p">,</span> <span class="s2">&quot;shift_jis_2004&quot;</span><span class="p">,</span> <span class="s2">&quot;shift_jisx0213&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;utf_32&quot;</span><span class="p">,</span> <span class="s2">&quot;utf_32_be&quot;</span><span class="p">,</span> <span class="s2">&quot;utf_32_le&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;utf_16&quot;</span><span class="p">,</span> <span class="s2">&quot;utf_16_be&quot;</span><span class="p">,</span> <span class="s2">&quot;utf_16_le&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;utf_7&quot;</span><span class="p">,</span> <span class="s2">&quot;utf_8&quot;</span><span class="p">,</span> <span class="s2">&quot;utf_8_sig&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;idna&quot;</span><span class="p">,</span> <span class="s2">&quot;mbcs&quot;</span><span class="p">,</span> <span class="s2">&quot;palmos&quot;</span><span class="p">,</span> <span class="s2">&quot;punycode&quot;</span><span class="p">,</span> <span class="s2">&quot;rot_13&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;raw_unicode_escape&quot;</span><span class="p">,</span> <span class="s2">&quot;unicode_escape&quot;</span><span class="p">,</span> <span class="s2">&quot;unicode_internal&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;base64_codec&quot;</span><span class="p">,</span> <span class="s2">&quot;bz2_codec&quot;</span><span class="p">,</span> <span class="s2">&quot;hex_codec&quot;</span><span class="p">,</span> <span class="s2">&quot;uu_codec&quot;</span><span class="p">,</span> <span class="s2">&quot;zlib_codec&quot;</span>
+    <span class="s2">&#34;ascii&#34;</span><span class="p">,</span> <span class="s2">&#34;big5&#34;</span><span class="p">,</span> <span class="s2">&#34;big5hkscs&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;cp037&#34;</span><span class="p">,</span> <span class="s2">&#34;cp424&#34;</span><span class="p">,</span> <span class="s2">&#34;cp437&#34;</span><span class="p">,</span> <span class="s2">&#34;cp500&#34;</span><span class="p">,</span> <span class="s2">&#34;cp720&#34;</span><span class="p">,</span> <span class="s2">&#34;cp737&#34;</span><span class="p">,</span> <span class="s2">&#34;cp775&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;cp850&#34;</span><span class="p">,</span> <span class="s2">&#34;cp852&#34;</span><span class="p">,</span> <span class="s2">&#34;cp855&#34;</span><span class="p">,</span> <span class="s2">&#34;cp856&#34;</span><span class="p">,</span> <span class="s2">&#34;cp857&#34;</span><span class="p">,</span> <span class="s2">&#34;cp858&#34;</span><span class="p">,</span> <span class="s2">&#34;cp860&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;cp861&#34;</span><span class="p">,</span> <span class="s2">&#34;cp862&#34;</span><span class="p">,</span> <span class="s2">&#34;cp863&#34;</span><span class="p">,</span> <span class="s2">&#34;cp864&#34;</span><span class="p">,</span> <span class="s2">&#34;cp865&#34;</span><span class="p">,</span> <span class="s2">&#34;cp866&#34;</span><span class="p">,</span> <span class="s2">&#34;cp869&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;cp874&#34;</span><span class="p">,</span> <span class="s2">&#34;cp875&#34;</span><span class="p">,</span> <span class="s2">&#34;cp932&#34;</span><span class="p">,</span> <span class="s2">&#34;cp949&#34;</span><span class="p">,</span> <span class="s2">&#34;cp950&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;cp1006&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1026&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1140&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1250&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1251&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1252&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;cp1253&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1254&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1255&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1256&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1257&#34;</span><span class="p">,</span> <span class="s2">&#34;cp1258&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;euc_jp&#34;</span><span class="p">,</span> <span class="s2">&#34;euc_jis_2004&#34;</span><span class="p">,</span> <span class="s2">&#34;euc_jisx0213&#34;</span><span class="p">,</span> <span class="s2">&#34;euc_kr&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;gb2312&#34;</span><span class="p">,</span> <span class="s2">&#34;gbk&#34;</span><span class="p">,</span> <span class="s2">&#34;gb18030&#34;</span><span class="p">,</span> <span class="s2">&#34;hz&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;iso2022_jp&#34;</span><span class="p">,</span> <span class="s2">&#34;iso2022_jp_1&#34;</span><span class="p">,</span> <span class="s2">&#34;iso2022_jp_2&#34;</span><span class="p">,</span> <span class="s2">&#34;iso2022_jp_2004&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;iso2022_jp_3&#34;</span><span class="p">,</span> <span class="s2">&#34;iso2022_jp_ext&#34;</span><span class="p">,</span> <span class="s2">&#34;iso2022_kr&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;latin_1&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_2&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_3&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_4&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_5&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;iso8859_6&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_7&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_8&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_9&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_10&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;iso8859_13&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_14&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_15&#34;</span><span class="p">,</span> <span class="s2">&#34;iso8859_16&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;johab&#34;</span><span class="p">,</span> <span class="s2">&#34;koi8_r&#34;</span><span class="p">,</span> <span class="s2">&#34;koi8_u&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;mac_cyrillic&#34;</span><span class="p">,</span> <span class="s2">&#34;mac_greek&#34;</span><span class="p">,</span> <span class="s2">&#34;mac_iceland&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;mac_latin2&#34;</span><span class="p">,</span> <span class="s2">&#34;mac_roman&#34;</span><span class="p">,</span> <span class="s2">&#34;mac_turkish&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;ptcp154&#34;</span><span class="p">,</span> <span class="s2">&#34;shift_jis&#34;</span><span class="p">,</span> <span class="s2">&#34;shift_jis_2004&#34;</span><span class="p">,</span> <span class="s2">&#34;shift_jisx0213&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;utf_32&#34;</span><span class="p">,</span> <span class="s2">&#34;utf_32_be&#34;</span><span class="p">,</span> <span class="s2">&#34;utf_32_le&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;utf_16&#34;</span><span class="p">,</span> <span class="s2">&#34;utf_16_be&#34;</span><span class="p">,</span> <span class="s2">&#34;utf_16_le&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;utf_7&#34;</span><span class="p">,</span> <span class="s2">&#34;utf_8&#34;</span><span class="p">,</span> <span class="s2">&#34;utf_8_sig&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;idna&#34;</span><span class="p">,</span> <span class="s2">&#34;mbcs&#34;</span><span class="p">,</span> <span class="s2">&#34;palmos&#34;</span><span class="p">,</span> <span class="s2">&#34;punycode&#34;</span><span class="p">,</span> <span class="s2">&#34;rot_13&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;raw_unicode_escape&#34;</span><span class="p">,</span> <span class="s2">&#34;unicode_escape&#34;</span><span class="p">,</span> <span class="s2">&#34;unicode_internal&#34;</span><span class="p">,</span>
+    <span class="s2">&#34;base64_codec&#34;</span><span class="p">,</span> <span class="s2">&#34;bz2_codec&#34;</span><span class="p">,</span> <span class="s2">&#34;hex_codec&#34;</span><span class="p">,</span> <span class="s2">&#34;uu_codec&#34;</span><span class="p">,</span> <span class="s2">&#34;zlib_codec&#34;</span>
 <span class="p">}</span>
 
 
@@ -371,18 +367,18 @@ The chardet detector comes with a command-line script which reports on the encod
 
     <span class="c1"># Read line from file</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&quot;rb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_number</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Processing line number: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">line_number</span><span class="p">))</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Processing line number: &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">line_number</span><span class="p">))</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;!!!Warning!!!: Possible empty line.&quot;</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&#34;!!!Warning!!!: Possible empty line.&#34;</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error reading &quot;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Error reading &#34;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Decode it using every possible encoding</span>
     <span class="k">for</span> <span class="n">enc</span> <span class="ow">in</span> <span class="n">encodings</span><span class="p">:</span>
@@ -390,20 +386,20 @@ The chardet detector comes with a command-line script which reports on the encod
             <span class="n">data</span><span class="p">[</span><span class="n">enc</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">enc</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
             <span class="n">_</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Cannot decode using &quot;</span> <span class="o">+</span> <span class="n">enc</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Cannot decode using &#34;</span> <span class="o">+</span> <span class="n">enc</span><span class="p">)</span>
             <span class="c1"># print(err)</span>
 
     <span class="c1"># We write the results in a new utf-8 text file</span>
     <span class="c1"># We use the same filename + an &#39;.encodings&#39; extension</span>
     <span class="n">fpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
     <span class="n">newfilename</span> <span class="o">=</span> <span class="n">fpath</span> <span class="o">+</span> <span class="s1">&#39;.encodings&#39;</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Writing successfully tested encodings in &quot;</span> <span class="o">+</span> <span class="n">newfilename</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Writing successfully tested encodings in &#34;</span> <span class="o">+</span> <span class="n">newfilename</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">newfilename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">out</span><span class="p">:</span>
         <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">enc</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%-20s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">enc</span><span class="p">)</span>
+                <span class="n">out</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">%-20s</span><span class="s2">&#34;</span> <span class="o">%</span> <span class="n">enc</span><span class="p">)</span>
                 <span class="k">if</span> <span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">):</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">enc</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">final_encoding</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
@@ -413,24 +409,22 @@ The chardet detector comes with a command-line script which reports on the encod
                 <span class="n">c</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">_</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
-                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Cannot encode &quot;</span> <span class="o">+</span> <span class="n">enc</span> <span class="o">+</span> <span class="s2">&quot; to &quot;</span> <span class="o">+</span> <span class="n">final_encoding</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Cannot encode &#34;</span> <span class="o">+</span> <span class="n">enc</span> <span class="o">+</span> <span class="s2">&#34; to &#34;</span> <span class="o">+</span> <span class="n">final_encoding</span><span class="p">)</span>
                 <span class="c1"># print(err)</span>
 
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot; out of &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">encodings</span><span class="p">))</span> <span class="o">+</span>
-          <span class="s2">&quot; tested encodings were written.</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34; out of &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">encodings</span><span class="p">))</span> <span class="o">+</span>
+          <span class="s2">&#34; tested encodings were written.</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">nargs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span>
     <span class="k">if</span> <span class="n">nargs</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">nargs</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="nb">exit</span><span class="p">(</span><span class="s2">&quot;Usage: test_encodings.py filename [number of line to test]&quot;</span><span class="p">)</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="s2">&#34;Usage: test_encodings.py filename [number of line to test]&#34;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">nargs</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
         <span class="n">line_number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">line_number</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">write_encodings</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line_number</span><span class="p">,</span> <span class="s1">&#39;utf_8&#39;</span><span class="p">)</span>
-</code></pre></div>
-
+    <span class="n">write_encodings</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line_number</span><span class="p">,</span> <span class="s1">&#39;utf_8&#39;</span><span class="p">)</span></code></pre></div>
 
 <h1 id="span-lang-en-download-source-code-span-span-lang-el-κατέβασμα-πηγαίου-κώδικα-span"><span lang="en">Download source code</span><span lang="el">Κατέβασμα πηγαίου κώδικα</span></h1>
 
@@ -459,6 +453,14 @@ The chardet detector comes with a command-line script which reports on the encod
          
          
          
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -644,6 +646,292 @@ The chardet detector comes with a command-line script which reports on the encod
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -700,6 +988,351 @@ The chardet detector comes with a command-line script which reports on the encod
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

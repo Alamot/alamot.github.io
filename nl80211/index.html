@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.17-DEV" />
+<meta name="generator" content="Hugo 0.38.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -134,6 +134,8 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 </style>
 <link rel="alternate" type="application/rss+xml" title="RSS" href="https://alamot.github.io/index.xml">
 
+  <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
+
 
   <title>How to get info for the wireless interface using nl80211 in C - The Portal of Knowledge</title>
   <meta property='og:title' content="How to get info for the wireless interface using nl80211 in C - The Portal of Knowledge">
@@ -153,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https:\/\/alamot.github.io\/"
+      "@id":"https://alamot.github.io/"
     },
     "headline": "How to get info for the wireless interface using nl80211 in C |  ",
     "image": {
@@ -166,15 +168,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "dateModified": "2016-10-09T00:00:00JST",
     "author": {
       "@type": "Person",
-      "name": "",
-      "image": "https:\/\/alamot.github.io\/images/logo.png"
+      "name": "Antonios Tsolis",
+      "image": "https://alamot.github.io/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https:\/\/alamot.github.io\/images/logo.png",
+        "url": "https://alamot.github.io/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -325,27 +327,25 @@ if (language) {
 <p lang="en">First of all, let's add the necessary includes:</p>
 <p lang="el">Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα includes:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="cp">#define _XOPEN_SOURCE 700</span>
-<span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;              </span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;netlink/netlink.h&gt;    //lots of netlink functions</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/genl.h&gt;  //genl_connect, genlmsg_put</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/family.h&gt;</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/ctrl.h&gt;  //genl_ctrl_resolve</span><span class="cp"></span>
-<span class="cp">#include</span> <span class="cpf">&lt;linux/nl80211.h&gt;      //NL80211 definitions</span><span class="cp"></span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#define _XOPEN_SOURCE 700
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;signal.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;errno.h&gt;              </span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;netlink/netlink.h&gt;    //lots of netlink functions</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/genl.h&gt;  //genl_connect, genlmsg_put</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/family.h&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;netlink/genl/ctrl.h&gt;  //genl_ctrl_resolve</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;linux/nl80211.h&gt;      //NL80211 definitions</span></code></pre></div>
 
 <h1 id="structs">Structs</h1>
 
 <p lang="en">Let's define some data structures we will need later on:</p>
 <p lang="el">Ας ορίσουμε μερικές δομές δεδομένων που θα χρειαστούμε στη συνέχεια:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
   <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
   <span class="k">struct</span> <span class="n">nl_sock</span><span class="o">*</span> <span class="n">socket</span><span class="p">;</span>
   <span class="k">struct</span> <span class="n">nl_cb</span><span class="o">*</span> <span class="n">cb1</span><span class="p">,</span><span class="o">*</span> <span class="n">cb2</span><span class="p">;</span>
@@ -377,22 +377,18 @@ if (language) {
   <span class="p">[</span><span class="n">NL80211_RATE_INFO_MCS</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_U8</span> <span class="p">},</span>
   <span class="p">[</span><span class="n">NL80211_RATE_INFO_40_MHZ_WIDTH</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_FLAG</span> <span class="p">},</span>
   <span class="p">[</span><span class="n">NL80211_RATE_INFO_SHORT_GI</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">NLA_FLAG</span> <span class="p">},</span>
-<span class="p">};</span>
-</code></pre></div>
-
+<span class="p">};</span></code></pre></div>
 
 <h1 id="functions">Functions</h1>
 
 <p lang="en">We define our functions:</p>
 <p lang="el">Ορίζουμε τις συναρτήσεις μας:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">initNl80211</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">);</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">int</span> <span class="nf">initNl80211</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">);</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">finish_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiName_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
 <span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiInfo_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">);</span>
-<span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiStatus</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">);</span>
-</code></pre></div>
-
+<span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiStatus</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">);</span></code></pre></div>
 
 <h2 id="initnl80211">initNl80211()</h2>
 
@@ -420,25 +416,25 @@ In our function initNl80211, we initialize our communication with the Κernel. W
 </ol>
 </div>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">initNl80211</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">int</span> <span class="nf">initNl80211</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span> <span class="o">=</span> <span class="n">nl_socket_alloc</span><span class="p">();</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">)</span> <span class="p">{</span> 
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink socket.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Failed to allocate netlink socket.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">ENOMEM</span><span class="p">;</span>
   <span class="p">}</span>  
 
   <span class="n">nl_socket_set_buffer_size</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="mi">8192</span><span class="p">,</span> <span class="mi">8192</span><span class="p">);</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="n">genl_connect</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">))</span> <span class="p">{</span> 
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to connect to netlink socket.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> 
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Failed to connect to netlink socket.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> 
     <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
     <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">ENOLINK</span><span class="p">;</span>
   <span class="p">}</span>
    
-  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span> <span class="o">=</span> <span class="n">genl_ctrl_resolve</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="s">&quot;nl80211&quot;</span><span class="p">);</span>
+  <span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span> <span class="o">=</span> <span class="n">genl_ctrl_resolve</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">,</span> <span class="s">&#34;nl80211&#34;</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span><span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Nl80211 interface not found.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Nl80211 interface not found.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
     <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
     <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="n">ENOENT</span><span class="p">;</span>
@@ -447,7 +443,7 @@ In our function initNl80211, we initialize our communication with the Κernel. W
   <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span> <span class="o">=</span> <span class="n">nl_cb_alloc</span><span class="p">(</span><span class="n">NL_CB_DEFAULT</span><span class="p">);</span>
   <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span> <span class="o">=</span> <span class="n">nl_cb_alloc</span><span class="p">(</span><span class="n">NL_CB_DEFAULT</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="o">!</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">))</span> <span class="p">{</span> 
-     <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink callback.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> 
+     <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Failed to allocate netlink callback.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> 
      <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
      <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">socket</span><span class="p">);</span>
      <span class="k">return</span> <span class="n">ENOMEM</span><span class="p">;</span>
@@ -459,44 +455,38 @@ In our function initNl80211, we initialize our communication with the Κernel. W
   <span class="n">nl_cb_set</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">,</span> <span class="n">NL_CB_FINISH</span><span class="p">,</span> <span class="n">NL_CB_CUSTOM</span><span class="p">,</span> <span class="n">finish_handler</span><span class="p">,</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span><span class="p">));</span>
   
   <span class="k">return</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
+<span class="p">}</span></code></pre></div>
 
 <h2 id="finish-handler">finish_handler()</h2>
 
 <p lang="en">This is our finish_handler.<p> 
 <p lang="el">Αυτός είναι ο finish_handler μας.<p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">finish_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">int</span> <span class="nf">finish_handler</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
   <span class="kt">int</span> <span class="o">*</span><span class="n">ret</span> <span class="o">=</span> <span class="n">arg</span><span class="p">;</span>
   <span class="o">*</span><span class="n">ret</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
   <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
+<span class="p">}</span></code></pre></div>
 
 <p lang="en">The finish_handler will allow us -later on- to receive our messages from Kernel like that:</p>
 <p lang="el">O finish_handler μας επιτρέπει -στη συνέχεια- να λαμβάνουμε τα μηνύματά μας από τον Πυρήνα κάπως έτσι:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nlsocket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">);</span> <span class="p">}</span>
-<span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nlsocket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">);</span> <span class="p">}</span>
-</code></pre></div>
-
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nlsocket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb1</span><span class="p">);</span> <span class="p">}</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">nl_recvmsgs</span><span class="p">(</span><span class="n">nlsocket</span><span class="p">,</span> <span class="n">nl</span><span class="o">-&gt;</span><span class="n">cb2</span><span class="p">);</span> <span class="p">}</span></code></pre></div>
 
 <h2 id="getwifiname-callback">getWifiName_callback()</h2>
 
 <p lang="en">This is our getWifiName_callback. Here we parse the message from the Kernel and we get the interface name (wifi_iface) and its index (wifi_index). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.</p>
 <p lang="el">Αυτή είναι η getWifiName_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το όνομα της ασύρματης διεπαφής (wifi_iface) και τον δείκτη της (wifi_index). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiName_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiName_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
  
   <span class="k">struct</span> <span class="n">genlmsghdr</span> <span class="o">*</span><span class="n">gnlh</span> <span class="o">=</span> <span class="n">nlmsg_data</span><span class="p">(</span><span class="n">nlmsg_hdr</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
 
   <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">tb_msg</span><span class="p">[</span><span class="n">NL80211_ATTR_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
 
-  <span class="c1">//nl_msg_dump(msg, stdout);</span>
-
+  <span class="c1">//nl_msg_dump(msg, stdout);
+</span><span class="c1"></span>
   <span class="n">nla_parse</span><span class="p">(</span><span class="n">tb_msg</span><span class="p">,</span>
             <span class="n">NL80211_ATTR_MAX</span><span class="p">,</span>
             <span class="n">genlmsg_attrdata</span><span class="p">(</span><span class="n">gnlh</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
@@ -512,23 +502,21 @@ In our function initNl80211, we initialize our communication with the Κernel. W
   <span class="p">}</span>
 
   <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
+<span class="p">}</span></code></pre></div>
 
 <h2 id="getwifiinfo-callback">getWifiInfo_callback()</h2>
 
 <p lang="en">This is our getWifiInfo_callback. Here we parse the message from the Kernel and we get the wifi signal (wifi_signal) and txrate (wifi_bitrate). If you would like, уou can use the nl_msg_dump(msg, stdout) to see the raw message.</p>
 <p lang="el">Αυτή είναι η getWifiInfo_callback. Εδώ επεξεργαζόμαστε το μήνυμα από τον πυρήνα και λαμβάνουμε το σήμα της ασύρματης διεπαφής (wifi_signal) και τον ρυθμό μετάδοσης (wifi_bitrate). Αν θέλετε, μπορείτε να χρησιμοποιήσετε την nl_msg_dump(msg, stdout) για να δείτε το ακατέργαστο μήνυμα.</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiInfo_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiInfo_callback</span><span class="p">(</span><span class="k">struct</span> <span class="n">nl_msg</span> <span class="o">*</span><span class="n">msg</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
   <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">tb</span><span class="p">[</span><span class="n">NL80211_ATTR_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
   <span class="k">struct</span> <span class="n">genlmsghdr</span> <span class="o">*</span><span class="n">gnlh</span> <span class="o">=</span> <span class="n">nlmsg_data</span><span class="p">(</span><span class="n">nlmsg_hdr</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
   <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
   <span class="k">struct</span> <span class="n">nlattr</span> <span class="o">*</span><span class="n">rinfo</span><span class="p">[</span><span class="n">NL80211_RATE_INFO_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">];</span>
   
-  <span class="c1">//nl_msg_dump(msg, stdout);</span>
-
+  <span class="c1">//nl_msg_dump(msg, stdout);
+</span><span class="c1"></span>
   <span class="n">nla_parse</span><span class="p">(</span><span class="n">tb</span><span class="p">,</span>
             <span class="n">NL80211_ATTR_MAX</span><span class="p">,</span>
             <span class="n">genlmsg_attrdata</span><span class="p">(</span><span class="n">gnlh</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
@@ -536,22 +524,22 @@ In our function initNl80211, we initialize our communication with the Κernel. W
             <span class="nb">NULL</span><span class="p">);</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">tb</span><span class="p">[</span><span class="n">NL80211_ATTR_STA_INFO</span><span class="p">])</span> <span class="p">{</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;sta stats missing!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;sta stats missing!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
   <span class="p">}</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="n">nla_parse_nested</span><span class="p">(</span><span class="n">sinfo</span><span class="p">,</span> <span class="n">NL80211_STA_INFO_MAX</span><span class="p">,</span>
                        <span class="n">tb</span><span class="p">[</span><span class="n">NL80211_ATTR_STA_INFO</span><span class="p">],</span> <span class="n">stats_policy</span><span class="p">))</span> <span class="p">{</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;failed to parse nested attributes!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;failed to parse nested attributes!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
   <span class="p">}</span>
   
   <span class="k">if</span> <span class="p">(</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_SIGNAL</span><span class="p">])</span> <span class="p">{</span>
-    <span class="p">((</span><span class="n">Wifi</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">signal</span> <span class="o">=</span> <span class="mi">100</span><span class="o">+</span><span class="p">(</span><span class="kt">int8_t</span><span class="p">)</span><span class="n">nla_get_u8</span><span class="p">(</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_SIGNAL</span><span class="p">]);</span>
+    <span class="p">((</span><span class="n">Wifi</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">signal</span> <span class="o">=</span> <span class="mi">100</span><span class="o">+</span><span class="p">(</span><span class="n">int8_t</span><span class="p">)</span><span class="n">nla_get_u8</span><span class="p">(</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_SIGNAL</span><span class="p">]);</span>
   <span class="p">}</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_TX_BITRATE</span><span class="p">])</span> <span class="p">{</span>  
     <span class="k">if</span> <span class="p">(</span><span class="n">nla_parse_nested</span><span class="p">(</span><span class="n">rinfo</span><span class="p">,</span> <span class="n">NL80211_RATE_INFO_MAX</span><span class="p">,</span>
                          <span class="n">sinfo</span><span class="p">[</span><span class="n">NL80211_STA_INFO_TX_BITRATE</span><span class="p">],</span> <span class="n">rate_policy</span><span class="p">))</span> <span class="p">{</span>
-      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;failed to parse nested rate attributes!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span> <span class="p">}</span> 
+      <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;failed to parse nested rate attributes!</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span> <span class="p">}</span> 
     <span class="k">else</span> <span class="p">{</span>
       <span class="k">if</span> <span class="p">(</span><span class="n">rinfo</span><span class="p">[</span><span class="n">NL80211_RATE_INFO_BITRATE</span><span class="p">])</span> <span class="p">{</span>
         <span class="p">((</span><span class="n">Wifi</span><span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">txrate</span> <span class="o">=</span> <span class="n">nla_get_u16</span><span class="p">(</span><span class="n">rinfo</span><span class="p">[</span><span class="n">NL80211_RATE_INFO_BITRATE</span><span class="p">]);</span>
@@ -559,9 +547,7 @@ In our function initNl80211, we initialize our communication with the Κernel. W
     <span class="p">}</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="n">NL_SKIP</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
+<span class="p">}</span></code></pre></div>
 
 <h2 id="getwifistatus">getWifiStatus()</h2>
 
@@ -598,13 +584,13 @@ Let's see now what happens in our next function, getWifiStatus:
 <p lang="el"> α) Την πρώτη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_INTERFACE για να λάβουμε το όνομα και τον δείκτη της ασύρματης διεπαφής.</p>
 <p lang="el"> β) Τη δεύτερη φορά χρησιμοποιούμε το αναγνωριστικό εντολής NL80211_CMD_GET_STATION για να λάβουμε την ένταση του σήματος και τον ρυθμό μετάδοσης. Ο λόγος για αυτό είναι ότι οι τιμές της του σήματος και του ρυθμού μετάδοσης έχουν έννοια μόνο σε σχέση με κάποιον σταθμό. Σημειώστε ότι πρέπει να βάλουμε στο μήνυμα και τον δείκτη της διεπαφής που μας ενδιαφέρει χρησιμοποιώντας την nla_put_u32(msg2, NL80211_ATTR_IFINDEX, w->ifindex).</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiStatus</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="k">static</span> <span class="kt">int</span> <span class="nf">getWifiStatus</span><span class="p">(</span><span class="n">Netlink</span><span class="o">*</span> <span class="n">nl</span><span class="p">,</span> <span class="n">Wifi</span><span class="o">*</span> <span class="n">w</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">nl</span><span class="o">-&gt;</span><span class="n">result1</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
   <span class="n">nl</span><span class="o">-&gt;</span><span class="n">result2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
     
   <span class="k">struct</span> <span class="n">nl_msg</span><span class="o">*</span> <span class="n">msg1</span> <span class="o">=</span> <span class="n">nlmsg_alloc</span><span class="p">();</span>
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">msg1</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink message.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Failed to allocate netlink message.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
   <span class="p">}</span>
   
@@ -627,7 +613,7 @@ Let's see now what happens in our next function, getWifiStatus:
   <span class="k">struct</span> <span class="n">nl_msg</span><span class="o">*</span> <span class="n">msg2</span> <span class="o">=</span> <span class="n">nlmsg_alloc</span><span class="p">();</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">msg2</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Failed to allocate netlink message.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Failed to allocate netlink message.</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span>
   <span class="p">}</span>
   
@@ -646,16 +632,14 @@ Let's see now what happens in our next function, getWifiStatus:
   <span class="n">nlmsg_free</span><span class="p">(</span><span class="n">msg2</span><span class="p">);</span>
   
   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
+<span class="p">}</span></code></pre></div>
 
 <h2 id="main">main()</h2>
 
 <p lang="en">Here is our main() function. First, we initialize the communication using the initNl80211 and after that, we continuously call the getWifiStatus() inside a loop, every 1 sec, until the user presses ctrl + c:</p>
 <p lang="el">Εδώ βλέπουμε τη main() συνάρτησή μας. Πρώτα, αρχικοποιούμε την επικοινωνία με την initNl80211 και κατόπιν τούτου, καλούμε συνεχώς μέσα σε έναν βρόχο την getWifiStatus(), ανά 1 δευτερόλεπτο, εώς ότου ο χρήστης πατήσει ctrl + c:</p>
 
-<div class="highlight"><pre><code class="language-c" data-lang="c"><span></span><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">Netlink</span> <span class="n">nl</span><span class="p">;</span>
   <span class="n">Wifi</span> <span class="n">w</span><span class="p">;</span>
 
@@ -663,27 +647,25 @@ Let's see now what happens in our next function, getWifiStatus:
   
   <span class="n">nl</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">initNl80211</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">);</span>
   <span class="k">if</span> <span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">id</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&quot;Error initializing netlink 802.11</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span> <span class="s">&#34;Error initializing netlink 802.11</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
     <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
   <span class="p">}</span>
 
   <span class="k">do</span> <span class="p">{</span>
     <span class="n">getWifiStatus</span><span class="p">(</span><span class="o">&amp;</span><span class="n">nl</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">w</span><span class="p">);</span>  
-    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Interface: %s | signal: %d dB | txrate: %.1f MBit/s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&#34;Interface: %s | signal: %d dB | txrate: %.1f MBit/s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span>
            <span class="n">w</span><span class="p">.</span><span class="n">ifname</span><span class="p">,</span> <span class="n">w</span><span class="p">.</span><span class="n">signal</span><span class="p">,</span> <span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">w</span><span class="p">.</span><span class="n">txrate</span><span class="o">/</span><span class="mi">10</span><span class="p">);</span>
     <span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
   <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">keepRunning</span><span class="p">);</span>
 
-  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Exiting gracefully... &quot;</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;</span><span class="se">\n</span><span class="s">Exiting gracefully... &#34;</span><span class="p">);</span>
   <span class="n">nl_cb_put</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">cb1</span><span class="p">);</span>
   <span class="n">nl_cb_put</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">cb2</span><span class="p">);</span>
   <span class="n">nl_close</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">socket</span><span class="p">);</span>
   <span class="n">nl_socket_free</span><span class="p">(</span><span class="n">nl</span><span class="p">.</span><span class="n">socket</span><span class="p">);</span>
-  <span class="n">printf</span><span class="p">(</span><span class="s">&quot;OK</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">printf</span><span class="p">(</span><span class="s">&#34;OK</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">);</span>
   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div>
-
+<span class="p">}</span></code></pre></div>
 
 <h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
 
@@ -717,6 +699,14 @@ Let's see now what happens in our next function, getWifiStatus:
          
          
          
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -902,6 +892,292 @@ Let's see now what happens in our next function, getWifiStatus:
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1008,6 +1284,351 @@ Let's see now what happens in our next function, getWifiStatus:
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

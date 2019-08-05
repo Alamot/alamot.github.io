@@ -826,10 +826,10 @@ fortune# cat /root/root.txt
 <span class="c1"># If you omit the remote_path it uploads the file on the current working folder.</span>
 <span class="c1">#</span>
 <span class="c1"># To download a file: DOWNLOAD remote_path</span>
-<span class="c1"># e.g. $ DOWNLOAD \temp\myfile.txt</span>
+<span class="c1"># e.g. $ DOWNLOAD /temp/myfile.txt</span>
 
 
-<span class="kn">import</span> <span class="nn">os</span> 
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">uuid</span>
@@ -922,7 +922,7 @@ fortune# cat /root/root.txt
     <span class="n">remote_md5sum</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">32</span><span class="p">]</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;cat &#39;&#34;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s2">&#34;&#39; | &#34;</span> <span class="o">+</span> <span class="n">find_tool</span><span class="p">(</span><span class="s2">&#34;b64enc&#34;</span><span class="p">)</span>
     <span class="n">b64content</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">content</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">decodestring</span><span class="p">(</span><span class="n">b64content</span><span class="p">)</span>
+    <span class="n">content</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">b64content</span><span class="p">)</span>
     <span class="n">local_md5sum</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Remote md5sum: &#34;</span> <span class="o">+</span> <span class="n">remote_md5sum</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="s2">&#34; Local md5sum: &#34;</span> <span class="o">+</span> <span class="n">local_md5sum</span><span class="p">)</span>
@@ -930,7 +930,7 @@ fortune# cat /root/root.txt
         <span class="k">print</span><span class="p">(</span><span class="s2">&#34;               MD5 hashes match!&#34;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&#34;               ERROR! MD5 hashes do NOT match!&#34;</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">remote_path</span><span class="p">),</span> <span class="s2">&#34;w&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">remote_path</span><span class="p">),</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
 
@@ -945,7 +945,7 @@ fortune# cat /root/root.txt
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">local_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="n">md5sum</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-        <span class="n">b64enc_data</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">base64</span><span class="o">.</span><span class="n">encodestring</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">())</span>
+        <span class="n">b64enc_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
    
     <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Data length (b64-encoded): &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b64enc_data</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;KB&#34;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">b64enc_data</span><span class="p">),</span> <span class="n">BUFFER_SIZE</span><span class="p">),</span> <span class="n">unit_scale</span><span class="o">=</span><span class="n">BUFFER_SIZE</span><span class="o">/</span><span class="mi">1024</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&#34;KB&#34;</span><span class="p">):</span>
@@ -1090,6 +1090,198 @@ fortune# cat /root/root.txt
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1207,6 +1399,34 @@ fortune# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
@@ -1221,6 +1441,142 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
            
           
            
@@ -1295,134 +1651,6 @@ fortune# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
@@ -1454,17 +1682,85 @@ fortune# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
@@ -1479,16 +1775,40 @@ fortune# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -1505,6 +1825,54 @@ fortune# cat /root/root.txt
           
            
            
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1555,458 +1923,26 @@ fortune# cat /root/root.txt
            
            
           
-           
-           
-           
           
            
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2078,6 +2014,292 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2395,21 +2617,50 @@ fortune# cat /root/root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2457,6 +2708,46 @@ fortune# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
@@ -2472,297 +2763,6 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

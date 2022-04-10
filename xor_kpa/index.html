@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -312,84 +312,90 @@ if (language) {
 <p lang="en">The problem with this approach is that we may not know the size of the key and the exact position of a word or phrase in the initial text. Therefore, I wrote a tool which searches for a word or phrase in the whole encrypted text and it tries automatically all the possible keys that emerge from this process. We regard as criteria for a successful decryption the existence of the known plaintext and the non-existence of non-printable characters in the recovered plaintext. This means our method is applicable only to text files. Moreover -in order to recude the number of possible keys we try- we can also reject all those keys that contain non-printable characters by setting inside the script the variable printable_key = True (this is the default value). Last but not least, we can also set the max key length we want to try.</p>
 <p lang="el">Το πρόβλημα σε αυτήν την προσέγγιση είναι ότι μπορεί να μην ξέρουμε την ακριβή θέση μια λέξης ή φράσης στο αρχικό κείμενο καθώς και το μέγεθος του κλειδιού. Έτσι, έγραψα ένα εργαλείο που ψάχνει να βρεί κάποια λέξη ή φράση σε ολόκληρο το κρυπτογραφημένο κείμενο και δοκιμάζει αυτόματα όλα τα πιθανά κλειδιά που προκύπτουν από αυτήν τη διαδικασία. Θεωρούμε ως κριτήρια επιτυχούς αποκρυπτογράφησης την εμφάνιση του γνωστού μέρους στο ανακτηθέν κείμενο και την πλήρη απουσία μη-εκτυπώσιμων χαρακτήρων από αυτό. Δηλαδή, η μέθοδός μας εφαρμόζεται μόνο για αρχεία κειμένου. Επίσης -για να μειώσουμε τον αριθμό των πιθανών κλειδιών που δοκιμάζουμε- μπορούμε να εξετάζουμε μόνο όσα κλειδιά δεν περιέχουν και τα ίδια μη-εκτυπώσιμους χαρακτήρες, θέτοντας μέσα στον κώδικα τη μεταβλητή printable_key = True (αυτή είναι η προκαθορισμένη ρύθμιση). Τέλος, μπορούμε να καθορίσουμε και το μέγιστο μέγεθος για τα κλειδιά που θέλουμε να δοκιμαστούν.</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ./xorknown.py --help
-Known-plaintext attack:
-./xorknown.py &lt;encrypted file&gt; &lt;known plaintext&gt; [max_key_length]
-
-Decrypt using known key:
-./xorknown.py &lt;encrypted file&gt; --key=the_known_key</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>./xorknown.py --help
+<span class="go">Known-plaintext attack:
+</span><span class="go">./xorknown.py &lt;encrypted file&gt; &lt;known plaintext&gt; [max_key_length]
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Decrypt using known key:
+</span><span class="go">./xorknown.py &lt;encrypted file&gt; --key=the_known_key
+</span></code></pre></div></div>
 
 <p lang="en">Let's see this tool in action. We have an encrypted text file and we know (or we have an inkling) that the initial text contains the word 'message':</p>
 <p lang="el">Ας δούμε πώς λειτουργεί το εργαλείο στην πράξη. Έστω ότι έχουμε ενα κρυπτογραφημένο αρχείο κειμένου και γνωρίζουμε ή υποψιαζόμαστε ότι το αρχικό κείμενο περιέχει τη λέξη 'message':</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ./xorknown.py xor_encrypted_text.bin message
-Searching XOR-encrypted xor_encrypted_text.bin for string &#39;message&#39;
-Key length: 15 
-Partial Key: ��3RyS3cR������ 
-Plaintext: ��e XOR o��������is extr��������mmon as��������nent in��������mplex c��������By itse��������g a con��������peating��������simple ��������er can ��������y be br��������ng freq��������alysis.��������content��������message��������guessed��������rwise k��������n the k��������e revea�������� primar��������is that��������imple t��������ent, an��������he XOR ��������n is co��������nally i��������ve. A s��������peating��������e. usin��������me key ��������operati��������e whole��������ipher i��������ore som��������sed for��������informa��������cases w��������particu��������rity is��������d.
-
-If ��������is rand��������s at le��������ong as ��������age, th��������pher is��������re secu��������when th��������ey repe��������ithin a��������. When ��������tream i��������ted by ��������-random��������generat��������result ��������eam cip��������h a key�������� truly ��������the res�������� one-ti��������which i��������kable e��������heory.
-��������of thes��������s, the ��������ator is��������ble to ��������plainte��������k, sinc��������ext XOR��������ext = k��������s also ��������to flip��������ry bits��������decrypt��������text by��������ating t��������rtext. ��������called ��������lity.</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>./xorknown.py xor_encrypted_text.bin message
+<span class="go">Searching XOR-encrypted xor_encrypted_text.bin for string &#39;message&#39;
+</span><span class="go">Key length: 15 
+</span><span class="go">Partial Key: ��3RyS3cR������ 
+</span><span class="go">Plaintext: ��e XOR o��������is extr��������mmon as��������nent in��������mplex c��������By itse��������g a con��������peating��������simple ��������er can ��������y be br��������ng freq��������alysis.��������content��������message��������guessed��������rwise k��������n the k��������e revea�������� primar��������is that��������imple t��������ent, an��������he XOR ��������n is co��������nally i��������ve. A s��������peating��������e. usin��������me key ��������operati��������e whole��������ipher i��������ore som��������sed for��������informa��������cases w��������particu��������rity is��������d.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">If ��������is rand��������s at le��������ong as ��������age, th��������pher is��������re secu��������when th��������ey repe��������ithin a��������. When ��������tream i��������ted by ��������-random��������generat��������result ��������eam cip��������h a key�������� truly ��������the res�������� one-ti��������which i��������kable e��������heory.
+</span><span class="go">��������of thes��������s, the ��������ator is��������ble to ��������plainte��������k, sinc��������ext XOR��������ext = k��������s also ��������to flip��������ry bits��������decrypt��������text by��������ating t��������rtext. ��������called ��������lity.
+</span></code></pre></div></div>
 
 <p lang="en">As you can see, because the word 'message' was indeed in the initital text, part of the key and part of the initial text have been recovered correctly. In addition, we have discovered the key size. Now, by taking advantage of this partially revealed text we can guess some other words of the initial text. For example, this ????????rwise is probably the word 'otherwise':</p>
 
 <p lang="el">Όπως βλέπετε, επειδή η λέξη 'message' όντως υπήρχε στο αρχικό κείμενο, μέρος του κλειδιού και του αρχικού κειμένου ανακτήθηκαν σωστά. Μάλιστα ανακαλύψαμε και το μέγεθος του κλειδιού. Τώρα, αξιοποιώντας το μέρος του κειμένου που αποκαλύφθηκε μπορούμε να μαντέψουμε και άλλες λέξεις του αρχικού κειμένου. Για παράδειγμα, αυτό το ????????rwise είναι κατά πάσα πιθανότητα η λεξη 'otherwise':</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ./xorknown.py xor_encrypted_text.bin otherwise
-Searching XOR-encrypted xor_encrypted_text.bin for string &#39;otherwise&#39;
-Key length: 15 
-Partial Key: @v3RyS3������y! 
-Plaintext: The XOR������tor is ex������y common ������omponent ������e complex������rs. By it������using a c������t repeati������, a simpl������cipher ca������ially be ������ using fr������y analysi������the conte������any messa������ be guess������otherwise������ then the������an be rev������ Its prim������rit is th������is simple������plement, ������at the XO������ation is ������ationally������ensive. A������e repeati������ (i.e. us������e same ke������xor opera������n the who������a) cipher������erefore s������es used f������ing infor������ in cases������ no parti������security ������uired.
-
-I������key is ra������nd is at ������as long a������message, ������R cipher ������h more se������han when ������is key re������on within������sage. Whe������keystream������nerated b������eudo-rand������ber gener������the resul������ stream c������ With a k������t is trul������om, the r������is a one-������ad, which������breakable������in theory������any of th������phers, th������operator ������nerable t������own-plain������ttack, si������aintext X������hertext =������It is als������ial to fl������itrary bi������the decry������laintext ������ipulating������iphertext������ is calle������eability.</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>./xorknown.py xor_encrypted_text.bin otherwise
+<span class="go">Searching XOR-encrypted xor_encrypted_text.bin for string &#39;otherwise&#39;
+</span><span class="go">Key length: 15 
+</span><span class="go">Partial Key: @v3RyS3������y! 
+</span><span class="go">Plaintext: The XOR������tor is ex������y common ������omponent ������e complex������rs. By it������using a c������t repeati������, a simpl������cipher ca������ially be ������ using fr������y analysi������the conte������any messa������ be guess������otherwise������ then the������an be rev������ Its prim������rit is th������is simple������plement, ������at the XO������ation is ������ationally������ensive. A������e repeati������ (i.e. us������e same ke������xor opera������n the who������a) cipher������erefore s������es used f������ing infor������ in cases������ no parti������security ������uired.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">I������key is ra������nd is at ������as long a������message, ������R cipher ������h more se������han when ������is key re������on within������sage. Whe������keystream������nerated b������eudo-rand������ber gener������the resul������ stream c������ With a k������t is trul������om, the r������is a one-������ad, which������breakable������in theory������any of th������phers, th������operator ������nerable t������own-plain������ttack, si������aintext X������hertext =������It is als������ial to fl������itrary bi������the decry������laintext ������ipulating������iphertext������ is calle������eability.
+</span></code></pre></div></div>
 
 <p lang="en">Thus, we have retrieved a different part of the key and a different part of the plaintext. This freq?????? reminds us the word 'frequency'. Let's test it:</p>
 <p lang="el">Έτσι ανακτήσαμε ενα διαφορετικό μέρος του κλειδιού και του αρχικού κειμένου. Αυτό το freq?????? μας φέρνει στο μυαλό τη λέξη 'frequency'. Για να δούμε:</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ./xorknown.py xor_encrypted_text.bin frequency
-Searching XOR-encrypted xor_encrypted_text.bin for string &#39;frequency&#39;
-Key length: 15 
-Partial Key: �����S3cREtK3y� 
-Plaintext: �����OR operat������extremely������n as a co������t in more������ex cipher������itself, u������ constant������ting key,������ple XOR c������can trivi������e broken ������frequency������sis. If t������tent of a������sage can ������ssed or o������se known ������he key ca������evealed. ������imary mer������that it i������le to imp������, and tha������XOR opera������s computa������ly inexpe������ A simple������ting XOR ������using the������key for x������ration on������hole data������er is the������ sometime������ for hidi������ormation ������es where ������ticular s������y is requ������
-If the k������random an������t least a������ as the m������, the XOR������r is much������secure th������n there i������repetitio������in a mess������hen the k������am is gen������ by a pse������ndom numb������erator, t������ult is a ������ cipher. ������ key that������uly rando������ result i������e-time pa������ch is unb������le even i������ry.
-
-In a������these cip������the XOR o������r is vuln������ to a kno������intext at������since pla������ XOR ciph������ = key. I������lso trivi������flip arbi������bits in t������rypted pl������t by mani������ng the ci������xt. This ������led malle������y.</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>./xorknown.py xor_encrypted_text.bin frequency
+<span class="go">Searching XOR-encrypted xor_encrypted_text.bin for string &#39;frequency&#39;
+</span><span class="go">Key length: 15 
+</span><span class="go">Partial Key: �����S3cREtK3y� 
+</span><span class="go">Plaintext: �����OR operat������extremely������n as a co������t in more������ex cipher������itself, u������ constant������ting key,������ple XOR c������can trivi������e broken ������frequency������sis. If t������tent of a������sage can ������ssed or o������se known ������he key ca������evealed. ������imary mer������that it i������le to imp������, and tha������XOR opera������s computa������ly inexpe������ A simple������ting XOR ������using the������key for x������ration on������hole data������er is the������ sometime������ for hidi������ormation ������es where ������ticular s������y is requ������
+</span><span class="go">If the k������random an������t least a������ as the m������, the XOR������r is much������secure th������n there i������repetitio������in a mess������hen the k������am is gen������ by a pse������ndom numb������erator, t������ult is a ������ cipher. ������ key that������uly rando������ result i������e-time pa������ch is unb������le even i������ry.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">In a������these cip������the XOR o������r is vuln������ to a kno������intext at������since pla������ XOR ciph������ = key. I������lso trivi������flip arbi������bits in t������rypted pl������t by mani������ng the ci������xt. This ������led malle������y.
+</span></code></pre></div></div>
 
 <p lang="en">At this point, we have essentially discovered the whole key and we can use it to decrypt the whole text:</p>
 <p lang="el">Τώρα, έχουμε ουσιαστικά ανακαλύψει ολόκληρο το κλειδί και μπορούμε να το χρησιμοποιήσουμε για να αποκρυπτογραφήσουμε ολόκληρο το κείμενο:</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">./xorknown.py xor_encrypted_text.bin --key=&#39;@v3RyS3cREtK3y!&#39;
-Key length: 15 
-Partial Key: @v3RyS3cREtK3y! 
-Plaintext: The XOR operator is extremely common as a component in more complex ciphers. By itself, using a constant repeating key, a simple XOR cipher can trivially be broken using frequency analysis. If the content of any message can be guessed or otherwise known then the key can be revealed. Its primary merit is that it is simple to implement, and that the XOR operation is computationally inexpensive. A simple repeating XOR (i.e. using the same key for xor operation on the whole data) cipher is therefore sometimes used for hiding information in cases where no particular security is required.
-
-If the key is random and is at least as long as the message, the XOR cipher is much more secure than when there is key repetition within a message. When the keystream is generated by a pseudo-random number generator, the result is a stream cipher. With a key that is truly random, the result is a one-time pad, which is unbreakable even in theory.
-
-In any of these ciphers, the XOR operator is vulnerable to a known-plaintext attack, since plaintext XOR ciphertext = key. It is also trivial to flip arbitrary bits in the decrypted plaintext by manipulating the ciphertext. This is called malleability.</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">./xorknown.py xor_encrypted_text.bin --key=&#39;@v3RyS3cREtK3y!&#39;
+</span><span class="go">Key length: 15 
+</span><span class="go">Partial Key: @v3RyS3cREtK3y! 
+</span><span class="go">Plaintext: The XOR operator is extremely common as a component in more complex ciphers. By itself, using a constant repeating key, a simple XOR cipher can trivially be broken using frequency analysis. If the content of any message can be guessed or otherwise known then the key can be revealed. Its primary merit is that it is simple to implement, and that the XOR operation is computationally inexpensive. A simple repeating XOR (i.e. using the same key for xor operation on the whole data) cipher is therefore sometimes used for hiding information in cases where no particular security is required.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">If the key is random and is at least as long as the message, the XOR cipher is much more secure than when there is key repetition within a message. When the keystream is generated by a pseudo-random number generator, the result is a stream cipher. With a key that is truly random, the result is a one-time pad, which is unbreakable even in theory.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">In any of these ciphers, the XOR operator is vulnerable to a known-plaintext attack, since plaintext XOR ciphertext = key. It is also trivial to flip arbitrary bits in the decrypted plaintext by manipulating the ciphertext. This is called malleability.
+</span></code></pre></div></div>
 
 <p lang="en">A last observation: if we are looking for a phrase longer than the size of the repeating key, in order for the tool to find it, we have to make sure that max_key_length is multiple times the size of the key. This happens because a longer phrase will contain the key multiple times. Have a look in the following example:</p>
 <p lang="el">Μια τελευταία παρατήρηση: αν ψάχνουμε μια φράση μεγαλύτερη από το μέγεθος του επαναλαμβανόμενου κλειδιού, για να τη βρει το εργαλείο θα πρέπει να βεβαιωθούμε ότι το max_key_length είναι πολλαπλάσιο του μεγέθους του κλειδιού. Αυτό συμβαίνει επειδή μια μεγάλη φράση θα εμπεριέχει πολλαπλές φορές το κλειδί. Δείτε το παρακάτω παράδειγμα:</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">./xorknown.py xor_encrypted_text.bin &#34;extremely common&#34; 30
-4
-Searching XOR-encrypted xor_encrypted_text.bin for string &#39;extremely common&#39;
-Key length: 30 
-Partial Key: @v3RyS��������������S3cREtK3y! 
-Plaintext: The XO��������������extremely common��������������t in more comple��������������itself, using a ��������������ting key, a simp��������������can trivially be��������������frequency analys��������������tent of any mess��������������ssed or otherwis��������������he key can be re��������������imary merit is t��������������le to implement,��������������XOR operation is��������������ly inexpensive. ��������������ting XOR (i.e. u��������������key for xor oper��������������hole data) ciphe�������������� sometimes used ��������������ormation in case��������������ticular security��������������
-If the key is r��������������t least as long ��������������, the XOR cipher��������������secure than when��������������repetition withi��������������hen the keystrea�������������� by a pseudo-ran��������������erator, the resu�������������� cipher. With a ��������������uly random, the ��������������e-time pad, whic��������������le even in theor��������������these ciphers, t��������������r is vulnerable ��������������intext attack, s�������������� XOR ciphertext ��������������lso trivial to f��������������bits in the decr��������������t by manipulatin��������������xt. This is call��������������y.
-
-Key length: 30 
-Partial Key: �����S3cREtK3y!@v3RyS��������� 
-Plaintext: �����OR operator is e��������������n as a component��������������ex ciphers. By i�������������� constant repeat��������������ple XOR cipher c��������������e broken using f��������������sis. If the cont��������������sage can be gues��������������se known then th��������������evealed. Its pri��������������that it is simpl��������������, and that the X��������������s computationall�������������� A simple repeat��������������using the same k��������������ration on the wh��������������er is therefore �������������� for hiding info��������������es where no part��������������y is required.
-
-��������������random and is at�������������� as the message,��������������r is much more s��������������n there is key r��������������in a message. Wh��������������am is generated ��������������ndom number gene��������������ult is a stream �������������� key that is tru�������������� result is a one��������������ch is unbreakabl��������������ry.
-
-In any of t��������������the XOR operator�������������� to a known-plai��������������since plaintext �������������� = key. It is al��������������flip arbitrary b��������������rypted plaintext��������������ng the ciphertex��������������led malleability�</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">./xorknown.py xor_encrypted_text.bin &#34;extremely common&#34; 30
+</span><span class="go">4
+</span><span class="go">Searching XOR-encrypted xor_encrypted_text.bin for string &#39;extremely common&#39;
+</span><span class="go">Key length: 30 
+</span><span class="go">Partial Key: @v3RyS��������������S3cREtK3y! 
+</span><span class="go">Plaintext: The XO��������������extremely common��������������t in more comple��������������itself, using a ��������������ting key, a simp��������������can trivially be��������������frequency analys��������������tent of any mess��������������ssed or otherwis��������������he key can be re��������������imary merit is t��������������le to implement,��������������XOR operation is��������������ly inexpensive. ��������������ting XOR (i.e. u��������������key for xor oper��������������hole data) ciphe�������������� sometimes used ��������������ormation in case��������������ticular security��������������
+</span><span class="go">If the key is r��������������t least as long ��������������, the XOR cipher��������������secure than when��������������repetition withi��������������hen the keystrea�������������� by a pseudo-ran��������������erator, the resu�������������� cipher. With a ��������������uly random, the ��������������e-time pad, whic��������������le even in theor��������������these ciphers, t��������������r is vulnerable ��������������intext attack, s�������������� XOR ciphertext ��������������lso trivial to f��������������bits in the decr��������������t by manipulatin��������������xt. This is call��������������y.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Key length: 30 
+</span><span class="go">Partial Key: �����S3cREtK3y!@v3RyS��������� 
+</span><span class="go">Plaintext: �����OR operator is e��������������n as a component��������������ex ciphers. By i�������������� constant repeat��������������ple XOR cipher c��������������e broken using f��������������sis. If the cont��������������sage can be gues��������������se known then th��������������evealed. Its pri��������������that it is simpl��������������, and that the X��������������s computationall�������������� A simple repeat��������������using the same k��������������ration on the wh��������������er is therefore �������������� for hiding info��������������es where no part��������������y is required.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">��������������random and is at�������������� as the message,��������������r is much more s��������������n there is key r��������������in a message. Wh��������������am is generated ��������������ndom number gene��������������ult is a stream �������������� key that is tru�������������� result is a one��������������ch is unbreakabl��������������ry.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">In any of t��������������the XOR operator�������������� to a known-plai��������������since plaintext �������������� = key. It is al��������������flip arbitrary b��������������rypted plaintext��������������ng the ciphertex��������������led malleability�
+</span></code></pre></div></div>
 
 <p lang="en">Here is the python code for this tool:</p>
 <p lang="el">Ακολουθεί ο κώδικας του εργαλείου σε python:</p>
 
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
 <span class="c1"># Author: Alamot</span>
 <span class="c1"># This is a XOR plaintext attack tool: If we know a part of the plaintext maybe</span>
 <span class="c1"># we can recover the key and the whole text.</span>
@@ -399,7 +405,7 @@ In any of t��������������the XOR operator����
 
 
 <span class="n">ignore_code</span> <span class="o">=</span> <span class="mh">0xff</span>
-<span class="n">printable_key</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">printable_key</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">max_key_length</span> <span class="o">=</span> <span class="mi">21</span>
 
 
@@ -409,8 +415,8 @@ In any of t��������������the XOR operator����
         <span class="k">if</span> <span class="nb">ord</span><span class="p">(</span><span class="n">ch</span><span class="p">)</span> <span class="o">==</span> <span class="n">ignore_code</span><span class="p">:</span>
             <span class="k">continue</span>
         <span class="k">if</span> <span class="n">ch</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">printable</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
-    <span class="k">return</span> <span class="bp">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span>
 
 
 <span class="k">def</span> <span class="nf">lrotate</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
@@ -419,9 +425,9 @@ In any of t��������������the XOR operator����
 
     
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&#34;--help&#34;</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Known-plaintext attack:</span><span class="se">\n</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&#34; &lt;encrypted file&gt; &lt;known plaintext&gt; [max_key_length]&#34;</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Decrypt using known key:</span><span class="se">\n</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&#34; &lt;encrypted file&gt; --key=the_known_key&#34;</span><span class="p">)</span>
-    <span class="nb">exit</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Known-plaintext attack:</span><span class="se">\n</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&#34; &lt;encrypted file&gt; &lt;known plaintext&gt; [max_key_length]&#34;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Decrypt using known key:</span><span class="se">\n</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="s2">&#34; &lt;encrypted file&gt; --key=the_known_key&#34;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span>
 
 <span class="n">filename</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
@@ -433,14 +439,14 @@ In any of t��������������the XOR operator����
     <span class="n">repeated_key</span> <span class="o">=</span> <span class="p">(</span><span class="n">known_key</span><span class="p">)</span><span class="o">*</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">//</span> <span class="nb">len</span><span class="p">(</span><span class="n">known_key</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
         <span class="n">decrypted_text</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="n">repeated_key</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Key length: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">known_key</span><span class="p">)),</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Partial Key: &#34;</span><span class="o">+</span><span class="n">known_key</span><span class="p">,</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Plaintext: &#34;</span><span class="o">+</span><span class="n">decrypted_text</span><span class="p">)</span>
-    <span class="nb">exit</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Key length: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">known_key</span><span class="p">)),</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Partial Key: &#34;</span><span class="o">+</span><span class="n">known_key</span><span class="p">,</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Plaintext: &#34;</span><span class="o">+</span><span class="n">decrypted_text</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span>
 <span class="k">else</span><span class="p">:</span>
     <span class="n">known_plaintext</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">known_plaintext</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_key_length</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;The length of the known plaintext is greater than max_key_length (=&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_key_length</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;). Please give a smaller plaintext or incrase max_key_length.&#34;</span><span class="p">)</span>
-    <span class="nb">exit</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;The length of the known plaintext is greater than max_key_length (=&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_key_length</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;). Please give a smaller plaintext or incrase max_key_length.&#34;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span>
     
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
     <span class="n">max_key_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">+</span><span class="mi">1</span>
@@ -448,7 +454,7 @@ In any of t��������������the XOR operator����
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s2">&#34;rb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;Searching XOR-encrypted &#34;</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s2">&#34; for string &#39;&#34;</span><span class="o">+</span><span class="n">known_plaintext</span><span class="o">+</span><span class="s2">&#34;&#39; (max_key_length = &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_key_length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;)&#34;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Searching XOR-encrypted &#34;</span><span class="o">+</span><span class="n">filename</span><span class="o">+</span><span class="s2">&#34; for string &#39;&#34;</span><span class="o">+</span><span class="n">known_plaintext</span><span class="o">+</span><span class="s2">&#34;&#39; (max_key_length = &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">max_key_length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;)&#34;</span><span class="p">)</span>
 
 <span class="k">try</span><span class="p">:</span>    
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="n">known_plaintext</span><span class="p">)):</span> <span class="c1"># Try known plaintext in every position</span>
@@ -473,11 +479,11 @@ In any of t��������������the XOR operator����
                             <span class="n">decrypted_text</span> <span class="o">+=</span> <span class="nb">chr</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">x</span><span class="p">])</span> <span class="o">^</span> <span class="nb">ord</span><span class="p">(</span><span class="n">repeated_key</span><span class="p">[</span><span class="n">x</span><span class="p">]))</span>
                     <span class="k">if</span> <span class="n">is_printable</span><span class="p">(</span><span class="n">decrypted_text</span><span class="p">,</span> <span class="n">ignore_code</span><span class="p">):</span> <span class="c1"># Is the whole result printable?</span>
                         <span class="k">if</span> <span class="n">known_plaintext</span> <span class="ow">in</span> <span class="n">decrypted_text</span><span class="p">:</span>
-                            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Key length: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">expanded_key</span><span class="p">)),</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Partial Key: &#34;</span><span class="o">+</span><span class="n">expanded_key</span><span class="p">,</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Plaintext: &#34;</span><span class="o">+</span><span class="n">decrypted_text</span><span class="p">)</span>
-                            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Key length: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">expanded_key</span><span class="p">)),</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Partial Key: &#34;</span><span class="o">+</span><span class="n">expanded_key</span><span class="p">,</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Plaintext: &#34;</span><span class="o">+</span><span class="n">decrypted_text</span><span class="p">)</span>
+                            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="p">)</span>
 <span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Ctrl+C received. Exiting...&#34;</span><span class="p">)</span>
-    <span class="nb">exit</span><span class="p">()</span></code></pre></div>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">Ctrl+C received. Exiting...&#34;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span></code></pre></div>
 
 <p lang="en">You can download this tool from here: <a href="https://github.com/Alamot/code-snippets/blob/master/crypto/xorknown.py" target="_blank">xorknown.py</a></p>
 <p lang="el">Μπορείτε να κατεβάσετε το εργαλείο απο εδώ: <a href="https://github.com/Alamot/code-snippets/blob/master/crypto/xorknown.py" target="_blank">xorknown.py</a</p> 
@@ -518,22 +524,6 @@ In any of t��������������the XOR operator����
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -763,169 +753,21 @@ In any of t��������������the XOR operator����
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1192,6 +1034,349 @@ In any of t��������������the XOR operator����
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1273,6 +1458,87 @@ In any of t��������������the XOR operator����
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
@@ -1288,6 +1554,47 @@ In any of t��������������the XOR operator����
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
            
           
            
@@ -1395,6 +1702,57 @@ In any of t��������������the XOR operator����
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
     <div class="cell">
@@ -1426,6 +1784,43 @@ In any of t��������������the XOR operator����
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1436,25 +1831,21 @@ In any of t��������������the XOR operator����
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1527,16 +1918,47 @@ In any of t��������������the XOR operator����
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
@@ -1562,6 +1984,22 @@ In any of t��������������the XOR operator����
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1572,10 +2010,21 @@ In any of t��������������the XOR operator����
            
            
            
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1633,6 +2082,31 @@ In any of t��������������the XOR operator����
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
     <div class="cell">
@@ -1659,22 +2133,6 @@ In any of t��������������the XOR operator����
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1689,104 +2147,6 @@ In any of t��������������the XOR operator����
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1858,144 +2218,10 @@ In any of t��������������the XOR operator����
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2072,199 +2298,6 @@ In any of t��������������the XOR operator����
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

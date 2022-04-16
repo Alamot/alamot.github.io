@@ -142,7 +142,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <meta property="og:type" content="article">
   <meta name="description" content="A series of articles that provide guidance for writing your own Operating System (x86_64). Μια σειρά από άρθρα που παρέχουν οδηγίες για το πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64).">
   <meta property="og:description" content="A series of articles that provide guidance for writing your own Operating System (x86_64). Μια σειρά από άρθρα που παρέχουν οδηγίες για το πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64).">
-  <meta property="og:image" content="https://alamot.github.io/images/os.jpg">
+  <meta property="og:image" content="https://alamot.github.io/images/os1.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
 
@@ -204,9 +204,9 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#stage1-bootstage1-asm">stage1/bootstage1.asm</a></li>
 <li><a href="#stage1-disk-asm">stage1/disk.asm</a></li>
 <li><a href="#stage1-print-asm">stage1/print.asm</a></li>
-<li><a href="#running-our-code">Running our code</a></li>
-<li><a href="#fullcode"><span lang="en">Full code</span><span lang="el">Πλήρης κώδικας</span></a></li>
 </ul></li>
+<li><a href="#runningcode"><span lang="en">Running our code</span><span lang="el">Εκτέλεση του κώδικά μας</span></a></li>
+<li><a href="#fullcode"><span lang="en">Full code</span><span lang="el">Πλήρης κώδικας</span></a></li>
 <li><a href="#reference"><span lang="en">References</span><span lang="el">Αναφορές</span></a></li>
  
       
@@ -249,7 +249,7 @@ if (language) {
   <div class="row">
     <div class="col-md-12">
       <article class="single centered">
-        <div class="image" style="background-image: url(https://alamot.github.io/images/os.jpg);"></div>
+        <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
         <div class="body">
             <header lang="en"><h1 id="title" class="title">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h1></header>
             <header lang="el"><h1 class="title">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h1></header>
@@ -288,9 +288,9 @@ if (language) {
 <li><a href="#stage1-bootstage1-asm">stage1/bootstage1.asm</a></li>
 <li><a href="#stage1-disk-asm">stage1/disk.asm</a></li>
 <li><a href="#stage1-print-asm">stage1/print.asm</a></li>
-<li><a href="#running-our-code">Running our code</a></li>
-<li><a href="#fullcode"><span lang="en">Full code</span><span lang="el">Πλήρης κώδικας</span></a></li>
 </ul></li>
+<li><a href="#runningcode"><span lang="en">Running our code</span><span lang="el">Εκτέλεση του κώδικά μας</span></a></li>
+<li><a href="#fullcode"><span lang="en">Full code</span><span lang="el">Πλήρης κώδικας</span></a></li>
 <li><a href="#reference"><span lang="en">References</span><span lang="el">Αναφορές</span></a></li>
 </ul>
 </nav></div>
@@ -345,17 +345,20 @@ if (language) {
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>    <span class="c1">; On the x86, the BIOS (and consequently the bootloader) runs in 16-bit Real Mode.</span>
 <span class="k">ORG</span> <span class="mh">0x7C00</span> <span class="c1">; We are loaded/booted by BIOS into this memory address.</span>
 
-<span class="nl">Stage1_entrypoint:</span>             <span class="c1">; Main entry point where BIOS leaves us. Some BIOS may load us at 0x0000:0x7C00 while others at 0x07C0:0x0000.</span>
-    <span class="nf">jmp</span> <span class="mh">0x0000</span><span class="p">:</span><span class="nv">.setup_segments</span> <span class="c1">; We do a far jump to accommodate for this issue (CS is reloaded to 0x0000).</span>
-    <span class="nl">.setup_segments:</span>           <span class="c1">; Next, we set all segment registers to zero.</span>
+<span class="nl">Stage1_entrypoint:</span>         <span class="c1">; Main entry point where BIOS leaves us. Some BIOS may load us at 0x0000:0x7C00 while others at 0x07C0:0x0000. We do a far jump to accommodate for this issue (CS is reloaded to 0x0000).</span>
+    <span class="nf">jmp</span> <span class="mh">0x0000</span><span class="p">:</span><span class="nv">.setup_segments</span> 
+    <span class="nl">.setup_segments:</span>       
+        <span class="c1">; Next, we set all segment registers to zero.</span>
         <span class="nf">xor</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
         <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
         <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
         <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
         <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
-        <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>        
-        <span class="nf">mov</span> <span class="nb">sp</span><span class="p">,</span> <span class="nv">Stage1_entrypoint</span>    <span class="c1">; We set up a temporary stack so that it starts growing below Stage1_entrypoint (i.e. the stack base will be located at 0:0x7c00).</span>
-        <span class="nf">cld</span>    <span class="c1">; Clear the direction flag (i.e. go forward in memory when using instructions like lodsb).</span>
+        <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
+        <span class="c1">; We set up a temporary stack so that it starts growing below Stage1_entrypoint (i.e. the stack base will be located at 0:0x7c00).        </span>
+        <span class="nf">mov</span> <span class="nb">sp</span><span class="p">,</span> <span class="nv">Stage1_entrypoint</span>   
+        <span class="c1">; Clear direction flag (go forward in memory when using instructions like lodsb).</span>
+        <span class="nf">cld</span>    
 
     <span class="c1">; Loading stage 2 from disk into RAM</span>
     <span class="nf">mov</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">],</span> <span class="nb">dl</span> <span class="c1">; Storing disk number. BIOS loads into dl the &#34;drive number&#34; of the booted device.</span>
@@ -371,8 +374,9 @@ if (language) {
   
     <span class="c1">; Jump to the entry point of stage 2 (commented out for now)</span>
     <span class="c1">;;; jmp Stage2_entrypoint</span>
-    <span class="nl">.halt:</span> <span class="nf">hlt</span> 
-    <span class="nf">jmp</span> <span class="nv">.halt</span>     <span class="c1">; Infinite loop (it prevents us from going off and executing other junk in memory).</span>
+
+    <span class="nl">.halt:</span> <span class="nf">hlt</span>   <span class="c1">; Infinite loop.</span>
+    <span class="nf">jmp</span> <span class="nv">.halt</span>    <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
 
 
 <span class="c1">; Include</span>
@@ -438,7 +442,7 @@ if (language) {
     <span class="nl">.start:</span>
         <span class="nf">cmp</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span> <span class="c1">; (max sectors to read in one call = 127)</span>
         <span class="nf">jbe</span> <span class="nv">.good_size</span>
-         <span class="nf">pusha</span>
+        <span class="nf">pusha</span>
         <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
         <span class="nf">call</span> <span class="nv">Real_mode_read_disk</span>
         <span class="nf">popa</span>
@@ -517,7 +521,7 @@ if (language) {
     <span class="nf">pop</span> <span class="nb">si</span>
     <span class="nf">ret</span></code></pre></div>
 
-<h2 id="running-our-code">Running our code</h2>
+<h1 id="runningcode"><span lang="en">Running our code</span><span lang="el">Εκτέλεση του κώδικά μας</span></h1>
 
 <p lang="en">We can test our code very easily using an emulator like <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
 <p lang="el">Μπορούμε να δοκιμάσουμε τον κώδικά μας πολύ εύκολα, χρησιμοποιώντας έναν εξομοιωτή όπως ο <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
@@ -528,7 +532,7 @@ if (language) {
 
 <p><img class="centered" src="/images/os_stage1.jpg" alt="Running Bootloader Stage 1" title="Running Bootloader Stage 1"></p>
 
-<h2 id="fullcode"><span lang="en">Full code</span><span lang="el">Πλήρης κώδικας</span></h2>
+<h1 id="fullcode"><span lang="en">Full code</span><span lang="el">Πλήρης κώδικας</span></h1>
 
 <p lang="en">You can download the full code from here: <a href="https://github.com/Alamot/code-snippets/tree/master/os/part1" target="_blank">stage 1 code</a></p>
 <p lang="el">Μπορείτε να κατεβάσετε τον πλήρη κώδικα απο εδώ: <a href="https://github.com/Alamot/code-snippets/tree/master/os/part1" target="_blank">κώδικας για το πρώτο στάδιο</a></p> 
@@ -547,8 +551,8 @@ if (language) {
             <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fos_stage1%2f&t=How%20to%20write%20your%20own%20Operating%20System%20%28x86_64%29%3a%20Bootloader%2c%201st%20Stage" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
             <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fos_stage1%2f&text=How%20to%20write%20your%20own%20Operating%20System%20%28x86_64%29%3a%20Bootloader%2c%201st%20Stage&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
             <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fos_stage1%2f&text=%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%b3%cf%81%ce%ac%cf%88%ce%b5%cf%84%ce%b5%20%cf%84%ce%bf%20%ce%b4%ce%b9%ce%ba%cf%8c%20%cf%83%ce%b1%cf%82%20%ce%9b%ce%b5%ce%b9%cf%84%ce%bf%cf%85%cf%81%ce%b3%ce%b9%ce%ba%cf%8c%20%ce%a3%cf%8d%cf%83%cf%84%ce%b7%ce%bc%ce%b1%20%28x86_64%29%3a%20%ce%95%ce%ba%ce%ba%ce%b9%ce%bd%ce%b7%cf%84%ce%ae%cf%82%2c%201o%20%ce%a3%cf%84%ce%ac%ce%b4%ce%b9%ce%bf&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fos_stage1%2f&description=How%20to%20write%20your%20own%20Operating%20System%20%28x86_64%29%3a%20Bootloader%2c%201st%20Stage&media=https://alamot.github.io/images/os.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fos_stage1%2f&description=%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%b3%cf%81%ce%ac%cf%88%ce%b5%cf%84%ce%b5%20%cf%84%ce%bf%20%ce%b4%ce%b9%ce%ba%cf%8c%20%cf%83%ce%b1%cf%82%20%ce%9b%ce%b5%ce%b9%cf%84%ce%bf%cf%85%cf%81%ce%b3%ce%b9%ce%ba%cf%8c%20%ce%a3%cf%8d%cf%83%cf%84%ce%b7%ce%bc%ce%b1%20%28x86_64%29%3a%20%ce%95%ce%ba%ce%ba%ce%b9%ce%bd%ce%b7%cf%84%ce%ae%cf%82%2c%201o%20%ce%a3%cf%84%ce%ac%ce%b4%ce%b9%ce%bf&media=https://alamot.github.io/images/os.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fos_stage1%2f&description=How%20to%20write%20your%20own%20Operating%20System%20%28x86_64%29%3a%20Bootloader%2c%201st%20Stage&media=https://alamot.github.io/images/os1.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fos_stage1%2f&description=%ce%a0%cf%89%cf%82%20%ce%bd%ce%b1%20%ce%b3%cf%81%ce%ac%cf%88%ce%b5%cf%84%ce%b5%20%cf%84%ce%bf%20%ce%b4%ce%b9%ce%ba%cf%8c%20%cf%83%ce%b1%cf%82%20%ce%9b%ce%b5%ce%b9%cf%84%ce%bf%cf%85%cf%81%ce%b3%ce%b9%ce%ba%cf%8c%20%ce%a3%cf%8d%cf%83%cf%84%ce%b7%ce%bc%ce%b1%20%28x86_64%29%3a%20%ce%95%ce%ba%ce%ba%ce%b9%ce%bd%ce%b7%cf%84%ce%ae%cf%82%2c%201o%20%ce%a3%cf%84%ce%ac%ce%b4%ce%b9%ce%bf&media=https://alamot.github.io/images/os1.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -648,591 +652,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
+  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
+      <time lang="en">11 Apr 2022</time>
+      <time lang="el">11 Απρ 2022</time>
     </footer>
   </a>
 </article>
@@ -1242,14 +672,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1257,14 +680,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1272,14 +688,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1287,14 +696,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1302,14 +704,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1317,14 +712,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1332,14 +720,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1347,30 +728,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
            
            
            
@@ -1378,14 +736,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1393,30 +744,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
            
            
            
@@ -1424,14 +752,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1439,14 +760,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1454,30 +768,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
            
            
            
@@ -1485,14 +776,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1500,14 +784,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1515,23 +792,435 @@ if (language) {
            
            
            
+          
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
           
            
            
@@ -1713,6 +1402,169 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
+      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Oct 2016</time>
+      <time lang="el">21 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
@@ -1754,47 +1606,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
     </footer>
   </a>
 </article>
@@ -1805,21 +1627,250 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -1942,6 +1993,22 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1961,6 +2028,47 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2023,100 +2131,21 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

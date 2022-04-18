@@ -652,7 +652,7 @@ if (language) {
 <span class="cp">%define PAGE_PRESENT (1 &lt;&lt; 0)
 </span><span class="cp">%define PAGE_WRITE   (1 &lt;&lt; 1)
 </span><span class="cp">%define CODE_SEG      0x0008
-</span><span class="cp">%define FREE_SPACE    0x9000
+</span><span class="cp">%define PAGING_DATA   0x9000
 </span><span class="cp"></span>
 <span class="c1">;---Initialized data------------------------------------------------------------</span>
 
@@ -685,7 +685,7 @@ if (language) {
 <span class="c1">; ES:EDI Should point to a valid page-aligned 16KiB buffer, for the PML4, PDPT, PD and a PT.;</span>
 <span class="c1">; SS:ESP Should point to memory that can be used as a small (1 uint32_t) stack.             ;</span>
 <span class="c1">;*******************************************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">FREE_SPACE</span> <span class="c1">; Point edi to a free space bracket.</span>
+    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span> <span class="c1">; Point edi to a free space to create the paging structures.</span>
 
     <span class="c1">; Zero out the 16KiB buffer. Since we are doing a rep stosd, count should be bytes/4.   </span>
     <span class="nf">push</span> <span class="nb">di</span>         <span class="c1">; REP STOSD alters DI.</span>
@@ -702,7 +702,7 @@ if (language) {
 
      <span class="c1">; Build the Page Directory Pointer Table.</span>
     <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">]</span>         <span class="c1">; Put the address of the Page Directory in to EAX.</span>
-    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; Or EAX with the flags - present flag, writable flag.</span>
+    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
     <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">],</span> <span class="nb">eax</span>         <span class="c1">; Store the value of EAX as the first PDPTE.</span>
 
      <span class="c1">; Build the Page Directory.</span>
@@ -741,17 +741,17 @@ if (language) {
 <span class="no">PIC2_DATA</span><span class="kd">       equ</span> <span class="mh">0xA1</span> <span class="c1">; Data port of 2nd PIC</span>
 <span class="no">PIC_EOI</span><span class="kd">         equ</span> <span class="mh">0x20</span> <span class="c1">; EOI (End of interrupt) command (= 0x20)</span>
 
-<span class="no">ICW1_ICW4</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; ICW4 (not) needed </span>
-<span class="no">ICW1_SINGLE</span><span class="kd">     equ</span> <span class="mh">0x02</span> <span class="c1">; Single (cascade) mode</span>
-<span class="no">ICW1_INTERVAL4</span><span class="kd">  equ</span> <span class="mh">0x04</span> <span class="c1">; Call address interval 4 (8)</span>
-<span class="no">ICW1_LEVEL</span><span class="kd">      equ</span> <span class="mh">0x08</span> <span class="c1">; Level triggered (edge) mode</span>
+<span class="no">ICW1_ICW4</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; Initialization Command Word 4 is needed</span>
+<span class="no">ICW1_SINGLE</span><span class="kd">     equ</span> <span class="mh">0x02</span> <span class="c1">; Single mode (0: Cascade mode)</span>
+<span class="no">ICW1_INTERVAL4</span><span class="kd">  equ</span> <span class="mh">0x04</span> <span class="c1">; Call address interval 4 (0: 8)</span>
+<span class="no">ICW1_LEVEL</span><span class="kd">      equ</span> <span class="mh">0x08</span> <span class="c1">; Level triggered mode (0: Edge mode)</span>
 <span class="no">ICW1_INIT</span><span class="kd">       equ</span> <span class="mh">0x10</span> <span class="c1">; Initialization - required!</span>
 
-<span class="no">ICW4_8086</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; 8086/88 (MCS-80/85) mode</span>
-<span class="no">ICW4_AUTO</span><span class="kd">       equ</span> <span class="mh">0x02</span> <span class="c1">; Auto (normal) EOI</span>
+<span class="no">ICW4_8086</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; 8086/88 mode (0: MCS-80/85 mode)</span>
+<span class="no">ICW4_AUTO_EOI</span><span class="kd">   equ</span> <span class="mh">0x02</span> <span class="c1">; Auto End Of Interrupt (0: Normal EOI)</span>
 <span class="no">ICW4_BUF_SLAVE</span><span class="kd">  equ</span> <span class="mh">0x08</span> <span class="c1">; Buffered mode/slave</span>
 <span class="no">ICW4_BUF_MASTER</span><span class="kd"> equ</span> <span class="mh">0x0C</span> <span class="c1">; Buffered mode/master</span>
-<span class="no">ICW4_SFNM</span><span class="kd">       equ</span> <span class="mh">0x10</span> <span class="c1">; Special fully nested (not)</span>
+<span class="no">ICW4_SFNM</span><span class="kd">       equ</span> <span class="mh">0x10</span> <span class="c1">; Special Fully Nested Mode</span>
 
 
 <span class="c1">;---Code---------------------------------------------------------------------------</span>
@@ -777,19 +777,19 @@ if (language) {
     <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">ICW1_INIT</span> <span class="o">|</span> <span class="nv">ICW1_ICW4</span> <span class="c1">; ICW1: Send initialization command (= 0x11) to both PICs </span>
     <span class="nf">out</span> <span class="nv">PIC1_COMMAND</span><span class="p">,</span> <span class="nb">al</span>    
     <span class="nf">out</span> <span class="nv">PIC2_COMMAND</span><span class="p">,</span> <span class="nb">al</span>     
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x20</span>         <span class="c1">; ICW2: Set vector offset of 1st PIC to 0x20 (i.e. IRQ0 =&gt; INT 32) </span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x20</span>       <span class="c1">; ICW2: Set vector offset of 1st PIC to 0x20 (i.e. IRQ0 =&gt; INT 32) </span>
     <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x28</span>         <span class="c1">; ICW2: Set vector offset of 2nd PIC to 0x28 (i.e. IRQ8 =&gt; INT 40)    </span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x28</span>       <span class="c1">; ICW2: Set vector offset of 2nd PIC to 0x28 (i.e. IRQ8 =&gt; INT 40)    </span>
     <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">4</span>            <span class="c1">; ICW3: tell 1st PIC that there is a 2nd PIC at IRQ2 (= 00000100)</span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">4</span>          <span class="c1">; ICW3: tell 1st PIC that there is a 2nd PIC at IRQ2 (= 00000100)</span>
     <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>       
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>            <span class="c1">; ICW3: tell 2nd PIC its &#34;cascade&#34; identity (= 00000010) </span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>          <span class="c1">; ICW3: tell 2nd PIC its &#34;cascade&#34; identity (= 00000010) </span>
     <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>        
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">ICW4_8086</span>    <span class="c1">; ICW4: Set mode to 8086/88 (MCS-80/85) mode</span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">ICW4_8086</span>  <span class="c1">; ICW4: Set mode to 8086/88 mode</span>
     <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
     <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
 
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFF</span>         <span class="c1">; We mask all interrupts (until we set a proper IDT in Kernel)</span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFF</span>       <span class="c1">; OCW1: We mask all interrupts (until we set a proper IDT in Kernel)</span>
     <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
     <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
 
@@ -831,7 +831,7 @@ if (language) {
 <span class="c1">;********************************************************************;</span>
 <span class="c1">; Enter long mode                                                    ;</span>
 <span class="c1">;********************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">FREE_SPACE</span> <span class="c1">; Point edi to a free space bracket.</span>
+    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span><span class="c1">; Point edi at the PAGING_DATA.</span>
     <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mb">10100000b</span>  <span class="c1">; Set the PAE and PGE bit.</span>
     <span class="nf">mov</span> <span class="nb">cr4</span><span class="p">,</span> <span class="nb">eax</span>
     <span class="nf">mov</span> <span class="nb">edx</span><span class="p">,</span> <span class="nb">edi</span>        <span class="c1">; Point CR3 at the PML4.</span>
@@ -927,6 +927,294 @@ if (language) {
           
           
           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1296,304 +1584,6 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -1660,25 +1650,20 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
            
           
            
@@ -1841,6 +1826,37 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1875,6 +1891,52 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1942,57 +2004,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2014,20 +2025,56 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
            
           
            
@@ -2176,20 +2223,120 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
+      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">21 Oct 2016</time>
+      <time lang="el">21 Οκτ 2016</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2312,21 +2459,15 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2379,161 +2520,20 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

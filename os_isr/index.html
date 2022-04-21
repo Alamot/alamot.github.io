@@ -303,7 +303,7 @@ if (language) {
 
 <h1 id="intro"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></h1>
 
-<p lang="en">In our previous articles, we showed <a href="/os_stage1/">how to implement a bootloader</a> and <a href="/os_stage2/">how to enter the long mode</a>. In this part, we will discuss the Interrupts. An Interrupt is a signal emitted by hardware or software when a process or an event needs attention. Usually, an Interrupt Vector Table (IVT) is used to determine the proper response to three types of events: Hardware Interrupts, Software Interrupts, and Processor Exceptions. In the x86_64 architecture, this data structure is named Interrupt Descriptor Table (<strong>IDT</strong>) and consists of 256 interrupt vectors, the first 32 (0–31 or 0x00–0x1F) of which are reserved for the processor exceptions.</p>
+<p lang="en">In our previous articles, we showed <a href="/os_stage1/">how to implement a bootloader</a> and <a href="/os_stage2/">how to enter the long mode</a>. In this part, we will discuss the Interrupts. An Interrupt is a signal emitted by hardware or software when a process or an event needs attention. Usually, an Interrupt Vector Table (IVT) is used to determine the proper response to three types of events: Hardware Interrupts, Software Interrupts, and Processor Exceptions. In the x86_64 architecture, this data structure is named Interrupt Descriptor Table (<strong>IDT</strong>) and consists of 256 interrupt vectors, the first 32 of which (0–31 or 0x00–0x1F) are reserved for the processor exceptions.</p>
 <p lang="el">Σε προηγούμενα άρθρα μας, είδαμε <a href="/os_stage1/">πώς να υλοποιήσουμε έναν εκκινητή</a> και <a href="/os_stage2/">πώς να μπούμε στη λειτουργία μακράς κατάστασης</a>. Σε αυτό το μέρος, θα συζητήσουμες τις Διακοπές. Μια Διακοπή είναι ένα σήμα που παράγεται από το υλικό ή το λογισμικό όταν μια διεργασία ή ένα συμβάν χρειάζεται προσοχή. Σύνηθως, ένας Διανυσματικός Πίνακας Διακοπών (Interrupt Vector Table, IVT) χρησιμοποιείται για να καθοριστεί η κατάλληλη απάντηση σε τρια ήδη συμβάντων: Διακοπές Υλικού (Hardware Interrupts), Διακοπές Λογισμικού (Software Interrupts) και Εξαιρέσεις Επεξεργαστή (Processor Exceptions). Στην αρχιτεκτονική x86_64, αυτή η δομή δεδομένων ονομάζεται Πίνακας Περιγραφής Διακοπών (Interrupt Descriptor Table, <strong>IDT</strong>) και αποτελείται από 256 διανύσματα Διακοπών, από τα οποία τα 32 πρώτα (0–31 ή 0x00–0x1F) είναι δεσμευμένα για τις Εξαιρέσεις του Επεξεργαστή.</p>
 
 <h1 id="kernelcode"><span lang="en">Kernel Code: Interrupts</span><span lang="el">Κώδικας του Πυρήνα: Διακοπές</span></h1>
@@ -404,7 +404,7 @@ if (language) {
 
 <h2 id="kernel-video-asm">kernel/video.asm</h2>
 
-<p lang="en">Before we go any further, in order to get some feedback, we we have to write some code that print messages on the screen. We cannot depend on the BIOS services any more, because the BIOS is designed to run in real mode (and we are now in long mode). Thus, we have to write our own graphics driver that access the video memory directly:</p>
+<p lang="en">Before we go any further, in order to get some feedback, we have to write some code that print messages on the screen. We cannot depend on the BIOS services any more, because the BIOS is designed to run in real mode (and we are now in long mode). Thus, we have to write our own graphics driver that access the video memory directly:</p>
 <p lang="el">Πριν προχωρήσουμε παρακάτω, για να μπορούμε να έχουμε κάποια ανάδραση για το τι συμβαίνει, πρέπει να γράψουμε κάποιον κώδικα που θα εκτυπώνει μηνύματα στην οθόνη μας. Δεν μπορούμε να βασιζόμαστε πλέον στις υπηρεσίες του BIOS, μιας και το BIOS έχει σχεδιαστεί για να τρέχει σε λειτουργία πραγματικής κατάστασης (real mode), ενώ εμείς βρισκόμαστε τώρα σε λειτουργία μακράς κατάστασης (long mode). Οπότε, πρέπει να γράψουμε τον δικό μας οδηγό γραφικών (graphics driver) ο οποίος θα επεξεργάζεται απευθείας τη μνήμη των γραφικών:</p>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">64</span>
@@ -931,278 +931,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Apr 2022</time>
-      <time lang="el">11 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/os_stage1/" class="clearfix">
     <div class="cell">
@@ -1472,13 +1200,6 @@ if (language) {
            
            
           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1486,14 +1207,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1501,14 +1215,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1516,14 +1223,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1531,14 +1231,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1546,14 +1239,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1561,14 +1247,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1576,14 +1255,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1591,28 +1263,61 @@ if (language) {
            
            
            
+          
+           
+           
            
           
            
            
            
+          
+           
+           
            
           
            
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
+      <time lang="en">11 Apr 2022</time>
+      <time lang="el">11 Απρ 2022</time>
     </footer>
   </a>
 </article>
@@ -1622,14 +1327,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1637,14 +1335,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1652,14 +1343,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1667,14 +1351,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1682,14 +1359,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1697,14 +1367,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1712,14 +1375,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1727,14 +1383,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1742,14 +1391,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1757,30 +1399,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
            
            
            
@@ -1788,14 +1407,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1803,14 +1415,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1818,14 +1423,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1833,14 +1431,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1848,14 +1439,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1863,14 +1447,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1878,7 +1455,23 @@ if (language) {
            
            
            
+          
            
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
           
            
            
@@ -1970,26 +1563,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
@@ -2011,21 +1584,10 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
            
           
            
@@ -2077,83 +1639,10 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
            
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2271,17 +1760,67 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
     </footer>
   </a>
 </article>
@@ -2331,6 +1870,435 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2408,6 +2376,22 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
+      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Oct 2016</time>
+      <time lang="el">21 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -2422,6 +2406,22 @@ if (language) {
            
            
            
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

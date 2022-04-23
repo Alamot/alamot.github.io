@@ -310,7 +310,7 @@ if (language) {
 <p lang="en">In a preemptive multitasking system (i.e. most modern operating systems), task switches are caused by an external actor (usually the Κernel) and are done for one or more reasons (e.g. when the task consumed its timeframe and/or when a higher priority task needed the CPU). We can further subdivide these systems into those who can preempt only user tasks (e.g. pre-2.6 kernel Linux), and those who can preempt the Kernel itself. This is a major concern for any real-time system or multimedia applications because a non-preemptive Kernel may cause significant latencies and reduced responsiveness.</p>
 <p lang="el">Σε ένα σύστημα Προεκτοπιστικής Πολυδιεργασίας (όπως ειναι τα περισσότερα μοντέρνα λειτουργικά συστήματα), οι εναλλαγές των διεργασιών προκαλούνται από έναν εξωτερικό παράγοντα (συνήθως τον Πυρήνα) και γίνονται για έναν ή περισσότερους λόγους (π.χ. όταν η διεργασία έχει εξαντλήσει το χρονικό πλαίσιο που της αναλογεί ή/και όταν μια διεργασία υψηλότερης προτεραιότητας χρειάζεται τον επεξεργαστή). Μπορούμε να υποδιαιρέσουμε περαιτέρω αυτά τα συστήματα, σε εκείνα που μπορούν να προεκτοπίζουν μόνο διεργασίες των χρηστών και σε εκείνα που μπορούν να προεκτοπίζουν και τις διεργασίες του ίδιου του Πυρήνα. Αυτό αποτελεί ένα σημαντικό ζήτημα για οποιοδήποτε σύστημα Πραγματικού Χρόνου (real-time system) ή για εφαρμογές Πολυμέσων (Multimedia applications), επειδή ένας μη προεκτοπιστικός Πυρήνας ενδέχεται να προκαλεί σημαντικές καθυστερήσεις και μειωμένη αποκρισιμότητα.</p>
 
-<p lang="en">An important fact you need to know: Even though there are mechanisms in the hardware to facilitate the task / context switching, they come with significant performance considerations. The hardware mechanisms save almost all of the CPU state and consequently, they can be slower than it is necessary. For example, when the CPU loads new segment registers it performs all of the access and permission checks that are involved. As long mode doesn't use segmentation anymore, loading the segment registers during context switches may be not be required. In any case, CPU manufacturers do not seem eager to improve the hardware switching mechanisms. Therefore, modern operating systems prefer to implement the switching in software (as we will do).</p>
+<p lang="en">An important fact you need to know: Even though there are mechanisms in the hardware to facilitate the task / context switching, they come with significant performance considerations. The hardware mechanisms save almost all of the CPU state and consequently, they can be slower than it is necessary. For example, when the CPU loads new segment registers, a lot of access and permission checks that are involved. As the long mode doesn't use segmentation anymore, loading the segment registers during context switches may not be required. In any case, CPU manufacturers do not seem eager to improve the hardware switching mechanisms. Therefore, modern operating systems prefer to implement the switching in software (as we will do).</p>
 <p lang="el">Ένα σημαντικό γεγονός που πρέπει να γνωρίζετε: Αν και υπάρχουν μηχανισμοί στο υλικό που διευκολύνουν την εναλλαγή διεργασιών / πλαισίου, αυτοί συνοδεύονται από σοβαρές επιφυλάξεις όσον αφορά την απόδοσή τους. Οι μηχανισμοί του υλικού αποθηκεύουν σχεδόν όλη την κατάτασταση του επεξεργαστή με συνέπεια τις περισσότερες φορές να είναι πιο αργοί από όσο χρειάζεται. Για παράδειγμα, όταν ο επεξεργαστής φορτώνει τους καταχωρητές τμημάτων, επιτελεί και όλους τους σχετικούς ελέγχους πρόσβασης και δικαιωμάτων. Αλλά, καθώς η λειτουργία μακράς κατάστασης δε χρησιμοποιεί πια την κατάτμηση (segmentation), η φόρτωση των καταχωρητών τμήματος κατά την εναλλαγή πλαίσιου μπορεί να μη χρειάζεται. Σε κάθε περίπτωση, οι κατασκευαστές επεξεργαστών δε φαίνονται ιδιαίτερα ενθουσιώδεις στο να βελτιώσουν τους μηχανισμούς εναλλαγής στο υλικό. Οπότε, τα σύγχρονα λειτουργικά συστήματα προτιμούν να υλοποιούν την εναλλαγή στο λογισμικό (όπως θα κάνουμε κι εμείς).</p>
 
 <h1 id="kernelcode"><span lang="en">Kernel Code: Multitasking</span><span lang="el">Κώδικας του Πυρήνα: Πολυδιεργασία</span></h1>
@@ -660,12 +660,12 @@ if (language) {
 <span class="nl">Kernel:</span>
     <span class="nf">lidt</span> <span class="p">[</span><span class="nv">IDTR</span><span class="p">]</span> <span class="c1">; Load our IDTR</span>
 
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC</span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC.</span>
     <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC</span>
+    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC.</span>
     <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
 
-    <span class="c1">; Set all segments registers to DATA_SEG</span>
+    <span class="c1">; Set all segments registers to DATA_SEG.</span>
     <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">DATA_SEG</span>
     <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
     <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
@@ -678,14 +678,14 @@ if (language) {
                                 <span class="c1">; character to blank space (20).</span>
     <span class="nf">call</span> <span class="nv">Fill_screen</span>            
 
-    <span class="c1">; Print &#34;Hello World!&#34; at the upper right corner</span>
+    <span class="c1">; Print &#34;Hello World!&#34; at the upper right corner.</span>
     <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0x1E</span>
     <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">69</span>
     <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
     <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">hello_world_message</span>
     <span class="nf">call</span> <span class="nv">Print</span>
 
-    <span class="c1">; Initialize general stack allocation to the current rsp value</span>
+    <span class="c1">; Initialize general stack allocation to the current rsp value.</span>
     <span class="nf">mov</span> <span class="p">[</span><span class="nv">stack_allocation</span><span class="p">],</span> <span class="nb">rsp</span>
 
     <span class="c1">; Create three tasks</span>
@@ -696,10 +696,10 @@ if (language) {
     <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">Task3</span>
     <span class="nf">call</span> <span class="nv">Create_task</span>
  
-    <span class="c1">; Set active the first task slot</span>
+    <span class="c1">; Set active the first task slot.</span>
     <span class="nf">mov</span> <span class="kt">qword</span> <span class="p">[</span><span class="nv">active_task_slot</span><span class="p">],</span> <span class="mi">0</span>
 
-    <span class="c1">; Task 1: We print system timer ticks and keyboard scan code</span>
+    <span class="c1">; Task 1: We print system timer ticks and keyboard scan code.</span>
     <span class="nl">Task1:</span>
         <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_DARK_GREY</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_WHITE</span>
         <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
@@ -813,370 +813,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2022</time>
-      <time lang="el">10 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/os_isr/" class="clearfix">
     <div class="cell">
@@ -1192,6 +828,118 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1502,13 +1250,6 @@ if (language) {
            
            
           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1516,14 +1257,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1531,14 +1265,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1546,17 +1273,235 @@ if (language) {
            
            
            
+          
+           
+           
            
           
            
            
            
+          
+           
+           
            
           
            
            
            
+          
            
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2022</time>
+      <time lang="el">10 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
           
            
            
@@ -1602,199 +1547,6 @@ if (language) {
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -1896,6 +1648,32 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2053,6 +1831,107 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
     <div class="cell">
@@ -2068,6 +1947,168 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2265,6 +2306,111 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
@@ -2280,137 +2426,6 @@ if (language) {
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2472,21 +2487,6 @@ if (language) {
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
         </div>

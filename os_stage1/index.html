@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -307,33 +307,33 @@ if (language) {
 <p lang="en">For this project, we are going to use the <a href="https://en.wikipedia.org/wiki/Netwide_Assembler" target="_blank">Netwide Assembler (NASM)</a>. Our initial Makefile is like that:</p>
 <p lang="el">Για αυτό το έργο, θα χρησιμοποιήσουμε τον <a href="https://en.wikipedia.org/wiki/Netwide_Assembler" target="_blank">Netwide Assembler (NASM)</a>. Το αρχικό μας Makefile είναι ως εξής:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span><span class="p">,</span> .<span class="n">force</span>-<span class="n">rebuild</span>
-<span class="nf">all</span><span class="o">:</span> <span class="n">bootloader</span>.<span class="n">bin</span>
-
-<span class="nf">bootloader.bin</span><span class="o">:</span> <span class="n">os</span>.<span class="n">asm</span> .<span class="n">force</span>-<span class="n">rebuild</span>
-	nasm -fbin os.asm -o os.bin
-
-<span class="nf">clean</span><span class="o">:</span>
-	rm *.bin
-</code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-makefile" data-lang="makefile"><span class="line"><span class="cl"><span class="nf">.PHONY</span><span class="o">:</span> <span class="n">clean</span><span class="p">,</span> .<span class="n">force</span>-<span class="n">rebuild</span>
+</span></span><span class="line"><span class="cl"><span class="nf">all</span><span class="o">:</span> <span class="n">bootloader</span>.<span class="n">bin</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">bootloader.bin</span><span class="o">:</span> <span class="n">os</span>.<span class="n">asm</span> .<span class="n">force</span>-<span class="n">rebuild</span>
+</span></span><span class="line"><span class="cl">	nasm -fbin os.asm -o os.bin
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">clean</span><span class="o">:</span>
+</span></span><span class="line"><span class="cl">	rm *.bin
+</span></span></code></pre></div>
 
 <p lang="en">The contents of os.asm are:</p>
 <p lang="el">Τα περιεχόμενα του os.asm είναι:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="nl">stage1_start:</span>
-    <span class="kd">times</span> <span class="mi">90</span> <span class="nv">db</span> <span class="mi">0</span> <span class="c1">; BPB (BIOS Parameter Block) will go here</span>
-<span class="cp">    %include &#34;stage1/bootstage1.asm&#34;
-</span><span class="cp"></span><span class="nl">stage1_end:</span>
-
-<span class="nl">stage2_start:</span>
-<span class="cp">    %include &#34;stage2/bootstage2.asm&#34;
-</span><span class="cp"></span>    <span class="k">align</span> <span class="mi">512</span><span class="p">,</span> <span class="nv">db</span> <span class="mi">0</span>
-<span class="nl">stage2_end:</span>
-
-<span class="nl">kernel_start:</span>
-<span class="cp">    %include &#34;kernel/kernel.asm&#34;
-</span><span class="cp"></span>    <span class="k">align</span> <span class="mi">512</span><span class="p">,</span> <span class="nv">db</span> <span class="mi">0</span>
-<span class="nl">kernel_end:</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="nl">stage1_start:</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">times</span> <span class="mi">90</span> <span class="nv">db</span> <span class="mi">0</span> <span class="c1">; BPB (BIOS Parameter Block) will go here</span>
+</span></span><span class="line"><span class="cl"><span class="cp">    %include &#34;stage1/bootstage1.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nl">stage1_end:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">stage2_start:</span>
+</span></span><span class="line"><span class="cl"><span class="cp">    %include &#34;stage2/bootstage2.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="k">align</span> <span class="mi">512</span><span class="p">,</span> <span class="nv">db</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="nl">stage2_end:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">kernel_start:</span>
+</span></span><span class="line"><span class="cl"><span class="cp">    %include &#34;kernel/kernel.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>    <span class="k">align</span> <span class="mi">512</span><span class="p">,</span> <span class="nv">db</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="nl">kernel_end:</span></span></span></code></pre></div>
 
 <h1 id="stage1code"><span lang="en">Stage 1 of the Bootloader</span><span lang="el">Στάδιο 1 του Εκκινητή</span></h1>
 
@@ -342,193 +342,193 @@ if (language) {
 <p lang="en">Let's see the code for the first stage:</p>
 <p lang="el">Ας δούμε τον κώδικα για το πρώτο στάδιο:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>    <span class="c1">; On the x86, the BIOS (and consequently the bootloader) runs in 16-bit Real Mode.</span>
-<span class="k">ORG</span> <span class="mh">0x7C00</span> <span class="c1">; We are loaded/booted by BIOS into this memory address.</span>
-
-<span class="nl">Stage1_entrypoint:</span>         <span class="c1">; Main entry point where BIOS leaves us. Some BIOS may load us at 0x0000:0x7C00 while others at 0x07C0:0x0000. We do a far jump to accommodate for this issue (CS is reloaded to 0x0000).</span>
-    <span class="nf">jmp</span> <span class="mh">0x0000</span><span class="p">:</span><span class="nv">.setup_segments</span> 
-    <span class="nl">.setup_segments:</span>       
-        <span class="c1">; Next, we set all segment registers to zero.</span>
-        <span class="nf">xor</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
-        <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
-        <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-        <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-        <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
-        <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
-        <span class="c1">; We set up a temporary stack so that it starts growing below Stage1_entrypoint (i.e. the stack base will be located at 0:0x7c00).        </span>
-        <span class="nf">mov</span> <span class="nb">sp</span><span class="p">,</span> <span class="nv">Stage1_entrypoint</span>   
-        <span class="c1">; Clear direction flag (go forward in memory when using instructions like lodsb).</span>
-        <span class="nf">cld</span>    
-
-    <span class="c1">; Loading stage 2 from disk into RAM</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">],</span> <span class="nb">dl</span> <span class="c1">; Storing disk number. BIOS loads into dl the &#34;drive number&#34; of the booted device.</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="p">(</span><span class="nv">stage2_start</span><span class="o">-</span><span class="nv">stage1_start</span><span class="p">)</span><span class="o">/</span><span class="mi">512</span> <span class="c1">; ax: start sector</span>
-    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="p">(</span><span class="nv">kernel_end</span><span class="o">-</span><span class="nv">stage2_start</span><span class="p">)</span><span class="o">/</span><span class="mi">512</span>   <span class="c1">; cx: number of sectors (512 bytes) to read</span>
-    <span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="nv">stage2_start</span>                    <span class="c1">; bx: offset of buffer</span>
-    <span class="nf">xor</span> <span class="nb">dx</span><span class="p">,</span> <span class="nb">dx</span>                              <span class="c1">; dx: segment of buffer</span>
-    <span class="nf">call</span> <span class="nv">Real_mode_read_disk</span>
-    
-    <span class="c1">; Print &#34;Stage 1 finished.&#34; message.</span>
-    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">stage1_message</span>
-    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-  
-    <span class="c1">; Jump to the entry point of stage 2 (commented out for now)</span>
-    <span class="c1">;;; jmp Stage2_entrypoint</span>
-
-    <span class="nl">.halt:</span> <span class="nf">hlt</span>   <span class="c1">; Infinite loop.</span>
-    <span class="nf">jmp</span> <span class="nv">.halt</span>    <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
-
-
-<span class="c1">; Include</span>
-<span class="cp">%include &#34;stage1/disk.asm&#34;  
-</span><span class="cp">%include &#34;stage1/print.asm&#34;  
-</span><span class="cp"></span>
-
-<span class="kd">times</span> <span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span> <span class="nv">db</span> <span class="mi">0</span> <span class="c1">; Padding</span>
-<span class="kd">dw</span> <span class="mh">0xAA55</span> <span class="c1">; The last two bytes of the boot sector should have the 0xAA55 signature.</span>
-<span class="c1">; Otherwise, we&#39;ll get an error message from BIOS that it didn&#39;t find a bootable disk.</span>
-<span class="c1">; This signature is represented in binary as 1010101001010101. The alternating bit </span>
-<span class="c1">; pattern was thought to be a protection against certain (drive or controller) failures.</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>    <span class="c1">; On the x86, the BIOS (and consequently the bootloader) runs in 16-bit Real Mode.</span>
+</span></span><span class="line"><span class="cl"><span class="k">ORG</span> <span class="mh">0x7C00</span> <span class="c1">; We are loaded/booted by BIOS into this memory address.</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Stage1_entrypoint:</span>         <span class="c1">; Main entry point where BIOS leaves us. Some BIOS may load us at 0x0000:0x7C00 while others at 0x07C0:0x0000. We do a far jump to accommodate for this issue (CS is reloaded to 0x0000).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="mh">0x0000</span><span class="p">:</span><span class="nv">.setup_segments</span> 
+</span></span><span class="line"><span class="cl">    <span class="nl">.setup_segments:</span>       
+</span></span><span class="line"><span class="cl">        <span class="c1">; Next, we set all segment registers to zero.</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">xor</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">; We set up a temporary stack so that it starts growing below Stage1_entrypoint (i.e. the stack base will be located at 0:0x7c00).        </span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">sp</span><span class="p">,</span> <span class="nv">Stage1_entrypoint</span>   
+</span></span><span class="line"><span class="cl">        <span class="c1">; Clear direction flag (go forward in memory when using instructions like lodsb).</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">cld</span>    
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Loading stage 2 from disk into RAM</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">],</span> <span class="nb">dl</span> <span class="c1">; Storing disk number. BIOS loads into dl the &#34;drive number&#34; of the booted device.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="p">(</span><span class="nv">stage2_start</span><span class="o">-</span><span class="nv">stage1_start</span><span class="p">)</span><span class="o">/</span><span class="mi">512</span> <span class="c1">; ax: start sector</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="p">(</span><span class="nv">kernel_end</span><span class="o">-</span><span class="nv">stage2_start</span><span class="p">)</span><span class="o">/</span><span class="mi">512</span>   <span class="c1">; cx: number of sectors (512 bytes) to read</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">bx</span><span class="p">,</span> <span class="nv">stage2_start</span>                    <span class="c1">; bx: offset of buffer</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">dx</span><span class="p">,</span> <span class="nb">dx</span>                              <span class="c1">; dx: segment of buffer</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_read_disk</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">; Print &#34;Stage 1 finished.&#34; message.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">stage1_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    <span class="c1">; Jump to the entry point of stage 2 (commented out for now)</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">;;; jmp Stage2_entrypoint</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nl">.halt:</span> <span class="nf">hlt</span>   <span class="c1">; Infinite loop.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span>    <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; Include</span>
+</span></span><span class="line"><span class="cl"><span class="cp">%include &#34;stage1/disk.asm&#34;  
+</span></span></span><span class="line"><span class="cl"><span class="cp">%include &#34;stage1/print.asm&#34;  
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kd">times</span> <span class="mi">510</span><span class="o">-</span><span class="p">(</span><span class="kc">$</span><span class="o">-</span><span class="kc">$$</span><span class="p">)</span> <span class="nv">db</span> <span class="mi">0</span> <span class="c1">; Padding</span>
+</span></span><span class="line"><span class="cl"><span class="kd">dw</span> <span class="mh">0xAA55</span> <span class="c1">; The last two bytes of the boot sector should have the 0xAA55 signature.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Otherwise, we&#39;ll get an error message from BIOS that it didn&#39;t find a bootable disk.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; This signature is represented in binary as 1010101001010101. The alternating bit </span>
+</span></span><span class="line"><span class="cl"><span class="c1">; pattern was thought to be a protection against certain (drive or controller) failures.</span></span></span></code></pre></div>
 
 <h2 id="stage1-disk-asm">stage1/disk.asm</h2>
 
 <p lang="en">Here is some code for reading disk sectors (i.e. loading them into RAM). We use the BIOS interrupt call INT 13h, service AH=42h, for the extended reading (i.e. LBA addressing) of the disk sectors:</p>
 <p lang="el">Εδώ βρίσκεται ο κώδικας για την ανάγνωση τομέων από τον δίσκο (δηλαδή τη φόρτωσή τους στη RAM). Χρησιμοποιούμε κλήση στη διακοπή INT 13h του BIOS, υπηρεσία AH=42h, που αφορά εκτεταμένη ανάγνωση (LBA addressing) των τομέων ενός δίσκου:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>
-
-<span class="c1">;---Initialized data------------------------------------------------------------</span>
-
-<span class="nf">disk</span> <span class="nv">db</span> <span class="mh">0x80</span>
-
-<span class="nf">disk_error_message</span> <span class="nv">dw</span> <span class="mi">11</span>
-<span class="kd">db</span> <span class="s">&#39;Disk error!&#39;</span>
-
-
-<span class="nl">DAP:</span>
-<span class="c1">;*******************************************************************************;</span>
-<span class="c1">; Disk Address Packet                                                           ;</span>
-<span class="c1">;-------------------------------------------------------------------------------;</span>
-<span class="c1">; Offset  Size   Description                                                    ;</span>
-<span class="c1">;   0       1    size of packet (16 bytes)                                      ;</span>
-<span class="c1">;   1       1    always 0                                                       ;</span>
-<span class="c1">;   2       2    number of sectors to load (max = 127 on some BIOS)             ;</span>
-<span class="c1">;   4       2    16-bit offset of target buffer                                 ;</span>
-<span class="c1">;   4       2    16-bit segment of target buffer                                ;</span>
-<span class="c1">;   8       4    lower 32 bits of 48-bit starting LBA                           ;   </span>
-<span class="c1">;  12       4    upper 32 bits of 48-bit starting LBA                           ;</span>
-<span class="c1">;*******************************************************************************;</span>
-              <span class="kd">db</span> <span class="mh">0x10</span> <span class="c1">; size of packet = 16 bytes</span>
-              <span class="kd">db</span> <span class="mi">0</span>    <span class="c1">; always 0</span>
-<span class="nl">.num_sectors:</span> <span class="kd">dw</span> <span class="mi">127</span>  <span class="c1">; number of sectors to load (max = 127 on some BIOS)</span>
-<span class="nl">.buf_offset:</span>  <span class="kd">dw</span> <span class="mh">0x0</span>  <span class="c1">; 16-bit offset of target buffer </span>
-<span class="nl">.buf_segment:</span> <span class="kd">dw</span> <span class="mh">0x0</span>  <span class="c1">; 16-bit segment of target buffer</span>
-<span class="nl">.LBA_lower:</span>   <span class="kd">dd</span> <span class="mh">0x0</span>  <span class="c1">; lower 32 bits of 48-bit starting LBA</span>
-<span class="nl">.LBA_upper:</span>   <span class="kd">dd</span> <span class="mh">0x0</span>  <span class="c1">; upper 32 bits of 48-bit starting LBA</span>
-
-
-
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-
-<span class="nl">Real_mode_read_disk:</span>
-<span class="c1">;**********************************************************;</span>
-<span class="c1">; Load disk sectors to memory (int 13h, function code 42h) ;</span>
-<span class="c1">;----------------------------------------------------------;</span>
-<span class="c1">; ax: start sector                                         ;</span>
-<span class="c1">; cx: number of sectors (512 bytes) to read                ;</span>
-<span class="c1">; bx: offset of buffer                                     ;</span>
-<span class="c1">; dx: segment of buffer                                    ;</span>
-<span class="c1">;**********************************************************;</span>
-    <span class="nl">.start:</span>
-        <span class="nf">cmp</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span> <span class="c1">; (max sectors to read in one call = 127)</span>
-        <span class="nf">jbe</span> <span class="nv">.good_size</span>
-        <span class="nf">pusha</span>
-        <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
-        <span class="nf">call</span> <span class="nv">Real_mode_read_disk</span>
-        <span class="nf">popa</span>
-        <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">127</span>
-        <span class="nf">add</span> <span class="nb">dx</span><span class="p">,</span> <span class="mi">127</span> <span class="o">*</span> <span class="mi">512</span> <span class="o">/</span> <span class="mi">16</span>
-        <span class="nf">sub</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
-        <span class="nf">jmp</span> <span class="nv">.start</span>
-
-    <span class="nl">.good_size:</span>
-        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.LBA_lower</span><span class="p">],</span> <span class="nb">ax</span>
-        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.num_sectors</span><span class="p">],</span> <span class="nb">cx</span>
-        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_segment</span><span class="p">],</span> <span class="nb">dx</span>
-        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_offset</span><span class="p">],</span> <span class="nb">bx</span>
-        <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">]</span>
-        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">DAP</span>
-        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0x42</span>
-        <span class="nf">int</span> <span class="mh">0x13</span>
-        <span class="nf">jc</span> <span class="nv">.print_error</span>
-        <span class="nf">ret</span>
-    <span class="nl">.print_error:</span>
-        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nb">di</span><span class="nv">sk_error_message</span>
-        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-       <span class="nl">.halt:</span> <span class="nf">hlt</span>
-        <span class="nf">jmp</span> <span class="nv">.halt</span><span class="c1">; Infinite loop. We cannot recover from disk error.</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">disk</span> <span class="nv">db</span> <span class="mh">0x80</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">disk_error_message</span> <span class="nv">dw</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Disk error!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">DAP:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*******************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Disk Address Packet                                                           ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;-------------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Offset  Size   Description                                                    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;   0       1    size of packet (16 bytes)                                      ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;   1       1    always 0                                                       ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;   2       2    number of sectors to load (max = 127 on some BIOS)             ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;   4       2    16-bit offset of target buffer                                 ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;   4       2    16-bit segment of target buffer                                ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;   8       4    lower 32 bits of 48-bit starting LBA                           ;   </span>
+</span></span><span class="line"><span class="cl"><span class="c1">;  12       4    upper 32 bits of 48-bit starting LBA                           ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*******************************************************************************;</span>
+</span></span><span class="line"><span class="cl">              <span class="kd">db</span> <span class="mh">0x10</span> <span class="c1">; size of packet = 16 bytes</span>
+</span></span><span class="line"><span class="cl">              <span class="kd">db</span> <span class="mi">0</span>    <span class="c1">; always 0</span>
+</span></span><span class="line"><span class="cl"><span class="nl">.num_sectors:</span> <span class="kd">dw</span> <span class="mi">127</span>  <span class="c1">; number of sectors to load (max = 127 on some BIOS)</span>
+</span></span><span class="line"><span class="cl"><span class="nl">.buf_offset:</span>  <span class="kd">dw</span> <span class="mh">0x0</span>  <span class="c1">; 16-bit offset of target buffer </span>
+</span></span><span class="line"><span class="cl"><span class="nl">.buf_segment:</span> <span class="kd">dw</span> <span class="mh">0x0</span>  <span class="c1">; 16-bit segment of target buffer</span>
+</span></span><span class="line"><span class="cl"><span class="nl">.LBA_lower:</span>   <span class="kd">dd</span> <span class="mh">0x0</span>  <span class="c1">; lower 32 bits of 48-bit starting LBA</span>
+</span></span><span class="line"><span class="cl"><span class="nl">.LBA_upper:</span>   <span class="kd">dd</span> <span class="mh">0x0</span>  <span class="c1">; upper 32 bits of 48-bit starting LBA</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Real_mode_read_disk:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Load disk sectors to memory (int 13h, function code 42h) ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;----------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; ax: start sector                                         ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; cx: number of sectors (512 bytes) to read                ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; bx: offset of buffer                                     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; dx: segment of buffer                                    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.start:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">cmp</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span> <span class="c1">; (max sectors to read in one call = 127)</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jbe</span> <span class="nv">.good_size</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">pusha</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_read_disk</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">popa</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">127</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">dx</span><span class="p">,</span> <span class="mi">127</span> <span class="o">*</span> <span class="mi">512</span> <span class="o">/</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">sub</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jmp</span> <span class="nv">.start</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nl">.good_size:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.LBA_lower</span><span class="p">],</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.num_sectors</span><span class="p">],</span> <span class="nb">cx</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_segment</span><span class="p">],</span> <span class="nb">dx</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_offset</span><span class="p">],</span> <span class="nb">bx</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">DAP</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0x42</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">int</span> <span class="mh">0x13</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jc</span> <span class="nv">.print_error</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.print_error:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nb">di</span><span class="nv">sk_error_message</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">       <span class="nl">.halt:</span> <span class="nf">hlt</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jmp</span> <span class="nv">.halt</span><span class="c1">; Infinite loop. We cannot recover from disk error.</span></span></span></code></pre></div>
 
 <h2 id="stage1-print-asm">stage1/print.asm</h2>
 
 <p lang="en">Here is our code for printing messages. We use the BIOS interrupt call INT 10h, service AH=0Eh to print each character. Note that we do not use null-terminated strings. Instead, we opted to store the string length in the first 16 bits (2 bytes) of the string structure:</p>
 <p lang="el">Εδώ έχουμε τον κώδικά μας για την εκτύπωση μηνυμάτων. Χρησιμοποιούμε κλήση στη διακοπή INT 10h του BIOS, υπηρεσία AH=0Eh για να εκτυπώσουμε τον κάθε χαρακτήρα. Σημειώστε ότι δεν χρησιμοποιούμε το '\0' για να δηλώσουμε το τέλος των αλφαριθμητικών σειρών χαρακτήρων. Αντίθετα, επιλέξαμε να αποθηκεύουμε τον αριθμό των χαρακτήρων στα πρώτα 16 bits (2 bytes) της δομής της σειράς χαρακτήρων:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">16</span>
-
-<span class="c1">;---Initialized data------------------------------------------------------------</span>
-
-<span class="nf">newline</span> <span class="nv">dw</span> <span class="mi">2</span>
-<span class="kd">db</span> <span class="mi">13</span><span class="p">,</span><span class="mi">10</span> <span class="c1">; \r\n</span>
-
-<span class="nf">stage1_message</span> <span class="nv">dw</span> <span class="mi">17</span>
-<span class="kd">db</span> <span class="s">&#39;Stage 1 finished.&#39;</span>
-
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-
-<span class="nl">Real_mode_print:</span>
-<span class="c1">;*********************************************************************************;</span>
-<span class="c1">; Prints a string (in real mode)                                                  ;</span>
-<span class="c1">;---------------------------------------------------------------------------------;</span>
-<span class="c1">; si: pointer to string (first 16 bits = the number of characters in the string.) ;  </span>
-<span class="c1">;*********************************************************************************;</span>
-    <span class="nf">push</span> <span class="nb">ax</span>
-    <span class="nf">push</span> <span class="nb">cx</span>
-    <span class="nf">push</span> <span class="nb">si</span>
-    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="kt">word</span> <span class="p">[</span><span class="nb">si</span><span class="p">]</span> <span class="c1">; first 16 bits = the number of characters in the string</span>
-    <span class="nf">add</span> <span class="nb">si</span><span class="p">,</span> <span class="mi">2</span>
-    <span class="nl">.string_loop:</span>     <span class="c1">; print all the characters in the string</span>
-        <span class="nf">lodsb</span>
-        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0eh</span>
-        <span class="nf">int</span> <span class="mh">10h</span>
-    <span class="nf">loop</span> <span class="nv">.string_loop</span><span class="p">,</span> <span class="nb">cx</span>
-    <span class="nf">pop</span> <span class="nb">si</span>
-    <span class="nf">pop</span> <span class="nb">cx</span>
-    <span class="nf">pop</span> <span class="nb">ax</span>
-    <span class="nf">ret</span>
-
-
-<span class="nl">Real_mode_println:</span>
-<span class="c1">;***********************************************************;</span>
-<span class="c1">; Prints a string (in real mode) and a newline (\r\n)       ;</span>
-<span class="c1">;-----------------------------------------------------------;</span>
-<span class="c1">; si: pointer to string                                     ;</span>
-<span class="c1">; (first 16 bits = the number of characters in the string.) ;  </span>
-<span class="c1">;***********************************************************;</span>
-    <span class="nf">push</span> <span class="nb">si</span>
-    <span class="nf">call</span> <span class="nv">Real_mode_print</span>
-    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">newline</span>
-    <span class="nf">call</span> <span class="nv">Real_mode_print</span>
-    <span class="nf">pop</span> <span class="nb">si</span>
-    <span class="nf">ret</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">newline</span> <span class="nv">dw</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="mi">13</span><span class="p">,</span><span class="mi">10</span> <span class="c1">; \r\n</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">stage1_message</span> <span class="nv">dw</span> <span class="mi">17</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Stage 1 finished.&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Real_mode_print:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*********************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Prints a string (in real mode)                                                  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---------------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; si: pointer to string (first 16 bits = the number of characters in the string.) ;  </span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*********************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">cx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">si</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="kt">word</span> <span class="p">[</span><span class="nb">si</span><span class="p">]</span> <span class="c1">; first 16 bits = the number of characters in the string</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">si</span><span class="p">,</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.string_loop:</span>     <span class="c1">; print all the characters in the string</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">lodsb</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0eh</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">int</span> <span class="mh">10h</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">loop</span> <span class="nv">.string_loop</span><span class="p">,</span> <span class="nb">cx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">si</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">cx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Real_mode_println:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***********************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Prints a string (in real mode) and a newline (\r\n)       ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;-----------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; si: pointer to string                                     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; (first 16 bits = the number of characters in the string.) ;  </span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***********************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">si</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_print</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">newline</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_print</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">si</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span></span></span></code></pre></div>
 
 <h1 id="runningcode"><span lang="en">Running our code</span><span lang="el">Εκτέλεση του κώδικά μας</span></h1>
 
 <p lang="en">We can test our code very easily using an emulator like <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
 <p lang="el">Μπορούμε να δοκιμάσουμε τον κώδικά μας πολύ εύκολα, χρησιμοποιώντας έναν εξομοιωτή όπως ο <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>make
-<span class="gp">$ </span>qemu-system-x86_64 -drive <span class="nv">format</span><span class="o">=</span>raw,file<span class="o">=</span>os.bin
-</code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> make
+</span></span><span class="line"><span class="cl"><span class="gp">$</span> qemu-system-x86_64 -drive <span class="nv">format</span><span class="o">=</span>raw,file<span class="o">=</span>os.bin
+</span></span></code></pre></div></div>
 
 <p><img class="centered" src="/images/os_stage1.jpg" alt="Running Bootloader Stage 1" title="Running Bootloader Stage 1"/></p>
 
@@ -675,6 +675,102 @@ if (language) {
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_isr/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os3.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Interrupts</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Διακοπές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Apr 2022</time>
+      <time lang="el">21 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -932,6 +1028,130 @@ if (language) {
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/os_stage2/" class="clearfix">
     <div class="cell">
@@ -1069,805 +1289,6 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_isr/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os3.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Interrupts</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Διακοπές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Apr 2022</time>
-      <time lang="el">21 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sutherland_hodgman_algorithm/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Sutherland_Hodgman_3D.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">3D visualization of Sutherland-Hodgman algorithm (polygon clipping)</h3>
-      <h3 class="title" lang="el">Τρισδιάστατη οπτικοποίηση του αλγορίθμου Sutherland-Hodgman (αποκοπή πολυγώνων)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">25 Apr 2016</time>
-      <time lang="el">25 Απρ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -1899,123 +1320,6 @@ if (language) {
       <i class="fa fa-calendar"></i>
       <time lang="en">10 May 2020</time>
       <time lang="el">10 Μαϊ 2020</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -2137,6 +1441,73 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2263,20 +1634,667 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sutherland_hodgman_algorithm/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/Sutherland_Hodgman_3D.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">3D visualization of Sutherland-Hodgman algorithm (polygon clipping)</h3>
+      <h3 class="title" lang="el">Τρισδιάστατη οπτικοποίηση του αλγορίθμου Sutherland-Hodgman (αποκοπή πολυγώνων)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">25 Apr 2016</time>
+      <time lang="el">25 Απρ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
+      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Oct 2016</time>
+      <time lang="el">21 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

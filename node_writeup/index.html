@@ -137,11 +137,11 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
   <link href="https://alamot.github.io/index.xml" rel="alternate" type="application/rss+xml" title="The Portal of Knowledge" />
 
 
-  <title>Node write-up - The Portal of Knowledge</title>
-  <meta property='og:title' content="Node write-up - The Portal of Knowledge">
+  <title>Node (Hack The Box) write-up - The Portal of Knowledge</title>
+  <meta property='og:title' content="Node (Hack The Box) write-up - The Portal of Knowledge">
   <meta property="og:type" content="article">
-  <meta name="description" content="Write-up for the Node machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Node του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
-  <meta property="og:description" content="Write-up for the Node machine (www.hackthebox.eu). Ανάλυση του μηχανήματος Node του www.hackthebox.eu (διαθέσιμη μόνο στα αγγλικά).">
+  <meta name="description" content="Write-up for the Node machine. Ανάλυση του μηχανήματος Node (διαθέσιμη μόνο στα αγγλικά).">
+  <meta property="og:description" content="Write-up for the Node machine. Ανάλυση του μηχανήματος Node (διαθέσιμη μόνο στα αγγλικά).">
   <meta property="og:image" content="https://alamot.github.io/images/jscode.jpg">
   <meta property="og:image:width" content="768" />
   <meta property="og:image:height" content="384" />
@@ -157,7 +157,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
       "@type":"WebPage",
       "@id":"https:\/\/alamot.github.io\/"
     },
-    "headline": "Node write-up |  ",
+    "headline": "Node (Hack The Box) write-up |  ",
     "image": {
       "@type": "ImageObject",
       "url": "",
@@ -198,6 +198,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
         
         
          
+<li><a href="#introduction">Introduction</a></li>
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
@@ -257,8 +258,8 @@ if (language) {
       <article class="single centered">
         <div class="image" style="background-image: url(https://alamot.github.io/images/jscode.jpg);"></div>
         <div class="body">
-            <header lang="en"><h1 id="title" class="title">Node write-up</h1></header>
-            <header lang="el"><h1 class="title">Ανάλυση του Node</h1></header>
+            <header lang="en"><h1 id="title" class="title">Node (Hack The Box) write-up</h1></header>
+            <header lang="el"><h1 class="title">Ανάλυση του Node (Hack The Box)</h1></header>
             <i class="fa fa-calendar topmargin7"  aria-hidden="true"></i>  
             <time lang="en" class="topmargin7">03 Mar 2018</time>
             <time lang="el" class="topmargin7">03 Μαρ 2018</time>
@@ -288,6 +289,7 @@ if (language) {
             <header lang="el"><h2>Περιεχόμενα</h2></header>
             <div><nav id="TableOfContents">
 <ul>
+<li><a href="#introduction">Introduction</a></li>
 <li><a href="#enumeration">Enumeration</a>
 <ul>
 <li><a href="#port-scanning">Port scanning</a></li>
@@ -310,6 +312,12 @@ if (language) {
          </aside>
         
         
+
+<h1 id="introduction">Introduction</h1>
+
+<p>Node is a medium difficulty box, centered on exploiting a Node.js web application. Initial enumeration reveals an unauthenticated API endpoint leaking user password hashes. After cracking the hash and logging in, a downloadable backup file contains source code that exposes SSH credentials. From this foothold, a privilege escalation to another user is achieved by injecting a reverse shell command into a MongoDB collection monitored by a vulnerable task scheduler. Finally, root access is obtained by exploiting a classic Buffer Overflow vulnerability in a SUID binary.</p>
+
+<p><a href="https://www.hackthebox.com/machines/node" target="_blank">https://www.hackthebox.com/machines/node</a></p>
 
 <h1 id="enumeration">Enumeration</h1>
 
@@ -959,11 +967,11 @@ if (language) {
         <aside>
           <div class="p-share centered">
             <a href="https://www.buymeacoffee.com/alamot" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-coffee"></i></a>
-            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fnode_writeup%2f&t=Node%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
-            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnode_writeup%2f&text=Node%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnode_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Node&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
-            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnode_writeup%2f&description=Node%20write-up&media=https://alamot.github.io/images/jscode.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
-            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnode_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Node&media=https://alamot.github.io/images/jscode.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a href="http://www.facebook.com/sharer.php?src=bm&u=https%3a%2f%2falamot.github.io%2fnode_writeup%2f&t=Node%20%28Hack%20The%20Box%29%20write-up" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-facebook"></i></a>
+            <a lang="en" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnode_writeup%2f&text=Node%20%28Hack%20The%20Box%29%20write-up&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="el" href="http://twitter.com/intent/tweet?url=https%3a%2f%2falamot.github.io%2fnode_writeup%2f&text=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Node%20%28Hack%20The%20Box%29&tw_p=tweetbutton" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-twitter"></i></a>
+            <a lang="en" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnode_writeup%2f&description=Node%20%28Hack%20The%20Box%29%20write-up&media=https://alamot.github.io/images/jscode.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
+            <a lang="el" href="http://pinterest.com/pin/create/link/?url==https%3a%2f%2falamot.github.io%2fnode_writeup%2f&description=%ce%91%ce%bd%ce%ac%ce%bb%cf%85%cf%83%ce%b7%20%cf%84%ce%bf%cf%85%20Node%20%28Hack%20The%20Box%29&media=https://alamot.github.io/images/jscode.jpg" onclick="window.open(this.href, 'PCwindow', 'width=550, height=350, menubar=no, toolbar=no, scrollbars=yes'); return false;"><i class="fa fa-pinterest-p"></i></a>
           </div>
         </aside>
       </article>
@@ -991,6 +999,38 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">LaCasaDePapel (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">27 Jul 2019</time>
+      <time lang="el">27 Ιουλ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1040,13 +1080,197 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Nineveh (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Nineveh (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Dec 2017</time>
+      <time lang="el">17 Δεκ 2017</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Minion (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Minion (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2018</time>
+      <time lang="el">10 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/mantis_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/mantis.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Mantis write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Mantis</h3>
+      <h3 class="title" lang="en">Mantis (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Mantis (Hack The Box)</h3>
       <i class="fa fa-calendar"></i>
       <time lang="en">18 Feb 2018</time>
       <time lang="el">18 Φεβ 2018</time>
@@ -1063,14 +1287,174 @@ if (language) {
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Tally (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Tally (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">03 May 2018</time>
+      <time lang="el">03 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">FluxCapacitor (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 May 2018</time>
+      <time lang="el">13 Μαϊ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/enterprise_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/space.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Enterprise write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Enterprise</h3>
+      <h3 class="title" lang="en">Enterprise (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Enterprise (Hack The Box)</h3>
       <i class="fa fa-calendar"></i>
       <time lang="en">19 Mar 2018</time>
       <time lang="el">19 Μαρ 2018</time>
@@ -1167,514 +1551,14 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Querier write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Querier</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">22 Jun 2019</time>
-      <time lang="el">22 Ιουν 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/tally_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dart.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Tally write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Tally</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">03 May 2018</time>
-      <time lang="el">03 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fortune write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fortune</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Aug 2019</time>
-      <time lang="el">02 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Inception write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Inception</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 Apr 2018</time>
-      <time lang="el">14 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/minion_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/minions.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Minion write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Minion</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2018</time>
-      <time lang="el">10 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Unattended write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Unattended</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Aug 2019</time>
-      <time lang="el">23 Αυγ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Falafel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Falafel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Jun 2018</time>
-      <time lang="el">23 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Fulcrum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Fulcrum</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Jun 2018</time>
-      <time lang="el">09 Ιουν 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/reddish_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/reddish.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Reddish write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Reddish</h3>
+      <h3 class="title" lang="en">Reddish (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Reddish (Hack The Box)</h3>
       <i class="fa fa-calendar"></i>
       <time lang="en">26 Jan 2019</time>
       <time lang="el">26 Ιαν 2019</time>
@@ -1787,182 +1671,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Legacy write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Legacy</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Oct 2017</time>
-      <time lang="el">19 Οκτ 2017</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fluxcapacitor_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/capacitors.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">FluxCapacitor write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του FluxCapacitor</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 May 2018</time>
-      <time lang="el">13 Μαϊ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
@@ -2016,152 +1724,20 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nineveh_writeup/" class="clearfix">
+  <a href="https://alamot.github.io/falafel_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/nineveh.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/falafel.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Nineveh write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Nineveh</h3>
+      <h3 class="title" lang="en">Falafel (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Falafel (Hack The Box)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">17 Dec 2017</time>
-      <time lang="el">17 Δεκ 2017</time>
+      <time lang="en">23 Jun 2018</time>
+      <time lang="el">23 Ιουν 2018</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -2271,14 +1847,182 @@ if (language) {
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/inception_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/mirror.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Inception (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Inception (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 Apr 2018</time>
+      <time lang="el">14 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/sense_writeup/" class="clearfix">
     <div class="cell">
       <div class="image" style="background-image: url(https://alamot.github.io/images/pfsense.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Sense write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Sense</h3>
+      <h3 class="title" lang="en">Sense (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Sense (Hack The Box)</h3>
       <i class="fa fa-calendar"></i>
       <time lang="en">24 Mar 2018</time>
       <time lang="el">24 Μαρ 2018</time>
@@ -2299,29 +2043,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+  <a href="https://alamot.github.io/querier_writeup/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/querier.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <h3 class="title" lang="en">Querier (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Querier (Hack The Box)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
+      <time lang="en">22 Jun 2019</time>
+      <time lang="el">22 Ιουν 2019</time>
     </footer>
   </a>
 </article>
@@ -2339,21 +2071,9 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/lacasadepapel_writeup/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/ace.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">LaCasaDePapel write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του LaCasaDePapel</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">27 Jul 2019</time>
-      <time lang="el">27 Ιουλ 2019</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
            
           
            
@@ -2369,8 +2089,8 @@ if (language) {
       <div class="image" style="background-image: url(https://alamot.github.io/images/optimum.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">Optimum write-up</h3>
-      <h3 class="title" lang="el">Ανάλυση του Optimum</h3>
+      <h3 class="title" lang="en">Optimum (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Optimum (Hack The Box)</h3>
       <i class="fa fa-calendar"></i>
       <time lang="en">28 Oct 2017</time>
       <time lang="el">28 Οκτ 2017</time>
@@ -2387,33 +2107,23 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/legacy_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/legacy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Legacy (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Legacy (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Oct 2017</time>
+      <time lang="el">19 Οκτ 2017</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2421,14 +2131,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2436,14 +2139,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2451,14 +2147,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2466,14 +2155,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2481,14 +2163,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2496,14 +2171,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2511,14 +2179,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2526,14 +2187,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2541,34 +2195,27 @@ if (language) {
            
            
            
-           
           
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fulcrum_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fulcrum.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fulcrum (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fulcrum (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Jun 2018</time>
+      <time lang="el">09 Ιουν 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2576,14 +2223,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2591,14 +2231,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2606,14 +2239,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2621,14 +2247,7 @@ if (language) {
            
            
            
-           
           
-           
-           
-           
-           
-          
-           
            
            
            
@@ -2636,17 +2255,151 @@ if (language) {
            
            
            
+          
+           
+           
            
           
            
            
            
+          
+           
+           
            
           
            
            
            
+          
            
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fortune_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fortune.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Fortune (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Fortune (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Aug 2019</time>
+      <time lang="el">02 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/unattended_writeup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/unattended.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Unattended (Hack The Box) write-up</h3>
+      <h3 class="title" lang="el">Ανάλυση του Unattended (Hack The Box)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Aug 2019</time>
+      <time lang="el">23 Αυγ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
           
            
            
@@ -2682,6 +2435,402 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2884,6 +3033,282 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
@@ -2930,21 +3355,55 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -3267,416 +3726,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/xor_kpa/" class="clearfix">
     <div class="cell">
@@ -3752,47 +3801,6 @@ if (language) {
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

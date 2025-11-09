@@ -369,7 +369,7 @@ if (language) {
 <h2 id="kernel-pma-asm">kernel/pma.asm</h2>
 
 <p lang="en">Here we have a function (PMA_init) that initialize the Physical Memory Allocator (PMA) based on the E820 map. First, we mark the entire bitmap as USED (for safety). Then we mark usable regions (from E820) as FREE. Finally, we mark as USED the memory we want to be reserved for the stack and the memory occupied by the kernel, the paging tables and by the tracking structure itself (i.e. the bitmap). Moreover, we provide functions to allocate (PMA_alloc_frame) and free (PMA_free_frame) frames. These functions are the backbone of our PMA, allowing the rest of the kernel (like the virtual memory manager and/or the heap memory manager) to request and release physical memory.</p>
-<p lang="el">Εδώ έχουμε μια συνάρτηση (PMA_init) που αρχικοποιεί τον Physical Memory Allocator (PMA) με βάση τον χάρτη E820. Πρώτα από όλα, σημειώνουμε ολόκληρο τον δυαδικό χάρτη (bitmap) ως ΧΡΗΣΙΜΟΠΟΙΗΜΕΝΟ (για λόγους ασφάλειας). Έπειτα, σημειώνουμε ως ΕΛΕΥΘΕΡΕΣ τις αξιοποιήσιμες περιοχές (από τον E820). Τέλος, σημειώνουμε ως ΧΡΗΣΙΜΟΠΟΙΗΜΕΝΗ τη μνήμη που έχει δεσμευτεί για τη στοίβα και τη μνήμη που καταλαμβάνει ο πυρήνας, οι πίνακες σελιδοποίησης και ο ίδιος ο δυαδικός χάρτης (bitmap). Επιπλέον, παρέχουμε συναρτήσεις για δέσμευση (PMA_alloc_frame) και αποδέσμευση (PMA_free_frame) πλαισίων. Αυτές οι συναρτήσεις αποτελούν τον βασικό μηχανισμό του PMA, που επιτρέπει στο υπόλοιπο τμήμα του πυρήνα (όπως ο διαχειριστής εικονικής μνήμης ή/και ο διαχειριστής μνήμης σωρού) να ζητάει και να απελευθερώνει φυσική μνήμη.</p>
+<p lang="el">Εδώ έχουμε μια συνάρτηση (PMA_init) που αρχικοποιεί τον Physical Memory Allocator (PMA) με βάση τον χάρτη E820. Πρώτα από όλα, σημειώνουμε ολόκληρο τον δυαδικό χάρτη (bitmap) ως ΧΡΗΣΙΜΟΠΟΙΗΜΕΝΟ (για λόγους ασφάλειας). Έπειτα, σημειώνουμε ως ΕΛΕΥΘΕΡΕΣ τις αξιοποιήσιμες περιοχές (από τον E820). Τέλος, σημειώνουμε ως ΧΡΗΣΙΜΟΠΟΙΗΜΕΝΗ τη μνήμη που θέλουμε να δεσμευτεί για τη στοίβα και τη μνήμη που καταλαμβάνει ο πυρήνας, οι πίνακες σελιδοποίησης και ο ίδιος ο δυαδικός χάρτης (bitmap). Επιπλέον, παρέχουμε συναρτήσεις για δέσμευση (PMA_alloc_frame) και αποδέσμευση (PMA_free_frame) πλαισίων. Αυτές οι συναρτήσεις αποτελούν τον βασικό μηχανισμό του PMA, που επιτρέπει στο υπόλοιπο τμήμα του πυρήνα (όπως ο διαχειριστής εικονικής μνήμης ή/και ο διαχειριστής μνήμης σωρού) να ζητάει και να απελευθερώνει φυσική μνήμη.</p>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">64</span>
 </span></span><span class="line"><span class="cl">
@@ -510,12 +510,36 @@ if (language) {
 </span></span><span class="line"><span class="cl">   <span class="nl">.fast_mark_bytes:</span>        
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rcx</span><span class="p">,</span> <span class="nb">rbx</span>              
 </span></span><span class="line"><span class="cl">    <span class="nf">sub</span> <span class="nb">rcx</span><span class="p">,</span> <span class="nb">rax</span>               
-</span></span><span class="line"><span class="cl">    <span class="nf">inc</span> <span class="nb">rcx</span>              <span class="c1">; rcx = number of remaining frames</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">shr</span> <span class="nb">rcx</span><span class="p">,</span> <span class="mi">3</span>           <span class="c1">; rcx = rcx / 8</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">inc</span> <span class="nb">rcx</span>              <span class="c1">; rcx = rbx - rax + 1 = number of remaining frames</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">shr</span> <span class="nb">rcx</span><span class="p">,</span> <span class="mi">3</span>           <span class="c1">; rcx = rcx / 8 = number of bytes to fill</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">rcx</span><span class="p">,</span> <span class="nb">rcx</span>        <span class="c1">; If rcx is 0, no whole bytes remain, go to trail bits</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">jz</span> <span class="nv">.trail_bits</span>                 
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">PMA_fast_mark_using_bytes</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">shl</span> <span class="nb">rcx</span><span class="p">,</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">rcx</span>         <span class="c1">; rax = rax + rcx * 8 = next frame index to process</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.trail_bits:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.slow_mark_bits</span>  <span class="c1">; Jump to mark loop        </span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.done:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rdi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rdx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rcx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rbx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl"><span class="nl">PMA_fast_mark_using_bytes:</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Marks very fast a series of frames (it should be byte-aligned)               ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; rax: Start frame index                                                       ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; rcx: Number of rames</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; r10: 0 (FREE) or 1 (USED)                                                    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rax</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rcx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">rdi</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rdi</span><span class="p">,</span> <span class="p">[</span><span class="nv">abs</span> <span class="nv">PMA_bitmap_address</span><span class="p">]</span> 
 </span></span><span class="line"><span class="cl">    <span class="nf">shr</span> <span class="nb">rax</span><span class="p">,</span> <span class="mi">3</span>                      
 </span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">rdi</span><span class="p">,</span> <span class="nb">rax</span>    <span class="c1">; rdi = bitmap base + (frame index / 8)</span>
@@ -525,19 +549,9 @@ if (language) {
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">al</span><span class="p">,</span> <span class="mh">0xFF</span>    <span class="c1">; Value to fill (all 1s = USED)</span>
 </span></span><span class="line"><span class="cl">   <span class="nl">.set_free:</span> 
 </span></span><span class="line"><span class="cl">    <span class="nf">rep</span> <span class="nv">stosb</span>       <span class="c1">; Fill bitmap with al value (0xFF for USED, 0x00 for FREE)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rdi</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rcx</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>    
-</span></span><span class="line"><span class="cl">    <span class="nf">shl</span> <span class="nb">rcx</span><span class="p">,</span> <span class="mi">3</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">rcx</span>    <span class="c1">; rax = rax + rcx * 8 = next frame index to process</span>
-</span></span><span class="line"><span class="cl">   <span class="nl">.trail_bits:</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.slow_mark_bits</span>   <span class="c1">; Jump to mark loop        </span>
-</span></span><span class="line"><span class="cl">   <span class="nl">.done:</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rdi</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rsi</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rdx</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rcx</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rbx</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">rax</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
@@ -803,16 +817,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
+  <a href="https://alamot.github.io/os_tasking/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os4.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage (long mode)</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο (μακρά κατάσταση)</h3>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Multitasking</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Πολυδιεργασία</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">11 Apr 2022</time>
-      <time lang="el">11 Απρ 2022</time>
+      <time lang="en">23 Apr 2022</time>
+      <time lang="el">23 Απρ 2022</time>
     </footer>
   </a>
 </article>
@@ -965,6 +979,374 @@ if (language) {
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage (long mode)</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο (μακρά κατάσταση)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Apr 2022</time>
+      <time lang="el">11 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 Apr 2022</time>
+      <time lang="el">10 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1161,166 +1543,6 @@ if (language) {
           
            
            
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2022</time>
-      <time lang="el">10 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -1707,436 +1929,6 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_tasking/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os4.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Multitasking</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Πολυδιεργασία</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Apr 2022</time>
-      <time lang="el">23 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/opencl_fractals/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fractals.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">OpenCL Fractals</h3>
-      <h3 class="title" lang="el">OpenCL Κλασματομορφές (Φράκταλς)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">07 Oct 2023</time>
-      <time lang="el">07 Οκτ 2023</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2378,21 +2170,121 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
            
           
            
@@ -2580,6 +2472,350 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Path-traversal archiver</h3>
+      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">14 May 2019</time>
+      <time lang="el">14 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
+      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Oct 2016</time>
+      <time lang="el">21 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -2616,17 +2852,197 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/opencl_fractals/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fractals.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">OpenCL Fractals</h3>
+      <h3 class="title" lang="el">OpenCL Κλασματομορφές (Φράκταλς)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">07 Oct 2023</time>
+      <time lang="el">07 Οκτ 2023</time>
     </footer>
   </a>
 </article>
@@ -2677,21 +3093,45 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2769,280 +3209,21 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/get_outlook_rules/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/flying_mail.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to collect Outlook rules using Powershell</h3>
+      <h3 class="title" lang="el">Πως να συλλέξετε τους κανόνες του Outlook χρησιμοποιώντας Powershell</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">20 May 2022</time>
+      <time lang="el">20 Μαϊ 2022</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -3145,75 +3326,42 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -3315,140 +3463,6 @@ if (language) {
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/path_traversal_archiver/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/path.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Path-traversal archiver</h3>
-      <h3 class="title" lang="el">Αρχειοθέτης με διάσχιση διαδρομής</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">14 May 2019</time>
-      <time lang="el">14 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/get_outlook_rules/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/flying_mail.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to collect Outlook rules using Powershell</h3>
-      <h3 class="title" lang="el">Πως να συλλέξετε τους κανόνες του Outlook χρησιμοποιώντας Powershell</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">20 May 2022</time>
-      <time lang="el">20 Μαϊ 2022</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

@@ -351,31 +351,31 @@ if (language) {
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
 </span></span><span class="line"><span class="cl"><span class="nl">Stage2_entrypoint:</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">; Print &#39;Entering Stage 2...&#39; message</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">stage2_message</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Print &#39;Entering Stage 2...&#39; message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">stage2_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="c1">; Check if long mode is supported</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Is_longmode_supported</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">test</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">jz</span> <span class="nv">.long_mode_not_supported</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_supported_message</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Check if long mode is supported</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Is_longmode_supported</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jz</span> <span class="nv">.long_mode_not_supported</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_supported_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">      <span class="c1">; Enable Gate A20</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Enable_A20</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">; Prepare paging  </span>
-</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Prepare_paging</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">; Remap PIC</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Remap_PIC</span>
-</span></span><span class="line"><span class="cl">      <span class="c1">; Enter long mode</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">call</span> <span class="nv">Enter_long_mode</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Enable Gate A20</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Enable_A20</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Prepare paging  </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Prepare_paging</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Remap PIC</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Remap_PIC</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Enter long mode</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Enter_long_mode</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">     <span class="nl">.long_mode_not_supported:</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_not_supported_message</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-</span></span><span class="line"><span class="cl">       <span class="nl">.halt:</span> <span class="nf">hlt</span> <span class="c1">; Infinite loop. </span>
-</span></span><span class="line"><span class="cl">        <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.long_mode_not_supported:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">longmode_not_supported_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.halt:</span> <span class="nf">hlt</span> <span class="c1">; Infinite loop. </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">; Include</span>
@@ -643,90 +643,119 @@ if (language) {
 
 <h2 id="stage2-paging-asm">stage2/paging.asm</h2>
 
-<p lang="en">Here is the code that sets the memory paging:</p>
-<p lang="el">Εδώ είναι ο κώδικας που καθορίζει τη σελιδοποίηση της μνήμης:</p>
+<p lang="en">Here is the code that sets the memory paging. Note that we will place the kernel in the high half of the virtual address space. This ensures that user space always occupies the lower canonical range, simplifying paging structures and context switching. This separation enforces stronger privilege boundaries, since user code cannot directly address high-half regions. It also enables all processes to map the same kernel space identically, reducing TLB flushes and improving overall memory management consistency.</p>
+<p lang="el">Εδώ είναι ο κώδικας που καθορίζει τη σελιδοποίηση της μνήμης. Σημειώστε ότι θα τοποθετήσουμε τον πυρήνα στο υψηλό μισό του εικονικού χώρου διευθύνσεων. Αυτό εξασφαλίζει ότι ο χώρος χρήστη θα καταλαμβάνει πάντα το χαμηλό κανονικό εύρος, απλοποιώντας τις δομές σελιδοποίησης και την εναλλαγή διεργασιών. Ο διαχωρισμός αυτός επιβάλλει ισχυρότερα όρια προνομίων, καθώς ο κώδικας χρήστη δεν μπορεί να προσπελάσει άμεσα τις περιοχές του υψηλού μισού. Επιπλέον, επιτρέπει σε όλες τις διεργασίες να χαρτογραφούν τον χώρο του πυρήνα με τον ίδιο τρόπο, μειώνοντας τις εκκαθαρίσεις/ανανεώσεις του TLB και βελτιώνοντας τη συνοχή της διαχείρισης της μνήμης.</p>
 
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">;---Define----------------------------------------------------------------------</span>
-</span></span><span class="line"><span class="cl"><span class="cp">%define PAGE_PRESENT (1 &lt;&lt; 0)    </span><span class="c1">; Bit 0 =&gt; Page present
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">%define PAGE_WRITE   (1 &lt;&lt; 1)    </span><span class="c1">; Bit 1 =&gt; Page writable
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">%define PAGING_DATA   0x9000     </span><span class="c1">; Address to store the paging tables
-</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="cp">%define CODE_SEG      0x0008
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="c1">; RPL (Requestor Privilege Level - Bits 1-0): 0 is highest, 3 is lowest </span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---Constants-------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Paging flag bits</span>
+</span></span><span class="line"><span class="cl"><span class="no">PAGE_PRESENT</span><span class="kd"> equ</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">)</span>               <span class="c1">; Bit 0 =&gt; Page present</span>
+</span></span><span class="line"><span class="cl"><span class="no">PAGE_WRITE</span><span class="kd">   equ</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span>               <span class="c1">; Bit 1 =&gt; Page writable</span>
+</span></span><span class="line"><span class="cl"><span class="no">PAGE_HUGE_PS</span><span class="kd"> equ</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span>               <span class="c1">; Bit 7 =&gt; 2MB page size, ignore PT</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; Addresses to store the paging structures</span>
+</span></span><span class="line"><span class="cl"><span class="no">PML4</span><span class="kd">         equ</span> <span class="mh">0xB000</span>
+</span></span><span class="line"><span class="cl"><span class="no">PDPT_LOW</span><span class="kd">     equ</span> <span class="p">(</span><span class="nv">PML4</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="no">PD_LOW</span><span class="kd">       equ</span> <span class="p">(</span><span class="nv">PML4</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="no">PDPT_HIGH</span><span class="kd">    equ</span> <span class="p">(</span><span class="nv">PML4</span> <span class="o">+</span> <span class="mh">0x3000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="no">PD_HIGH</span><span class="kd">      equ</span> <span class="p">(</span><span class="nv">PML4</span> <span class="o">+</span> <span class="mh">0x4000</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; Kernel virtual address</span>
+</span></span><span class="line"><span class="cl"><span class="no">KERNEL_VIRT_BASE</span><span class="kd"> equ</span> <span class="mh">0xFFFFFFFF80000000</span> <span class="c1">; High-half base (48-bit address)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; Extract indices from KERNEL_VIRT_BASE for page table structure</span>
+</span></span><span class="line"><span class="cl"><span class="no">PML4_INDEX</span><span class="kd">   equ</span> <span class="p">((</span><span class="nv">KERNEL_VIRT_BASE</span> <span class="o">&gt;&gt;</span> <span class="mi">39</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x1FF</span><span class="p">)</span>  <span class="c1">; Bits 47-39</span>
+</span></span><span class="line"><span class="cl"><span class="no">PDPT_INDEX</span><span class="kd">   equ</span> <span class="p">((</span><span class="nv">KERNEL_VIRT_BASE</span> <span class="o">&gt;&gt;</span> <span class="mi">30</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x1FF</span><span class="p">)</span>  <span class="c1">; Bits 38-30</span>
+</span></span><span class="line"><span class="cl"><span class="no">PD_INDEX</span><span class="kd">     equ</span> <span class="p">((</span><span class="nv">KERNEL_VIRT_BASE</span> <span class="o">&gt;&gt;</span> <span class="mi">21</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x1FF</span><span class="p">)</span>  <span class="c1">; Bits 29-21</span>
+</span></span><span class="line"><span class="cl"><span class="no">PT_INDEX</span><span class="kd">     equ</span> <span class="p">((</span><span class="nv">KERNEL_VIRT_BASE</span> <span class="o">&gt;&gt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x1FF</span><span class="p">)</span>  <span class="c1">; Bits 20-12</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">; Segment Selector = (Index * 8) + (TI * 4) + RPL = (1 * 8) + (0 * 4) + 0 = 8   </span>
+</span></span><span class="line"><span class="cl"><span class="c1">; RPL (Requestor Privilege Level - Bits 1-0): 0 is highest, 3 is lowest </span>
 </span></span><span class="line"><span class="cl"><span class="c1">; TI (Table Indicator - Bit 2): 0 =&gt; GDT, 1 =&gt; LDT</span>
 </span></span><span class="line"><span class="cl"><span class="c1">; Index (Bits 15-3): The index of the segment descriptor within the GDT.                   </span>
-</span></span><span class="line"><span class="cl"><span class="c1">; Segment Selector = (Index * 8) + (TI * 4) + RPL = (1 * 8) + (0 * 4) + 0 = 8     </span>
+</span></span><span class="line"><span class="cl"><span class="no">CODE_SEL</span><span class="kd"> equ</span> <span class="mi">8</span>
+</span></span><span class="line"><span class="cl"><span class="no">DATA_SEL</span><span class="kd"> equ</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">;****************************************************************************************;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; Global Descriptor Table (GDT)                                                          ;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">;****************************************************************************************;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; The Global Descriptor Table (GDT) is a data structure used by x86-family processors    ;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; (starting with the 80286) in order to define the characteristics of the various memory ;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; areas (segments) used during program execution, including the base address, the size,  ;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; and access privileges like executability and writability.                              ;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">;****************************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Global Descriptor Table (GDT)                                                ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; The Global Descriptor Table (GDT) is a data structure used by x86-family     ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; processors (starting with the 80286) in order to define the characteristics  ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; of the various memory areas (segments) used during program execution,        ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; including the base address, the size, and access privileges like             ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; executability and writability.                                               ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
 </span></span><span class="line"><span class="cl"><span class="nl">GDT:</span>
 </span></span><span class="line"><span class="cl">  <span class="nl">.Null:</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">dq</span> <span class="mh">0x0000000000000000</span>  <span class="c1">; Null Descriptor (should be present).</span>
 </span></span><span class="line"><span class="cl">  <span class="nl">.Code:</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">dq</span> <span class="mh">0x00209A0000000000</span>  <span class="c1">; 64-bit code descriptor (exec/read).</span>
 </span></span><span class="line"><span class="cl">    <span class="kd">dq</span> <span class="mh">0x0000920000000000</span>  <span class="c1">; 64-bit data descriptor (read/write).</span>
-</span></span><span class="line"><span class="cl">  <span class="k">ALIGN</span> <span class="mi">4</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">dw</span> <span class="mi">0</span>                   <span class="c1">; Padding (to make the &#34;address of the GDT&#34; field aligned on a 4-byte boundary).</span>
-</span></span><span class="line"><span class="cl">  <span class="nl">.Pointer:</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">dw</span> <span class="kc">$</span> <span class="o">-</span> <span class="nv">GDT</span> <span class="o">-</span> <span class="mi">1</span>         <span class="c1">; 16-bit Size (Limit) of GDT.</span>
-</span></span><span class="line"><span class="cl">    <span class="kd">dd</span> <span class="nv">GDT</span>                 <span class="c1">; 32-bit Base Address of GDT. (CPU will zero extend to 64-bit)</span>
-</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">  <span class="k">ALIGN</span> <span class="mi">4</span>                  <span class="c1">; Align the pointer field on a 4-byte boundary.</span>
+</span></span><span class="line"><span class="cl">    <span class="kd">dw</span> <span class="mi">0</span>                   <span class="c1">; Padding.</span>
+</span></span><span class="line"><span class="cl">  <span class="nl">GDTR:</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.Length</span> <span class="nv">dw</span> <span class="kc">$</span> <span class="o">-</span> <span class="nv">GDT</span> <span class="o">-</span> <span class="mi">1</span>   <span class="c1">; 16-bit Size (Limit) of GDT.</span>
+</span></span><span class="line"><span class="cl">  <span class="nf">.Base</span>   <span class="nv">dd</span> <span class="nv">GDT</span>           <span class="c1">; 32-bit Base Address of GDT </span>
+</span></span><span class="line"><span class="cl">                           <span class="c1">; (CPU will zero extend to 64-bit)</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
 </span></span><span class="line"><span class="cl"><span class="nl">Prepare_paging:</span>
-</span></span><span class="line"><span class="cl"><span class="c1">;*******************************************************************************************;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; Prepare paging                                                                            ;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">;-------------------------------------------------------------------------------------------;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; ES:EDI Should point to a valid page-aligned 16KiB buffer, for the PML4, PDPT, PD and a PT.;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">; SS:ESP Should point to memory that can be used as a small (1 uint32_t) stack.             ;</span>
-</span></span><span class="line"><span class="cl"><span class="c1">;*******************************************************************************************;</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span> <span class="c1">; Point edi to a free space to create the paging structures.</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="c1">; Zero out the 16KiB buffer. Since we are doing a rep stosd, count should be bytes/4.   </span>
-</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">di</span>         <span class="c1">; REP STOSD alters DI.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mh">0x1000</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">cld</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">rep</span> <span class="nv">stosd</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">di</span>          <span class="c1">; Get DI back.</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="c1">; Build the Page Map Level 4. ES:DI points to the Page Map Level 4 table.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">]</span>         <span class="c1">; EAX = Address of the Page Directory Pointer Table.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">eax</span>                  <span class="c1">; Store the value of EAX as the first PML4E.</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">     <span class="c1">; Build the Page Directory Pointer Table.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">]</span>         <span class="c1">; Put the address of the Page Directory in to EAX.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x1000</span><span class="p">],</span> <span class="nb">eax</span>         <span class="c1">; Store the value of EAX as the first PDPTE.</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">     <span class="c1">; Build the Page Directory.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x3000</span><span class="p">]</span>          <span class="c1">; Put the address of the Page Table in to EAX.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span>  <span class="c1">; OR EAX with the flags (present flag, writable flag).</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x2000</span><span class="p">],</span> <span class="nb">eax</span>          <span class="c1">; Store to value of EAX as the first PDE.</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">di</span>                            <span class="c1">; Save DI for the time being.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">di</span><span class="p">,</span> <span class="p">[</span><span class="nb">di</span> <span class="o">+</span> <span class="mh">0x3000</span><span class="p">]</span>              <span class="c1">; Point DI to the page table.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="c1">; Move the flags into EAX - and point it to 0x0000.</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="c1">; Build the Page Table.</span>
-</span></span><span class="line"><span class="cl">    <span class="nl">.LoopPageTable:</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nb">es</span><span class="p">:</span><span class="nb">di</span><span class="p">],</span> <span class="nb">eax</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x1000</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">di</span><span class="p">,</span> <span class="mi">8</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x200000</span>               <span class="c1">; If we did all 2MiB, end.</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">jb</span> <span class="nv">.LoopPageTable</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">di</span>                              <span class="c1">; Restore DI.</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; Prepare paging                                                               ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;------------------------------------------------------------------------------;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; ES:EDI Should point to a valid 4096-aligned 16KiB buffer.                    ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">; SS:ESP Should point to memory that can be used as a small stack.             ;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">;******************************************************************************;</span>
+</span></span><span class="line"><span class="cl">  
+</span></span><span class="line"><span class="cl">    <span class="c1">; Zero out the 20KiB buffer (PML4, PDPT_LOW, PD_LOW, PDPT_HIGH, PD_HIGH)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PML4</span>            <span class="c1">; Point to 20KiB buffer for the paging structures.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">di</span>                  <span class="c1">; Store di (rep stosd alters di).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="mh">0x1000</span><span class="o">/</span><span class="mi">4</span>      <span class="c1">; Count should be 5*4096/4 = 5120 dwords</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>             <span class="c1">; eax = 0</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cld</span>                      <span class="c1">; Set forward direction</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">rep</span> <span class="nv">stosd</span>                <span class="c1">; Fill with 0s  </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">di</span>                   <span class="c1">; Restore di</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">;************************* Low (identity) mapping **************************</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Build the PML4 (Page Map Level 4): PML4[0] -&gt; PDPT_LOW</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nv">PDPT_LOW</span><span class="p">]</span>                  <span class="c1">; eax = address of the PDPT_LOW</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span>    <span class="c1">; Set the flags (present and writable)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">PML4</span><span class="p">],</span> <span class="nb">eax</span>                      <span class="c1">; PML4E[0] = eax</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Build the PDPT_LOW (Page Directory Pointer Table): PDPT_LOW[0] -&gt; PD_LOW</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nv">PD_LOW</span><span class="p">]</span>                    <span class="c1">; eax = address of the PD_LOW</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span>  <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span>   <span class="c1">; Set the flags (present and writable)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">PDPT_LOW</span><span class="p">],</span> <span class="nb">eax</span>                  <span class="c1">; PDPT_LOW[0] = eax  </span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Fill the PD_LOW (Page Directory) with entries (each maps a 2 MiB page)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">0</span>                                       <span class="c1">; eax = 0 (0-2MiB identity)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="o">|</span> <span class="nv">PAGE_HUGE_PS</span> <span class="c1">; Set flags (2MiB page)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">PD_LOW</span><span class="p">],</span> <span class="nb">eax</span>                                <span class="c1">; PD_LOW[0] = eax </span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; ...</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="c1">; ************************ High-half kernel mapping ************************</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; PML4[PML4_INDEX] -&gt; PDPT_HIGH</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nv">PDPT_HIGH</span><span class="p">]</span>                <span class="c1">; eax = PDPT_HIGH</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span>   <span class="c1">; Set the flags (present and writable)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">PML4</span><span class="o">+</span><span class="nv">PML4_INDEX</span><span class="o">*</span><span class="mi">8</span><span class="p">],</span> <span class="nb">eax</span>        <span class="c1">; PML4[PML4_INDEX] = eax</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; PDPT_HIGH[PDPT_INDEX] -&gt; PD_HIGH</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">eax</span><span class="p">,</span> <span class="p">[</span><span class="nv">PD_HIGH</span><span class="p">]</span>                  <span class="c1">; eax = PD_HIGH</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span>   <span class="c1">; Set the flags (present and writable)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">PDPT_HIGH</span><span class="o">+</span><span class="nv">PDPT_INDEX</span><span class="o">*</span><span class="mi">8</span><span class="p">],</span> <span class="nb">eax</span>   <span class="c1">; PDPT_HIGH[PDPT_INDEX] = eax</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; Fill the PD_HIGH (Page Directory) with entries (each maps a 2 MiB page)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">di</span><span class="p">,</span> <span class="nv">PD_HIGH</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>                        <span class="c1">; eax = 0</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mi">512</span>                        <span class="c1">; Fill 512 entries (i.e. map 1 GiB)</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.MapLoop:</span>        
+</span></span><span class="line"><span class="cl">        <span class="c1">; Set flags: Present, Writable, 2 MiB page</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="nv">PAGE_PRESENT</span> <span class="o">|</span> <span class="nv">PAGE_WRITE</span> <span class="o">|</span> <span class="nv">PAGE_HUGE_PS</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nb">di</span><span class="p">],</span> <span class="nb">eax</span>                   <span class="c1">; Store low 32 bits (entry is 8 bytes) </span>
+</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nb">di</span> <span class="o">+</span> <span class="mi">4</span><span class="p">],</span> <span class="kt">dword</span> <span class="mi">0</span>           <span class="c1">; Store high 32 bits </span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">di</span><span class="p">,</span> <span class="mi">8</span>                       <span class="c1">; Advance to next PD_HIGH entry </span>
+</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x200000</span>               <span class="c1">; Increment address by 2MiB</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">loop</span> <span class="nv">.MapLoop</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">ret</span></span></span></code></pre></div>
 
 <h2 id="stage2-pic-asm">stage2/pic.asm</h2>
@@ -818,72 +847,79 @@ if (language) {
 </span></span><span class="line"><span class="cl">    <span class="k">cpu</span><span class="nv">id</span>                
 </span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000001</span> 
 </span></span><span class="line"><span class="cl">    <span class="nf">jb</span> <span class="nv">.not_supported</span>     
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x80000001</span> <span class="c1">; After calling CPUID with EAX = 0x80000001, </span>
 </span></span><span class="line"><span class="cl">    <span class="k">cpu</span><span class="nv">id</span>               <span class="c1">; all AMD64 compliant processors have the longmode-capable-bit</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">test</span> <span class="nb">edx</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="mi">29</span><span class="p">)</span> <span class="c1">; (bit 29) turned on in the EDX (extended feature flags).</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="nf">jz</span> <span class="nv">.not_supported</span>   <span class="c1">; If it&#39;s not set, there is no long mode.</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">   <span class="nl">.not_supported:</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
-</span></span><span class="line"><span class="cl">      <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">eax</span><span class="p">,</span> <span class="nb">eax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nl">Enter_long_mode:</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">; Enter long mode                                                    ;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PAGING_DATA</span><span class="c1">; Point edi at the PAGING_DATA.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mb">10100000b</span>  <span class="c1">; Set the PAE and PGE bit.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">PML4</span>         <span class="c1">; Point edi at the PML4 </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">eax</span><span class="p">,</span> <span class="mb">10100000b</span>    <span class="c1">; Set the PAE and PGE bit.</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cr4</span><span class="p">,</span> <span class="nb">eax</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edx</span><span class="p">,</span> <span class="nb">edi</span>        <span class="c1">; Point CR3 at the PML4.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edx</span><span class="p">,</span> <span class="nb">edi</span>          <span class="c1">; Point CR3 at the PML4.</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cr3</span><span class="p">,</span> <span class="nb">edx</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mh">0xC0000080</span> <span class="c1">; Read from the EFER MSR. </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ecx</span><span class="p">,</span> <span class="mh">0xC0000080</span>   <span class="c1">; Read from the EFER MSR. </span>
 </span></span><span class="line"><span class="cl">    <span class="nf">rdmsr</span>    
-</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x00000100</span>  <span class="c1">; Set the LME bit.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">eax</span><span class="p">,</span> <span class="mh">0x00000100</span>    <span class="c1">; Set the LME bit.</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">wrmsr</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ebx</span><span class="p">,</span> <span class="nb">cr0</span>        <span class="c1">; Activate long mode</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">ebx</span><span class="p">,</span> <span class="mh">0x80000001</span>  <span class="c1">; by enabling paging and protection simultaneously.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ebx</span><span class="p">,</span> <span class="nb">cr0</span>          <span class="c1">; Activate long mode</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">or</span> <span class="nb">ebx</span><span class="p">,</span><span class="mh">0x80000001</span>     <span class="c1">; by enabling paging and protection simultaneously.</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cr0</span><span class="p">,</span> <span class="nb">ebx</span>                    
-</span></span><span class="line"><span class="cl">    <span class="nf">lgdt</span> <span class="p">[</span><span class="nv">GDT.Pointer</span><span class="p">]</span>  <span class="c1">; Load GDT.Pointer.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">CODE_SEG</span><span class="p">:</span><span class="nv">Kernel</span> <span class="c1">; Load CS with 64 bit segment and flush the instruction cache.</span></span></span></code></pre></div>
+</span></span><span class="line"><span class="cl">    <span class="nf">lgdt</span> <span class="p">[</span><span class="nv">rel</span> <span class="nv">GDTR</span><span class="p">]</span>       <span class="c1">; Load GDT.Pointer</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">CODE_SEL</span><span class="p">:</span><span class="nv">LONGMODE</span> <span class="c1">; Mode-Switch Jump (Load CS &amp; flush instruction cache) </span>
+</span></span><span class="line"><span class="cl"><span class="nl">LONGMODE:</span> 
+</span></span><span class="line"><span class="cl">    <span class="k">BITS</span> <span class="mi">64</span>               <span class="c1">; We have entered the long mode! :)          </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">DATA_SEL</span>      <span class="c1">; Set all segments registers to DATA_SEL.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="nv">KERNEL_VIRT_BASE</span> <span class="o">+</span> <span class="nv">HIGH_KERNEL</span>      
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nb">rax</span>               <span class="c1">; Jump to high-address mapped kernel </span>
+</span></span><span class="line"><span class="cl"><span class="nl">HIGH_KERNEL:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lea</span> <span class="nb">rax</span><span class="p">,</span> <span class="p">[</span><span class="nv">rel</span> <span class="nv">GDT</span><span class="p">]</span>          <span class="c1">; Load our high-address GDT</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">rel</span> <span class="nv">GDTR.Base</span><span class="p">],</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">lgdt</span> <span class="p">[</span><span class="nv">rel</span> <span class="nv">GDTR</span><span class="p">]</span>          
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">rsp</span><span class="p">,</span> <span class="nv">KERNEL_VIRT_BASE</span>   <span class="c1">; Point rsp (stack) to its high address</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="kt">qword</span> <span class="p">[</span><span class="nv">abs</span> <span class="nv">KERNEL_VIRT_BASE</span> <span class="o">+</span> <span class="nv">PML4</span><span class="p">],</span> <span class="mi">0</span> <span class="c1">; Clear PML4[0] (identity entry)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="nb">cr3</span>                <span class="c1">; Flush the TLB (Translation Lookaside Buffer)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cr3</span><span class="p">,</span> <span class="nb">rax</span>                <span class="c1">; Reload CR3 to flush TLB</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">Kernel_entrypoint</span>       <span class="c1">; Jump to Kernel entrypoint</span></span></span></code></pre></div>
 
 <h2 id="kernel-kernel-asm">kernel/kernel.asm</h2>
 
 <p lang="en">Here is some dummy code that write a message directly into the video RAM, just to test if our bootloader is functional:</p>
 <p lang="el">Εδώ έχουμε έναν απλό κώδικα, ο οποίος γράφει έναν μήνυμα απευθείας στην περιοχή της μνήμης των γραφικών, απλά για να δούμε αν ο εκκινητή μας είναι λειτουργικός:</p>
 
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">64</span>  <span class="c1">; We have entered the long mode! :)</span>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">64</span>   <span class="c1">; We have entered the long mode! :)</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1">;---Define----------------------------------------------------------------------</span>
-</span></span><span class="line"><span class="cl"><span class="cp">%define DATA_SEG    0x0010
-</span></span></span><span class="line"><span class="cl"><span class="cp">%define VRAM       0xB8000  
-</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">;---Constants-------------------------------------------------------------------</span>
+</span></span><span class="line"><span class="cl"><span class="no">VRAM</span><span class="kd"> equ</span> <span class="nv">KERNEL_VIRT_BASE</span> <span class="o">+</span> <span class="mh">0xB8000</span>  
+</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
-</span></span><span class="line"><span class="cl"><span class="nl">Kernel:</span>
+</span></span><span class="line"><span class="cl"><span class="nl">Kernel_entrypoint:</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">; Just some dummy code for now                                       ;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;********************************************************************;</span>
-</span></span><span class="line"><span class="cl">    <span class="c1">; Set all segments registers to DATA_SEG</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ax</span><span class="p">,</span> <span class="nv">DATA_SEG</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl"> 
-</span></span><span class="line"><span class="cl">    <span class="c1">; Set EDI to point to Video RAM (0xB8000)</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">edi</span><span class="p">,</span> <span class="nv">VRAM</span>    
+</span></span><span class="line"><span class="cl">    <span class="c1">; Set RDI to point to Video RAM (KERNEL_VIRT_BASE + 0xB8000)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rdi</span><span class="p">,</span> <span class="nv">VRAM</span>
 </span></span><span class="line"><span class="cl"> 
 </span></span><span class="line"><span class="cl">    <span class="c1">; Print &#34;Hello World!&#34;</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F6C1F6C1F651F48</span>    
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span><span class="p">],</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">rdi</span><span class="p">],</span> <span class="nb">rax</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F6F1F571F201F6F</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span> <span class="o">+</span> <span class="mi">8</span><span class="p">],</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">rdi</span> <span class="o">+</span> <span class="mi">8</span><span class="p">],</span> <span class="nb">rax</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">rax</span><span class="p">,</span> <span class="mh">0x1F211F641F6C1F72</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">edi</span> <span class="o">+</span> <span class="mi">16</span><span class="p">],</span> <span class="nb">rax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">rdi</span> <span class="o">+</span> <span class="mi">16</span><span class="p">],</span> <span class="nb">rax</span>
 </span></span><span class="line"><span class="cl"> 
 </span></span><span class="line"><span class="cl">   <span class="nl">.halt:</span> <span class="nf">hlt</span> 
 </span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop.</span></span></span></code></pre></div>
@@ -1035,29 +1071,141 @@ if (language) {
            
            
            
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_pmm/" class="clearfix">
+  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os5.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Physical Memory Management</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Διαχείρηση φυσικής μνήμης</h3>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">08 Nov 2025</time>
-      <time lang="el">08 Νοε 2025</time>
+      <time lang="en">10 Apr 2022</time>
+      <time lang="el">10 Απρ 2022</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1098,6 +1246,438 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_pmm/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os5.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Physical Memory Management</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Διαχείρηση φυσικής μνήμης</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">08 Nov 2025</time>
+      <time lang="el">08 Νοε 2025</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_isr/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os3.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Interrupts</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Διακοπές</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Apr 2022</time>
+      <time lang="el">21 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
            
           
            
@@ -1564,550 +2144,26 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage1/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os1.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 1st Stage</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 1o Στάδιο</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 Apr 2022</time>
-      <time lang="el">10 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_isr/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os3.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Interrupts</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Διακοπές</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Apr 2022</time>
-      <time lang="el">21 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
            
            
-          
-           
-           
-           
-          
-           
            
-           
-          
           
            
            
@@ -2244,121 +2300,20 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/get_outlook_rules/" class="clearfix">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/flying_mail.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to collect Outlook rules using Powershell</h3>
-      <h3 class="title" lang="el">Πως να συλλέξετε τους κανόνες του Outlook χρησιμοποιώντας Powershell</h3>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">20 May 2022</time>
-      <time lang="el">20 Μαϊ 2022</time>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
     </footer>
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
@@ -2491,26 +2446,547 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
     </footer>
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/web_file_browser/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/web_file_browser.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Web File Browser</h3>
+      <h3 class="title" lang="el">Πως να γράψετε τον δικό σας Διαδικτυακό Περιηγητή Αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 May 2022</time>
+      <time lang="el">11 Μαϊ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
+      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Oct 2016</time>
+      <time lang="el">09 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/sutherland_hodgman_algorithm/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/Sutherland_Hodgman_3D.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">3D visualization of Sutherland-Hodgman algorithm (polygon clipping)</h3>
+      <h3 class="title" lang="el">Τρισδιάστατη οπτικοποίηση του αλγορίθμου Sutherland-Hodgman (αποκοπή πολυγώνων)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">25 Apr 2016</time>
+      <time lang="el">25 Απρ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            
@@ -2793,94 +3269,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/opencl_fractals/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fractals.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">OpenCL Fractals</h3>
-      <h3 class="title" lang="el">OpenCL Κλασματομορφές (Φράκταλς)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">07 Oct 2023</time>
-      <time lang="el">07 Οκτ 2023</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2997,57 +3385,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/nl80211/" class="clearfix">
+  <a href="https://alamot.github.io/get_outlook_rules/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/wifi-sign.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/flying_mail.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to get info for the wireless interface using nl80211 in C</h3>
-      <h3 class="title" lang="el">Πως να λάβετε πληροφορίες για την ασύρματη διεπαφή χρησιμοποιώντας την nl80211 στη C</h3>
+      <h3 class="title" lang="en">How to collect Outlook rules using Powershell</h3>
+      <h3 class="title" lang="el">Πως να συλλέξετε τους κανόνες του Outlook χρησιμοποιώντας Powershell</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">09 Oct 2016</time>
-      <time lang="el">09 Οκτ 2016</time>
+      <time lang="en">20 May 2022</time>
+      <time lang="el">20 Μαϊ 2022</time>
     </footer>
   </a>
 </article>
@@ -3063,32 +3411,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+  <a href="https://alamot.github.io/opencl_fractals/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fractals.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <h3 class="title" lang="en">OpenCL Fractals</h3>
+      <h3 class="title" lang="el">OpenCL Κλασματομορφές (Φράκταλς)</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
+      <time lang="en">07 Oct 2023</time>
+      <time lang="el">07 Οκτ 2023</time>
     </footer>
   </a>
 </article>
@@ -3144,52 +3477,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/sutherland_hodgman_algorithm/" class="clearfix">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/Sutherland_Hodgman_3D.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">3D visualization of Sutherland-Hodgman algorithm (polygon clipping)</h3>
-      <h3 class="title" lang="el">Τρισδιάστατη οπτικοποίηση του αλγορίθμου Sutherland-Hodgman (αποκοπή πολυγώνων)</h3>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">25 Apr 2016</time>
-      <time lang="el">25 Απρ 2016</time>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
     </footer>
   </a>
 </article>
@@ -3260,47 +3558,17 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
     </footer>
   </a>
 </article>
@@ -3460,238 +3728,6 @@ if (language) {
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/web_file_browser/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/web_file_browser.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Web File Browser</h3>
-      <h3 class="title" lang="el">Πως να γράψετε τον δικό σας Διαδικτυακό Περιηγητή Αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 May 2022</time>
-      <time lang="el">11 Μαϊ 2022</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

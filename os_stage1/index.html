@@ -347,18 +347,18 @@ if (language) {
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nl">Stage1_entrypoint:</span>         <span class="c1">; Main entry point where BIOS leaves us. Some BIOS may load us at 0x0000:0x7C00 while others at 0x07C0:0x0000. We do a far jump to accommodate for this issue (CS is reloaded to 0x0000).</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="mh">0x0000</span><span class="p">:</span><span class="nv">.setup_segments</span> 
-</span></span><span class="line"><span class="cl">    <span class="nl">.setup_segments:</span>       
-</span></span><span class="line"><span class="cl">        <span class="c1">; Next, we set all segment registers to zero.</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">xor</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">        <span class="c1">; We set up a temporary stack so that it starts growing below Stage1_entrypoint (i.e. the stack base will be located at 0:0x7c00).        </span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">sp</span><span class="p">,</span> <span class="nv">Stage1_entrypoint</span>   
-</span></span><span class="line"><span class="cl">        <span class="c1">; Clear direction flag (go forward in memory when using instructions like lodsb).</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">cld</span>    
+</span></span><span class="line"><span class="cl">   <span class="nl">.setup_segments:</span>       
+</span></span><span class="line"><span class="cl">    <span class="c1">; Next, we set all segment registers to zero.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">xor</span> <span class="nb">ax</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ss</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ds</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">es</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">fs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">gs</span><span class="p">,</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="c1">; We set up a temporary stack so that it starts growing below Stage1_entrypoint (i.e. the stack base will be located at 0:0x7c00).        </span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">sp</span><span class="p">,</span> <span class="nv">Stage1_entrypoint</span>   
+</span></span><span class="line"><span class="cl">    <span class="c1">; Clear direction flag (go forward in memory when using instructions like lodsb).</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cld</span>    
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">    <span class="c1">; Loading stage 2 from disk into RAM</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">],</span> <span class="nb">dl</span> <span class="c1">; Storing disk number. BIOS loads into dl the &#34;drive number&#34; of the booted device.</span>
@@ -375,8 +375,8 @@ if (language) {
 </span></span><span class="line"><span class="cl">    <span class="c1">; Jump to the entry point of stage 2 (commented out for now)</span>
 </span></span><span class="line"><span class="cl">    <span class="c1">;;; jmp Stage2_entrypoint</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nl">.halt:</span> <span class="nf">hlt</span>   <span class="c1">; Infinite loop.</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span>    <span class="c1">; (It prevents us from going off in memory and executing junk).</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.halt:</span> <span class="nf">hlt</span>    <span class="c1">; Infinite loop.</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span>    <span class="c1">; (It prevents from going off in memory and executing junk).</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">; Include</span>
@@ -398,12 +398,10 @@ if (language) {
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-nasm" data-lang="nasm"><span class="line"><span class="cl"><span class="k">BITS</span> <span class="mi">16</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">;---Initialized data------------------------------------------------------------</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nf">disk</span> <span class="nv">db</span> <span class="mh">0x80</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nf">disk_error_message</span> <span class="nv">dw</span> <span class="mi">11</span>
 </span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Disk error!&#39;</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nl">DAP:</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;*******************************************************************************;</span>
@@ -426,10 +424,7 @@ if (language) {
 </span></span><span class="line"><span class="cl"><span class="nl">.LBA_lower:</span>   <span class="kd">dd</span> <span class="mh">0x0</span>  <span class="c1">; lower 32 bits of 48-bit starting LBA</span>
 </span></span><span class="line"><span class="cl"><span class="nl">.LBA_upper:</span>   <span class="kd">dd</span> <span class="mh">0x0</span>  <span class="c1">; upper 32 bits of 48-bit starting LBA</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nl">Real_mode_read_disk:</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">; Load disk sectors to memory (int 13h, function code 42h) ;</span>
@@ -439,34 +434,34 @@ if (language) {
 </span></span><span class="line"><span class="cl"><span class="c1">; bx: offset of buffer                                     ;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">; dx: segment of buffer                                    ;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;**********************************************************;</span>
-</span></span><span class="line"><span class="cl">    <span class="nl">.start:</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">cmp</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span> <span class="c1">; (max sectors to read in one call = 127)</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">jbe</span> <span class="nv">.good_size</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">pusha</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_read_disk</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">popa</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">127</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">add</span> <span class="nb">dx</span><span class="p">,</span> <span class="mi">127</span> <span class="o">*</span> <span class="mi">512</span> <span class="o">/</span> <span class="mi">16</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">sub</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">jmp</span> <span class="nv">.start</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.start:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">cmp</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span> <span class="c1">; (max sectors to read in one call = 127)</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jbe</span> <span class="nv">.good_size</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">pusha</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_read_disk</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">popa</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">eax</span><span class="p">,</span> <span class="mi">127</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">dx</span><span class="p">,</span> <span class="mi">127</span> <span class="o">*</span> <span class="mi">512</span> <span class="o">/</span> <span class="mi">16</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">sub</span> <span class="nb">cx</span><span class="p">,</span> <span class="mi">127</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.start</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    <span class="nl">.good_size:</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.LBA_lower</span><span class="p">],</span> <span class="nb">ax</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.num_sectors</span><span class="p">],</span> <span class="nb">cx</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_segment</span><span class="p">],</span> <span class="nb">dx</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_offset</span><span class="p">],</span> <span class="nb">bx</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">]</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">DAP</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0x42</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">int</span> <span class="mh">0x13</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">jc</span> <span class="nv">.print_error</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">ret</span>
-</span></span><span class="line"><span class="cl">    <span class="nl">.print_error:</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nb">di</span><span class="nv">sk_error_message</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">call</span> <span class="nv">Real_mode_println</span>
-</span></span><span class="line"><span class="cl">       <span class="nl">.halt:</span> <span class="nf">hlt</span>
-</span></span><span class="line"><span class="cl">        <span class="nf">jmp</span> <span class="nv">.halt</span><span class="c1">; Infinite loop. We cannot recover from disk error.</span></span></span></code></pre></div>
+</span></span><span class="line"><span class="cl"><span class="nl">.good_size:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.LBA_lower</span><span class="p">],</span> <span class="nb">ax</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.num_sectors</span><span class="p">],</span> <span class="nb">cx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_segment</span><span class="p">],</span> <span class="nb">dx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="p">[</span><span class="nv">DAP.buf_offset</span><span class="p">],</span> <span class="nb">bx</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">dl</span><span class="p">,</span> <span class="p">[</span><span class="nb">di</span><span class="nv">sk</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nv">DAP</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0x42</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">int</span> <span class="mh">0x13</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jc</span> <span class="nv">.print_error</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
+</span></span><span class="line"><span class="cl"><span class="nl">.print_error:</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">si</span><span class="p">,</span> <span class="nb">di</span><span class="nv">sk_error_message</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">call</span> <span class="nv">Real_mode_println</span>
+</span></span><span class="line"><span class="cl"><span class="nl">.halt:</span> <span class="nf">hlt</span>
+</span></span><span class="line"><span class="cl">    <span class="nf">jmp</span> <span class="nv">.halt</span> <span class="c1">; Infinite loop. We cannot recover from disk error.</span></span></span></code></pre></div>
 
 <h2 id="stage1-print-asm">stage1/print.asm</h2>
 
@@ -484,7 +479,6 @@ if (language) {
 </span></span><span class="line"><span class="cl"><span class="kd">db</span> <span class="s">&#39;Stage 1 finished.&#39;</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1">;---Code------------------------------------------------------------------------</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nl">Real_mode_print:</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;*********************************************************************************;</span>
 </span></span><span class="line"><span class="cl"><span class="c1">; Prints a string (in real mode)                                                  ;</span>
@@ -496,16 +490,15 @@ if (language) {
 </span></span><span class="line"><span class="cl">    <span class="nf">push</span> <span class="nb">si</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">mov</span> <span class="nb">cx</span><span class="p">,</span> <span class="kt">word</span> <span class="p">[</span><span class="nb">si</span><span class="p">]</span> <span class="c1">; first 16 bits = the number of characters in the string</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">add</span> <span class="nb">si</span><span class="p">,</span> <span class="mi">2</span>
-</span></span><span class="line"><span class="cl">    <span class="nl">.string_loop:</span>     <span class="c1">; print all the characters in the string</span>
+</span></span><span class="line"><span class="cl">   <span class="nl">.string_loop:</span>     <span class="c1">; print all the characters in the string</span>
 </span></span><span class="line"><span class="cl">        <span class="nf">lodsb</span>
 </span></span><span class="line"><span class="cl">        <span class="nf">mov</span> <span class="nb">ah</span><span class="p">,</span> <span class="mh">0eh</span>
 </span></span><span class="line"><span class="cl">        <span class="nf">int</span> <span class="mh">10h</span>
-</span></span><span class="line"><span class="cl">    <span class="nf">loop</span> <span class="nv">.string_loop</span><span class="p">,</span> <span class="nb">cx</span>
+</span></span><span class="line"><span class="cl">        <span class="nf">loop</span> <span class="nv">.string_loop</span><span class="p">,</span> <span class="nb">cx</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">si</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">cx</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">pop</span> <span class="nb">ax</span>
 </span></span><span class="line"><span class="cl">    <span class="nf">ret</span>
-</span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="nl">Real_mode_println:</span>
 </span></span><span class="line"><span class="cl"><span class="c1">;***********************************************************;</span>
@@ -604,298 +597,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_tasking/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os4.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Multitasking</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Πολυδιεργασία</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">23 Apr 2022</time>
-      <time lang="el">23 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/raspberry_pi_os_booting/" class="clearfix">
     <div class="cell">
@@ -911,202 +612,6 @@ if (language) {
   </a>
 </article>
 
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage (long mode)</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο (μακρά κατάσταση)</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 Apr 2022</time>
-      <time lang="el">11 Απρ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
            
           
            
@@ -1536,6 +1041,358 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_stage2/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os2.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Bootloader, 2nd Stage (long mode)</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Εκκινητής, 2o Στάδιο (μακρά κατάσταση)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 Apr 2022</time>
+      <time lang="el">11 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/os_tasking/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/os4.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System (x86_64): Multitasking</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα (x86_64): Πολυδιεργασία</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">23 Apr 2022</time>
+      <time lang="el">23 Απρ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1741,6 +1598,227 @@ if (language) {
            
            
           
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1767,16 +1845,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/opencl_fractals/" class="clearfix">
+  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/fractals.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">OpenCL Fractals</h3>
-      <h3 class="title" lang="el">OpenCL Κλασματομορφές (Φράκταλς)</h3>
+      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
+      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">07 Oct 2023</time>
-      <time lang="el">07 Οκτ 2023</time>
+      <time lang="en">10 May 2020</time>
+      <time lang="el">10 Μαϊ 2020</time>
     </footer>
   </a>
 </article>
@@ -1882,6 +1960,63 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/get_outlook_rules/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/flying_mail.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to collect Outlook rules using Powershell</h3>
+      <h3 class="title" lang="el">Πως να συλλέξετε τους κανόνες του Outlook χρησιμοποιώντας Powershell</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">20 May 2022</time>
+      <time lang="el">20 Μαϊ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
+      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">09 Apr 2018</time>
+      <time lang="el">09 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
           
            
            
@@ -1908,16 +2043,16 @@ if (language) {
            
            
             <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
     <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
     </div>
     <footer>
-      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
       <i class="fa fa-calendar"></i>
-      <time lang="en">19 Feb 2014</time>
-      <time lang="el">19 Φεβ 2014</time>
+      <time lang="en">21 Jul 2016</time>
+      <time lang="el">21 Ιουλ 2016</time>
     </footer>
   </a>
 </article>
@@ -1942,6 +2077,133 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
+      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">21 Oct 2016</time>
+      <time lang="el">21 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/oracle/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Ask and you shall receive</h3>
+      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">04 May 2019</time>
+      <time lang="el">04 Μαϊ 2019</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2029,6 +2291,84 @@ if (language) {
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
+      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Sep 2016</time>
+      <time lang="el">19 Σεπ 2016</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
+      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">13 Apr 2018</time>
+      <time lang="el">13 Απρ 2018</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/kivy_popup/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/kivy.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to build a responsive popup window with scrolling capability in Kivy</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε ένα ευέλικτο αναδυόμενο παράθυρο με δυνατότητα κύλισης στην Kivy</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">19 Feb 2014</time>
+      <time lang="el">19 Φεβ 2014</time>
+    </footer>
+  </a>
+</article>
+
+           
           
            
            
@@ -2063,6 +2403,97 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
+      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">17 Oct 2016</time>
+      <time lang="el">17 Οκτ 2016</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -2285,6 +2716,188 @@ if (language) {
            
            
            
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/opencl_fractals/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/fractals.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">OpenCL Fractals</h3>
+      <h3 class="title" lang="el">OpenCL Κλασματομορφές (Φράκταλς)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">07 Oct 2023</time>
+      <time lang="el">07 Οκτ 2023</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/web_file_browser/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/web_file_browser.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Web File Browser</h3>
+      <h3 class="title" lang="el">Πως να γράψετε τον δικό σας Διαδικτυακό Περιηγητή Αρχείων</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">11 May 2022</time>
+      <time lang="el">11 Μαϊ 2022</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/sutherland_hodgman_algorithm/" class="clearfix">
     <div class="cell">
@@ -2371,507 +2984,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_transparent/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/transparent_shutdown.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a transparent shutdown GUI using Gtk and Cairo in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας διαφανούς γραφικής διεπαφής κλεισίματος με τη χρήση Gtk και Cairo σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">19 Sep 2016</time>
-      <time lang="el">19 Σεπ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/epub_cover/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/openbook.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to read the cover image from an EPUB file in Python</h3>
-      <h3 class="title" lang="el">Πως να διαβάσετε την εικόνα εξωφύλλου από ένα αρχείο EPUB σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">10 May 2020</time>
-      <time lang="el">10 Μαϊ 2020</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/mssql_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/dbs.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">MSSQL shell with file upload capability</h3>
-      <h3 class="title" lang="el">MSSQL κέλυφος με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">13 Apr 2018</time>
-      <time lang="el">13 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/test_encodings/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/encodings.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to determine the character encoding of a text file</h3>
-      <h3 class="title" lang="el">Πως να αναγνωρίσετε την κωδικοποίηση χαρακτήρων ενός αρχείου κειμένου</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Oct 2016</time>
-      <time lang="el">21 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/winrm_shell/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/winrm.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">WinRM shell (a.k.a. PowerShell Remoting) with file upload capability</h3>
-      <h3 class="title" lang="el">WinRM κέλυφος (PowerShell Remoting) με δυνατότητα ανεβάσματος αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">09 Apr 2018</time>
-      <time lang="el">09 Απρ 2018</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/get_outlook_rules/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/flying_mail.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to collect Outlook rules using Powershell</h3>
-      <h3 class="title" lang="el">Πως να συλλέξετε τους κανόνες του Outlook χρησιμοποιώντας Powershell</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">20 May 2022</time>
-      <time lang="el">20 Μαϊ 2022</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2942,72 +3054,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/shutdown_manager_plain/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/shutdown_button.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Creation of a shutdown GUI using Gtk in Python</h3>
-      <h3 class="title" lang="el">Δημιουργία μιας γραφικής διεπαφής κλεισίματος με τη χρήση Gtk σε Python</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">21 Jul 2016</time>
-      <time lang="el">21 Ιουλ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -3123,27 +3169,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/fast_commit_push/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/binary_flow.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Git &amp; Mercurial: How to commit-push fast and easily</h3>
-      <h3 class="title" lang="el">Git &amp; Mercurial: Πως να κάνετε commit-push γρήγορα και εύκολα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">17 Oct 2016</time>
-      <time lang="el">17 Οκτ 2016</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
           
            
            
@@ -3284,22 +3309,6 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/oracle/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/oracle.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Ask and you shall receive</h3>
-      <h3 class="title" lang="el">Ζήτα και θα λάβεις</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">04 May 2019</time>
-      <time lang="el">04 Μαϊ 2019</time>
-    </footer>
-  </a>
-</article>
-
-           
           
            
            
@@ -3316,25 +3325,9 @@ if (language) {
            
            
           
-           
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/web_file_browser/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/web_file_browser.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Web File Browser</h3>
-      <h3 class="title" lang="el">Πως να γράψετε τον δικό σας Διαδικτυακό Περιηγητή Αρχείων</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">11 May 2022</time>
-      <time lang="el">11 Μαϊ 2022</time>
-    </footer>
-  </a>
-</article>
-
            
           
            

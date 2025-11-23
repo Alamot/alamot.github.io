@@ -201,7 +201,9 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#intro"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></a></li>
 <li><a href="#comparison"><span lang="en">Comparison</span><span lang="el">Σύγκριση</span></a>
 <ul>
-<li><a href="#equal-to-zero"><span lang="en">Equal to zero comparator</span><span lang="el">Συγκριτής ίσο με μηδέν</span></a></li>
+<li><a href="#equal-to-zero"><span lang="en">Equal to zero</span><span lang="el">Ίσο με μηδέν</span></a></li>
+<li><a href="#less-than-zero"><span lang="en">Less than zero</span><span lang="el">Μικρότερο από μηδέν</span></a></li>
+<li><a href="#greater-than-zero"><span lang="en">Greater than zero</span><span lang="el">Μεγαλύτερο από μηδέν</span></a></li>
 </ul></li>
 <li><a href="#flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></a>
 <ul>
@@ -265,6 +267,11 @@ if (language) {
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/processor'>
+                <span lang="en">processor</span>
+                <span lang="el">επεξεργαστής</span>
+                </a>
+            
               <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/logic'>
                 <span lang="en">logic</span>
                 <span lang="el">λογική</span>
@@ -280,7 +287,9 @@ if (language) {
 <li><a href="#intro"><span lang="en">Introduction</span><span lang="el">Εισαγωγή</span></a></li>
 <li><a href="#comparison"><span lang="en">Comparison</span><span lang="el">Σύγκριση</span></a>
 <ul>
-<li><a href="#equal-to-zero"><span lang="en">Equal to zero comparator</span><span lang="el">Συγκριτής ίσο με μηδέν</span></a></li>
+<li><a href="#equal-to-zero"><span lang="en">Equal to zero</span><span lang="el">Ίσο με μηδέν</span></a></li>
+<li><a href="#less-than-zero"><span lang="en">Less than zero</span><span lang="el">Μικρότερο από μηδέν</span></a></li>
+<li><a href="#greater-than-zero"><span lang="en">Greater than zero</span><span lang="el">Μεγαλύτερο από μηδέν</span></a></li>
 </ul></li>
 <li><a href="#flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></a>
 <ul>
@@ -301,15 +310,16 @@ if (language) {
 
 <h1 id="comparison"><span lang="en">Comparison</span><span lang="el">Σύγκριση</span></h1>
 
-<h2 id="equal-to-zero"><span lang="en">Equal to zero comparator</span><span lang="el">Συγκριτής ίσο με μηδέν</span></h2>
+<h2 id="equal-to-zero"><span lang="en">Equal to zero</span><span lang="el">Ίσο με μηδέν</span></h2>
 
 <p lang="en">It outputs 1 if -and only if- all bits in the input are 0.</p>
+<p lang="el">Δίνει έξοδο 1 αν -και μόνο αν- όλα τα δυαδικά ψηφία στην είσοδο είναι 0.</p>
 
 <div class="row">
   <div class="col-sm-4">
     <table class="bordered centered colored table-hover">
       <thead>
-        <tr><th>Α3</th><th>A2</th><th>Α1</th><th>Α0</th><th>Output</th></tr>
+        <tr><th>Α3</th><th>A2</th><th>Α1</th><th>Α0</th><th>Zero?</th></tr>
       </thead>
       <tbody>
         <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
@@ -321,7 +331,7 @@ if (language) {
     </table>
   </div>
   <div class="col-sm-4 bordered centered simcir">
-    { "width":350,
+    { "width":355,
       "height":160,
       "editable": false,
       "showToolbox":false,
@@ -340,7 +350,7 @@ if (language) {
         {"type":"NAND",  "id":"dev11","x":160, "y":90, "label":"NAND"},
         {"type":"NAND",  "id":"dev12","x":210, "y":60, "label":"NAND"},  
         {"type":"NAND",  "id":"dev13","x":260, "y":60, "label":"NAND"},       
-        {"type":"NumDsp","id":"dev14","x":315, "y":68, "label":"Output","state":{"direction":2}}],
+        {"type":"LED","id":"dev14","x":310, "y":60, "label":"Zero?"}],
       "connectors":[{"from":"dev0.out0","to":"dev4.in0"},
                     {"from":"dev0.out0","to":"dev4.in1"},
                     {"from":"dev1.out0","to":"dev5.in0"},
@@ -365,10 +375,110 @@ if (language) {
   </div>
 </div>
 
-<h1 id="flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></h1>
+<h2 id="less-than-zero"><span lang="en">Less than zero</span><span lang="el">Μικρότερο από μηδέν</span></h2>
 
-<p lang="en"></p>
-<p lang="el"></p>
+<p lang="en">As we discussed in the previous article, two's complement method ensures that negative numbers always start with a 1, while positive numbers start with a 0. This makes it trivial to check if a number is less than zero. We simply need to check if its most significant bit (MSB) is 1.</p>
+<p lang="el">Όπως συζητήσαμε στο προηγούμενο άρθρο, η μέθοδος του συμπληρώματος ως προς 2 (two's complement) εξασφαλίζει ότι οι αρνητικοί αριθμοί ξεκινούν πάντα με 1, ενώ οι θετικοί με 0. Αυτό καθιστά τετριμμένο τον έλεγχο για το αν ένας αριθμός είναι μικρότερος από το μηδέν. Αρκεί απλά να ελέγξουμε αν το πιο σημαντικό του δυαδικό ψηφίο (MSB, Most Significant Bit) είναι 1.</p>
+
+<div class="row">
+  <div class="col-sm-4">
+    <table class="bordered centered colored table-hover">
+      <thead>
+        <tr><th>Α3 (MSB)</th><th>A2</th><th>Α1</th><th>Α0</th><th>Negative?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td>X</td><td>X</td><td>X</td><td>0</td></tr>
+        <tr><td>1</td><td>X</td><td>X</td><td>X</td><td>1</td></tr>        
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-4 bordered centered simcir">
+    { "width":160,
+      "height":160,
+      "editable": false,
+      "showToolbox":false,
+      "devices":[
+        {"type":"NumSrc","id":"dev0", "x":30, "y":25, "label":"A0","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev1", "x":30, "y":55, "label":"Α1","state":{"direction":0,"on":false}},    
+        {"type":"NumSrc","id":"dev2", "x":30, "y":85, "label":"A2","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev3", "x":30, "y":115,"label":"Α3","state":{"direction":0,"on":true}},                    
+        {"type":"LED","id":"dev4","x":100, "y":60, "label":"Negative?"}],
+      "connectors":[{"from":"dev3.out0","to":"dev4.in0"}]}
+  </div>
+</div>
+
+<h2 id="greater-than-zero"><span lang="en">Greater than zero</span><span lang="el">Μεγαλύτερο από μηδέν</span></h2>
+
+<p lang="en">To check if a number is greater that zero, we can simply check that the number is not zero and is not negative.</p>
+<p lang="el">Για να ελέγξουμε αν ένας αριθμός είναι μεγαλύτερος από το μηδέν, αρκεί να ελέγξουμε ότι δεν είναι μηδέν και ότι δεν είναι αρνητικός.</p>
+
+<div class="row">
+  <div class="col-sm-4">
+    <table class="bordered centered colored table-hover">
+      <thead>
+        <tr><th>Α3</th><th>A2</th><th>Α1</th><th>Α0</th><th>Positive?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>1</td><td>X</td><td>X</td><td>X</td><td>0</td></tr>
+        <tr><td>0</td><td>X</td><td>X</td><td>1</td><td>1</td></tr> 
+        <tr><td>0</td><td>X</td><td>1</td><td>X</td><td>1</td></tr> 
+        <tr><td>0</td><td>1</td><td>X</td><td>X</td><td>1</td></tr>        
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-4 bordered centered simcir">
+    { "width":305,
+      "height":205,
+      "editable": false,
+      "showToolbox":false,
+      "devices":[
+        {"type":"NumSrc","id":"dev0", "x":20,  "y":25, "label":"A0","state":{"direction":0,"on":true}},
+        {"type":"NumSrc","id":"dev1", "x":20,  "y":55, "label":"Α1","state":{"direction":0,"on":false}},    
+        {"type":"NumSrc","id":"dev2", "x":20,  "y":85, "label":"A2","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev3", "x":20,  "y":115,"label":"Α3","state":{"direction":0,"on":false}},                    
+        {"type":"NAND",  "id":"dev4", "x":60,  "y":15, "label":"NAND"},
+        {"type":"NAND",  "id":"dev5", "x":60,  "y":45, "label":"NAND"},
+        {"type":"NAND",  "id":"dev6", "x":60,  "y":75, "label":"NAND"},
+        {"type":"NAND",  "id":"dev7", "x":60,  "y":105,"label":"NAND"},
+        {"type":"NAND",  "id":"dev8", "x":110, "y":30, "label":"NAND"},
+        {"type":"NAND",  "id":"dev9", "x":110, "y":90, "label":"NAND"},
+        {"type":"NAND",  "id":"dev10","x":160, "y":30, "label":"NAND"},
+        {"type":"NAND",  "id":"dev11","x":160, "y":90, "label":"NAND"},
+        {"type":"NAND",  "id":"dev12","x":210, "y":60, "label":"NAND"},  
+        {"type":"NAND",  "id":"dev13","x":110, "y":150, "label":"NAND"},
+        {"type":"NAND",  "id":"dev14","x":160, "y":150, "label":"NAND"},  
+        {"type":"NAND",  "id":"dev15","x":210, "y":150, "label":"NAND"},        
+        {"type":"LED",   "id":"dev16","x":260, "y":150, "label":"Positive?"}],
+      "connectors":[{"from":"dev0.out0","to":"dev4.in0"},
+                    {"from":"dev0.out0","to":"dev4.in1"},
+                    {"from":"dev1.out0","to":"dev5.in0"},
+                    {"from":"dev1.out0","to":"dev5.in1"},
+                    {"from":"dev2.out0","to":"dev6.in0"},
+                    {"from":"dev2.out0","to":"dev6.in1"},
+                    {"from":"dev3.out0","to":"dev7.in0"},
+                    {"from":"dev3.out0","to":"dev7.in1"},                    
+                    {"from":"dev4.out0","to":"dev8.in0"},
+                    {"from":"dev5.out0","to":"dev8.in1"},
+                    {"from":"dev6.out0","to":"dev9.in0"},
+                    {"from":"dev7.out0","to":"dev9.in1"},                    
+                    {"from":"dev8.out0","to":"dev10.in0"},
+                    {"from":"dev8.out0","to":"dev10.in1"},
+                    {"from":"dev9.out0","to":"dev11.in0"},
+                    {"from":"dev9.out0","to":"dev11.in1"},
+                    {"from":"dev10.out0","to":"dev12.in0"},
+                    {"from":"dev11.out0","to":"dev12.in1"},                    
+                    {"from":"dev12.out0","to":"dev14.in0"},
+                    {"from":"dev3.out0","to":"dev13.in0"},
+                    {"from":"dev3.out0","to":"dev13.in1"},
+                    {"from":"dev13.out0","to":"dev14.in1"},
+                    {"from":"dev14.out0","to":"dev15.in0"},
+                    {"from":"dev14.out0","to":"dev15.in1"},
+                    {"from":"dev15.out0","to":"dev16.in0"}]}
+  </div>
+</div>
+
+<h1 id="flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></h1>
 
 <h2 id="multiplexer"><span lang="en">Μultiplexer (Data selector)</span><span lang="el">Πολυπλέκτης (Επιλογέας δεδομένων)</span></h2>
 
@@ -1090,446 +1200,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/logic_gates_and_arithmetics/" class="clearfix">
     <div class="cell">
@@ -1631,8 +1301,6 @@ if (language) {
            
            
           
-          
-           
            
            
            
@@ -1640,9 +1308,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1650,9 +1316,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1660,14 +1324,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -1675,9 +1336,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1685,9 +1344,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1695,9 +1352,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1705,14 +1360,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -1720,9 +1372,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1730,9 +1380,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1740,9 +1388,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1750,14 +1396,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -1765,9 +1408,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -1775,14 +1416,11 @@ if (language) {
            
            
            
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -1790,14 +1428,15 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
           
            
+           
+           
+          
            
            
            
@@ -1805,14 +1444,23 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -1820,39 +1468,63 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
           
+           
            
            
+          
+           
            
            
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -1860,40 +1532,39 @@ if (language) {
            
            
            
+          
+           
            
+           
           
            
            
+           
+          
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/raspberry_pi_os_booting/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/raspberry_pi.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System for Raspberry Pi (AArch64): Booting</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα για Raspberry Pi (AArch64): Εκκίνηση</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Nov 2025</time>
-      <time lang="el">02 Νοε 2025</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
            
            
+          
+           
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -1901,39 +1572,63 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
           
+           
            
            
+          
+           
            
            
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -1941,14 +1636,23 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
+           
            
+          
            
            
            
           
+           
            
+           
+          
            
            
            
@@ -1956,24 +1660,39 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -1981,14 +1700,23 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
            
            
+          
+           
            
            
           
            
+           
+           
+          
            
            
            
@@ -1996,17 +1724,27 @@ if (language) {
            
            
            
+          
+           
            
+           
           
+           
+           
            
+          
            
            
            
           
+           
            
            
+          
            
            
+           
+          
           
            
            
@@ -2447,6 +2185,387 @@ if (language) {
            
            
            
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/raspberry_pi_os_booting/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/raspberry_pi.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System for Raspberry Pi (AArch64): Booting</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα για Raspberry Pi (AArch64): Εκκίνηση</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Nov 2025</time>
+      <time lang="el">02 Νοε 2025</time>
+    </footer>
+  </a>
+</article>
+
            
           
            

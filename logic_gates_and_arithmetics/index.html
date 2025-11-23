@@ -213,6 +213,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#full-adder"><span lang="en">Full Adder</span><span lang="el">Πλήρης Αθροιστής</span></a></li>
 <li><a href="#multibit-adder"><span lang="en">Multi-bit Adder</span><span lang="el">Πολυψήφιος Αθροιστής</span></a></li>
 </ul></li>
+<li><a href="#subtraction"><span lang="en">Subtraction</span><span lang="el">Αφαίρεση</span></a></li>
  
       
         <li><a href="#posts-section"><span lang="en">See also</span><span lang="el">Δείτε επίσης</span></a></li>
@@ -270,6 +271,11 @@ if (language) {
             
             &middot; <i class="fa fa-tags topmargin7" aria-hidden="true"></i>
             
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/processor'>
+                <span lang="en">processor</span>
+                <span lang="el">επεξεργαστής</span>
+                </a>
+            
               <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/logic'>
                 <span lang="en">logic</span>
                 <span lang="el">λογική</span>
@@ -302,6 +308,7 @@ if (language) {
 <li><a href="#full-adder"><span lang="en">Full Adder</span><span lang="el">Πλήρης Αθροιστής</span></a></li>
 <li><a href="#multibit-adder"><span lang="en">Multi-bit Adder</span><span lang="el">Πολυψήφιος Αθροιστής</span></a></li>
 </ul></li>
+<li><a href="#subtraction"><span lang="en">Subtraction</span><span lang="el">Αφαίρεση</span></a></li>
 </ul>
 </nav></div>
           </section>
@@ -624,17 +631,17 @@ if (language) {
   </div>
   <div class="col-sm-4 bordered centered simcir">
     { "width":300,
-      "height":140,
+      "height":120,
       "editable": false,
       "showToolbox":false,
       "devices":[
-        {"type":"DC",    "id":"dev0","x":20, "y":50,"label":"DC"},
+        {"type":"DC",    "id":"dev0","x":20, "y":40,"label":"DC"},
         {"type":"Toggle","id":"dev1","x":100,"y":15,"label":"A","state":{"on":false}},
-        {"type":"Toggle","id":"dev2","x":100,"y":85,"label":"B","state":{"on":false}},
+        {"type":"Toggle","id":"dev2","x":100,"y":65,"label":"B","state":{"on":false}},
         {"type":"XOR",   "id":"dev3","x":180,"y":15,"label":"XOR"},
-        {"type":"AND",   "id":"dev4","x":180,"y":85,"label":"AND"},
+        {"type":"AND",   "id":"dev4","x":180,"y":65,"label":"AND"},
         {"type":"LED",   "id":"dev5","x":250,"y":15,"label":"Output 0"},
-        {"type":"LED",   "id":"dev6","x":250,"y":85,"label":"Output 1"}],
+        {"type":"LED",   "id":"dev6","x":250,"y":65,"label":"Output 1"}],
       "connectors":[
         {"from":"dev0.out0","to":"dev1.in0"},
         {"from":"dev0.out0","to":"dev2.in0"},
@@ -804,16 +811,16 @@ if (language) {
   </div>
   <div class="col-sm-4 bordered centered simcir">
     { "width":350,
-      "height":275,
+      "height":280,
       "editable": false,
       "showToolbox":false,
       "devices":[
         {"type":"DC","id":"dev0","x":15,"y":120,"label":"DC"},
-        {"type":"Toggle",   "id":"dev1", "x":70,"y":20,  "label":"A0","state":{"on":false}},        
-        {"type":"Toggle",   "id":"dev2", "x":70,"y":70,  "label":"A1","state":{"on":false}},
+        {"type":"Toggle",   "id":"dev1", "x":70,"y":10,  "label":"A0","state":{"on":false}},        
+        {"type":"Toggle",   "id":"dev2", "x":70,"y":60,  "label":"A1","state":{"on":false}},
         {"type":"Toggle",   "id":"dev3", "x":70,"y":120, "label":"B0","state":{"on":false}},
         {"type":"Toggle",   "id":"dev4", "x":70,"y":170, "label":"B1","state":{"on":false}},
-        {"type":"Toggle",   "id":"dev5", "x":70,"y":220, "label":"C", "state":{"on":false}},
+        {"type":"Toggle",   "id":"dev5", "x":70,"y":230, "label":"C", "state":{"on":false}},
         {"type":"FullAdder","id":"dev6", "x":130,"y":60, "label":"FullAdder"},
         {"type":"FullAdder","id":"dev7", "x":130,"y":150,"label":"FullAdder"},
         {"type":"LED",      "id":"dev8", "x":220,"y":60, "label":"Output 0"},
@@ -839,6 +846,62 @@ if (language) {
         {"from":"dev7.out0","to":"dev11.in1"},
         {"from":"dev7.out1","to":"dev11.in2"}        
         ]}
+  </div>
+</div>
+
+<h1 id="subtraction"><span lang="en">Subtraction</span><span lang="el">Αφαίρεση</span></h1>
+
+<p lang="en">Representing negative numbers is a fundamental challenge in computer architecture because digital hardware only understands states of 0 and 1. While there have been several approaches historically, one method has emerged as the nearly universal industry standard for integer arithmetic: <strong><em>Τwo's complement</em></strong>. This method greatly simplifies the hardware design. In two's complement, positive numbers always start with 0 whereas negative numbers always start with 1. To get the negative of a number, we simply invert all the bits (i.e. flip 0s to 1s and 1s to 0s) and then we add 1 to the total number. This allows the processor to use the exact same circuitry for both addition and subtraction, regardless of whether the numbers are positive or negative. It also eliminates the «negative zero» issue that is present in other systems (i.e. having both +0 and -0). Therefore, to subtract, we just negate the second number and we add it (ignoring the final carry bit in case of overflow). For example, if we add +3 (11) and -3 (01) in binary, the result is (1)00. The math works naturally without extra logic circuits for signs.</p>
+<p lang="el">Η αναπαράσταση αρνητικών αριθμών αποτελεί μια θεμελιώδη πρόκληση στην αρχιτεκτονική υπολογιστών, επειδή το ψηφιακό υλικό κατανοεί μόνο καταστάσεις 0 και 1. Ενώ ιστορικά έχουν υπάρξει διάφορες προσεγγίσεις, μία μέθοδος έχει αναδειχθεί πρακτικά ως το (σχεδόν) καθολικό βιομηχανικό πρότυπο για την αριθμητική ακεραίων: το <strong><em>συμπλήρωμα ως προς 2</em></strong> (<em>Two's complement</em>). Αυτή η μέθοδος απλοποιεί εξαιρετικά τον σχεδιασμό του υλικού. Στο συμπλήρωμα ως προς 2, οι θετικοί αριθμοί ξεκινούν πάντα με 0, ενώ οι αρνητικοί αριθμοί ξεκινούν πάντα με 1. Για να πάρουμε τον αρνητικό ενός αριθμού, απλώς αντιστρέφουμε όλα του τα δυαδικά ψηφία (αλλάζουμε δηλαδή τα 0 σε 1 και τα 1 σε 0) και κατόπιν προσθέτουμε στο συνολικό αποτέλεσμα 1. Αυτό επιτρέπει στον επεξεργαστή να χρησιμοποιεί ακριβώς τα ίδια κυκλώματα τόσο για την πρόσθεση όσο και για την αφαίρεση, ανεξάρτητα από το αν οι αριθμοί είναι θετικοί ή αρνητικοί. Επίσης, εξαλείφει το πρόβλημα του «αρνητικού μηδενός» που παρουσιάζεται σε άλλα συστήματα (δηλαδή την ύπαρξη τόσο του +0 όσο και του -0). Έτσι λοιπόν, για να πραγματοποιήσουμε αφαίρεση, απλώς παίρνουμε την αρνητική τιμή του δεύτερου αριθμού και την προσθέτουμε (αγνοώντας το τελικό κρατούμενο σε περίπτωση υπερχείλησης). Παράδειγμα: Αν προσθέσουμε το +3 (11) και το -3 (01),  το αποτέλεσμα είναι (1)00. Τα μαθηματικά λειτουργούν φυσικά, χωρίς την ανάγκη για επιπλέον λογικά κυκλώματα διαχείρισης προσήμων.</p>
+
+<div class="row">
+  <div class="col-sm-6">
+    <table class="bordered centered colored table-hover">
+      <thead>
+        <tr><th>Input A1</th><th>Input A0</th><th>Input B1</th><th>Input B0</th><th>Input C</th><th>Output</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>000</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>001</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>010</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>011</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>100</td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>101</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>110</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>111</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-4 bordered centered simcir">
+    { "width":300,
+      "height":220,
+      "editable": false,
+      "showToolbox":false,
+      "devices":[
+        {"type":"DC","id":"dev0","x":22,"y":20,"label":"C","state":{"direction":2}},    
+        {"type":"NumSrc","id":"dev1","x":30,"y":80, "label":"A0","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev2","x":30,"y":110,"label":"Α1","state":{"direction":0,"on":false}},    
+        {"type":"NumSrc","id":"dev3","x":30,"y":150,"label":"B0","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev4","x":30,"y":180,"label":"B1","state":{"direction":0,"on":false}},    
+        {"type":"NAND",  "id":"dev5","x":85,"y":110,"label":"NAND"},
+        {"type":"NAND",  "id":"dev11","x":85,"y":160,"label":"NAND"},
+        {"type":"FullAdder","id":"dev6", "x":145,"y":40, "label":"FullAdder"},
+        {"type":"FullAdder","id":"dev7", "x":145,"y":135,"label":"FullAdder"},        
+        {"type":"NumDsp",   "id":"dev8" ,"x":250, "y":90, "label":"Output 0","state":{"direction":2}},
+        {"type":"NumDsp",   "id":"dev9" ,"x":250, "y":120, "label":"Output 1","state":{"direction":2}}],
+      "connectors":[
+        {"from":"dev0.out0","to":"dev6.in0"},
+        {"from":"dev1.out0","to":"dev6.in1"},
+        {"from":"dev3.out0","to":"dev5.in0"},
+        {"from":"dev3.out0","to":"dev5.in1"},
+        {"from":"dev5.out0","to":"dev6.in2"},
+        {"from":"dev2.out0","to":"dev7.in1"},
+        {"from":"dev4.out0","to":"dev11.in0"},
+        {"from":"dev4.out0","to":"dev11.in1"},
+        {"from":"dev11.out0","to":"dev7.in2"},
+        {"from":"dev6.out1","to":"dev7.in0"},
+        {"from":"dev6.out0","to":"dev8.in0"},
+        {"from":"dev7.out0","to":"dev9.in0"}]}
   </div>
 </div>
 
@@ -869,6 +932,362 @@ if (language) {
           
           
           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1650,484 +2069,6 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Electric current and human body</h3>
-      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2009</time>
-      <time lang="el">01 Ιουν 2009</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2223,6 +2164,137 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Electric current and human body</h3>
+      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">01 Jun 2009</time>
+      <time lang="el">01 Ιουν 2009</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

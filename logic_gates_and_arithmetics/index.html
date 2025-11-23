@@ -692,7 +692,7 @@ if (language) {
 <h2 id="full-adder"><span lang="en">Full Adder</span><span lang="el">Πλήρης Αθροιστής</span></h2>
 
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-5">
     <table class="bordered centered colored table-hover">
       <thead>
         <tr><th>Input A</th><th>Input B</th><th>Input C</th><th>Output</th></tr>
@@ -740,7 +740,7 @@ if (language) {
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-4 centered"></div>
+  <div class="col-sm-5 centered"></div>
   <div class="col-sm-4 bordered centered simcir">
       { "width":300,
         "height":220,
@@ -795,17 +795,20 @@ if (language) {
   <div class="col-sm-6">
     <table class="bordered centered colored table-hover">
       <thead>
-        <tr><th>Input A1</th><th>Input A0</th><th>Input B1</th><th>Input B0</th><th>Input C</th><th>Output</th></tr>
+        <tr><th>Input A1A0</th><th>Input B1B0</th><th>Input C</th><th>Output</th></tr>
       </thead>
       <tbody>
-        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>000</td></tr>
-        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>001</td></tr>
-        <tr><td>0</td><td>1</td><td>0</td><td>1</td><td>0</td><td>010</td></tr>
-        <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>0</td><td>011</td></tr>
-        <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td>100</td></tr>
-        <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td><td>101</td></tr>
-        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td><td>110</td></tr>
-        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td><td>111</td></tr>
+        <tr></td><td>00</td><td>00</td><td>0</td><td>000</td></tr>
+        <tr></td><td>00</td><td>01</td><td>0</td><td>001</td></tr>
+        <tr></td><td>00</td><td>10</td><td>0</td><td>010</td></tr>
+        <tr></td><td>00</td><td>11</td><td>0</td><td>011</td></tr>        
+        <tr></td><td>01</td><td>01</td><td>0</td><td>010</td></tr>
+        <tr></td><td>01</td><td>10</td><td>0</td><td>011</td></tr>
+        <tr></td><td>01</td><td>11</td><td>0</td><td>100</td></tr>        
+        <tr></td><td>10</td><td>10</td><td>0</td><td>100</td></tr>
+        <tr></td><td>10</td><td>11</td><td>0</td><td>101</td></tr>        
+        <tr></td><td>11</td><td>11</td><td>0</td><td>110</td></tr>
+        <tr></td><td>11</td><td>11</td><td>1</td><td>111</td></tr>
       </tbody>
     </table>
   </div>
@@ -851,24 +854,32 @@ if (language) {
 
 <h1 id="subtraction"><span lang="en">Subtraction</span><span lang="el">Αφαίρεση</span></h1>
 
-<p lang="en">Representing negative numbers is a fundamental challenge in computer architecture because digital hardware only understands states of 0 and 1. While there have been several approaches historically, one method has emerged as the nearly universal industry standard for integer arithmetic: <strong><em>Τwo's complement</em></strong>. This method greatly simplifies the hardware design. In two's complement, positive numbers always start with 0 whereas negative numbers always start with 1. To get the negative of a number, we simply invert all the bits (i.e. flip 0s to 1s and 1s to 0s) and then we add 1 to the total number. This allows the processor to use the exact same circuitry for both addition and subtraction, regardless of whether the numbers are positive or negative. It also eliminates the «negative zero» issue that is present in other systems (i.e. having both +0 and -0). Therefore, to subtract, we just negate the second number and we add it (ignoring the final carry bit in case of overflow). For example, if we add +3 (11) and -3 (01) in binary, the result is (1)00. The math works naturally without extra logic circuits for signs.</p>
-<p lang="el">Η αναπαράσταση αρνητικών αριθμών αποτελεί μια θεμελιώδη πρόκληση στην αρχιτεκτονική υπολογιστών, επειδή το ψηφιακό υλικό κατανοεί μόνο καταστάσεις 0 και 1. Ενώ ιστορικά έχουν υπάρξει διάφορες προσεγγίσεις, μία μέθοδος έχει αναδειχθεί πρακτικά ως το (σχεδόν) καθολικό βιομηχανικό πρότυπο για την αριθμητική ακεραίων: το <strong><em>συμπλήρωμα ως προς 2</em></strong> (<em>Two's complement</em>). Αυτή η μέθοδος απλοποιεί εξαιρετικά τον σχεδιασμό του υλικού. Στο συμπλήρωμα ως προς 2, οι θετικοί αριθμοί ξεκινούν πάντα με 0, ενώ οι αρνητικοί αριθμοί ξεκινούν πάντα με 1. Για να πάρουμε τον αρνητικό ενός αριθμού, απλώς αντιστρέφουμε όλα του τα δυαδικά ψηφία (αλλάζουμε δηλαδή τα 0 σε 1 και τα 1 σε 0) και κατόπιν προσθέτουμε στο συνολικό αποτέλεσμα 1. Αυτό επιτρέπει στον επεξεργαστή να χρησιμοποιεί ακριβώς τα ίδια κυκλώματα τόσο για την πρόσθεση όσο και για την αφαίρεση, ανεξάρτητα από το αν οι αριθμοί είναι θετικοί ή αρνητικοί. Επίσης, εξαλείφει το πρόβλημα του «αρνητικού μηδενός» που παρουσιάζεται σε άλλα συστήματα (δηλαδή την ύπαρξη τόσο του +0 όσο και του -0). Έτσι λοιπόν, για να πραγματοποιήσουμε αφαίρεση, απλώς παίρνουμε την αρνητική τιμή του δεύτερου αριθμού και την προσθέτουμε (αγνοώντας το τελικό κρατούμενο σε περίπτωση υπερχείλησης). Παράδειγμα: Αν προσθέσουμε το +3 (11) και το -3 (01),  το αποτέλεσμα είναι (1)00. Τα μαθηματικά λειτουργούν φυσικά, χωρίς την ανάγκη για επιπλέον λογικά κυκλώματα διαχείρισης προσήμων.</p>
+<p lang="en">Representing negative numbers is a fundamental challenge in computer architecture because digital hardware only understands states of 0 and 1. While there have been several approaches historically, one method has emerged as the nearly universal industry standard for integer arithmetic: <strong><em>Τwo's complement</em></strong>. This method greatly simplifies the hardware design. In two's complement, positive numbers always start with 0 whereas negative numbers always start with 1. To get the negative of a number, we simply invert all the bits (i.e. flip 0s to 1s and 1s to 0s) and then we add 1 to the total number. This allows the processor to use the exact same circuitry for both addition and subtraction, regardless of whether the numbers are positive or negative. It also eliminates the «negative zero» issue that is present in other systems (i.e. having both +0 and -0). Therefore, to subtract, we just negate the second number and we add it (ignoring the final carry bit in case of overflow). For example, if we add +3 (11) and -3 (01) in binary, the result is 00. The math works naturally without extra logic circuits for signs.</p>
+<p lang="el">Η αναπαράσταση αρνητικών αριθμών αποτελεί μια θεμελιώδη πρόκληση στην αρχιτεκτονική υπολογιστών, επειδή το ψηφιακό υλικό κατανοεί μόνο καταστάσεις 0 και 1. Ενώ ιστορικά έχουν υπάρξει διάφορες προσεγγίσεις, μία μέθοδος έχει αναδειχθεί πρακτικά ως το (σχεδόν) καθολικό βιομηχανικό πρότυπο για την αριθμητική ακεραίων: το <strong><em>συμπλήρωμα ως προς 2</em></strong> (<em>Two's complement</em>). Αυτή η μέθοδος απλοποιεί εξαιρετικά τον σχεδιασμό του υλικού. Στο συμπλήρωμα ως προς 2, οι θετικοί αριθμοί ξεκινούν πάντα με 0, ενώ οι αρνητικοί αριθμοί ξεκινούν πάντα με 1. Για να πάρουμε τον αρνητικό ενός αριθμού, απλώς αντιστρέφουμε όλα του τα δυαδικά ψηφία (αλλάζουμε δηλαδή τα 0 σε 1 και τα 1 σε 0) και κατόπιν προσθέτουμε στο συνολικό αποτέλεσμα 1. Αυτό επιτρέπει στον επεξεργαστή να χρησιμοποιεί ακριβώς τα ίδια κυκλώματα τόσο για την πρόσθεση όσο και για την αφαίρεση, ανεξάρτητα από το αν οι αριθμοί είναι θετικοί ή αρνητικοί. Επίσης, εξαλείφει το πρόβλημα του «αρνητικού μηδενός» που παρουσιάζεται σε άλλα συστήματα (δηλαδή την ύπαρξη τόσο του +0 όσο και του -0). Έτσι λοιπόν, για να πραγματοποιήσουμε αφαίρεση, απλώς παίρνουμε την αρνητική τιμή του δεύτερου αριθμού και την προσθέτουμε (αγνοώντας το τελικό κρατούμενο σε περίπτωση υπερχείλησης). Παράδειγμα: Αν προσθέσουμε το +3 (11) και το -3 (01),  το αποτέλεσμα είναι 00. Τα μαθηματικά λειτουργούν φυσικά, χωρίς την ανάγκη για επιπλέον λογικά κυκλώματα διαχείρισης προσήμων.</p>
 
 <div class="row">
   <div class="col-sm-6">
     <table class="bordered centered colored table-hover">
       <thead>
-        <tr><th>Input A1</th><th>Input A0</th><th>Input B1</th><th>Input B0</th><th>Output</th></tr>
+        <tr><th>Input A1A0</th><th>Input B1B0</th><th>Output</th></tr>
       </thead>
       <tbody>
-        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>00</td></tr>        
-        <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>10</td></tr>   
-        <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>11</td></tr>
-        <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>11</td></tr>    
-        <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>11</td></tr>
-        <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>10</td></tr>
-        <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>01</td></tr>        
-        <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>00</td></tr>
+        <tr></td><td>00</td><td>00</td><td>00</td></tr>
+        <tr></td><td>00</td><td>01</td><td>11</td></tr>
+        <tr></td><td>00</td><td>10</td><td>10</td></tr>
+        <tr></td><td>00</td><td>11</td><td>01</td></tr>        
+        <tr></td><td>01</td><td>00</td><td>01</td></tr>
+        <tr></td><td>01</td><td>01</td><td>00</td></tr>
+        <tr></td><td>01</td><td>10</td><td>11</td></tr>        
+        <tr></td><td>01</td><td>11</td><td>10</td></tr>
+        <tr></td><td>10</td><td>00</td><td>10</td></tr>
+        <tr></td><td>10</td><td>01</td><td>01</td></tr>
+        <tr></td><td>10</td><td>10</td><td>00</td></tr>        
+        <tr></td><td>10</td><td>11</td><td>11</td></tr>
+        <tr></td><td>11</td><td>00</td><td>11</td></tr>
+        <tr></td><td>11</td><td>01</td><td>10</td></tr>
+        <tr></td><td>11</td><td>10</td><td>01</td></tr>        
+        <tr></td><td>11</td><td>11</td><td>00</td></tr>
       </tbody>
     </table>
   </div>
@@ -905,6 +916,9 @@ if (language) {
   </div>
 </div>
 
+<p lang="en">In our <a href="/comparison_and_flow_control/">next article</a>, we will see how we can use subtraction to compare two numbers.</p>
+<p lang="el">Στο <a href="/comparison_and_flow_control/">επόμενο άρθρό</a> μας, θα δούμε πώς μπορούμε να χρησιμοποιήσουμε την αφαίρεση για να συγκρίνουμε δύο αριθμούς.</p>
+
 <hr />
 
 <p><link rel="preload" href="/css/simcir.css" as="style" onload="this.rel='stylesheet'">
@@ -932,6 +946,630 @@ if (language) {
           
           
           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1449,390 +2087,33 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
            
-          
-           
            
-           
           
-           
            
            
-          
            
            
-           
           
-           
            
            
-          
-           
            
            
           
-           
-           
            
-          
            
            
            
           
-           
-           
            
-          
            
            
            
           
-           
            
-           
-          
            
            
            
@@ -1840,55 +2121,34 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
            
            
-          
-           
            
-           
           
-           
            
            
-          
            
            
-           
           
-           
            
            
-          
-           
            
            
           
-           
-           
            
-          
            
            
            
           
-           
-           
            
-          
            
            
            
           
-           
            
-           
-          
            
            
            
@@ -1896,55 +2156,34 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
            
            
-          
-           
            
-           
           
-           
            
            
-          
            
            
-           
           
-           
            
            
-          
-           
            
            
           
-           
-           
            
-          
            
            
            
           
-           
-           
            
-          
            
            
            
           
-           
            
-           
-          
            
            
            
@@ -1952,55 +2191,34 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
            
            
-          
-           
            
-           
           
-           
            
            
-          
            
            
-           
           
-           
            
            
-          
-           
            
            
           
-           
-           
            
-          
            
            
            
           
-           
-           
            
-          
            
            
            
           
-           
            
-           
-          
            
            
            
@@ -2008,55 +2226,34 @@ if (language) {
            
            
            
-          
-           
-           
            
           
            
            
            
-          
-           
            
-           
           
-           
            
            
-          
            
            
-           
           
-           
            
            
-          
-           
            
            
           
-           
-           
            
-          
            
            
            
           
-           
-           
            
-          
            
            
            
           
-           
            
-           
-          
            
            
            
@@ -2064,11 +2261,7 @@ if (language) {
            
            
            
-          
-           
            
-           
-          
           
            
            
@@ -2631,13 +2824,24 @@ if (language) {
            
           
            
-           
-           
-           
-          
            
            
            
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/raspberry_pi_os_booting/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/raspberry_pi.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to write your own Operating System for Raspberry Pi (AArch64): Booting</h3>
+      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα για Raspberry Pi (AArch64): Εκκίνηση</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">02 Nov 2025</time>
+      <time lang="el">02 Νοε 2025</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -3079,187 +3283,6 @@ if (language) {
   </a>
 </article>
 
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/raspberry_pi_os_booting/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/raspberry_pi.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to write your own Operating System for Raspberry Pi (AArch64): Booting</h3>
-      <h3 class="title" lang="el">Πως να γράψετε το δικό σας Λειτουργικό Σύστημα για Raspberry Pi (AArch64): Εκκίνηση</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">02 Nov 2025</time>
-      <time lang="el">02 Νοε 2025</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            

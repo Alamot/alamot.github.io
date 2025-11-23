@@ -204,6 +204,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#equal-to-zero"><span lang="en">Equal to zero</span><span lang="el">Ίσο με μηδέν</span></a></li>
 <li><a href="#less-than-zero"><span lang="en">Less than zero</span><span lang="el">Μικρότερο από μηδέν</span></a></li>
 <li><a href="#greater-than-zero"><span lang="en">Greater than zero</span><span lang="el">Μεγαλύτερο από μηδέν</span></a></li>
+<li><a href="#number-comparator"><span lang="en">Number comparator</span><span lang="el">Συγκριτής αριθμών</span></a></li>
 </ul></li>
 <li><a href="#flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></a>
 <ul>
@@ -277,6 +278,11 @@ if (language) {
                 <span lang="el">λογική</span>
                 </a>
             
+              <a class="label label-primary topmargin7" href='https://alamot.github.io/tags/comparison'>
+                <span lang="en">comparison</span>
+                <span lang="el">σύγκριση</span>
+                </a>
+            
          
          <aside>
           <section>
@@ -290,6 +296,7 @@ if (language) {
 <li><a href="#equal-to-zero"><span lang="en">Equal to zero</span><span lang="el">Ίσο με μηδέν</span></a></li>
 <li><a href="#less-than-zero"><span lang="en">Less than zero</span><span lang="el">Μικρότερο από μηδέν</span></a></li>
 <li><a href="#greater-than-zero"><span lang="en">Greater than zero</span><span lang="el">Μεγαλύτερο από μηδέν</span></a></li>
+<li><a href="#number-comparator"><span lang="en">Number comparator</span><span lang="el">Συγκριτής αριθμών</span></a></li>
 </ul></li>
 <li><a href="#flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></a>
 <ul>
@@ -319,7 +326,7 @@ if (language) {
   <div class="col-sm-4">
     <table class="bordered centered colored table-hover">
       <thead>
-        <tr><th>Α3</th><th>A2</th><th>Α1</th><th>Α0</th><th>Zero?</th></tr>
+        <tr><th>Α3</th><th>A2</th><th>Α1</th><th>Α0</th><th>ZF</th></tr>
       </thead>
       <tbody>
         <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
@@ -337,9 +344,36 @@ if (language) {
       "showToolbox":false,
       "devices":[
         {"type":"NumSrc","id":"dev0", "x":20,  "y":25, "label":"A0","state":{"direction":0,"on":false}},
-        {"type":"NumSrc","id":"dev1", "x":20,  "y":55, "label":"Α1","state":{"direction":0,"on":false}},    
+        {"type":"NumSrc","id":"dev1", "x":20,  "y":55, "label":"Α1","state":{"direction":0,"on":false}},
         {"type":"NumSrc","id":"dev2", "x":20,  "y":85, "label":"A2","state":{"direction":0,"on":false}},
-        {"type":"NumSrc","id":"dev3", "x":20,  "y":115,"label":"Α3","state":{"direction":0,"on":false}},                    
+        {"type":"NumSrc","id":"dev3", "x":20,  "y":115,"label":"Α3","state":{"direction":0,"on":false}},
+        {"type":"OR",    "id":"dev4", "x":85,  "y":35, "label":"OR"},
+        {"type":"OR",    "id":"dev5", "x":85,  "y":90, "label":"OR"},
+        {"type":"OR",    "id":"dev6", "x":180, "y":60, "label":"OR"},
+        {"type":"NOT",   "id":"dev7", "x":260, "y":60, "label":"NOT"},
+        {"type":"LED",   "id":"dev8", "x":310, "y":60, "label":"ZF"}],
+      "connectors":[{"from":"dev0.out0","to":"dev4.in0"},
+                    {"from":"dev1.out0","to":"dev4.in1"},
+                    {"from":"dev2.out0","to":"dev5.in0"},
+                    {"from":"dev3.out0","to":"dev5.in1"},
+                    {"from":"dev4.out0","to":"dev6.in0"},
+                    {"from":"dev5.out0","to":"dev6.in1"},
+                    {"from":"dev6.out0","to":"dev7.in0"},
+                    {"from":"dev7.out0","to":"dev8.in0"}]}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4 centered"></div>
+  <div class="col-sm-4 bordered centered simcir">
+    { "width":355,
+      "height":160,
+      "editable": false,
+      "showToolbox":false,
+      "devices":[
+        {"type":"NumSrc","id":"dev0", "x":20,  "y":25, "label":"A0","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev1", "x":20,  "y":55, "label":"Α1","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev2", "x":20,  "y":85, "label":"A2","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev3", "x":20,  "y":115,"label":"Α3","state":{"direction":0,"on":false}},
         {"type":"NAND",  "id":"dev4", "x":60,  "y":15, "label":"NAND"},
         {"type":"NAND",  "id":"dev5", "x":60,  "y":45, "label":"NAND"},
         {"type":"NAND",  "id":"dev6", "x":60,  "y":75, "label":"NAND"},
@@ -348,9 +382,9 @@ if (language) {
         {"type":"NAND",  "id":"dev9", "x":110, "y":90, "label":"NAND"},
         {"type":"NAND",  "id":"dev10","x":160, "y":30, "label":"NAND"},
         {"type":"NAND",  "id":"dev11","x":160, "y":90, "label":"NAND"},
-        {"type":"NAND",  "id":"dev12","x":210, "y":60, "label":"NAND"},  
-        {"type":"NAND",  "id":"dev13","x":260, "y":60, "label":"NAND"},       
-        {"type":"LED","id":"dev14","x":310, "y":60, "label":"Zero?"}],
+        {"type":"NAND",  "id":"dev12","x":210, "y":60, "label":"NAND"},
+        {"type":"NAND",  "id":"dev13","x":260, "y":60, "label":"NAND"},
+        {"type":"LED","id":"dev14","x":310, "y":60, "label":"ZF"}],
       "connectors":[{"from":"dev0.out0","to":"dev4.in0"},
                     {"from":"dev0.out0","to":"dev4.in1"},
                     {"from":"dev1.out0","to":"dev5.in0"},
@@ -358,17 +392,17 @@ if (language) {
                     {"from":"dev2.out0","to":"dev6.in0"},
                     {"from":"dev2.out0","to":"dev6.in1"},
                     {"from":"dev3.out0","to":"dev7.in0"},
-                    {"from":"dev3.out0","to":"dev7.in1"},                    
+                    {"from":"dev3.out0","to":"dev7.in1"},
                     {"from":"dev4.out0","to":"dev8.in0"},
                     {"from":"dev5.out0","to":"dev8.in1"},
                     {"from":"dev6.out0","to":"dev9.in0"},
-                    {"from":"dev7.out0","to":"dev9.in1"},                    
+                    {"from":"dev7.out0","to":"dev9.in1"},
                     {"from":"dev8.out0","to":"dev10.in0"},
                     {"from":"dev8.out0","to":"dev10.in1"},
                     {"from":"dev9.out0","to":"dev11.in0"},
                     {"from":"dev9.out0","to":"dev11.in1"},
                     {"from":"dev10.out0","to":"dev12.in0"},
-                    {"from":"dev11.out0","to":"dev12.in1"},                    
+                    {"from":"dev11.out0","to":"dev12.in1"},
                     {"from":"dev12.out0","to":"dev13.in0"},
                     {"from":"dev12.out0","to":"dev13.in1"},
                     {"from":"dev13.out0","to":"dev14.in0"}]}
@@ -384,11 +418,11 @@ if (language) {
   <div class="col-sm-4">
     <table class="bordered centered colored table-hover">
       <thead>
-        <tr><th>Α3 (MSB)</th><th>A2</th><th>Α1</th><th>Α0</th><th>Negative?</th></tr>
+        <tr><th>Α3 (MSB)</th><th>A2</th><th>Α1</th><th>Α0</th><th>SF</th></tr>
       </thead>
       <tbody>
         <tr><td>0</td><td>X</td><td>X</td><td>X</td><td>0</td></tr>
-        <tr><td>1</td><td>X</td><td>X</td><td>X</td><td>1</td></tr>        
+        <tr><td>1</td><td>X</td><td>X</td><td>X</td><td>1</td></tr>
       </tbody>
     </table>
   </div>
@@ -399,10 +433,10 @@ if (language) {
       "showToolbox":false,
       "devices":[
         {"type":"NumSrc","id":"dev0", "x":30, "y":25, "label":"A0","state":{"direction":0,"on":false}},
-        {"type":"NumSrc","id":"dev1", "x":30, "y":55, "label":"Α1","state":{"direction":0,"on":false}},    
+        {"type":"NumSrc","id":"dev1", "x":30, "y":55, "label":"Α1","state":{"direction":0,"on":false}},
         {"type":"NumSrc","id":"dev2", "x":30, "y":85, "label":"A2","state":{"direction":0,"on":false}},
-        {"type":"NumSrc","id":"dev3", "x":30, "y":115,"label":"Α3","state":{"direction":0,"on":true}},                    
-        {"type":"LED","id":"dev4","x":100, "y":60, "label":"Negative?"}],
+        {"type":"NumSrc","id":"dev3", "x":30, "y":115,"label":"Α3","state":{"direction":0,"on":true}},
+        {"type":"LED","id":"dev4","x":100, "y":60, "label":"SF"}],
       "connectors":[{"from":"dev3.out0","to":"dev4.in0"}]}
   </div>
 </div>
@@ -412,70 +446,189 @@ if (language) {
 <p lang="en">To check if a number is greater that zero, we can simply check that the number is not zero and is not negative.</p>
 <p lang="el">Για να ελέγξουμε αν ένας αριθμός είναι μεγαλύτερος από το μηδέν, αρκεί να ελέγξουμε ότι δεν είναι μηδέν και ότι δεν είναι αρνητικός.</p>
 
+<h2 id="number-comparator"><span lang="en">Number comparator</span><span lang="el">Συγκριτής αριθμών</span></h2>
+
+<p lang="en">To compare two numbers, we simply subtract one from the other and check the result according to the rules we see on the table. Overflow Flag is defined as OF = C<sub>in_MSB</sub> ⊕ C<sub>out_MSB</sub> (i.e. XOR of the second-to-last carry with the last carry).</p>
+<p lang="el">Για να συγκρίνουμε δύο αριθμούς απλά τους αφαιρούμε μεταξύ τους και ελέγχουμε το αποτέλεσμα σύμφωνα με τους κανόνες που βλέπουμε στον πίνακα. Η Σημαία Υπερχείλισης (Overflow Flag) ορίζεται ως OF = C<sub>in_MSB</sub> ⊕ C<sub>out_MSB</sub> (δηλαδή XOR του προτελευταίου κρατούμενου με το τελευταίο κρατουμένο).</p>
+
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-5">
     <table class="bordered centered colored table-hover">
       <thead>
-        <tr><th>Α3</th><th>A2</th><th>Α1</th><th>Α0</th><th>Positive?</th></tr>
+        <tr><th>Arithmetic</th><th>Flags</th><th>Condition</th></tr>
       </thead>
       <tbody>
-        <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-        <tr><td>1</td><td>X</td><td>X</td><td>X</td><td>0</td></tr>
-        <tr><td>0</td><td>X</td><td>X</td><td>1</td><td>1</td></tr> 
-        <tr><td>0</td><td>X</td><td>1</td><td>X</td><td>1</td></tr> 
-        <tr><td>0</td><td>1</td><td>X</td><td>X</td><td>1</td></tr>        
-      </tbody>
+        <tr><td>Both</td><td>ZF=1</td><td>A = B</td></tr>
+        <tr><td>Unsigned</td><td>ZF=0, CF=1</td><td>A > B</td></tr>
+        <tr><td>Unsigned</td><td>ZF=0, CF=0</td><td>A < B</td></tr>
+        <tr><td>Signed</td><td>ZF=0, SF=OF</td><td>A > B</td></tr>
+        <tr><td>Signed</td><td>ZF=0, SF≠OF</td><td>A < B</td></tr>
+       </tbody>
     </table>
   </div>
-  <div class="col-sm-4 bordered centered simcir">
-    { "width":305,
-      "height":205,
+  <div class="col-sm-6 bordered centered simcir">
+    { "width":495,
+      "height":250,
       "editable": false,
       "showToolbox":false,
-      "devices":[
-        {"type":"NumSrc","id":"dev0", "x":20,  "y":25, "label":"A0","state":{"direction":0,"on":true}},
-        {"type":"NumSrc","id":"dev1", "x":20,  "y":55, "label":"Α1","state":{"direction":0,"on":false}},    
-        {"type":"NumSrc","id":"dev2", "x":20,  "y":85, "label":"A2","state":{"direction":0,"on":false}},
-        {"type":"NumSrc","id":"dev3", "x":20,  "y":115,"label":"Α3","state":{"direction":0,"on":false}},                    
-        {"type":"NAND",  "id":"dev4", "x":60,  "y":15, "label":"NAND"},
-        {"type":"NAND",  "id":"dev5", "x":60,  "y":45, "label":"NAND"},
-        {"type":"NAND",  "id":"dev6", "x":60,  "y":75, "label":"NAND"},
-        {"type":"NAND",  "id":"dev7", "x":60,  "y":105,"label":"NAND"},
-        {"type":"NAND",  "id":"dev8", "x":110, "y":30, "label":"NAND"},
-        {"type":"NAND",  "id":"dev9", "x":110, "y":90, "label":"NAND"},
-        {"type":"NAND",  "id":"dev10","x":160, "y":30, "label":"NAND"},
-        {"type":"NAND",  "id":"dev11","x":160, "y":90, "label":"NAND"},
-        {"type":"NAND",  "id":"dev12","x":210, "y":60, "label":"NAND"},  
-        {"type":"NAND",  "id":"dev13","x":110, "y":150, "label":"NAND"},
-        {"type":"NAND",  "id":"dev14","x":160, "y":150, "label":"NAND"},  
-        {"type":"NAND",  "id":"dev15","x":210, "y":150, "label":"NAND"},        
-        {"type":"LED",   "id":"dev16","x":260, "y":150, "label":"Positive?"}],
-      "connectors":[{"from":"dev0.out0","to":"dev4.in0"},
-                    {"from":"dev0.out0","to":"dev4.in1"},
-                    {"from":"dev1.out0","to":"dev5.in0"},
-                    {"from":"dev1.out0","to":"dev5.in1"},
-                    {"from":"dev2.out0","to":"dev6.in0"},
-                    {"from":"dev2.out0","to":"dev6.in1"},
-                    {"from":"dev3.out0","to":"dev7.in0"},
-                    {"from":"dev3.out0","to":"dev7.in1"},                    
-                    {"from":"dev4.out0","to":"dev8.in0"},
-                    {"from":"dev5.out0","to":"dev8.in1"},
-                    {"from":"dev6.out0","to":"dev9.in0"},
-                    {"from":"dev7.out0","to":"dev9.in1"},                    
-                    {"from":"dev8.out0","to":"dev10.in0"},
-                    {"from":"dev8.out0","to":"dev10.in1"},
-                    {"from":"dev9.out0","to":"dev11.in0"},
-                    {"from":"dev9.out0","to":"dev11.in1"},
-                    {"from":"dev10.out0","to":"dev12.in0"},
-                    {"from":"dev11.out0","to":"dev12.in1"},                    
-                    {"from":"dev12.out0","to":"dev14.in0"},
-                    {"from":"dev3.out0","to":"dev13.in0"},
-                    {"from":"dev3.out0","to":"dev13.in1"},
-                    {"from":"dev13.out0","to":"dev14.in1"},
-                    {"from":"dev14.out0","to":"dev15.in0"},
-                    {"from":"dev14.out0","to":"dev15.in1"},
-                    {"from":"dev15.out0","to":"dev16.in0"}]}
+      "devices": [
+        {"type":"DC","id":"dev0","x":12,"y":12,"label":"DC"},
+        {"type":"NumSrc","id":"dev1","x":20,"y":70,"label":"A","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev2","x":20,"y":85,"label":"Α","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev3","x":20,"y":100,"label":"A","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev4","x":20,"y":115,"label":"Α","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev5","x":20,"y":155,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev6","x":20,"y":170,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev7","x":20,"y":185,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev8","x":20,"y":200,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NOT","id":"dev9","x":65,"y":90,"label":"NOT"},
+        {"type":"NOT","id":"dev10","x":65,"y":120,"label":"NOT"},
+        {"type":"NOT","id":"dev11","x":65,"y":150,"label":"NOT"},
+        {"type":"NOT","id":"dev12","x":65,"y":180,"label":"NOT"},
+        {"type":"FullAdder","id":"dev13","x":115,"y":20,"label":"FullAdder"},
+        {"type":"FullAdder","id":"dev14","x":115,"y":68,"label":"FullAdder"},
+        {"type":"FullAdder","id":"dev15","x":115,"y":116,"label":"FullAdder"},
+        {"type":"FullAdder","id":"dev16","x":115,"y":164,"label":"4-bit Adder"},
+        {"type":"OR","id":"dev23","x":250,"y":30,"label":"OR"},
+        {"type":"OR","id":"dev24","x":250,"y":80,"label":"OR"},
+        {"type":"OR","id":"dev25","x":330,"y":40,"label":"OR"},
+        {"type":"NOT","id":"dev26","x":400,"y":40,"label":"NOT"},
+        {"type":"XOR","id":"dev27","x":300,"y":155,"label":"XOR"},
+        {"type":"LED","id":"dev31","x":450,"y":40,"label":"ZF"},
+        {"type":"LED","id":"dev32","x":450,"y":90,"label":"SF"},
+        {"type":"LED","id":"dev33","x":450,"y":140,"label":"OF"},
+        {"type":"LED","id":"dev34","x":450,"y":190,"label":"CF"}],
+      "connectors":[
+        {"from":"dev0.out0","to":"dev13.in0"},
+        {"from":"dev1.out0","to":"dev13.in1"},
+        {"from":"dev2.out0","to":"dev14.in1"},
+        {"from":"dev3.out0","to":"dev15.in1"},
+        {"from":"dev4.out0","to":"dev16.in1"},    
+        {"from":"dev9.out0","to":"dev13.in2"},
+        {"from":"dev10.out0","to":"dev14.in2"},
+        {"from":"dev11.out0","to":"dev15.in2"},
+        {"from":"dev12.out0","to":"dev16.in2"},    
+        {"from":"dev5.out0","to":"dev9.in0"},
+        {"from":"dev6.out0","to":"dev10.in0"},
+        {"from":"dev7.out0","to":"dev11.in0"},
+        {"from":"dev8.out0","to":"dev12.in0"},
+        {"from":"dev13.out0","to":"dev23.in0"},
+        {"from":"dev14.out0","to":"dev23.in1"},
+        {"from":"dev13.out1","to":"dev14.in0"},    
+        {"from":"dev15.out0","to":"dev24.in0"},
+        {"from":"dev16.out0","to":"dev24.in1"},
+        {"from":"dev14.out1","to":"dev15.in0"},    
+        {"from":"dev15.out1","to":"dev16.in0"},    
+        {"from":"dev23.out0","to":"dev25.in0"},
+        {"from":"dev24.out0","to":"dev25.in1"},    
+        {"from":"dev25.out0","to":"dev26.in0"},
+        {"from":"dev26.out0","to":"dev31.in0"},
+        {"from":"dev16.out0","to":"dev32.in0"},    
+        {"from":"dev16.out1","to":"dev33.in0"},
+        {"from":"dev15.out1","to":"dev27.in0"},
+        {"from":"dev16.out1","to":"dev27.in1"},
+        {"from":"dev27.out0","to":"dev33.in0"},
+        {"from":"dev16.out1","to":"dev34.in0"}]}
   </div>
+</div>
+<div class="row">
+  <div class="col-sm-5 centered"></div>
+  <div class="col-sm-6 bordered centered simcir">
+    { "width":495,
+      "height":250,
+      "editable": false,
+      "showToolbox":false,
+      "devices": [
+        {"type":"DC","id":"dev0","x":12,"y":12,"label":"DC"},
+        {"type":"NumSrc","id":"dev1","x":20,"y":70,"label":"A","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev2","x":20,"y":85,"label":"Α","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev3","x":20,"y":100,"label":"A","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev4","x":20,"y":115,"label":"Α","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev5","x":20,"y":155,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev6","x":20,"y":170,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev7","x":20,"y":185,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NumSrc","id":"dev8","x":20,"y":200,"label":"B","state":{"direction":0,"on":false}},
+        {"type":"NAND","id":"dev9","x":65,"y":90,"label":"NAND"},
+        {"type":"NAND","id":"dev10","x":65,"y":120,"label":"NAND"},
+        {"type":"NAND","id":"dev11","x":65,"y":150,"label":"NAND"},
+        {"type":"NAND","id":"dev12","x":65,"y":180,"label":"NAND"},
+        {"type":"FullAdder","id":"dev13","x":115,"y":20,"label":"FullAdder"},
+        {"type":"FullAdder","id":"dev14","x":115,"y":68,"label":"FullAdder"},
+        {"type":"FullAdder","id":"dev15","x":115,"y":116,"label":"FullAdder"},
+        {"type":"FullAdder","id":"dev16","x":115,"y":164,"label":"4-bit Adder"},
+        {"type":"NAND","id":"dev17","x":200,"y":15,"label":"NAND"},
+        {"type":"NAND","id":"dev18","x":200,"y":45,"label":"NAND"},
+        {"type":"NAND","id":"dev19","x":200,"y":75,"label":"NAND"},
+        {"type":"NAND","id":"dev20","x":200,"y":105,"label":"NAND"},
+        {"type":"NAND","id":"dev21","x":250,"y":30,"label":"NAND"},
+        {"type":"NAND","id":"dev22","x":250,"y":80,"label":"NAND"},
+        {"type":"NAND","id":"dev23","x":300,"y":30,"label":"NAND"},
+        {"type":"NAND","id":"dev24","x":300,"y":80,"label":"NAND"},
+        {"type":"NAND","id":"dev25","x":350,"y":40,"label":"NAND"},
+        {"type":"NAND","id":"dev26","x":400,"y":40,"label":"NAND"},
+        {"type":"NAND","id":"dev27","x":275,"y":155,"label":"NAND"},
+        {"type":"NAND","id":"dev28","x":325,"y":135,"label":"NAND"},
+        {"type":"NAND","id":"dev29","x":325,"y":180,"label":"NAND"},
+        {"type":"NAND","id":"dev30","x":375,"y":155,"label":"NAND"},
+        {"type":"LED","id":"dev31","x":450,"y":40,"label":"ZF"},
+        {"type":"LED","id":"dev32","x":450,"y":90,"label":"SF"},
+        {"type":"LED","id":"dev33","x":450,"y":140,"label":"OF"},
+        {"type":"LED","id":"dev34","x":450,"y":190,"label":"CF"}],
+      "connectors":[
+        {"from":"dev0.out0","to":"dev13.in0"},
+        {"from":"dev1.out0","to":"dev13.in1"},
+        {"from":"dev2.out0","to":"dev14.in1"},
+        {"from":"dev3.out0","to":"dev15.in1"},
+        {"from":"dev4.out0","to":"dev16.in1"},    
+        {"from":"dev9.out0","to":"dev13.in2"},
+        {"from":"dev10.out0","to":"dev14.in2"},
+        {"from":"dev11.out0","to":"dev15.in2"},
+        {"from":"dev12.out0","to":"dev16.in2"},    
+        {"from":"dev5.out0","to":"dev9.in0"},
+        {"from":"dev5.out0","to":"dev9.in1"},
+        {"from":"dev6.out0","to":"dev10.in0"},
+        {"from":"dev6.out0","to":"dev10.in1"},
+        {"from":"dev7.out0","to":"dev11.in0"},
+        {"from":"dev7.out0","to":"dev11.in1"},
+        {"from":"dev8.out0","to":"dev12.in0"},
+        {"from":"dev8.out0","to":"dev12.in1"},    
+        {"from":"dev13.out0","to":"dev17.in0"},
+        {"from":"dev13.out0","to":"dev17.in1"},
+        {"from":"dev13.out1","to":"dev14.in0"},    
+        {"from":"dev14.out0","to":"dev18.in0"},
+        {"from":"dev14.out0","to":"dev18.in1"},
+        {"from":"dev14.out1","to":"dev15.in0"},    
+        {"from":"dev15.out0","to":"dev19.in0"},
+        {"from":"dev15.out0","to":"dev19.in1"},
+        {"from":"dev15.out1","to":"dev16.in0"},    
+        {"from":"dev16.out0","to":"dev20.in0"},
+        {"from":"dev16.out0","to":"dev20.in1"},    
+        {"from":"dev17.out0","to":"dev21.in0"},
+        {"from":"dev18.out0","to":"dev21.in1"},
+        {"from":"dev19.out0","to":"dev22.in0"},
+        {"from":"dev20.out0","to":"dev22.in1"},    
+        {"from":"dev21.out0","to":"dev23.in0"},
+        {"from":"dev21.out0","to":"dev23.in1"},
+        {"from":"dev22.out0","to":"dev24.in0"},
+        {"from":"dev22.out0","to":"dev24.in1"},    
+        {"from":"dev23.out0","to":"dev25.in0"},
+        {"from":"dev24.out0","to":"dev25.in1"},    
+        {"from":"dev25.out0","to":"dev26.in0"},
+        {"from":"dev25.out0","to":"dev26.in1"},    
+        {"from":"dev26.out0","to":"dev31.in0"},
+        {"from":"dev16.out0","to":"dev32.in0"},    
+        {"from":"dev16.out1","to":"dev33.in0"},
+        {"from":"dev15.out1","to":"dev27.in0"},
+        {"from":"dev16.out1","to":"dev27.in1"},    
+        {"from":"dev15.out1","to":"dev28.in0"},
+        {"from":"dev27.out0","to":"dev28.in1"},    
+        {"from":"dev16.out1","to":"dev29.in1"},
+        {"from":"dev27.out0","to":"dev29.in0"},    
+        {"from":"dev28.out0","to":"dev30.in0"},
+        {"from":"dev29.out0","to":"dev30.in1"},    
+        {"from":"dev30.out0","to":"dev33.in0"},
+        {"from":"dev16.out1","to":"dev34.in0"}]}
+  </div>  
 </div>
 
 <h1 id="flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></h1>
@@ -486,7 +639,7 @@ if (language) {
 <p lang="el">Ένας πολυπλέκτης (mux) κατευθύνει μια από τις πολλαπλές γραμμές εισόδου στη μοναδική γραμμή εξόδου.</p>
 
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-5">
     <table class="bordered centered colored table-hover">
       <thead>
         <tr><th>Selector</th><th>Input A</th><th>Input B</th><th>Output</th></tr>
@@ -499,7 +652,7 @@ if (language) {
         <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
         <tr><td>1</td><td>0</td><td>1</td><td>1</td></tr>
         <tr><td>1</td><td>1</td><td>0</td><td>0</td></tr>
-        <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>        
+        <tr><td>1</td><td>1</td><td>1</td><td>1</td></tr>
       </tbody>
     </table>
   </div>
@@ -512,7 +665,7 @@ if (language) {
         {"type":"DC",    "id":"dev0","x":20,"y":20, "label":"DC"},
         {"type":"Toggle","id":"dev1","x":70,"y":20, "label":"Selector","state":{"on":false}},
         {"type":"NumSrc","id":"dev2","x":30,"y":75, "label":"Input A","state":{"direction":0,"on":false}},
-        {"type":"NumSrc","id":"dev3","x":30,"y":115,"label":"Input B","state":{"direction":0,"on":true}},        
+        {"type":"NumSrc","id":"dev3","x":30,"y":115,"label":"Input B","state":{"direction":0,"on":true}},
         {"type":"NAND",  "id":"dev4","x":120,"y":20,"label":"NAND"},
         {"type":"NAND",  "id":"dev5","x":170,"y":40,"label":"NAND"},
         {"type":"NAND",  "id":"dev6","x":220,"y":60,"label":"NAND"},
@@ -538,7 +691,7 @@ if (language) {
 <p lang="el">Ένας αποπολυπλέκτης (demux) λαμβάνει ένα σήμα εισόδου και το κατευθύνει σε μία από τις γραμμές εξόδου.</p>
 
 <div class="row">
-  <div class="col-sm-4">
+  <div class="col-sm-5">
     <table class="bordered centered colored table-hover">
       <thead>
         <tr><th>Selector</th><th>Input</th><th>Output A</th><th>Output B</th></tr>
@@ -559,7 +712,7 @@ if (language) {
       "devices":[
         {"type":"DC",    "id":"dev0","x":20, "y":80,"label":"DC"},
         {"type":"Toggle","id":"dev1","x":70, "y":80,"label":"Selector","state":{"on":false}},
-        {"type":"NumSrc","id":"dev2","x":27, "y":30,"label":"Input","state":{"direction":0,"on":true}},        
+        {"type":"NumSrc","id":"dev2","x":27, "y":30,"label":"Input","state":{"direction":0,"on":true}},
         {"type":"NAND",  "id":"dev3","x":120,"y":50,"label":"NAND"},
         {"type":"NAND",  "id":"dev4","x":220,"y":80,"label":"NAND"},
         {"type":"NAND",  "id":"dev5","x":170,"y":20,"label":"NAND"},
@@ -608,6 +761,254 @@ if (language) {
           
           
           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
           
            
            
@@ -1501,1065 +1902,6 @@ if (language) {
            
            
           
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
@@ -2666,391 +2008,6 @@ if (language) {
            
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
             <article class="li col-sm-6 col-md-4">
   <a href="https://alamot.github.io/raspberry_pi_os_booting/" class="clearfix">
     <div class="cell">
@@ -3066,6 +2023,1211 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

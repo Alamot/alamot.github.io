@@ -362,7 +362,7 @@ simcir.$ = function() {
       var args = [ this ];
       for (var i = 0; i < arguments.length; i += 1) {
         args.push(arguments[i]);
-      }; 
+      };
       return data.apply(null, args);
     },
     val : function() {
@@ -802,7 +802,7 @@ simcir.$ = function() {
       while (_queue != null && getTime() - start < limit) {
         dispatchEvent();
       }
-      window.setTimeout(timerHandler, 
+      window.setTimeout(timerHandler,
         Math.max(delay - limit, delay - (getTime() - start) ) );
     };
     timerHandler();
@@ -1111,16 +1111,16 @@ simcir.$ = function() {
       var $body = createSVGElement('rect').
         attr('class', 'simcir-device-body').
         attr('rx', 2).attr('ry', 2);
-        
+
       if (device.deviceDef.color) {
         $body.attr('stroke', device.deviceDef.color);
-      } 
-      
+      }
+
       if (device.deviceDef.bgColor) {
         $body.attr('fill', device.deviceDef.bgColor);
-      } 
-        
-      device.$ui.prepend($body);        
+      }
+
+      device.$ui.prepend($body);
 
       var $label = createLabel(label).
         attr('class', 'simcir-device-label').
@@ -2790,8 +2790,8 @@ simcir.$ = function() {
         super_createUI();
         var size = device.getSize();
         var g = $s.graphics(device.$ui);
-        g.attr['class'] = 'simcir-basicset-symbol';        
-        draw(g, 
+        g.attr['class'] = 'simcir-basicset-symbol';
+        draw(g,
           (size.width - unit) / 2,
           (size.height - unit) / 2,
           unit, unit);
@@ -3009,7 +3009,7 @@ simcir.$ = function() {
       6: 'acdefg',
       7: 'abc',
       8: 'abcdefg',
-      9: 'abcdfg', 
+      9: 'abcdfg',
       a: 'abcefg',
       b: 'cdefg',
       c: 'adef',
@@ -3044,7 +3044,7 @@ simcir.$ = function() {
 
         var $seg = createSegUI(device, seg);
         device.$ui.append($seg);
-  
+
         var update = function() {
           var value = 0;
           for (var i = 0; i < 4; i += 1) {
@@ -3105,7 +3105,7 @@ simcir.$ = function() {
       device.createUI = function() {
         super_createUI();
         var size = device.getSize();
-        
+
         var $knob = $s.createSVGElement('g').
           attr('class', 'simcir-basicset-knob').
           append($s.createSVGElement('rect').
@@ -3118,13 +3118,13 @@ simcir.$ = function() {
         g.lineTo(r, 0);
         g.closePath();
         device.$ui.append($knob);
-  
+
         var _angle = _MIN_ANGLE;
         var setAngle = function(angle) {
           _angle = Math.max(_MIN_ANGLE, Math.min(angle, _MAX_ANGLE) );
           update();
         };
-  
+
         var dragPoint = null;
         var knob_mouseDownHandler = function(event) {
           event.preventDefault();
@@ -3155,7 +3155,7 @@ simcir.$ = function() {
           $s.enableEvents($knob, false);
           $knob.off('mousedown', knob_mouseDownHandler);
         });
-  
+
         var update = function() {
           $s.transform($knob, size.width / 2,
               size.height / 2, _angle + 90);
@@ -3615,11 +3615,8 @@ simcir.registerDevice('8bitCounter',
 
 simcir.registerDevice('HalfAdder',
 {
-  "width":320,
-  "height":160,
-  "showToolbox":false,
-  "toolbox":[
-  ],
+  "width":320, "height":160,
+  "editable": false, "showToolbox":false, "toolbox":[],
   "devices":[
     {"type":"Toggle","id":"dev0","x":96,"y":80,"label":"Toggle"},
     {"type":"DC","id":"dev1","x":48,"y":56,"label":"DC"},
@@ -3648,11 +3645,8 @@ simcir.registerDevice('HalfAdder',
 
 simcir.registerDevice('FullAdder',
 {
-  "width":440,
-  "height":200,
-  "showToolbox":false,
-  "toolbox":[
-  ],
+  "width":440, "height":200,
+  "editable": false, "showToolbox":false, "toolbox":[],
   "devices":[
     {"type":"In","id":"dev0","x":120,"y":32,"label":"Cin"},
     {"type":"In","id":"dev1","x":120,"y":80,"label":"A"},
@@ -3899,6 +3893,115 @@ simcir.registerDevice('4to16BinaryDecoder',
 }
 );
 
+simcir.registerDevice('MUX', {
+  "width": 300, "height": 160,
+  "editable": false, "showToolbox":false, "toolbox":[],
+  "devices": [
+    { "type":"In",    "id":"sel",     "x": 10, "y":10,  "label":"S"},
+    { "type":"In",    "id":"inA",     "x": 10, "y":60,  "label":"A"},
+    { "type":"In",    "id":"inB",     "x": 10, "y":110, "label":"B"},
+    { "type":"NAND",  "id": "n0",     "x": 60, "y":10 },
+    { "type":"NAND",  "id": "n1",     "x": 110,"y":10 },
+    { "type":"NAND",  "id": "n2",     "x": 160,"y":10 },
+    { "type":"NAND",  "id": "n3",     "x": 85, "y":80 },
+    { "type":"Out",   "id": "out",    "x": 210,"y":10, "label": "Out"}],
+  "connectors": [
+    { "from": "inA.out0", "to": "n1.in1" },
+    { "from": "inB.out0", "to": "n3.in1" },
+    { "from": "sel.out0", "to": "n0.in0" },
+    { "from": "sel.out0", "to": "n0.in1" },
+    { "from": "n0.out0", "to": "n1.in0" },
+    { "from": "sel.out0", "to": "n3.in0" },
+    { "from": "n3.out0", "to": "n2.in1" },
+    { "from": "n1.out0", "to": "n2.in0" },
+    { "from": "n2.out0", "to": "out.in0" }]
+});
+
+simcir.registerDevice('DLATCH', {
+  "width":260, "height":135,
+  "editable": false, "showToolbox":false, "toolbox":[],
+  "devices":[
+    {"type":"In",    "id":"dev1","x":20,"y":20, "label":"S"},
+    {"type":"In",    "id":"dev3","x":20,"y":80, "label":"D"},
+    {"type":"NAND",  "id":"dev4","x":100,"y":20,"label":"NAND"},
+    {"type":"NAND",  "id":"dev5","x":150,"y":20,"label":"NAND"},
+    {"type":"NAND",  "id":"dev6","x":150,"y":75,"label":"NAND"},
+    {"type":"NAND",  "id":"dev7","x":100,"y":75,"label":"NAND"},
+    {"type":"Out",   "id":"dev8","x":210,"y":75,"label":"Out"}],
+  "connectors":[
+    {"from":"dev1.out0","to":"dev4.in0"},
+    {"from":"dev1.out0","to":"dev4.in1"},
+    {"from":"dev4.out0","to":"dev5.in0"},
+    {"from":"dev6.out0","to":"dev5.in1"},
+    {"from":"dev5.out0","to":"dev6.in0"},
+    {"from":"dev6.out0","to":"dev8.in0"},
+    {"from":"dev1.out0","to":"dev7.in0"},
+    {"from":"dev3.out0","to":"dev7.in1"},
+    {"from":"dev7.out0","to":"dev6.in1"}]
+});
+
+simcir.registerDevice('DFF', {
+  "width":260, "height":180,
+  "editable": false, "showToolbox":false, "toolbox":[],
+  "devices":[    
+    {"type":"In",     "id":"sel",    "x":20, "y":20, "label":"S"},
+    {"type":"In",     "id":"d",      "x":20, "y":70, "label":"D"},
+    {"type":"In",     "id":"clk",    "x":20, "y":120,"label":"C"},
+    {"type":"AND",    "id":"and",    "x":70, "y":20, "label":"AND","color":"green","bgColor":"cyan"},
+    {"type":"NOT",    "id":"not",    "x":70, "y":120,"label":"NOT","color":"red","bgColor":"yellow"},
+    {"type":"DLATCH", "id":"dlatch1","x":120,"y":20, "label":"D-Latch"},
+    {"type":"DLATCH", "id":"dlatch2","x":120,"y":120,"label":"D-Latch"},
+    {"type":"NumDsp", "id":"stored", "x":215,"y":28, "label":"Stored","state":{"direction":2}},        
+    {"type":"Out",    "id":"output", "x":200,"y":120,"label":"Out"}],    
+  "connectors":[{"from":"sel.out0","to":"and.in0"},
+                {"from":"clk.out0","to":"and.in1"},
+                {"from":"clk.out0","to":"not.in0"},
+                {"from":"and.out0","to":"dlatch1.in0"},
+                {"from":"not.out0","to":"dlatch2.in0"},
+                {"from":"d.out0","to":"dlatch1.in1"},
+                {"from":"dlatch1.out0","to":"stored.in0"},
+                {"from":"dlatch1.out0","to":"dlatch2.in1"},
+                {"from":"dlatch2.out0","to":"output.in0"}]
+});
+
+simcir.registerDevice('4bitReg', {
+  "width":305, "height":325,
+  "editable": false, "showToolbox":false, "toolbox":[],
+  "devices":[
+    {"type":"In",     "id":"sel", "x":20, "y":20, "label":"S"},
+    {"type":"In",     "id":"d0",  "x":20, "y":70, "label":"D0"},
+    {"type":"In",     "id":"d1",  "x":20, "y":120,"label":"D1"},
+    {"type":"In",     "id":"d2",  "x":20, "y":170,"label":"D2"},
+    {"type":"In",     "id":"d3",  "x":20, "y":220,"label":"D3"},
+    {"type":"In",     "id":"clk", "x":20, "y":270,"label":"Clock","freq":0.25},
+    {"type":"DFF",    "id":"dff0","x":120,"y":20, "label":"DFF0"},
+    {"type":"DFF",    "id":"dff1","x":120,"y":70, "label":"DFF1"},
+    {"type":"DFF",    "id":"dff2","x":120,"y":120,"label":"DFF2"},
+    {"type":"DFF",    "id":"dff3","x":120,"y":170,"label":"D-FF"},
+    {"type":"Out",    "id":"out0","x":250,"y":70, "label":"O0","state":{"direction":2}},   
+    {"type":"Out",    "id":"out1","x":250,"y":120,"label":"O1","state":{"direction":2}},   
+    {"type":"Out",    "id":"out2","x":250,"y":170,"label":"O2","state":{"direction":2}},   
+    {"type":"Out",    "id":"out3","x":250,"y":220,"label":"O3","state":{"direction":2}}],
+  "connectors":[
+    {"from":"sel.out0","to":"dff0.in0"},
+    {"from":"sel.out0","to":"dff1.in0"},
+    {"from":"sel.out0","to":"dff2.in0"},
+    {"from":"sel.out0","to":"dff3.in0"},
+    {"from":"d0.out0","to":"dff0.in1"},
+    {"from":"d1.out0","to":"dff1.in1"},
+    {"from":"d2.out0","to":"dff2.in1"},
+    {"from":"d3.out0","to":"dff3.in1"},
+    {"from":"clk.out0","to":"dff0.in2"},
+    {"from":"clk.out0","to":"dff1.in2"},
+    {"from":"clk.out0","to":"dff2.in2"},
+    {"from":"clk.out0","to":"dff3.in2"},
+    {"from":"dff0.out0","to":"out0.in0"},
+    {"from":"dff1.out0","to":"out1.in0"},
+    {"from":"dff2.out0","to":"out2.in0"},
+    {"from":"dff3.out0","to":"out3.in0"}]
+});
+
+
 //
 // SimcirJS - Num
 //
@@ -4090,13 +4193,13 @@ simcir.registerDevice('4to16BinaryDecoder',
             attr('cx', size.width).attr('cy', size.height / 2).attr('r', 2).
             addClass('simcir-connector').addClass('simcir-joint-point');
           device.$ui.append($point);
-    
+
           var updatePoint = function() {
             $point.css('display', out1.getInputs().length > 1? '' : 'none');
           };
-  
+
           updatePoint();
-  
+
           var super_connectTo = out1.connectTo;
           out1.connectTo = function(inNode) {
             super_connectTo(inNode);
@@ -4612,7 +4715,7 @@ simcir.registerDevice('4to16BinaryDecoder',
             d += 'L' + (x + cx + 1) * s + ' ' + (y + cy + 1) * s;
             d += 'L' + (x + cx) * s + ' ' + (y + cy + 1) * s;
             d += 'Z';
-          } 
+          }
         }
       }
       return d;

@@ -209,6 +209,7 @@ div.centered, p.centered, figcaption.centered, nav.centered, table.centered, h1.
 <li><a href="#flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></a>
 <ul>
 <li><a href="#multiplexer"><span lang="en">Μultiplexer (Data selector)</span><span lang="el">Πολυπλέκτης (Επιλογέας δεδομένων)</span></a></li>
+<li><a href="#ultiplexer-4to1"><span lang="en">4:1 Μultiplexer</span><span lang="el">Πολυπλέκτης 4:1</span></a></li>
 <li><a href="#demultiplexer"><span lang="en">Demultiplexer (Data distributor)</span><span lang="el">Αποπολυπλέκτης (Διανομέας δεδομένων)</span></a></li>
 </ul></li>
  
@@ -301,6 +302,7 @@ if (language) {
 <li><a href="#flow-control"><span lang="en">Flow control</span><span lang="el">Έλεγχος ροής</span></a>
 <ul>
 <li><a href="#multiplexer"><span lang="en">Μultiplexer (Data selector)</span><span lang="el">Πολυπλέκτης (Επιλογέας δεδομένων)</span></a></li>
+<li><a href="#ultiplexer-4to1"><span lang="en">4:1 Μultiplexer</span><span lang="el">Πολυπλέκτης 4:1</span></a></li>
 <li><a href="#demultiplexer"><span lang="en">Demultiplexer (Data distributor)</span><span lang="el">Αποπολυπλέκτης (Διανομέας δεδομένων)</span></a></li>
 </ul></li>
 </ul>
@@ -639,7 +641,7 @@ if (language) {
 <p lang="el">Ένας πολυπλέκτης (mux) κατευθύνει μια από τις πολλαπλές γραμμές εισόδου στη μοναδική γραμμή εξόδου.</p>
 
 <div class="row">
-  <div class="col-sm-5">
+  <div class="col-sm-6">
     <table class="bordered centered colored table-hover">
       <thead>
         <tr><th>Selector</th><th>Input A</th><th>Input B</th><th>Output</th></tr>
@@ -685,13 +687,63 @@ if (language) {
   </div>
 </div>
 
+<h2 id="ultiplexer-4to1"><span lang="en">4:1 Μultiplexer</span><span lang="el">Πολυπλέκτης 4:1</span></h2>
+
+<p lang="en">We can combine multiplexers and construct N-to-1 data selectors. Here is an example of a 4-to-1 multiplexer:</p>
+<p lang="el">Μπορούμε να συνδυάσουμε πολυπλέκτες και να κατασκευάσουμε επιλογείς δεδομένων N-σε-1. Ακολουθεί ένα παράδειγμα ενός πολυπλέκτη 4-σε-1:</p>
+
+<div class="row">
+  <div class="col-sm-5">
+    <table class="bordered centered colored table-hover">
+      <thead>
+        <tr><th>S1</th><th>S0</th><th>Output</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>A</td></tr>
+        <tr><td>0</td><td>1</td><td>B</td></tr>
+        <tr><td>1</td><td>0</td><td>C</td></tr>
+        <tr><td>1</td><td>1</td><td>D</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-4 bordered centered simcir">
+    { "width":275,
+      "height":220,
+      "editable": false,
+      "showToolbox":false,
+      "devices":[{"type":"DC",    "id":"DC","x":10,"y":10, "label":"DC"},
+                 {"type":"Toggle","id":"S1","x":65,"y":10,"label":"S0"},
+                 {"type":"Toggle","id":"S2","x":120,"y":10,"label":"S1"},
+                 {"type":"NumSrc","id":"A","x":20,"y":67,"label":"A"},
+                 {"type":"NumSrc","id":"B","x":20,"y":107,"label":"B"},
+                 {"type":"NumSrc","id":"C","x":20,"y":147,"label":"C"},
+                 {"type":"NumSrc","id":"D","x":20,"y":187,"label":"D"},
+                 {"type":"MUX","id":"mux1","x":65,"y":70,"label":"MUX1"},
+                 {"type":"MUX","id":"mux2","x":65,"y":145,"label":"MUX2"},
+                 {"type":"MUX","id":"mux3","x":150,"y":100,"label":"MUX3"},
+                 {"type":"NumDsp","id":"Out","x":240,"y":116,"label":"Out"}],
+      "connectors":[{"from":"DC.out0","to":"S1.in0"},
+                    {"from":"DC.out0","to":"S2.in0"},
+                    {"from":"S1.out0","to":"mux1.in0"},
+                    {"from":"S1.out0","to":"mux2.in0"},
+                    {"from":"S2.out0","to":"mux3.in0"},
+                    {"from":"A.out0","to":"mux1.in1"},
+                    {"from":"B.out0","to":"mux1.in2"},
+                    {"from":"C.out0","to":"mux2.in1"},
+                    {"from":"D.out0","to":"mux2.in2"},
+                    {"from":"mux1.out0","to":"mux3.in1"},
+                    {"from":"mux2.out0","to":"mux3.in2"},
+                    {"from":"mux3.out0","to":"Out.in0"}]}  
+  </div>
+</div>
+
 <h2 id="demultiplexer"><span lang="en">Demultiplexer (Data distributor)</span><span lang="el">Αποπολυπλέκτης (Διανομέας δεδομένων)</span></h2>
 
 <p lang="en">A demultiplexer (demux) takes one input signal and routes it to one of several output lines.</p>
 <p lang="el">Ένας αποπολυπλέκτης (demux) λαμβάνει ένα σήμα εισόδου και το κατευθύνει σε μία από τις γραμμές εξόδου.</p>
 
 <div class="row">
-  <div class="col-sm-5">
+  <div class="col-sm-6">
     <table class="bordered centered colored table-hover">
       <thead>
         <tr><th>Selector</th><th>Input</th><th>Output A</th><th>Output B</th></tr>
@@ -876,6 +928,258 @@ if (language) {
           
            
            
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/logic_gates_and_arithmetics/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/logic_gates.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to make your own processor: Logic gates and addition</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε τον δικό σας επεξεργαστή: Λογικές πύλες και πρόσθεση</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">16 Nov 2025</time>
+      <time lang="el">16 Νοε 2025</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/alu/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/ALU.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">How to make your own processor: Arithmetic Logic Unit (ALU)</h3>
+      <h3 class="title" lang="el">Πως να φτιάξετε τον δικό σας επεξεργαστή: Αριθμητική Λογική Μονάδα (ALU)</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">06 Dec 2025</time>
+      <time lang="el">06 Δεκ 2025</time>
+    </footer>
+  </a>
+</article>
+
            
           
            
@@ -1621,559 +1925,23 @@ if (language) {
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/logic_gates_and_arithmetics/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/logic_gates.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">How to make your own processor: Logic gates and addition</h3>
-      <h3 class="title" lang="el">Πως να φτιάξετε τον δικό σας επεξεργαστή: Λογικές πύλες και πρόσθεση</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">16 Nov 2025</time>
-      <time lang="el">16 Νοε 2025</time>
-    </footer>
-  </a>
-</article>
-
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
-          
-           
-           
-           
           
            
            
            
           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
            
            
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
            
           
            
            
            
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
-          
-           
-           
-           
-           
           
            
            
            
-           
           
-           
            
            
            
@@ -2181,9 +1949,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -2191,9 +1957,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -2201,9 +1965,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -2211,9 +1973,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -2221,9 +1981,7 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
@@ -2231,17 +1989,11 @@ if (language) {
            
            
            
-           
           
-           
            
            
            
           
-           
-           
-           
-           
           
            
            
@@ -2868,25 +2620,9 @@ if (language) {
            
            
           
-           
            
            
            
-            <article class="li col-sm-6 col-md-4">
-  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
-    <div class="cell">
-      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
-    </div>
-    <footer>
-      <h3 class="title" lang="en">Electric current and human body</h3>
-      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
-      <i class="fa fa-calendar"></i>
-      <time lang="en">01 Jun 2009</time>
-      <time lang="el">01 Ιουν 2009</time>
-    </footer>
-  </a>
-</article>
-
            
           
            
@@ -3303,6 +3039,347 @@ if (language) {
   </a>
 </article>
 
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+            <article class="li col-sm-6 col-md-4">
+  <a href="https://alamot.github.io/electric_current_and_human_body/" class="clearfix">
+    <div class="cell">
+      <div class="image" style="background-image: url(https://alamot.github.io/images/electric.jpg);"></div>
+    </div>
+    <footer>
+      <h3 class="title" lang="en">Electric current and human body</h3>
+      <h3 class="title" lang="el">Ηλεκτρικό ρεύμα και ανθρώπινο σώμα</h3>
+      <i class="fa fa-calendar"></i>
+      <time lang="en">01 Jun 2009</time>
+      <time lang="el">01 Ιουν 2009</time>
+    </footer>
+  </a>
+</article>
+
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
+           
+          
+           
+           
+           
            
           
            

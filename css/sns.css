@@ -1,0 +1,135 @@
+:root {
+    --bg-color: #f0f2f5;
+    --prey-color: #00aa00;
+    --prey-border: #1d4ed8;
+    --pred-color: #aaffff;
+    --pred-border: darkred;
+    --text-color: #1f2937;
+}
+
+/* Stats Table */
+.stats-box {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* The Board */
+.board {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 4px;
+    background-color: #ccc;
+    border: 4px solid #333;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.cell {
+    background-color: white;
+    padding: 2px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: start;
+    gap: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.cell-coord {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 8px;
+    color: #ccc;
+    pointer-events: none;
+}
+
+/* Entities */
+.entity {
+    width: 26px;
+    height: 26px;
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px;
+    font-weight: bold;
+    color: white;
+    user-select: none;
+    cursor: help;
+}
+
+.prey {
+    background-color: var(--prey-color);
+    border: 1px solid var(--prey-border);
+    color: white;
+    position: relative;
+    font-size: 26px;
+    line-height: 1;            
+}
+
+.predator {
+    background-color: var(--pred-color);
+    border: 1px solid var(--pred-border);
+    color: white;
+    position: relative;
+    font-size: 26px;
+    line-height: 1;
+}
+
+.prey>.overlay {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: lime;
+    text-shadow: 0 0 3px black;
+    pointer-events: none;
+}
+
+.predator>.overlay {
+    position: absolute;
+    top: 90%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+    text-shadow: 0 0 3px black;
+    pointer-events: none;
+}
+
+.predator>.birth-overlay {
+    position: absolute;
+    top: 98%;
+    left: 98%;
+    transform: translate(-50%, -50%);
+    font-size: 8px;
+    font-weight: bold;
+    color: blue;
+    text-shadow: 0 0 3px black;
+    pointer-events: none;
+}        
+    
+/* Logs */
+.log-box {
+    background: lightgray;
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 100%;
+    height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 12px;
+}
+.log-entry { margin-bottom: 4px; border-bottom: 1px dashed #000; padding-bottom: 2px; }
+.log-round { font-weight: bold; color: #4b5563; margin-top: 10px; border-bottom: 1px solid #ccc; }

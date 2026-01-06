@@ -138,14 +138,14 @@ function handlePredation() {
                 let eats = false;
                 if (pred.score > prey.score) {
                     eats = true;
-                    log(`Pred(${pred.score}) ate Prey(${prey.score}) at [${key}]`);
+                    log(`Predator(${pred.score}) ate Prey(${prey.score}) at [${key}]`);
                 } else if (pred.score < prey.score) {
                     eats = false;
-                    log(`Pred(${pred.score}) missed Prey(${prey.score}) at [${key}]`);
+                    log(`Predator(${pred.score}) missed Prey(${prey.score}) at [${key}]`);
                 } else {
                     // Tie: Flip coin
                     eats = Math.random() < 0.5;
-                    log(`Tie at [${key}]. Pred ${eats ? 'won' : 'lost'}.`);
+                    log(`Tie at [${key}]. Predator ${eats ? 'won' : 'lost'}.`);
                 }
                 if (eats) {
                     pred.fedThisRound = true;

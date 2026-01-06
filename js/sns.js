@@ -177,7 +177,7 @@ function updatePredators() {
             // Rd 2: Age 2. No eat -> Die.
             const age = round - p.birthRound;
             if (age >= 2) {
-                log(`Predator (Score ${p.score}) starved.`);
+                log(`Predator (Visual acuity ${p.score}) starved.`);
             } else {
                 nextGenPreds.push(p); // Survives
             }
